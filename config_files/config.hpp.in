@@ -1,0 +1,3 @@
+#cmakedefine RPG_COMPILE_TEST
+
+constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
