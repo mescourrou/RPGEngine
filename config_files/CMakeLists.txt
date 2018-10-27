@@ -4,5 +4,4 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 
 configure_file(config.hpp.in general_config.hpp @ONLY)
-list(APPEND SOURCES "${CMAKE_CURRENT_BINARY_DIR}/general_config.hpp")
 

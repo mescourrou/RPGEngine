@@ -1,5 +1,5 @@
 #include <iostream>
-#include <general_config.hpp>
+#include "general_config.hpp"
 #include "Config/Config.hpp"
 
 using namespace std;
