@@ -27,18 +27,18 @@ class BaseObject
 #endif
 
 public:
-    BaseObject(BaseObject* parent = nullptr);
-    virtual ~BaseObject();
+    BaseObject(BaseObject* parent = nullptr) noexcept ;
+    virtual ~BaseObject() noexcept ;
 
-    virtual BaseObject *parent() const final;
-    virtual std::string className() const = 0;
+    virtual BaseObject *parent() const noexcept final;
+    virtual std::string className() const noexcept = 0;
 
 protected:
-    virtual void setParent(BaseObject* parent) final;
+    virtual void setParent(BaseObject* parent) noexcept final;
 
 private:
-    void addChild(BaseObject* child);
-    void removeChild(BaseObject* child);
+    void addChild(BaseObject* child) noexcept ;
+    void removeChild(BaseObject* child) noexcept ;
     BaseObject* m_parent;
     std::list<BaseObject*> m_children;
 };

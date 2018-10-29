@@ -31,6 +31,9 @@ TEST_F(ConfigTest, GetExistentValues)
 
     EXPECT_EQ(conf.getValue("a_bad_number"), "13");
     EXPECT_EQ(conf.getValue("a_negative_number"), "-34");
+
+    Config confWithoutSections("data/sample2.ini");
+    EXPECT_EQ(confWithoutSections.getValue("something"), "I'm here");
 }
 
 TEST_F(ConfigTest, GetNonExistentValues)

@@ -35,11 +35,11 @@ class Config : public BaseObject
 public:
     Config() = default;
     Config(const std::string& filename);
-    ~Config() override;
+    ~Config() override = default;
 
-    std::string className() const override { return "Config"; }
+    std::string className() const noexcept override { return "Config"; }
 
-    virtual bool loadFile(const std::string& filename) final;
+    virtual bool loadFile(const std::string& filename) noexcept final;
 
     virtual std::string getValue(const std::string& section, const std::string& key) const final;
     virtual std::string getValue(const std::string& key) const;

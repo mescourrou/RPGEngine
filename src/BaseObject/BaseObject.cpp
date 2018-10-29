@@ -1,13 +1,13 @@
 #include "BaseObject.hpp"
 
-BaseObject::BaseObject(BaseObject* parent) : m_parent(parent)
+BaseObject::BaseObject(BaseObject* parent) noexcept : m_parent(parent)
 {
     if (m_parent)
         m_parent->addChild(this);
 }
 
 
-BaseObject::~BaseObject()
+BaseObject::~BaseObject() noexcept
 {
     if (m_parent)
         m_parent->removeChild(this);
@@ -17,12 +17,12 @@ BaseObject::~BaseObject()
     }
 }
 
-BaseObject *BaseObject::parent() const
+BaseObject *BaseObject::parent() const noexcept
 {
     return m_parent;
 }
 
-void BaseObject::setParent(BaseObject *parent)
+void BaseObject::setParent(BaseObject *parent) noexcept
 {
     if (m_parent)
         m_parent->removeChild(this);
@@ -31,7 +31,7 @@ void BaseObject::setParent(BaseObject *parent)
         m_parent->addChild(this);
 }
 
-void BaseObject::addChild(BaseObject *child)
+void BaseObject::addChild(BaseObject *child) noexcept
 {
     if (child == nullptr)
         return;
@@ -41,7 +41,7 @@ void BaseObject::addChild(BaseObject *child)
     }
 }
 
-void BaseObject::removeChild(BaseObject *child)
+void BaseObject::removeChild(BaseObject *child) noexcept
 {
     if (!child)
         return;
