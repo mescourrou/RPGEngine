@@ -5,12 +5,7 @@ config::Config::Config(const std::string &filename)
     loadFile(filename);
 }
 
-config::Config::~Config()
-{
-
-}
-
-bool config::Config::loadFile(const std::string &filename)
+bool config::Config::loadFile(const std::string &filename) noexcept
 {
     if (m_iniFile.LoadFile(filename.c_str()) < 0)
         return false;

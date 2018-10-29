@@ -84,7 +84,7 @@ function create_test_class
 	touch ${upper_case}Test.cpp ${upper_case}Test.hpp
 
 	echo "#include \"${upper_case}Test.hpp\"
-namespace $1 {
+namespace ${lower_case} {
 
 }
 
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 #include <gtest/gtest.h>
 #include <${upper_case}.hpp>
 
-namespace $1 {
+namespace ${lower_case} {
 
 class ${upper_case}Test : public testing::Test
 {

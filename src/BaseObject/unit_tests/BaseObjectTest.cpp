@@ -5,8 +5,8 @@ class AnObject : public BaseObject
     friend class BaseObjectTest;
 public:
     AnObject(BaseObject* parent = nullptr) : BaseObject(parent) {}
-    virtual ~AnObject() = default;
-    std::string className() const override { return "AnObject"; }
+    ~AnObject() override = default;
+    std::string className() const noexcept override { return "AnObject"; }
 };
 
 TEST_F(BaseObjectTest, NullParent)
