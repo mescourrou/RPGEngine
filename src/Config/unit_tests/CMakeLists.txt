@@ -1,7 +1,9 @@
 find_package(gtest REQUIRED)
 
 
-add_executable(Config_test ConfigTest.cpp ConfigTest.hpp)
+add_executable(Config_test
+	ConfigTest.cpp ConfigTest.hpp
+	ContextTest.cpp ContextTest.hpp)
 target_link_libraries(Config_test gtest Config)
 
 add_custom_command(TARGET Config_test POST_BUILD

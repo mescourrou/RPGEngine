@@ -129,7 +129,7 @@ function create_class
 
 function help
 {
-	echo "Usage : $0 [module names]"
+	echo "Usage : $0 [class name] [module]"
 }
 
 
