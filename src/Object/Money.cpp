@@ -1,7 +1,7 @@
 #include "Money.hpp"
 bool object::Money::m_initialized = false;
 
-object::Money::Money() : BaseObject()
+object::Money::Money()
 {
     if (!m_initialized)
     {
@@ -241,7 +241,7 @@ std::ostream &operator<<(std::ostream &stream, const object::Money &money)
 {
     unsigned int i = 0;
     auto moneyNames = *object::Money::moneyNames();
-    for (auto moneyType : moneyNames)
+    for (const auto& moneyType : moneyNames)
     {
         stream << money.value(moneyType) << " " << moneyType;
         if (i + 1 < object::Money::moneyNames()->size())

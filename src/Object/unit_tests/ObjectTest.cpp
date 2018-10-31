@@ -30,6 +30,13 @@ TEST_F(ObjectTest, StreamOperator)
 
 }
 
+void ObjectTest::SetUp()
+{
+    Money::initialize("bronze",
+                      std::pair<std::string, unsigned int>("argent", 100),
+                      std::pair<std::string, unsigned int>("or", 50000));
+}
+
 }
 
 int main(int argc, char **argv)

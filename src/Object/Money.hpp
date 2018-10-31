@@ -45,6 +45,7 @@ public:
     // Static
     static std::shared_ptr<std::vector<std::string> > moneyNames();
     static unsigned int moneyValue(const std::string& moneyName);
+    static unsigned long numberOfMoney() { return m_moneyNames.size(); }
 
     // Non static
     std::string className() const noexcept override { return "Money"; }

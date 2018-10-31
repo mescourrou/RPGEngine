@@ -19,8 +19,10 @@ void config::Context::kill()
     m_instance.reset();
 }
 
-config::Context::Context(int argc, char **argv) : m_argc(argc), m_argv(argv), m_currentDirectory(argv[0])
+config::Context::Context(int argc, char **argv) : m_argc(argc), m_argv(argv)
 {
+    if (argv)
+        m_currentDirectory = std::string(argv[0]);
     m_config.reset(new Config(std::string().append(m_currentDirectory).append("/")
                               .append(m_kConfigPath).append("/")
                               .append(m_kGlobalConfigFilename)));

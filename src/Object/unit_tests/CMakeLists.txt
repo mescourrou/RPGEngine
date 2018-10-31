@@ -1,10 +1,10 @@
 find_package(gtest REQUIRED)
 
 add_executable(Object_test
-	ObjectTest.cpp
-	ObjectTest.hpp
-	MoneyTest.cpp
-	MoneyTest.hpp)
+	ObjectTest.cpp ObjectTest.hpp
+	MoneyTest.cpp MoneyTest.hpp
+	InventoryTest.cpp InventoryTest.hpp
+	)
 
 target_link_libraries(Object_test gtest Object)
 

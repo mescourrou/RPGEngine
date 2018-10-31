@@ -31,10 +31,10 @@ std::string config::Config::getValue(const std::string &key) const
     m_iniFile.GetAllSections(sections);
 
     std::string ret;
-    while (sections.size() > 0)
+    while (!sections.empty())
     {
         ret = getValue(sections.front().pItem, key);
-        if (ret != "")
+        if (!ret.empty())
             return ret;
         sections.pop_front();
     }

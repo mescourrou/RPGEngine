@@ -11,7 +11,7 @@ BaseObject::~BaseObject() noexcept
 {
     if (m_parent)
         m_parent->removeChild(this);
-    for (std::list<BaseObject*>::iterator it = m_children.begin(); it != m_children.end(); )
+    for (auto it = m_children.begin(); it != m_children.end(); )
     {
         (*it)->setParent(nullptr);
     }

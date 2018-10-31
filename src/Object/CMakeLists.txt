@@ -1,9 +1,9 @@
 find_library(glog REQUIRED)
 add_library(Object
-	Object.cpp
-	Object.hpp
-	Money.cpp
-	Money.hpp)
+	Object.cpp Object.hpp
+	Money.cpp Money.hpp
+	Inventory.cpp Inventory.hpp
+	)
 
 
 target_link_libraries(Object BaseObject glog)

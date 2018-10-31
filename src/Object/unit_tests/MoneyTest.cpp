@@ -320,6 +320,9 @@ TEST_F(MoneyTest, StreamOperator)
 
 void MoneyTest::SetUp()
 {
+    Money::m_initialized = false;
+    Money::m_moneyNames.clear();
+
     const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info();
     auto testName = std::string(test_info->name());
 
