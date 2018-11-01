@@ -29,5 +29,4 @@ set_target_properties(glog PROPERTIES
 	"IMPORTED_LOCATION" "${binary_dir}/libglog.a"
 	INTERFACE_INCLUDE_DIRECTORIES "${glog_includes}"
 )
-message("${source_dir}/src/glog/")
 endif()
