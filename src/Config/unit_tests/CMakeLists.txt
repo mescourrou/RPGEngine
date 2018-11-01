@@ -1,6 +1,5 @@
 find_package(gtest REQUIRED)
 
-
 add_executable(Config_test
 	ConfigTest.cpp ConfigTest.hpp
 	ContextTest.cpp ContextTest.hpp)

@@ -1,6 +1,7 @@
 list(APPEND MODULES Config)
 list(APPEND MODULES BaseObject)
 list(APPEND MODULES Object)
+list(APPEND MODULES Database)
 
 foreach(module ${MODULES})
 	add_subdirectory(${module})
