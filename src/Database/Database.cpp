@@ -2,8 +2,7 @@
 
 database::Database::Database(const std::string &path)
 {
-    int rc = sqlite3_open(path.c_str(), &m_sqlite3Handler);
-    if(rc)
+    if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
         LOG(ERROR) << "Can't open database: " << sqlite3_errmsg(m_sqlite3Handler);
         sqlite3_close(m_sqlite3Handler);
@@ -42,7 +41,7 @@ static database::Database* currentDatabase = nullptr;
 
 bool database::Database::query(const std::string &query)
 {
-    m_result = std::shared_ptr<std::vector<std::map<std::string, std::string>>>(new std::vector<std::map<std::string, std::string>>);
+    m_result = std::make_shared<std::vector<std::map<std::string, std::string>>>(std::vector<std::map<std::string, std::string>>());
     std::map<std::string, std::string> resultRow;
     resultRow["status"] = "fail";
     m_result->emplace_back(std::move(resultRow));
@@ -57,4 +56,58 @@ bool database::Database::query(const std::string &query)
     }
     m_result->front().at("status") = "success";
     return true;
+}
+
+std::vector<std::string> database::Database::tableList()
+{
+    if (query("SELECT name FROM sqlite_master WHERE type='table';"))
+    {
+        std::vector<std::string> tableList;
+        for (auto& result : *m_result)
+        {
+            if (result != m_result->front())
+            {
+                tableList.push_back(result.at("name"));
+            }
+        }
+        return tableList;
+    }
+    else
+        return {};
+}
+
+std::vector<std::string> database::Database::columnList(const std::string& table)
+{
+    if (query("PRAGMA table_info("+table+");"))
+    {
+        std::vector<std::string> columnList;
+        for (auto& result : *m_result)
+        {
+            if (result != m_result->front())
+            {
+                columnList.push_back(result.at("name"));
+            }
+        }
+        return columnList;
+    }
+    else
+        return {};
+}
+
+std::map<std::string, std::string> database::Database::columnsType(const std::string& table)
+{
+    if (query("PRAGMA table_info("+table+");"))
+    {
+        std::map<std::string, std::string> ret;
+        for (auto& result : *m_result)
+        {
+            if (result != m_result->front())
+            {
+                ret[result.at("name")] = result.at("type");
+            }
+        }
+        return ret;
+    }
+    else
+        return {};
 }

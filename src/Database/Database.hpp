@@ -35,12 +35,14 @@ public:
     std::string className() const noexcept override { return "Database"; }
 
     std::vector<std::map<std::string, std::string>> query(const Query& dbQuery);
+    bool query(const std::string& query);
 
+    std::vector<std::string> tableList();
+    std::vector<std::string> columnList(const std::string &table);
+    std::map<std::string, std::string> columnsType(const std::string &table);
 protected:
     sqlite3* m_sqlite3Handler = nullptr;
     int callback(void*, int argc, char** argv, char** colName);
-    bool query(const std::string& query);
-
     std::shared_ptr<std::vector<std::map<std::string, std::string>>> m_result;
 
 };

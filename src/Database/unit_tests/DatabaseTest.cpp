@@ -67,6 +67,37 @@ TEST_F(DatabaseTest, Update)
     EXPECT_EQ(result.at(1).at("name"), "Good evening");
 }
 
+TEST_F(DatabaseTest, TableList)
+{
+    auto tableList = m_database->tableList();
+    EXPECT_EQ(tableList.size(), 2);
+    EXPECT_TRUE(std::find(tableList.begin(), tableList.end(), "table1") != tableList.end());
+    EXPECT_TRUE(std::find(tableList.begin(), tableList.end(), "table2") != tableList.end());
+    EXPECT_FALSE(std::find(tableList.begin(), tableList.end(), "noExistente") != tableList.end());
+}
+
+TEST_F(DatabaseTest, TableColumnList)
+{
+    auto columnList = m_database->columnList("table1");
+    EXPECT_EQ(columnList.size(), 2);
+    EXPECT_TRUE(std::find(columnList.begin(), columnList.end(), "id") != columnList.end());
+    EXPECT_TRUE(std::find(columnList.begin(), columnList.end(), "name") != columnList.end());
+    EXPECT_FALSE(std::find(columnList.begin(), columnList.end(), "notAColumn") != columnList.end());
+}
+
+TEST_F(DatabaseTest, TableTypeList)
+{
+    auto list = m_database->columnsType("table1");
+    EXPECT_EQ(list.size(), 2);
+    ASSERT_TRUE(list.count("id"));
+    EXPECT_EQ(list["id"], "INTEGER");
+
+    ASSERT_TRUE(list.count("name"));
+    EXPECT_EQ(list["name"], "TEXT");
+
+    EXPECT_FALSE(list.count("notAColumn"));
+}
+
 void DatabaseTest::SetUp()
 {
     std::filesystem::path usedFile = "data/db_sample1.db";
