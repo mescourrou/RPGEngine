@@ -1,6 +1,9 @@
 #include "QueryTest.hpp"
 namespace database {
 
+/*
+ * Test SELECT Query generation
+ */
 TEST_F(QueryTest, Select)
 {
     std::string expected = "SELECT id, name FROM aTable WHERE id = 3;";
@@ -11,6 +14,9 @@ TEST_F(QueryTest, Select)
     EXPECT_EQ(query.str(), expected);
 }
 
+/*
+ * Test INSERT Query generation
+ */
 TEST_F(QueryTest, Insert)
 {
     std::string expected = "";
@@ -25,6 +31,9 @@ TEST_F(QueryTest, Insert)
               .value("last_name", "Lane").str(), expected);
 }
 
+/*
+ * Test CREATE Query generation
+ */
 TEST_F(QueryTest, Create)
 {
     std::string expected = "";
@@ -47,6 +56,9 @@ TEST_F(QueryTest, Create)
 
 }
 
+/*
+ * Test UPDATE Query generation
+ */
 TEST_F(QueryTest, Update)
 {
     std::string expected = "";

@@ -1,12 +1,18 @@
 #include "ObjectTest.hpp"
 namespace object {
 
+/*
+ * Test class name
+ */
 TEST_F(ObjectTest, ClassName)
 {
     Object myObject;
     EXPECT_EQ(myObject.className(), "Object");
 }
 
+/*
+ * Testing default values
+ */
 TEST_F(ObjectTest, DefaultValues)
 {
     Object myObject;
@@ -14,6 +20,9 @@ TEST_F(ObjectTest, DefaultValues)
     EXPECT_EQ(myObject.description(), "");
 }
 
+/*
+ * Test stream operator
+ */
 TEST_F(ObjectTest, StreamOperator)
 {
     Object myObject;
@@ -30,6 +39,9 @@ TEST_F(ObjectTest, StreamOperator)
 
 }
 
+/**
+ * @brief Initialize money system for object using
+ */
 void ObjectTest::SetUp()
 {
     Money::initialize("bronze",

@@ -15,6 +15,10 @@
 #include <gtest/gtest.h>
 #endif
 
+/**
+ * @namespace database
+ * @brief Group all classes usefull for database use
+ */
 namespace database
 {
 
@@ -22,6 +26,9 @@ namespace database
 class DatabaseTest;
 #endif
 
+/**
+ * @brief Class for Database manipulation
+ */
 class Database : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
@@ -41,9 +48,10 @@ public:
     std::vector<std::string> columnList(const std::string &table);
     std::map<std::string, std::string> columnsType(const std::string &table);
 protected:
-    sqlite3* m_sqlite3Handler = nullptr;
     int callback(void*, int argc, char** argv, char** colName);
-    std::shared_ptr<std::vector<std::map<std::string, std::string>>> m_result;
+
+    sqlite3* m_sqlite3Handler = nullptr; ///< Pointer on sqlite handler
+    std::shared_ptr<std::vector<std::map<std::string, std::string>>> m_result; ///< Saving results temporary
 
 };
 

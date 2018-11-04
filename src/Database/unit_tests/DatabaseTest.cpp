@@ -1,6 +1,9 @@
 #include "DatabaseTest.hpp"
 namespace database {
 
+/*
+ * Test query execution and good return
+ */
 TEST_F(DatabaseTest, QueryText)
 {
     EXPECT_TRUE(m_database->query("SELECT * FROM table1 WHERE id = 1"));
@@ -16,6 +19,9 @@ TEST_F(DatabaseTest, QueryText)
 
 }
 
+/*
+ * Test SELECT Query
+ */
 TEST_F(DatabaseTest, QuerySelect)
 {
     auto result = m_database->query(Query::createQuery<Query::SELECT>("table1")
@@ -37,13 +43,18 @@ TEST_F(DatabaseTest, QuerySelect)
     EXPECT_EQ(result.at(1).at("name"), "Good morning");
 }
 
+/*
+ * INSERT Query test
+ */
 TEST_F(DatabaseTest, Insert)
 {
+    // Execute INSERT Query
     auto result = m_database->query(Query::createQuery<Query::INSERT>("table1")
                                     .value("id", "3").value("name", "'Hello guys'"));
     EXPECT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
 
+    // Verify with a select Query
     result = m_database->query(Query::createQuery<Query::SELECT>("table1")
                                .where("id = 3"));
     ASSERT_EQ(result.size(), 2);
@@ -52,13 +63,18 @@ TEST_F(DatabaseTest, Insert)
     EXPECT_EQ(result.at(1).at("name"), "Hello guys");
 }
 
+/*
+ * UPDATE Query
+ */
 TEST_F(DatabaseTest, Update)
 {
+    // Execute UPDATE Query
     auto result = m_database->query(Query::createQuery<Query::UPDATE>("table1")
                                     .set("id", "4").where("name = 'Good evening'"));
     EXPECT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
 
+    // Verify with a select Query
     result = m_database->query(Query::createQuery<Query::SELECT>("table1")
                                .where("id = 4"));
     ASSERT_EQ(result.size(), 2);
@@ -67,6 +83,9 @@ TEST_F(DatabaseTest, Update)
     EXPECT_EQ(result.at(1).at("name"), "Good evening");
 }
 
+/*
+ * Test getting the table list
+ */
 TEST_F(DatabaseTest, TableList)
 {
     auto tableList = m_database->tableList();
@@ -76,6 +95,9 @@ TEST_F(DatabaseTest, TableList)
     EXPECT_FALSE(std::find(tableList.begin(), tableList.end(), "noExistente") != tableList.end());
 }
 
+/*
+ * Get the list of the columns
+ */
 TEST_F(DatabaseTest, TableColumnList)
 {
     auto columnList = m_database->columnList("table1");
@@ -85,6 +107,9 @@ TEST_F(DatabaseTest, TableColumnList)
     EXPECT_FALSE(std::find(columnList.begin(), columnList.end(), "notAColumn") != columnList.end());
 }
 
+/*
+ * Get the list of column types
+ */
 TEST_F(DatabaseTest, TableTypeList)
 {
     auto list = m_database->columnsType("table1");
@@ -98,14 +123,19 @@ TEST_F(DatabaseTest, TableTypeList)
     EXPECT_FALSE(list.count("notAColumn"));
 }
 
+/**
+ * @brief Set up the tests
+ */
 void DatabaseTest::SetUp()
 {
     std::filesystem::path usedFile = "data/db_sample1.db";
     std::filesystem::path modelFile = "data/db_sample1.db.in";
+    // Remove the file of previous tests
     if (std::filesystem::exists(usedFile))
         std::filesystem::remove(usedFile);
     if (!std::filesystem::exists(modelFile))
         LOG(FATAL) << "File " << modelFile << " doen't exists";
+    // Copy original file
     std::filesystem::copy(modelFile, usedFile);
     m_database.reset(new Database(usedFile));
 }

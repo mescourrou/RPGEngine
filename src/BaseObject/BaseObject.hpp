@@ -19,9 +19,13 @@
 class BaseObjectTest;
 #endif
 
+/**
+ * @brief Common root object
+ */
 class BaseObject
 {
 #ifdef RPG_BUILD_TEST
+    // Test class
     friend class BaseObjectTest;
     FRIEND_TEST(BaseObjectTest, SetParentAfter);
 #endif
@@ -31,6 +35,10 @@ public:
     virtual ~BaseObject() noexcept ;
 
     virtual BaseObject *parent() const noexcept final;
+    /** @fn std::string className() const noexcept
+     * @brief Return the class name
+     * Must be overrided in each derived classes
+     */
     virtual std::string className() const noexcept = 0;
 
 protected:
@@ -39,8 +47,8 @@ protected:
 private:
     void addChild(BaseObject* child) noexcept ;
     void removeChild(BaseObject* child) noexcept ;
-    BaseObject* m_parent;
-    std::list<BaseObject*> m_children;
+    BaseObject* m_parent; ///< Parent of the object
+    std::list<BaseObject*> m_children; ///< Children of the object
 };
 
 

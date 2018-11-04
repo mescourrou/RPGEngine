@@ -1,6 +1,9 @@
 #include "Money.hpp"
 bool object::Money::m_initialized = false;
 
+/**
+ * @brief Construct a money amount
+ */
 object::Money::Money()
 {
     if (!m_initialized)
@@ -11,6 +14,10 @@ object::Money::Money()
     m_values.reset(new std::vector<unsigned int>(m_moneyNames.size(), 0));
 }
 
+/**
+ * @brief Create the amount of money given
+ * @param values Initializer list. Go from the base money to the most valuable type of money
+ */
 object::Money::Money(std::initializer_list<unsigned int> values) : Money()
 {
     if (values.size() > m_moneyNames.size())
@@ -21,10 +28,14 @@ object::Money::Money(std::initializer_list<unsigned int> values) : Money()
         add(m_moneyNames.at(i).first, value);
         i++;
     }
+    // Spread carry
     spread();
 }
 
-
+/**
+ * @brief Get the value of the money wanted
+ * @param moneyName Name of the money to get
+ */
 unsigned int object::Money::value(const std::string &moneyName) const
 {
     unsigned int i = 0;
@@ -130,12 +141,19 @@ object::Money &object::Money::operator-=(unsigned int toAdd)
     return *this;
 }
 
+/**
+ * @brief End of initialize chain with variadic parameters
+ * @param value Money name to add
+ */
 void object::Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value)
 {
     m_moneyNames.push_back(value);
     m_initialized = true;
 }
 
+/**
+ * @brief Spread carry over the money types
+ */
 void object::Money::spread()
 {
     for(unsigned int i = 0; i < m_moneyNames.size() -1; i++)
@@ -148,17 +166,23 @@ void object::Money::spread()
     }
 }
 
-
-std::shared_ptr<std::vector<std::string>> object::Money::moneyNames()
+/**
+ * @brief Get the names of the money types
+ */
+std::vector<std::string> object::Money::moneyNames()
 {
-    std::shared_ptr<std::vector<std::string>> retList(new std::vector<std::string>());
+    std::vector<std::string> retList;
     for (auto& money : m_moneyNames)
     {
-        retList->push_back(money.first);
+        retList.push_back(money.first);
     }
     return retList;
 }
 
+/**
+ * @brief Get the value of the asked money type
+ * @param moneyName Type of the money asked
+ */
 unsigned int object::Money::moneyValue(const std::string &moneyName)
 {
     for (auto& money : m_moneyNames)
@@ -170,6 +194,9 @@ unsigned int object::Money::moneyValue(const std::string &moneyName)
     return 0;
 }
 
+/**
+ * @brief Convert the money into only the base value
+ */
 unsigned int object::Money::convertToBaseMoney() const
 {
     unsigned int sum = 0;
@@ -181,6 +208,11 @@ unsigned int object::Money::convertToBaseMoney() const
     return sum;
 }
 
+/**
+ * @brief Add the quantity given
+ * @param moneyName Type of the money you want to add
+ * @param quantity Amount of money to add
+ */
 void object::Money::add(const std::string &moneyName, unsigned int quantity)
 {
     unsigned int i = 0;
@@ -199,6 +231,11 @@ void object::Money::add(const std::string &moneyName, unsigned int quantity)
     throw std::string("Money ") + moneyName + std::string(" not found");
 }
 
+/**
+ * @brief Substract the quantity given
+ * @param moneyName Type of the money you want to remove
+ * @param quantity Amount of money to substract
+ */
 bool object::Money::sub(const std::string &moneyName, unsigned int quantity)
 {
     unsigned int i = 0;
@@ -237,14 +274,20 @@ bool object::Money::sub(const std::string &moneyName, unsigned int quantity)
     throw std::string("Money ") + moneyName + std::string(" not found");
 }
 
+/**
+ * @brief Print the money into the stream
+ * @param stream
+ * @param money Stream into we will write
+ * @return Return the modified stream
+ */
 std::ostream &operator<<(std::ostream &stream, const object::Money &money)
 {
     unsigned int i = 0;
-    auto moneyNames = *object::Money::moneyNames();
+    auto moneyNames = object::Money::moneyNames();
     for (const auto& moneyType : moneyNames)
     {
         stream << money.value(moneyType) << " " << moneyType;
-        if (i + 1 < object::Money::moneyNames()->size())
+        if (i + 1 < moneyNames.size())
             stream << ", ";
 
         i++;

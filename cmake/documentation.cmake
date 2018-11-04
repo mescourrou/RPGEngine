@@ -1,5 +1,4 @@
 function(add_doc_target)
-	find_program(asciidoctor asciidoctor)
 	find_program(doxygen doxygen)
 	find_program(xdg-open xdg-open)
 

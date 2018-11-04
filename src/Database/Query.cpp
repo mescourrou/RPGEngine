@@ -1,5 +1,14 @@
 #include "Query.hpp"
 
+/**
+ * @brief Verify if the column name is valid
+ *
+ * Current contraints:
+ * - No spaces
+ *
+ * @param name
+ * @return
+ */
 bool database::Query::checkColumnName(const std::string &name)
 {
     if (name.find(' ') != std::string::npos)
@@ -43,7 +52,12 @@ std::string database::SelectQuery::str() const
 }
 
 
-
+/**
+ * @brief Add the couple <column, value> to the query
+ * @param column Column of the value
+ * @param value Value to insert
+ * @return New query
+ */
 database::InsertQuery &database::InsertQuery::value(const std::string &column, const std::string &value)
 {
     m_valid = true;
@@ -81,6 +95,13 @@ std::string database::InsertQuery::str() const
 
 }
 
+/**
+ * @brief Add a column to the Creation Query
+ * @param columnName Name of the new column
+ * @param columnType Column type
+ * @param columnContraints Column contrains
+ * @return New Query
+ */
 database::CreateQuery &database::CreateQuery::column(const std::string &columnName, const std::string &columnType, const std::string &columnContraints)
 {
     m_valid = true;
@@ -123,8 +144,12 @@ std::string database::CreateQuery::str() const
     return ss.str();
 }
 
-
-
+/**
+ * @brief Add set couple
+ * @param columnName Name of the column to modify
+ * @param value New value
+ * @return Updated Query
+ */
 database::UpdateQuery &database::UpdateQuery::set(const std::string &columnName, const std::string &value)
 {
     m_valid = true;

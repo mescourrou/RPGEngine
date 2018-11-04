@@ -3,6 +3,9 @@ namespace config {
 
 char** ContextTest::m_argv = nullptr;
 
+/*
+ * Test if initialization is well done
+ */
 TEST_F(ContextTest, Initialization)
 {
     char* argv = "PathToRuntime";
@@ -14,9 +17,13 @@ TEST_F(ContextTest, Initialization)
     EXPECT_STREQ(Context::m_instance->m_argv[0], argv);
 }
 
-TEST_F(ContextTest, CurrentDirectory)
+/*
+ * Get the path to the runtime directory
+ */
+TEST_F(ContextTest, runtimeDirectory)
 {
-    EXPECT_EQ(Context::get()->currentDirectory(), std::string(m_argv[0]));
+    EXPECT_EQ(Context::get()->runtimeDirectory(), std::string(m_argv[0]));
+    std::cout << Context::get()->runtimeDirectory() << std::endl;
 }
 
 void ContextTest::SetUp()

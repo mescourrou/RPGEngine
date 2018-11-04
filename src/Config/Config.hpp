@@ -20,6 +20,10 @@
 #include <gtest/gtest.h>
 #endif
 
+/**
+ * @namespace config
+ * @brief Group configuration and global classes
+ */
 namespace config
 {
 
@@ -27,12 +31,16 @@ namespace config
 class ConfigTest;
 #endif
 
+/**
+ * @brief File based configuration class
+ */
 class Config : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
     friend class config::ConfigTest;
 #endif
 public:
+    /// @brief Constructor
     Config() = default;
     Config(const std::string& filename);
     ~Config() override = default;
@@ -46,7 +54,7 @@ public:
 
 
 protected:
-    CSimpleIniA m_iniFile;
+    CSimpleIniA m_iniFile; ///< INI file load in memory
 };
 
 

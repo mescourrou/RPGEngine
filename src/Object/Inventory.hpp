@@ -19,6 +19,9 @@ namespace object
 class InventoryTest;
 #endif
 
+/**
+ * @brief Inventory class : container for Object
+ */
 class Inventory : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
@@ -37,10 +40,11 @@ public:
     std::shared_ptr<Object> pop(const std::string& objectName);
     void push(const std::shared_ptr<Object> &newObject);
 
+    /// @brief Return the size of the inventory
     unsigned int size() const { return m_inventory.size(); }
 
 private:
-    std::list<std::shared_ptr<Object>> m_inventory;
+    std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 };
 
 } // namespace object

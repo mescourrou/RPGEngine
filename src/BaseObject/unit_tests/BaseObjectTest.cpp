@@ -1,5 +1,8 @@
 #include "BaseObjectTest.hpp"
 
+/**
+ * @brief Implementation of abstract class AnObject to test
+ */
 class AnObject : public BaseObject
 {
     friend class BaseObjectTest;
@@ -9,6 +12,9 @@ public:
     std::string className() const noexcept override { return "AnObject"; }
 };
 
+/*
+ * Test the default behaviour when no parent is given
+ */
 TEST_F(BaseObjectTest, NullParent)
 {
     AnObject mySon;
@@ -16,17 +22,21 @@ TEST_F(BaseObjectTest, NullParent)
     EXPECT_EQ(mySon.parent(), nullptr);
 }
 
+/*
+ * Test in-constructor parent setting
+ */
 TEST_F(BaseObjectTest, SetParentAtTheBeginning)
 {
-    // Init
     AnObject parent;
 
-    // Scenario
     AnObject mySon(&parent);
 
     EXPECT_EQ(mySon.parent(), &parent);
 }
 
+/*
+ * Test post creation assigning parent
+ */
 TEST_F(BaseObjectTest, SetParentAfter)
 {
     AnObject parent;
@@ -37,8 +47,6 @@ TEST_F(BaseObjectTest, SetParentAfter)
     mySon.setParent(&parent);
     EXPECT_EQ(mySon.parent(), &parent);
 }
-
-
 
 int main(int argc, char **argv)
 {

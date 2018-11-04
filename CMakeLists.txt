@@ -24,8 +24,12 @@ if (RPG_BUILD_TEST)
 	enable_testing()
 endif()
 
+include(documentation)
+add_doc_target()
+
 add_subdirectory(${RPG_CONFIG_FILE_DIR})
 add_subdirectory(${SOURCE_DIR} bin)
+
 
 
 

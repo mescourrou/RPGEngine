@@ -2,18 +2,27 @@
 #include "ContextTest.hpp"
 namespace config {
 
+/*
+ * Classname test
+ */
 TEST_F(ConfigTest, GoodObjectName)
 {
     Config conf;
     EXPECT_EQ(conf.className(), "Config");
 }
 
+/*
+ * What happen if the file given doesn't exists
+ */
 TEST_F(ConfigTest, OpenNonExistentFile)
 {
     Config conf;
     EXPECT_FALSE(conf.loadFile("Toto"));
 }
 
+/*
+ * Load existent file
+ */
 TEST_F(ConfigTest, OpenFile)
 {
     Config conf;
@@ -21,6 +30,9 @@ TEST_F(ConfigTest, OpenFile)
 
 }
 
+/*
+ * Getting existing values
+ */
 TEST_F(ConfigTest, GetExistentValues)
 {
     Config conf("data/sample1.ini");
@@ -36,6 +48,9 @@ TEST_F(ConfigTest, GetExistentValues)
     EXPECT_EQ(confWithoutSections.getValue("something"), "I'm here");
 }
 
+/*
+ * Test if return empty string when asking for an inexistant value
+ */
 TEST_F(ConfigTest, GetNonExistentValues)
 {
     Config conf("data/sample1.ini");

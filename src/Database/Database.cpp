@@ -1,5 +1,9 @@
 #include "Database.hpp"
 
+/**
+ * @brief Create and open the given database file
+ * @param path Path to the database
+ */
 database::Database::Database(const std::string &path)
 {
     if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
@@ -11,6 +15,9 @@ database::Database::Database(const std::string &path)
 
 }
 
+/**
+ * @brief Close the database file
+ */
 database::Database::~Database()
 {
     if (m_sqlite3Handler)
@@ -19,13 +26,24 @@ database::Database::~Database()
     }
 }
 
+/**
+ * @brief Run a query
+ * @param dbQuery Query to execute
+ * @return Return the list (std::vector) of row (std::map<column, value>)
+ */
 std::vector<std::map<std::string, std::string> > database::Database::query(const Query &dbQuery)
 {
     query(dbQuery.str());
     return std::move(*m_result);
 }
 
-
+/**
+ * @brief Private method which is called at each row match the query
+ * @param argc Number of colomns selected
+ * @param argv Values
+ * @param colName Columns name
+ * @return 0
+ */
 int database::Database::callback(void *, int argc, char **argv, char **colName)
 {
     std::map<std::string, std::string> row;
@@ -37,8 +55,13 @@ int database::Database::callback(void *, int argc, char **argv, char **colName)
     return 0;
 }
 
-static database::Database* currentDatabase = nullptr;
+static database::Database* currentDatabase = nullptr; ///< Pointer to the current database to be use in lambdas
 
+/**
+ * @brief Run a text query, but do not return the result
+ * @param query String query
+ * @return True if the query successed and false if it failed
+ */
 bool database::Database::query(const std::string &query)
 {
     m_result = std::make_shared<std::vector<std::map<std::string, std::string>>>(std::vector<std::map<std::string, std::string>>());
@@ -58,6 +81,10 @@ bool database::Database::query(const std::string &query)
     return true;
 }
 
+/**
+ * @brief List of the database tables
+ * @return List of tables
+ */
 std::vector<std::string> database::Database::tableList()
 {
     if (query("SELECT name FROM sqlite_master WHERE type='table';"))
@@ -76,6 +103,11 @@ std::vector<std::string> database::Database::tableList()
         return {};
 }
 
+/**
+ * @brief List of the columns of a table
+ * @param table Table to search
+ * @return List of columns
+ */
 std::vector<std::string> database::Database::columnList(const std::string& table)
 {
     if (query("PRAGMA table_info("+table+");"))
@@ -94,6 +126,19 @@ std::vector<std::string> database::Database::columnList(const std::string& table
         return {};
 }
 
+/**
+ * @brief Get the type of the columns of a table
+ *
+ * The types are the SQLite types:
+ * - INTERGER
+ * - TEXT
+ * - NUMBER
+ * - REAL
+ * - NONE or BLOB
+ *
+ * @param table Table to search
+ * @return Map with first the name of the column and then the name of the type
+ */
 std::map<std::string, std::string> database::Database::columnsType(const std::string& table)
 {
     if (query("PRAGMA table_info("+table+");"))

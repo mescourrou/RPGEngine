@@ -3,20 +3,24 @@ namespace object {
 
 using MoneyDeathTest = MoneyTest;
 
-
+/*
+ * Test behaviour when the money system is not initialized
+ */
 TEST_F(MoneyTest, NotInitialized)
 {
     EXPECT_THROW(new Money(), std::string);
 }
 
+/*
+ * Test initialization
+ */
 TEST_F(MoneyTest, FinancialSystemInit)
 {
     auto names = Money::moneyNames();
-    ASSERT_TRUE(names);
-    ASSERT_EQ(names->size(), 3);
-    EXPECT_EQ(names->at(0), "bronze");
-    EXPECT_EQ(names->at(1), "argent");
-    EXPECT_EQ(names->at(2), "or");
+    ASSERT_EQ(names.size(), 3);
+    EXPECT_EQ(names.at(0), "bronze");
+    EXPECT_EQ(names.at(1), "argent");
+    EXPECT_EQ(names.at(2), "or");
 
     EXPECT_EQ(Money::moneyValue("nonValidMoneyName"), 0);
     EXPECT_EQ(Money::moneyValue("bronze"), 1);
@@ -24,12 +28,18 @@ TEST_F(MoneyTest, FinancialSystemInit)
     EXPECT_EQ(Money::moneyValue("or"), 50000);
 }
 
+/*
+ * Test class name
+ */
 TEST_F(MoneyTest, ClassName)
 {
     Money money;
     EXPECT_EQ(money.className(), "Money");
 }
 
+/*
+ * Test if money constructor initialize at 0
+ */
 TEST_F(MoneyTest, NoMoney)
 {
     Money money;
@@ -39,6 +49,9 @@ TEST_F(MoneyTest, NoMoney)
 
 }
 
+/*
+ * Add test
+ */
 TEST_F(MoneyTest, Add)
 {
     Money money;
@@ -88,8 +101,9 @@ TEST_F(MoneyTest, Add)
 
 }
 
-
-
+/*
+ * Testing the initializer list
+ */
 TEST_F(MoneyTest, InitializerList)
 {
     Money money1{10};
@@ -115,24 +129,34 @@ TEST_F(MoneyTest, InitializerList)
 
 }
 
-
-
+/*
+ * Method we expect to kill the process
+ */
 void MoneyTest::_createInvalidInitializeList()
 {
     new Money{10, 10, 10, 10};
 }
 
+/*
+ * Test if the initializer list manage invalid number of arguments
+ */
 TEST_F(MoneyDeathTest, InvalidInitializerList)
 {
     EXPECT_DEATH(_createInvalidInitializeList(), "");
 }
 
+/*
+ * Test the conversion into base value
+ */
 TEST_F(MoneyTest, ConvertToBaseValue)
 {
     Money money{10, 40, 50};
     EXPECT_EQ(money.convertToBaseMoney(), 2504010);
 }
 
+/*
+ * Test logical operators : ==, !=, >=, >, <=, <
+ */
 TEST_F(MoneyTest, LogicalOperators)
 {
     Money reference{10, 20, 30};
@@ -165,6 +189,9 @@ TEST_F(MoneyTest, LogicalOperators)
     EXPECT_FALSE(reference > more);
 }
 
+/*
+ * Test substract method
+ */
 TEST_F(MoneyTest, Sub)
 {
     Money money{50, 40, 20};
@@ -225,6 +252,9 @@ TEST_F(MoneyTest, Sub)
 
 }
 
+/*
+ * Test add operators : +, ++, +=
+ */
 TEST_F(MoneyTest, ArithmeticAddOperators)
 {
     Money easy{10, 20, 30};
@@ -267,6 +297,9 @@ TEST_F(MoneyTest, ArithmeticAddOperators)
     EXPECT_EQ(easy, critical);
 }
 
+/*
+ * Test substract operators : -, --, -=
+ */
 TEST_F(MoneyTest, ArithmeticSubOperators)
 {
     // ----- SUBSTRACT -------
@@ -307,6 +340,9 @@ TEST_F(MoneyTest, ArithmeticSubOperators)
 
 }
 
+/*
+ * Test the good printing of the stream operator
+ */
 TEST_F(MoneyTest, StreamOperator)
 {
     Money money{10, 40, 2};
@@ -318,6 +354,11 @@ TEST_F(MoneyTest, StreamOperator)
     EXPECT_EQ(output, ss.str());
 }
 
+/**
+ * @brief Set up the Money test
+ *
+ * Except for the "NotInitialized" test
+ */
 void MoneyTest::SetUp()
 {
     Money::m_initialized = false;
@@ -334,6 +375,9 @@ void MoneyTest::SetUp()
     }
 }
 
+/**
+ * @brief Reset the statics values to their original value
+ */
 void MoneyTest::TearDown()
 {
     Money::m_initialized = false;

@@ -24,6 +24,9 @@ namespace object
 class MoneyTest;
 #endif
 
+/**
+ * @brief Money management
+ */
 class Money : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
@@ -43,8 +46,11 @@ public:
 
     // --------- Getters ----------------
     // Static
-    static std::shared_ptr<std::vector<std::string> > moneyNames();
+    static std::vector<std::string> moneyNames();
     static unsigned int moneyValue(const std::string& moneyName);
+    /**
+     * @brief Return the number of money types
+     */
     static unsigned long numberOfMoney() { return m_moneyNames.size(); }
 
     // Non static
@@ -78,7 +84,8 @@ public:
 
 
 protected:
-    static bool m_initialized;
+    static bool m_initialized; ///< Say if the money system is initialized
+    /// Contains the name of the moneys and their values from the base value
     static inline std::vector<std::pair<std::string, unsigned int>> m_moneyNames;
 
     template<typename ...Args>
@@ -87,11 +94,16 @@ protected:
 
     void spread();
 
-    std::shared_ptr<std::vector<unsigned int>> m_values;
+    std::shared_ptr<std::vector<unsigned int>> m_values; ///< Values of the instanced money
 
 
 };
 
+/** @fn void Money::initialize(const std::string &baseValueName, Args... values)
+ * @brief Initialize the money system with the base value and the list of pairs <type name, type value>
+ * @param baseValueName Name of the base value
+ * @param values Values of the others money types
+ */
 template<typename ...Args>
 void Money::initialize(const std::string &baseValueName, Args... values)
 {
@@ -101,6 +113,11 @@ void Money::initialize(const std::string &baseValueName, Args... values)
 
 }
 
+/** @fn void Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value, Args... values)
+ * @brief Add money types given
+ * @param value Value to add : <type name, value in base value>
+ * @param values Values of the others money types
+ */
 template<typename ...Args>
 void Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value, Args... values)
 {

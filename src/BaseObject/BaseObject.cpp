@@ -1,12 +1,19 @@
 #include "BaseObject.hpp"
 
+/**
+ * \brief Constructor of the BaseObject
+ * \param parent Optionnal parent of the object
+ */
 BaseObject::BaseObject(BaseObject* parent) noexcept : m_parent(parent)
 {
     if (m_parent)
         m_parent->addChild(this);
 }
 
-
+/**
+ * @brief Destructor of Base object
+ * Break the parent-child chain but doesn't delete children
+ */
 BaseObject::~BaseObject() noexcept
 {
     if (m_parent)
@@ -17,11 +24,18 @@ BaseObject::~BaseObject() noexcept
     }
 }
 
+/** @fn BaseObject *BaseObject::parent() const noexcept
+ * @brief Get parent
+ */
 BaseObject *BaseObject::parent() const noexcept
 {
     return m_parent;
 }
 
+/**
+ * @brief Set the parent
+ * @param parent New parent (can be nullptr)
+ */
 void BaseObject::setParent(BaseObject *parent) noexcept
 {
     if (m_parent)
@@ -31,6 +45,10 @@ void BaseObject::setParent(BaseObject *parent) noexcept
         m_parent->addChild(this);
 }
 
+/**
+ * @brief Add a child to the list
+ * @param child New child. Unusefull with nullptr
+ */
 void BaseObject::addChild(BaseObject *child) noexcept
 {
     if (child == nullptr)
@@ -41,6 +59,10 @@ void BaseObject::addChild(BaseObject *child) noexcept
     }
 }
 
+/**
+ * @brief Remove the given child of the list
+ * @param child To remove. Unusefull with nullptr
+ */
 void BaseObject::removeChild(BaseObject *child) noexcept
 {
     if (!child)
