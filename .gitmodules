@@ -10,3 +10,6 @@
 [submodule "thirdparty/sqlite3"]
 	path = thirdparty/sqlite3
 	url = https://github.com/LuaDist/libsqlite3.git
+[submodule "thirdparty/gflags"]
+	path = thirdparty/gflags
+	url = https://github.com/gflags/gflags.git

@@ -1,11 +1,14 @@
 find_package(Threads REQUIRED)
+find_package(gflags REQUIRED)
 
 if (NOT TARGET googletest)
 
 INCLUDE(ExternalProject)
 
+
 ExternalProject_Add(
 	googletest
+
 	DOWNLOAD_COMMAND ""
 	SOURCE_DIR "${RPG_THIRDPARTY_DIR}/googletest"
 	PREFIX "${CMAKE_BINARY_DIR}/googletest"
@@ -21,7 +24,7 @@ ExternalProject_Get_Property(googletest source_dir binary_dir)
 if (NOT TARGET gtest)
 # Create a libgtest target to be used as a dependency by test programs
 add_library(gtest STATIC IMPORTED GLOBAL)
-add_dependencies(gtest googletest)
+add_dependencies(gtest googletest gflags)
 
 # Set libgtest properties
 set_target_properties(gtest PROPERTIES
