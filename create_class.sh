@@ -27,9 +27,12 @@ function create_class_files
 	touch $upper_case.cpp $upper_case.hpp
 
 	echo "#include \"$upper_case.hpp\"
+namespace $lower_case {
 
-$lower_case::$upper_case::$upper_case()
+$upper_case::$upper_case()
 {
+
+}
 
 }
 " >> $upper_case.cpp
@@ -38,6 +41,7 @@ $lower_case::$upper_case::$upper_case()
 
 // Project
 #include \"general_config.hpp\"
+#include <BaseObject.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -50,13 +54,16 @@ namespace $lower_case
 class ${upper_case}Test;
 #endif
 
-class $upper_case
+class $upper_case : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
 	friend class ${lower_case}::${upper_case}Test;
 #endif
 public:
 	$upper_case();
+	~${upper_case}() override = default;
+
+	std::string className() const noexcept override { return \"${upper_case}\"; }
 };
 
 } // namespace $lower_case

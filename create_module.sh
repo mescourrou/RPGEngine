@@ -23,6 +23,7 @@ function create_cmake
 	lower_case="$(tr '[:upper:]' '[:lower:]' <<< ${1:0:1})${1:1}"
 	touch CMakeLists.txt
 	echo "add_library($1 $upper_case.cpp $upper_case.hpp)
+target_link_libraries($1 BaseObject)
 target_include_directories($1 PUBLIC \${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories($1 PUBLIC \"\${CMAKE_BINARY_DIR}/\${RPG_CONFIG_FILE_DIR}\")
 
@@ -41,9 +42,12 @@ function create_class
 	touch $upper_case.cpp $upper_case.hpp
 
 	echo "#include \"$upper_case.hpp\"
-
-$lower_case::$upper_case::$upper_case()
+namespace ${lower_case} {
+	
+$upper_case::$upper_case()
 {
+
+}
 
 }
 " >> $upper_case.cpp
@@ -52,6 +56,7 @@ $lower_case::$upper_case::$upper_case()
 
 // Project
 #include \"general_config.hpp\"
+#include <BaseObject.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -64,13 +69,16 @@ namespace $lower_case
 class ${upper_case}Test;
 #endif
 
-class $upper_case
+class $upper_case : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
 	friend class ${lower_case}::${upper_case}Test;
 #endif
 public:
 	$upper_case();
+	~${upper_case}() override = default;
+	
+	std::string className() const noexcept override { return \"${upper_case}\"; }
 };
 
 } // namespace $lower_case
