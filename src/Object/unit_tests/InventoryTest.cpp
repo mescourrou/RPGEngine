@@ -33,7 +33,7 @@ TEST_F(InventoryTest, Get)
     EXPECT_TRUE(inventory->get(1));
     EXPECT_EQ(inventory->get(1)->name(), "Something very cool");
     EXPECT_TRUE(inventory->get(2));
-    EXPECT_EQ(inventory->get(3)->name(), "Trash");
+    EXPECT_EQ(inventory->get(2)->name(), "Trash");
     EXPECT_FALSE(inventory->get(3));
 
     // Get by name
