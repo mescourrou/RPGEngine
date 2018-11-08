@@ -21,11 +21,17 @@ class Map : public BaseObject
     friend class map::MapTest;
 #endif
 public:
-    Map();
     Map(const std::string& name);
+    ~Map() override = default;
+    Map(const Map& copy) = default;
+    Map(Map&& move) = default;
+
+    Map& operator=(const Map& copy) = default;
+    Map& operator=(Map&& move) = default;
 
     std::string name() const noexcept { return m_name; }
 
+    bool operator==(const Map& other) const noexcept { return m_name == other.m_name; }
     bool operator!=(const Map& other) const noexcept { return m_name != other.m_name; }
 
     std::string className() const noexcept override { return "Map"; }
