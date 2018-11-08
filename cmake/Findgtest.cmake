@@ -1,6 +1,4 @@
 find_package(Threads REQUIRED)
-find_package(gflags REQUIRED)
-
 if (NOT TARGET googletest)
 
 INCLUDE(ExternalProject)
@@ -24,7 +22,7 @@ ExternalProject_Get_Property(googletest source_dir binary_dir)
 if (NOT TARGET gtest)
 # Create a libgtest target to be used as a dependency by test programs
 add_library(gtest STATIC IMPORTED GLOBAL)
-add_dependencies(gtest googletest gflags)
+add_dependencies(gtest googletest)
 
 # Set libgtest properties
 set_target_properties(gtest PROPERTIES
