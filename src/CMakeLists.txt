@@ -4,6 +4,7 @@ list(APPEND MODULES Object)
 list(APPEND MODULES Database)
 list(APPEND MODULES Character)
 list(APPEND MODULES Map)
+list(APPEND MODULES Tools)
 
 foreach(module ${MODULES})
 	add_subdirectory(${module})
