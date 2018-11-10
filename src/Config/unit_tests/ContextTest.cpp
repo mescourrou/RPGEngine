@@ -10,11 +10,9 @@ TEST_F(ContextTest, Initialization)
 {
     char* argv = "PathToRuntime";
 
-    EXPECT_FALSE(Context::get());
-    Context::initialize(1, &argv);
-    EXPECT_TRUE(Context::get());
-    EXPECT_EQ(Context::m_instance->m_argc, 1);
-    EXPECT_STREQ(Context::m_instance->m_argv[0], argv);
+    Context context(1, &argv);
+    EXPECT_EQ(context.m_argc, 1);
+    EXPECT_STREQ(context.m_argv[0], argv);
 }
 
 /*
@@ -22,8 +20,8 @@ TEST_F(ContextTest, Initialization)
  */
 TEST_F(ContextTest, runtimeDirectory)
 {
-    EXPECT_EQ(Context::get()->runtimeDirectory(), std::string(m_argv[0]));
-    std::cout << Context::get()->runtimeDirectory() << std::endl;
+    EXPECT_EQ(m_context->runtimeDirectory(), std::string(m_argv[0]));
+    std::cout << m_context->runtimeDirectory() << std::endl;
 }
 
 void ContextTest::SetUp()
@@ -33,13 +31,12 @@ void ContextTest::SetUp()
 
     if (testName != "Initialization")
     {
-        Context::initialize(1, m_argv);
+        m_context = std::make_shared<Context>(Context(1, m_argv));
     }
 }
 
 void ContextTest::TearDown()
 {
-    Context::kill();
 }
 
 }

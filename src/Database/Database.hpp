@@ -1,6 +1,7 @@
 #pragma once
 
-
+// STD lib
+#include <mutex>
 
 // Project
 #include "general_config.hpp"
@@ -36,6 +37,17 @@ class Database : public BaseObject
     FRIEND_TEST(DatabaseTest, QueryText);
 #endif
 public:
+    class DatabaseException : public std::exception
+    {
+    public:
+        DatabaseException(const std::string& w) noexcept : m_what(w) {}
+        ~DatabaseException() override = default;
+
+        const char* what() const noexcept override { return m_what.c_str(); }
+    private:
+        std::string m_what;
+    };
+
     Database(const std::string& path);
     ~Database() override;
 
@@ -44,11 +56,15 @@ public:
     std::vector<std::map<std::string, std::string>> query(const Query& dbQuery);
     bool query(const std::string& query);
 
+    std::lock_guard<std::mutex> lockGuard() { return std::lock_guard<std::mutex>(m_queryMutex); }
+
     std::vector<std::string> tableList();
     std::vector<std::string> columnList(const std::string &table);
     std::map<std::string, std::string> columnsType(const std::string &table);
 protected:
     int callback(void*, int argc, char** argv, char** colName);
+
+    std::mutex m_queryMutex;
 
     sqlite3* m_sqlite3Handler = nullptr; ///< Pointer on sqlite handler
     std::shared_ptr<std::vector<std::map<std::string, std::string>>> m_result; ///< Saving results temporary

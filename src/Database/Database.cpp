@@ -33,6 +33,7 @@ database::Database::~Database()
  */
 std::vector<std::map<std::string, std::string> > database::Database::query(const Query &dbQuery)
 {
+    std::lock_guard<std::mutex> lock(m_queryMutex);
     query(dbQuery.str());
     return std::move(*m_result);
 }
@@ -64,6 +65,11 @@ static database::Database* currentDatabase = nullptr; ///< Pointer to the curren
  */
 bool database::Database::query(const std::string &query)
 {
+    if (m_queryMutex.try_lock())
+    {
+        m_queryMutex.unlock();
+        throw DatabaseException("Lock the mutex before the Query");
+    }
     m_result = std::make_shared<std::vector<std::map<std::string, std::string>>>(std::vector<std::map<std::string, std::string>>());
     std::map<std::string, std::string> resultRow;
     resultRow["status"] = "fail";

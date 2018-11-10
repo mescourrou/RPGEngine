@@ -14,6 +14,7 @@ public:
 
 
     static char** m_argv;
+    std::shared_ptr<Context> m_context;
 };
 
 }

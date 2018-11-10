@@ -30,10 +30,8 @@ class Context : public BaseObject
 #endif
 public:
     Context() = delete;
+    Context(int argc, char **argv);
     ~Context() override = default;
-    static std::shared_ptr<const Context> get();
-    static void initialize(int argc, char **argv);
-    static void kill();
 
     std::string className() const noexcept override { return "Context"; }
 
@@ -44,11 +42,7 @@ public:
     /// @brief Access the config directory (from runtime directory)
     const std::string kConfigPath() const { return m_kConfigPath; }
 
-protected:
-    Context(int argc, char **argv);
-
 private:
-    static std::shared_ptr<Context> m_instance; ///< Singleton instance
     int m_argc; ///< Number of arguments in m_argv
     char** m_argv; ///< Arguments of the program
 
