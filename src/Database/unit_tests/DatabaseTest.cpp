@@ -6,6 +6,7 @@ namespace database {
  */
 TEST_F(DatabaseTest, QueryText)
 {
+    auto lock = m_database->lockGuard();
     EXPECT_TRUE(m_database->query("SELECT * FROM table1 WHERE id = 1"));
     ASSERT_EQ(m_database->m_result->size(), 3);
 

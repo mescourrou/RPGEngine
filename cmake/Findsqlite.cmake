@@ -18,7 +18,7 @@ ExternalProject_Get_Property(sqlite_project source_dir binary_dir)
 
 if (NOT TARGET sqlite)
 # Create a libgtest target to be used as a dependency by test programs
-add_library(sqlite STATIC IMPORTED GLOBAL)
+add_library(sqlite SHARED IMPORTED GLOBAL)
 add_dependencies(sqlite sqlite_project)
 
 list(APPEND sqlite_includes "${source_dir}")

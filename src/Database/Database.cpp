@@ -93,6 +93,7 @@ bool database::Database::query(const std::string &query)
  */
 std::vector<std::string> database::Database::tableList()
 {
+    auto lock = lockGuard();
     if (query("SELECT name FROM sqlite_master WHERE type='table';"))
     {
         std::vector<std::string> tableList;
@@ -116,6 +117,7 @@ std::vector<std::string> database::Database::tableList()
  */
 std::vector<std::string> database::Database::columnList(const std::string& table)
 {
+    auto lock = lockGuard();
     if (query("PRAGMA table_info("+table+");"))
     {
         std::vector<std::string> columnList;
@@ -147,6 +149,7 @@ std::vector<std::string> database::Database::columnList(const std::string& table
  */
 std::map<std::string, std::string> database::Database::columnsType(const std::string& table)
 {
+    auto lock = lockGuard();
     if (query("PRAGMA table_info("+table+");"))
     {
         std::map<std::string, std::string> ret;
