@@ -4,6 +4,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include "Database.hpp"
 
 // External libs
 #include <glog/logging.h>
@@ -18,6 +19,9 @@ namespace database
 #ifdef RPG_BUILD_TEST
 class QueryTest;
 #endif
+
+class Database;
+enum DataType : int;
 
 /**
  * @brief Abstract class for Query generation
@@ -37,6 +41,18 @@ public:
         CREATE, ///< Create table query : create a new table
         UPDATE ///< Update query : edit values
     };
+
+    enum Operator {
+        EQUAL,
+        GT,
+        GE,
+        LT,
+        LE,
+        NOT
+    };
+
+
+
 protected:
     /**
      * @struct FindQueryType
@@ -45,9 +61,9 @@ protected:
     template<QueryTypes T>
     struct FindQueryType{};
 public:
-    template<QueryTypes T> static typename FindQueryType<T>::type createQuery(const std::string& table);
+    template<QueryTypes T> static typename FindQueryType<T>::type createQuery(const std::string& table, std::shared_ptr<Database> db);
     /// @brief Construct a Query
-    Query(const std::string& table) : m_table(table) {}
+    Query(const std::string& table, std::shared_ptr<Database> db) : m_table(table), m_db(db) {}
     ~Query() override = default;
 
     /**
@@ -66,11 +82,19 @@ public:
 
     std::string className() const noexcept override {return "Query";}
 protected:
-
+    DataType dataType(const std::string& column);
+    std::string convertToString(Operator op);
     bool checkColumnName(const std::string& name);
 
+    virtual void doWhere(std::vector<std::string>& conditions, const std::string& condition) final { conditions.push_back(condition);}
+    virtual void doWhere(std::vector<std::string>& conditions, const std::string& column, Operator op, std::string value) final;
+    virtual void doColumn(std::vector<std::string>& columns, const std::string& column) final;
+    virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value) final;
+
     std::string m_table; ///< Name of the table targeted by the Query
+    std::shared_ptr<Database> m_db;
     bool m_valid = false; ///< Validity of the Query
+
 };
 
 /**
@@ -80,13 +104,15 @@ class SelectQuery : public Query
 {
 public:
     /// @brief Construct a SELECT Query
-    SelectQuery(const std::string& table) : Query(table) { m_valid = true; }
+    SelectQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) { m_valid = true; }
     ~SelectQuery() override = default;
 
     /// @brief Add a selected column
-    SelectQuery& column(const std::string& field) { m_columns.push_back(field); return *this;}
+    SelectQuery& column(const std::string& field) { doColumn(m_columns, field); return *this;}
     /// @brief Add a filter condition
-    SelectQuery& where(const std::string& condition) { m_conditions.push_back(condition); return *this;}
+    SelectQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this;}
+    SelectQuery& where(const std::string& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
+
 
     std::string className() const noexcept override {return "SelectQuery";}
     std::string str() const override;
@@ -103,10 +129,10 @@ class InsertQuery : public Query
 {
 public:
     /// @brief Construct an INSERT Query
-    InsertQuery(const std::string& table) : Query(table) {}
+    InsertQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
     ~InsertQuery() override = default;
 
-    InsertQuery& value(const std::string& column, const std::string& value);
+    InsertQuery& value(const std::string& column, const std::string& value) { doValue(m_values, column, value); return *this; }
 
     std::string str() const override;
 
@@ -122,13 +148,13 @@ class CreateQuery : public Query
 {
 public:
     /// @brief Construct a CREATE TABLE Query
-    CreateQuery(const std::string& table) : Query(table) {}
+    CreateQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
     ~CreateQuery() override = default;
 
     /// @brief Add "IF NOT EXISTS" statement to the create table query
     CreateQuery& ifNotExists() { m_ifNotExists = true; return *this; }
     CreateQuery& column(const std::string& columnName,
-                        const std::string& columnType = "", const std::string& columnContraints = "");
+                        DataType columnType = DataType::BLOB, const std::string& columnContraints = "");
     /// @brief Add the table contraint
     CreateQuery& contraint(const std::string& contraint) { m_contraints.push_back(contraint); return *this; }
 
@@ -146,7 +172,7 @@ protected:
      * - the type of the column
      * - column contraints, like primary, unique, ...
      */
-    std::vector<std::tuple<std::string, std::string, std::string>> m_columns;
+    std::vector<std::tuple<std::string, DataType, std::string>> m_columns;
     /**
      * @brief Contrains of the table, like primary, unique, ...
      */
@@ -161,12 +187,12 @@ class UpdateQuery : public Query
 {
 public:
     /// @brief Construct a UPDATE Query
-    UpdateQuery(const std::string& table) : Query(table) {}
+    UpdateQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
     ~UpdateQuery() override = default;
 
     UpdateQuery& set(const std::string& columnName, const std::string& value);
     /// @brief Add filter condition
-    UpdateQuery& where(const std::string& condition) { m_conditions.push_back(condition); return *this; }
+    UpdateQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
 
     std::string str() const override;
 
@@ -192,9 +218,9 @@ template<> struct Query::FindQueryType<Query::UPDATE> { typedef UpdateQuery type
  * @param table Name of the table on which the query will be applied
  */
 template<Query::QueryTypes T>
-typename Query::FindQueryType<T>::type Query::createQuery(const std::string& table)
+typename Query::FindQueryType<T>::type Query::createQuery(const std::string& table, std::shared_ptr<Database> db)
 {
-    return typename Query::FindQueryType<T>::type(table);
+    return typename Query::FindQueryType<T>::type(table, db);
 }
 
 } // namespace config

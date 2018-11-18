@@ -6,7 +6,6 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
-#include <Query.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -26,6 +25,16 @@ namespace database
 #ifdef RPG_BUILD_TEST
 class DatabaseTest;
 #endif
+class Query;
+
+
+enum DataType : int {
+    INTEGER,
+    TEXT,
+    REAL,
+    NUMERIC,
+    BLOB
+};
 
 /**
  * @brief Class for Database manipulation
@@ -48,6 +57,7 @@ public:
         std::string m_what;
     };
 
+
     Database(const std::string& path);
     ~Database() override;
 
@@ -60,7 +70,10 @@ public:
 
     std::vector<std::string> tableList();
     std::vector<std::string> columnList(const std::string &table);
-    std::map<std::string, std::string> columnsType(const std::string &table);
+    std::map<std::string, DataType> columnsType(const std::string &table);
+
+    static std::string convertDataType(const DataType& data);
+    static DataType convertDataType(const std::string& data);
 protected:
     int callback(void*, int argc, char** argv, char** colName);
 

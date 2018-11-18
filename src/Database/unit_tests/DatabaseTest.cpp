@@ -1,4 +1,5 @@
 #include "DatabaseTest.hpp"
+#include "Query.hpp"
 namespace database {
 
 /*
@@ -25,7 +26,7 @@ TEST_F(DatabaseTest, QueryText)
  */
 TEST_F(DatabaseTest, QuerySelect)
 {
-    auto result = m_database->query(Query::createQuery<Query::SELECT>("table1")
+    auto result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
                                     .where("id = 2"));
 
     ASSERT_EQ(result.size(), 2);
@@ -34,7 +35,7 @@ TEST_F(DatabaseTest, QuerySelect)
     EXPECT_EQ(result.at(1).at("id"), "2");
     EXPECT_EQ(result.at(1).at("name"), "Hello World");
 
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1")
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
                                         .where("id = 1").where("name = 'Good morning'"));
 
     ASSERT_EQ(result.size(), 2);
@@ -50,13 +51,13 @@ TEST_F(DatabaseTest, QuerySelect)
 TEST_F(DatabaseTest, Insert)
 {
     // Execute INSERT Query
-    auto result = m_database->query(Query::createQuery<Query::INSERT>("table1")
-                                    .value("id", "3").value("name", "'Hello guys'"));
+    auto result = m_database->query(Query::createQuery<Query::INSERT>("table1", m_database)
+                                    .value("id", "3").value("name", "Hello guys"));
     EXPECT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
 
     // Verify with a select Query
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1")
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
                                .where("id = 3"));
     ASSERT_EQ(result.size(), 2);
     EXPECT_EQ(result.at(0).at("status"), "success");
@@ -70,13 +71,13 @@ TEST_F(DatabaseTest, Insert)
 TEST_F(DatabaseTest, Update)
 {
     // Execute UPDATE Query
-    auto result = m_database->query(Query::createQuery<Query::UPDATE>("table1")
+    auto result = m_database->query(Query::createQuery<Query::UPDATE>("table1", m_database)
                                     .set("id", "4").where("name = 'Good evening'"));
     EXPECT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
 
     // Verify with a select Query
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1")
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
                                .where("id = 4"));
     ASSERT_EQ(result.size(), 2);
     EXPECT_EQ(result.at(0).at("status"), "success");
@@ -116,10 +117,10 @@ TEST_F(DatabaseTest, TableTypeList)
     auto list = m_database->columnsType("table1");
     EXPECT_EQ(list.size(), 2);
     ASSERT_TRUE(list.count("id"));
-    EXPECT_EQ(list["id"], "INTEGER");
+    EXPECT_EQ(list["id"], INTEGER);
 
     ASSERT_TRUE(list.count("name"));
-    EXPECT_EQ(list["name"], "TEXT");
+    EXPECT_EQ(list["name"], TEXT);
 
     EXPECT_FALSE(list.count("notAColumn"));
 }
@@ -147,6 +148,7 @@ void DatabaseTest::SetUp()
 int main(int argc, char **argv)
 {
     google::InitGoogleLogging(argv[0]);
+    google::LogToStderr();
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }

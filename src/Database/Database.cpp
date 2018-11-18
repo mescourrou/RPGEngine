@@ -1,4 +1,5 @@
 #include "Database.hpp"
+#include <Query.hpp>
 
 /**
  * @brief Create and open the given database file
@@ -77,6 +78,7 @@ bool database::Database::query(const std::string &query)
     char *zErrMsg;
     currentDatabase = this;
     auto cb = [](void *, int argc, char **argv, char **colName) -> int { return currentDatabase->callback(nullptr, argc, argv, colName);};
+    DLOG(INFO) << "Execute query : " << query;
     int rc = sqlite3_exec(m_sqlite3Handler, query.c_str(), cb, nullptr, &zErrMsg);
     if( rc!=SQLITE_OK ){
         LOG(ERROR) << "SQL error: " << zErrMsg;
@@ -118,7 +120,7 @@ std::vector<std::string> database::Database::tableList()
 std::vector<std::string> database::Database::columnList(const std::string& table)
 {
     auto lock = lockGuard();
-    if (query("PRAGMA table_info("+table+");"))
+    if (query("PRAGMA table_info('"+table+"');"))
     {
         std::vector<std::string> columnList;
         for (auto& result : *m_result)
@@ -147,17 +149,17 @@ std::vector<std::string> database::Database::columnList(const std::string& table
  * @param table Table to search
  * @return Map with first the name of the column and then the name of the type
  */
-std::map<std::string, std::string> database::Database::columnsType(const std::string& table)
+std::map<std::string, database::DataType> database::Database::columnsType(const std::string& table)
 {
     auto lock = lockGuard();
-    if (query("PRAGMA table_info("+table+");"))
+    if (query("PRAGMA table_info('"+table+"');"))
     {
-        std::map<std::string, std::string> ret;
+        std::map<std::string, DataType> ret;
         for (auto& result : *m_result)
         {
             if (result != m_result->front())
             {
-                ret[result.at("name")] = result.at("type");
+                ret[result.at("name")] = convertDataType(result.at("type"));
             }
         }
         return ret;
@@ -165,3 +167,36 @@ std::map<std::string, std::string> database::Database::columnsType(const std::st
     else
         return {};
 }
+
+std::string database::Database::convertDataType(const database::DataType &data)
+{
+    switch (data) {
+    case INTEGER:
+        return "INTEGER";
+    case TEXT:
+        return "TEXT";
+    case REAL:
+        return "REAL";
+    case NUMERIC:
+        return "NUMERIC";
+    case BLOB:
+        return "BLOB";
+    default:
+        return "BLOB";
+    }
+}
+
+database::DataType database::Database::convertDataType(const std::string &data)
+{
+    if (data == "INTEGER")
+        return INTEGER;
+    if (data == "TEXT")
+        return TEXT;
+    if (data == "REAL")
+        return REAL;
+    if (data == "NUMERIC")
+        return NUMERIC;
+    return BLOB;
+}
+
+
