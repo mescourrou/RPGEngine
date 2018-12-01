@@ -51,6 +51,11 @@ bool database::Query::checkColumnName(const std::string &name)
         LOG(ERROR) << "Not valid column name : '" << name << "'";
         return false;
     }
+    return true;
+}
+
+bool database::Query::checkColumnExistance(const std::string &name)
+{
     auto columnList = m_db->columnList(m_table);
     if (std::find(columnList.begin(), columnList.end(), name) == columnList.end())
     {
@@ -64,6 +69,8 @@ bool database::Query::checkColumnName(const std::string &name)
 void database::Query::doWhere(std::vector<std::string> &conditions, const std::string &column, database::Query::Operator op, std::string value)
 {
     if (!checkColumnName(column))
+        throw Database::DatabaseException(std::string("Column name not valid : ").append(column));
+    if (!checkColumnExistance(column))
         throw Database::DatabaseException(std::string("Column name not existent in the database : ").append(column));
 
     auto type = dataType(column);
@@ -76,6 +83,8 @@ void database::Query::doWhere(std::vector<std::string> &conditions, const std::s
 void database::Query::doColumn(std::vector<std::string> &columns, const std::string &column)
 {
     if (!checkColumnName(column))
+        throw Database::DatabaseException(std::string("Column name not valid : ").append(column));
+    if (!checkColumnExistance(column))
         throw Database::DatabaseException(std::string("Column name not existent in the database : ").append(column));
     columns.push_back(column);
 }
@@ -89,6 +98,8 @@ void database::Query::doColumn(std::vector<std::string> &columns, const std::str
 void database::Query::doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value)
 {
     if (!checkColumnName(column))
+        throw Database::DatabaseException(std::string("Column name not valid : ").append(column));
+    if (!checkColumnExistance(column))
         throw Database::DatabaseException(std::string("Column name not existent in the database : ").append(column));
     auto type = dataType(column);
     if (type == BLOB || type == TEXT)
@@ -216,7 +227,9 @@ std::string database::CreateQuery::str() const
 database::UpdateQuery &database::UpdateQuery::set(const std::string &columnName, const std::string &value)
 {
     if (!checkColumnName(columnName))
-        return *this;
+        throw Database::DatabaseException(std::string("Column name not valid : ").append(columnName));
+    if (!checkColumnExistance(columnName))
+        throw Database::DatabaseException(std::string("Column name not existent in the database : ").append(columnName));
     m_valid = true;
     m_set[columnName] = value;
 

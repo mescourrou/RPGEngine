@@ -33,13 +33,13 @@ TEST_F(QueryTest, Select)
 TEST_F(QueryTest, Insert)
 {
     std::string expected = "";
-    auto query = Query::createQuery<Query::INSERT>("aTable", database);
+    auto query = Query::createQuery<Query::INSERT>("table2", database);
     EXPECT_EQ(query.className(), "InsertQuery");
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    expected = "INSERT INTO aTable (first_name, last_name) VALUES ('Solomon', 'Lane');";
-    EXPECT_EQ(Query::createQuery<Query::INSERT>("aTable", database)
+    expected = "INSERT INTO table2 (first_name, last_name) VALUES ('Solomon', 'Lane');";
+    EXPECT_EQ(Query::createQuery<Query::INSERT>("table2", database)
               .value("first_name", "Solomon")
               .value("last_name", "Lane").str(), expected);
 }
@@ -75,18 +75,18 @@ TEST_F(QueryTest, Create)
 TEST_F(QueryTest, Update)
 {
     std::string expected = "";
-    auto query = Query::createQuery<Query::UPDATE>("table1", database);
+    auto query = Query::createQuery<Query::UPDATE>("table3", database);
 
     EXPECT_EQ(query.className(), "UpdateQuery");
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    query = Query::createQuery<Query::UPDATE>("table1", database).where("i = 1");
+    query = Query::createQuery<Query::UPDATE>("table3", database).where("i = 1");
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    expected = "UPDATE table1 SET i = 1, j = 3 WHERE k = 3;";
-    query = Query::createQuery<Query::UPDATE>("table1", database)
+    expected = "UPDATE table3 SET i = 1, j = 3 WHERE k = 3;";
+    query = Query::createQuery<Query::UPDATE>("table3", database)
             .set("i", "1").set("j", "3")
             .where("k = 3");
     EXPECT_EQ(query.str(), expected);

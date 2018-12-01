@@ -85,6 +85,7 @@ protected:
     DataType dataType(const std::string& column);
     std::string convertToString(Operator op);
     bool checkColumnName(const std::string& name);
+    bool checkColumnExistance(const std::string& name);
 
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& condition) final { conditions.push_back(condition);}
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& column, Operator op, std::string value) final;
