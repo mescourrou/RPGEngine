@@ -24,7 +24,7 @@ public:
     AbstractWork() = default;
     virtual ~AbstractWork() = default;
 
-    virtual void run() const = 0;
+    virtual void run() = 0;
 };
 
 template<typename ...Args>
@@ -34,7 +34,7 @@ public:
     Work(std::function<void(Args...)> func, Args... arguments) : m_func(func), m_arguments(arguments...) {}
     ~Work() override = default;
 
-    void run() const override
+    void run() override
     {
         std::apply(m_func, m_arguments);
     }
@@ -52,7 +52,7 @@ class Work<void> : public AbstractWork
 public:
     Work(std::function<void(void)> func) : m_func(func) {}
     ~Work() override = default;
-    void run() const override
+    void run() override
     {
         m_func();
     }

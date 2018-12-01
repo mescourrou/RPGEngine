@@ -5,7 +5,7 @@
 
 namespace events {
 
-class EventsTest : public testing::Test
+class EventTest : public testing::Test
 {
 public:
 };

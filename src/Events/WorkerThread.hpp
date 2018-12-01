@@ -58,10 +58,10 @@ template<typename ...Args>
 void WorkerThread::newWork(std::function<void(Args...)> work, Args... arguments)
 {
     if (m_activeThreads >= maxThreads)
-        m_waitingList.push_back(std::make_shared<AbstractWork>(Work<Args...>(work, arguments...)));
+        m_waitingList.push_back(std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...)));
     else
     {
-        instance.m_workers.push_back(std::thread(worker, std::make_shared<AbstractWork>(Work<Args...>(work, arguments...))));
+        instance.m_workers.push_back(std::thread(worker, std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
     }
 }
 
