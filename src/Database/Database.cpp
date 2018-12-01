@@ -57,8 +57,6 @@ int database::Database::callback(void *, int argc, char **argv, char **colName)
     return 0;
 }
 
-static database::Database* currentDatabase = nullptr; ///< Pointer to the current database to be use in lambdas
-
 /**
  * @brief Run a text query, but do not return the result
  * @param query String query
@@ -76,7 +74,7 @@ bool database::Database::query(const std::string &query)
     resultRow["status"] = "fail";
     m_result->emplace_back(std::move(resultRow));
     char *zErrMsg;
-    currentDatabase = this;
+    static database::Database* currentDatabase = this; ///< Pointer to the current database to be use in lambdas
     auto cb = [](void *, int argc, char **argv, char **colName) -> int { return currentDatabase->callback(nullptr, argc, argv, colName);};
     DLOG(INFO) << "Execute query : " << query;
     int rc = sqlite3_exec(m_sqlite3Handler, query.c_str(), cb, nullptr, &zErrMsg);
