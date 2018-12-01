@@ -6,6 +6,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseException.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -46,15 +47,13 @@ class Database : public BaseObject
     FRIEND_TEST(DatabaseTest, QueryText);
 #endif
 public:
-    class DatabaseException : public std::exception
+    class DatabaseException : public BaseException
     {
     public:
-        DatabaseException(const std::string& w) noexcept : m_what(w) {}
+        static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
+        DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
+            BaseException(w, code) {}
         ~DatabaseException() override = default;
-
-        const char* what() const noexcept override { return m_what.c_str(); }
-    private:
-        std::string m_what;
     };
 
 
