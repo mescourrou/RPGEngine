@@ -1,7 +1,7 @@
 find_package(gtest REQUIRED)
 
 add_executable(Tools_test
-	ToolsTest.cpp ToolsTest.hpp)
+        ToolsTest.cpp ToolsTest.hpp)
 target_link_libraries(Tools_test gtest Tools)
 
 add_custom_command(TARGET Tools_test POST_BUILD

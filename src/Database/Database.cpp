@@ -67,7 +67,7 @@ bool database::Database::query(const std::string &query)
     if (m_queryMutex.try_lock())
     {
         m_queryMutex.unlock();
-        throw DatabaseException("Lock the mutex before the Query");
+        throw DatabaseException("Lock the mutex before the Query", BaseException::MUTEX);
     }
     m_result = std::make_shared<std::vector<std::map<std::string, std::string>>>(std::vector<std::map<std::string, std::string>>());
     std::map<std::string, std::string> resultRow;

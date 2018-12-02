@@ -5,6 +5,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include "Database.hpp"
+#include <BaseException.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -32,6 +33,16 @@ class Query : BaseObject
     friend class database::QueryTest;
 #endif
 public:
+    class QueryException : public BaseException
+    {
+    public:
+        static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
+        static const inline Errors INVALID_COLUMN_NAME = Errors(__COUNTER__);
+        static const inline Errors INEXISTANT_COLUMN_NAME = Errors(__COUNTER__);
+        QueryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
+            BaseException(w, code) {}
+        ~QueryException() override = default;
+    };
     /**
      * @brief Types of Query available
      */
@@ -84,7 +95,8 @@ public:
 protected:
     DataType dataType(const std::string& column);
     std::string convertToString(Operator op);
-    bool checkColumnName(const std::string& name);
+    void checkColumnName(const std::string& name);
+    bool checkColumnNameValidity(const std::string& name);
     bool checkColumnExistance(const std::string& name);
 
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& condition) final { conditions.push_back(condition);}

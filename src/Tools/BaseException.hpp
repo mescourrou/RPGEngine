@@ -27,6 +27,7 @@ public:
         virtual bool operator!=(const Errors& error) noexcept final { return error.m_id != m_id; }
     };
     static const inline Errors UNKNOWN = Errors(__COUNTER__);
+    static const inline Errors MUTEX = Errors(__COUNTER__);
     BaseException(const std::string& w, const BaseException::Errors& errorCode = UNKNOWN) noexcept :
         m_what(w), m_code(errorCode) {}
     ~BaseException() override = default;
