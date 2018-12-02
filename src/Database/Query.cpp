@@ -13,7 +13,7 @@
 database::DataType database::Query::dataType(const std::string &column)
 {
     if (!m_db)
-        throw QueryException("No database given", QueryException::MISSING_DATABASE);
+        throw QueryException("No database given", Database::DatabaseException::MISSING_DATABASE);
     auto types = m_db->columnsType(m_table);
     if (types.find(column) == types.end())
     {

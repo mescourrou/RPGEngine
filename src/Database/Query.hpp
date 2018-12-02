@@ -36,7 +36,6 @@ public:
     class QueryException : public BaseException
     {
     public:
-        static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
         static const inline Errors INVALID_COLUMN_NAME = Errors(__COUNTER__);
         static const inline Errors INEXISTANT_COLUMN_NAME = Errors(__COUNTER__);
         QueryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :

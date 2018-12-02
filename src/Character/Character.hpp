@@ -3,6 +3,8 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <Database.hpp>
+#include <BaseException.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -30,7 +32,14 @@ class Character : public BaseObject
     friend class character::CharacterTest;
 #endif
 public:
-    Character(std::string name);
+    class CharacterException : public BaseException
+    {
+    public:
+        CharacterException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+            BaseException(w, code) {}
+    };
+
+    Character(std::string name, std::shared_ptr<database::Database> db);
     virtual ~Character() = default;
 
     // Getters
@@ -39,7 +48,11 @@ public:
     void setName(std::string name) { m_name = std::move(name); }
 
 protected:
+
+    virtual bool loadFromDatabase();
+
     std::string m_name;
+    std::shared_ptr<database::Database> m_db;
 
 
 };

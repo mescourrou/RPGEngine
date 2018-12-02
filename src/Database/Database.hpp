@@ -51,6 +51,7 @@ public:
     {
     public:
         static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
+        static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
         DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
             BaseException(w, code) {}
         ~DatabaseException() override = default;
