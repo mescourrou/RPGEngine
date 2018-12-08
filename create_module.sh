@@ -131,11 +131,13 @@ function create_test_cmake
 add_executable($1_test ${upper_case}Test.cpp ${upper_case}Test.hpp)
 target_link_libraries($1_test gtest $1)
 
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET $1_test POST_BUILD
   COMMAND \"\${CMAKE_COMMAND}\" -E copy_directory
 	 \"\${CMAKE_CURRENT_SOURCE_DIR}/data\"
 	 \"\${CMAKE_CURRENT_BINARY_DIR}/data\"
   COMMENT \"Copying test data output directory\")
+endif()
 
 " >> CMakeLists.txt
 }
