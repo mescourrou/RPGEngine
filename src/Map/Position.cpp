@@ -1,8 +1,35 @@
 #include "Position.hpp"
 
+#include <Model.hpp>
+#include <Query.hpp>
+#include <string>
+
 map::Position::Position(std::shared_ptr<map::Map> map, double x, double y, double z) :
     m_map(map), m_position{x,y,z}
 {
+}
+
+bool map::Position::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string &characterName)
+{
+    namespace Model = database::Model::Position;
+    using namespace database;
+    if (!db)
+        throw PositionException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+    if (!verifyDatabaseModel(db))
+        throw PositionException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
+    if (!Database::isQuerySuccessfull(result))
+        return false;
+    if (result.size() <= 1) // No result
+        return false; // Stay with the previous configuration
+
+    m_position.x() = std::stod(result.at(1).at(Model::X));
+    m_position.y() = std::stod(result.at(1).at(Model::Y));
+    m_position.z() = std::stod(result.at(1).at(Model::Z));
+
+    return true;
+
 }
 
 map::Position::Position(double x, double y, double z) :
@@ -45,4 +72,34 @@ bool map::Position::operator!=(const map::Position &other)
             diff = true;
     }
     return m_position != other.m_position || diff;
+}
+
+bool map::Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Position;
+    using namespace database;
+    if (!db->isTable(Model::TABLE))
+        return false;
+    auto columnList = db->columnList(Model::TABLE);
+
+    unsigned short goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::FK_CHARACTER)
+            goodColumns++;
+        else if (column == Model::FK_MAP)
+            goodColumns++;
+        else if (column == Model::X)
+            goodColumns++;
+        else if (column == Model::Y)
+            goodColumns++;
+        else if (column == Model::Z)
+            goodColumns++;
+        else
+            return false;
+    }
+
+    if (goodColumns == 5)
+        return true;
+    return false;
 }

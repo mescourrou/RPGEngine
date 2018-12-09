@@ -5,6 +5,7 @@
 #include <BaseObject.hpp>
 #include <Map.hpp>
 #include <Vector.hpp>
+#include <Database.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -20,14 +21,10 @@ class PositionTest;
 class Position : public BaseObject
 {
 public:
-    class PositionException : std::exception
+    class PositionException : BaseException
     {
     public:
-        PositionException(const std::string& w) noexcept : m_what(w) {}
-        ~PositionException() override = default;
-        const char* what() const noexcept override { return m_what.c_str(); }
-    private:
-        std::string m_what;
+        PositionException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
     };
 #ifdef RPG_BUILD_TEST
     friend class map::PositionTest;
@@ -39,7 +36,10 @@ public:
     Position(std::shared_ptr<Map> map, double x, double y, double z = 0);
     ~Position() override = default;
 
+    bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string& characterName);
+
     const std::shared_ptr<Map> map() const noexcept { return m_map; }
+    void setMap(std::shared_ptr<Map> map) { m_map = map; }
     double& x() noexcept { return m_position.x(); }
     double& y() noexcept { return m_position.y(); }
     double& z() noexcept { return m_position.z(); }
@@ -58,6 +58,7 @@ public:
 
     std::string className() const noexcept override { return "Position"; }
 private:
+    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     std::shared_ptr<Map> m_map;
     Vector<3> m_position;
 };

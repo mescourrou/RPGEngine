@@ -1,7 +1,7 @@
 find_package(gtest REQUIRED)
 
 add_executable(Character_test CharacterTest.cpp CharacterTest.hpp)
-target_link_libraries(Character_test gtest Character)
+target_link_libraries(Character_test gtest Character stdc++fs)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET Character_test POST_BUILD

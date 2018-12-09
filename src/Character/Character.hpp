@@ -7,6 +7,7 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <BaseException.hpp>
+#include <Position.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -32,6 +33,8 @@ class Character : public BaseObject
 {
 #ifdef RPG_BUILD_TEST
     friend class character::CharacterTest;
+    FRIEND_TEST(CharacterTest, VerifyDatabaseModel);
+    FRIEND_TEST(CharacterTest, LoadingCharacterFromDatabase);
 #endif
 public:
     class CharacterException : public BaseException
@@ -46,15 +49,22 @@ public:
 
     // Getters
     const std::string& name() const noexcept { return m_name; }
+    map::Position& position() { return m_position; }
     // Setters
     void setName(std::string name) { m_name = std::move(name); }
+
+
+    std::string className() const noexcept override { return "Character"; }
 
 protected:
 
     virtual bool loadFromDatabase();
+    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
 
     std::string m_name;
     std::shared_ptr<database::Database> m_db;
+
+    map::Position m_position;
 
 
 };
