@@ -89,6 +89,13 @@ bool database::Database::query(const std::string &query)
     return true;
 }
 
+bool database::Database::isQuerySuccessfull(const std::vector<std::map<std::string, std::string> > &result)
+{
+    if (result.front().at("status") != "success")
+        return false;
+    return true;
+}
+
 /**
  * @brief List of the database tables
  * @return List of tables

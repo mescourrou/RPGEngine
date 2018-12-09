@@ -43,6 +43,13 @@ TEST_F(DatabaseTest, QuerySelect)
 
     EXPECT_EQ(result.at(1).at("id"), "1");
     EXPECT_EQ(result.at(1).at("name"), "Good morning");
+
+    // No result
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
+                                        .where("id = 1").where("name = 'I dont exist'"));
+
+    ASSERT_EQ(result.size(), 1);
+    EXPECT_EQ(result.at(0).at("status"), "success");
 }
 
 /*

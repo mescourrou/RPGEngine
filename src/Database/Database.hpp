@@ -52,6 +52,7 @@ public:
     public:
         static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
         static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
+        static const inline Errors MISSING_TABLE = Errors(__COUNTER__);
         DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
             BaseException(w, code) {}
         ~DatabaseException() override = default;
@@ -65,6 +66,7 @@ public:
 
     std::vector<std::map<std::string, std::string>> query(const Query& dbQuery);
     bool query(const std::string& query);
+    static bool isQuerySuccessfull(const std::vector<std::map<std::string, std::string>>& result);
 
     std::lock_guard<std::mutex> lockGuard() { return std::lock_guard<std::mutex>(m_queryMutex); }
 
