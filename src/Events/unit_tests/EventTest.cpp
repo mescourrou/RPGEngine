@@ -24,7 +24,7 @@ TEST_F(EventTest, StandardFunction)
 
     e2.trigger(3);
 
-    usleep(1000);
+    usleep(10000);
 
     EXPECT_TRUE(noArgCb);
     EXPECT_TRUE(argCb);

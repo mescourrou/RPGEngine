@@ -3,7 +3,8 @@ find_package(sqlite REQUIRED)
 
 add_library(Database
 	Database.cpp Database.hpp
-	Query.cpp Query.hpp)
+	Query.cpp Query.hpp
+	Model.hpp)
 target_link_libraries(Database glog sqlite
     BaseObject
     Tools)

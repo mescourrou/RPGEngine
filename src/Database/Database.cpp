@@ -36,7 +36,7 @@ std::vector<std::map<std::string, std::string> > database::Database::query(const
 {
     std::lock_guard<std::mutex> lock(m_queryMutex);
     query(dbQuery.str());
-    return std::move(*m_result);
+    return std::move(*m_result.release());
 }
 
 /**
@@ -57,6 +57,8 @@ int database::Database::callback(void *, int argc, char **argv, char **colName)
     return 0;
 }
 
+static database::Database* currentDatabase = nullptr;
+
 /**
  * @brief Run a text query, but do not return the result
  * @param query String query
@@ -69,12 +71,12 @@ bool database::Database::query(const std::string &query)
         m_queryMutex.unlock();
         throw DatabaseException("Lock the mutex before the Query", BaseException::MUTEX);
     }
-    m_result = std::make_shared<std::vector<std::map<std::string, std::string>>>(std::vector<std::map<std::string, std::string>>());
+    m_result.reset(new std::vector<std::map<std::string, std::string>>());
     std::map<std::string, std::string> resultRow;
     resultRow["status"] = "fail";
     m_result->emplace_back(std::move(resultRow));
     char *zErrMsg;
-    static database::Database* currentDatabase = this; ///< Pointer to the current database to be use in lambdas
+    currentDatabase = this; ///< Pointer to the current database to be use in lambdas
     auto cb = [](void *, int argc, char **argv, char **colName) -> int { return currentDatabase->callback(nullptr, argc, argv, colName);};
     DLOG(INFO) << "Execute query : " << query;
     int rc = sqlite3_exec(m_sqlite3Handler, query.c_str(), cb, nullptr, &zErrMsg);
@@ -108,6 +110,12 @@ std::vector<std::string> database::Database::tableList()
     }
     else
         return {};
+}
+
+bool database::Database::isTable(const std::string &table)
+{
+    auto tables = tableList();
+    return std::find(tables.begin(), tables.end(), table) != tables.end();
 }
 
 /**

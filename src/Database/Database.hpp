@@ -69,6 +69,7 @@ public:
     std::lock_guard<std::mutex> lockGuard() { return std::lock_guard<std::mutex>(m_queryMutex); }
 
     std::vector<std::string> tableList();
+    bool isTable(const std::string& table);
     std::vector<std::string> columnList(const std::string &table);
     std::map<std::string, DataType> columnsType(const std::string &table);
 
@@ -80,7 +81,7 @@ protected:
     std::mutex m_queryMutex;
 
     sqlite3* m_sqlite3Handler = nullptr; ///< Pointer on sqlite handler
-    std::shared_ptr<std::vector<std::map<std::string, std::string>>> m_result; ///< Saving results temporary
+    std::unique_ptr<std::vector<std::map<std::string, std::string>>> m_result; ///< Saving results temporary
 
 };
 
