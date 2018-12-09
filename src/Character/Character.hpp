@@ -4,6 +4,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <Database.hpp>
+#include <Query.hpp>
 #include <Model.hpp>
 #include <BaseException.hpp>
 
