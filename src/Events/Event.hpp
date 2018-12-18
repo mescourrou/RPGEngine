@@ -36,15 +36,12 @@ public:
         {
             WorkerThread::newWork(call, arguments...);
         }
+
     }
     void subscribe(std::function<void(Args...)> func)
     {
         m_callList.push_back(func);
     }
-    /*void subscribe(BaseObject* object, std::function<void(Args...)> func)
-    {
-        m_callList.push_back(std::bind(func, object, PLACEHOLDER(m_kNumberOfArgs)));
-    }*/
 
 private:
     std::vector<std::function<void(Args...)>> m_callList;
