@@ -11,9 +11,9 @@ TEST_F(CharacterTest, VerifyDatabaseModel)
 
 TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 {
-    Character ch("Brian", database);
+    Character ch("Brian");
 
-    ASSERT_TRUE(ch.loadFromDatabase());
+    ASSERT_TRUE(ch.loadFromDatabase(database));
 
     EXPECT_EQ(ch.position().x(), 1);
     EXPECT_EQ(ch.position().y(), 2);

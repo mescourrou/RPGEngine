@@ -37,6 +37,9 @@ class Character : public BaseObject
     FRIEND_TEST(CharacterTest, LoadingCharacterFromDatabase);
 #endif
 public:
+    /**
+     * @brief The CharacterException class group exceptions linked to the Character
+     */
     class CharacterException : public BaseException
     {
     public:
@@ -44,27 +47,49 @@ public:
             BaseException(w, code) {}
     };
 
-    Character(std::string name, std::shared_ptr<database::Database> db);
+    Character(std::string name, std::shared_ptr<database::Database> db = {});
     virtual ~Character() = default;
 
+    virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
+
     // Getters
+    /**
+     * @brief Get the name of the Character
+     * @return Name of the Character
+     */
     const std::string& name() const noexcept { return m_name; }
+
+    /**
+     * @brief Get the position of the Character
+     * @return Position of the Character, modifyable
+     */
     map::Position& position() { return m_position; }
+
+    /**
+     * @brief Get the position of the Character
+     * @return Position of the Character, constant
+     */
+    map::Position position() const { return m_position; }
+
+
     // Setters
+    /**
+     * @brief Set the name of the Character.
+     *
+     * The name must match the database name during the call of loadFromDatabase
+     * @param[in] name New name of the Character
+     */
     void setName(std::string name) { m_name = std::move(name); }
 
 
     std::string className() const noexcept override { return "Character"; }
 
 protected:
-
-    virtual bool loadFromDatabase();
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
 
-    std::string m_name;
-    std::shared_ptr<database::Database> m_db;
+    std::string m_name;         ///< Name of the Character
 
-    map::Position m_position;
+    map::Position m_position;   ///< Position of the Character
 
 
 };
