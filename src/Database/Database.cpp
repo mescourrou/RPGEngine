@@ -3,7 +3,7 @@
 
 /**
  * @brief Create and open the given database file
- * @param path Path to the database
+ * @param [in] path Path to the database
  */
 database::Database::Database(const std::string &path)
 {
@@ -29,7 +29,7 @@ database::Database::~Database()
 
 /**
  * @brief Run a query
- * @param dbQuery Query to execute
+ * @param [in] dbQuery Query to execute
  * @return Return the list (std::vector) of row (std::map<column, value>)
  */
 std::vector<std::map<std::string, std::string> > database::Database::query(const Query &dbQuery)
@@ -41,9 +41,9 @@ std::vector<std::map<std::string, std::string> > database::Database::query(const
 
 /**
  * @brief Private method which is called at each row match the query
- * @param argc Number of colomns selected
- * @param argv Values
- * @param colName Columns name
+ * @param [in] argc Number of colomns selected
+ * @param [in] argv Values
+ * @param [in] colName Columns name
  * @return 0
  */
 int database::Database::callback(void *, int argc, char **argv, char **colName)
@@ -61,7 +61,7 @@ static database::Database* currentDatabase = nullptr;
 
 /**
  * @brief Run a text query, but do not return the result
- * @param query String query
+ * @param [in] query String query
  * @return True if the query successed and false if it failed
  */
 bool database::Database::query(const std::string &query)
@@ -89,6 +89,11 @@ bool database::Database::query(const std::string &query)
     return true;
 }
 
+/**
+ * @brief Verify if the return of the query was successfull
+ * @param [in] result Result of the query to verify
+ * @return
+ */
 bool database::Database::isQuerySuccessfull(const std::vector<std::map<std::string, std::string> > &result)
 {
     if (result.front().at("status") != "success")
@@ -119,6 +124,11 @@ std::vector<std::string> database::Database::tableList()
         return {};
 }
 
+/**
+ * @brief Verify if there is the asked table in the database
+ * @param [in] table Table to look for
+ * @return Return true if the table is in the database
+ */
 bool database::Database::isTable(const std::string &table)
 {
     auto tables = tableList();
@@ -127,7 +137,7 @@ bool database::Database::isTable(const std::string &table)
 
 /**
  * @brief List of the columns of a table
- * @param table Table to search
+ * @param [in] table Table to search
  * @return List of columns
  */
 std::vector<std::string> database::Database::columnList(const std::string& table)
@@ -159,7 +169,9 @@ std::vector<std::string> database::Database::columnList(const std::string& table
  * - REAL
  * - NONE or BLOB
  *
- * @param table Table to search
+ * See database::DataType
+ *
+ * @param [in] table Table to search
  * @return Map with first the name of the column and then the name of the type
  */
 std::map<std::string, database::DataType> database::Database::columnsType(const std::string& table)
@@ -172,7 +184,7 @@ std::map<std::string, database::DataType> database::Database::columnsType(const 
         {
             if (result != m_result->front())
             {
-                ret[result.at("name")] = convertDataType(result.at("type"));
+                ret[result.at("name")] = dataTypeFromString(result.at("type"));
             }
         }
         return ret;
@@ -181,7 +193,12 @@ std::map<std::string, database::DataType> database::Database::columnsType(const 
         return {};
 }
 
-std::string database::Database::convertDataType(const database::DataType &data)
+/**
+ * @brief Convert the DataType to string
+ * @param [in] data DataType to convert
+ * @return std::string of the DataType
+ */
+std::string database::Database::dataTypeAsString(const database::DataType &data)
 {
     switch (data) {
     case INTEGER:
@@ -199,7 +216,14 @@ std::string database::Database::convertDataType(const database::DataType &data)
     }
 }
 
-database::DataType database::Database::convertDataType(const std::string &data)
+/**
+ * @brief Get the DataType matching the string given.
+ *
+ * In case of type not detected, the BLOB type is return (default type in SQLite)
+ * @param [in] data Data to convert
+ * @return DataType corresponding the data given
+ */
+database::DataType database::Database::dataTypeFromString(const std::string &data)
 {
     if (data == "INTEGER")
         return INTEGER;

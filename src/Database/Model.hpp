@@ -2,6 +2,17 @@
 
 namespace database {
 
+/**
+ * @namespace Model
+ * @brief Database model
+ *
+ * Contains at least the table name for each class which need a database entry.
+ *
+ * Then contains the name of the columns.
+ *
+ * The convention is to capitalize the table name and not the fields name.<br>
+ * And put 'fk' in front of foreign keys
+ */
 namespace Model {
 
     namespace Character {

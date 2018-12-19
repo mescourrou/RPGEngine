@@ -69,6 +69,11 @@ public:
     bool query(const std::string& query);
     static bool isQuerySuccessfull(const std::vector<std::map<std::string, std::string>>& result);
 
+    /**
+     * @brief Return a lockguard of the database mutex
+     *
+     * It is usefull when you want to use custom string queries
+     */
     std::lock_guard<std::mutex> lockGuard() { return std::lock_guard<std::mutex>(m_queryMutex); }
 
     std::vector<std::string> tableList();
@@ -76,8 +81,8 @@ public:
     std::vector<std::string> columnList(const std::string &table);
     std::map<std::string, DataType> columnsType(const std::string &table);
 
-    static std::string convertDataType(const DataType& data);
-    static DataType convertDataType(const std::string& data);
+    static std::string dataTypeAsString(const DataType& data);
+    static DataType dataTypeFromString(const std::string& data);
 protected:
     int callback(void*, int argc, char** argv, char** colName);
 

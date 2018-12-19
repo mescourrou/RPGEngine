@@ -93,18 +93,25 @@ public:
     std::string className() const noexcept override {return "Query";}
 protected:
     DataType dataType(const std::string& column);
-    std::string convertToString(Operator op);
+    std::string operatorAsString(Operator op);
     void checkColumnName(const std::string& name);
     bool checkColumnNameValidity(const std::string& name);
     bool checkColumnExistance(const std::string& name);
 
+    /**
+     * @brief Add condition to the condition list
+     *
+     * Use with caution, there is no verification
+     * @param [in,out] conditions Condition list to modify
+     * @param [in] condition Condition to add
+     */
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& condition) final { conditions.push_back(condition);}
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& column, Operator op, std::string value) final;
     virtual void doColumn(std::vector<std::string>& columns, const std::string& column) final;
     virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value) final;
 
     std::string m_table; ///< Name of the table targeted by the Query
-    std::shared_ptr<Database> m_db;
+    std::shared_ptr<Database> m_db; ///< Database where the Query will apply (used for verifications)
     bool m_valid = false; ///< Validity of the Query
 
 };
@@ -123,6 +130,7 @@ public:
     SelectQuery& column(const std::string& field) { doColumn(m_columns, field); return *this;}
     /// @brief Add a filter condition
     SelectQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this;}
+    /// @brief Add a filter condition
     SelectQuery& where(const std::string& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
 
 
@@ -144,6 +152,7 @@ public:
     InsertQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
     ~InsertQuery() override = default;
 
+    /// @brief Add a value to the adding list
     InsertQuery& value(const std::string& column, const std::string& value) { doValue(m_values, column, value); return *this; }
 
     std::string str() const override;
