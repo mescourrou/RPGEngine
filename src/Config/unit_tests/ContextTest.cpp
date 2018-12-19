@@ -11,8 +11,26 @@ TEST_F(ContextTest, Initialization)
     char* argv = "PathToRuntime";
 
     Context context(1, &argv);
-    EXPECT_EQ(context.m_argc, 1);
-    EXPECT_STREQ(context.m_argv[0], argv);
+    EXPECT_EQ(context.kProgramArguments().size(), 0);
+    EXPECT_STREQ(context.runtimeDirectory().c_str(), argv);
+}
+
+/*
+ * Test if initialization is well done with multiples arguments
+ */
+TEST_F(ContextTest, InitializationWithMultiplesArguments)
+{
+    char* arg0 = "PathToRuntime", *arg1 = "1st arg", *arg2 = "2nd arg";
+    char* argv[3];
+    argv[0] = arg0;
+    argv[1] = arg1;
+    argv[2] = arg2;
+
+    Context context(3, argv);
+    EXPECT_EQ(context.kProgramArguments().size(), 2);
+    EXPECT_STREQ(context.runtimeDirectory().c_str(), arg0);
+    EXPECT_STREQ(context.kProgramArguments().at(0).c_str(), arg1);
+    EXPECT_STREQ(context.kProgramArguments().at(1).c_str(), arg2);
 }
 
 /*
@@ -21,7 +39,6 @@ TEST_F(ContextTest, Initialization)
 TEST_F(ContextTest, runtimeDirectory)
 {
     EXPECT_EQ(m_context->runtimeDirectory(), std::string(m_argv[0]));
-    std::cout << m_context->runtimeDirectory() << std::endl;
 }
 
 void ContextTest::SetUp()
@@ -29,10 +46,7 @@ void ContextTest::SetUp()
     const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info();
     auto testName = std::string(test_info->name());
 
-    if (testName != "Initialization")
-    {
-        m_context = std::make_shared<Context>(Context(1, m_argv));
-    }
+    m_context = std::make_shared<Context>(Context(1, m_argv));
 }
 
 void ContextTest::TearDown()
