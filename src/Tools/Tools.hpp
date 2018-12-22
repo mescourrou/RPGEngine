@@ -14,6 +14,9 @@
 class ToolsTest;
 #endif
 
+/**
+ * @brief Static class with differents tools
+ */
 class Tools
 {
 #ifdef RPG_BUILD_TEST
@@ -24,11 +27,16 @@ public:
     ~Tools() = delete;
 
     template<typename T, typename U>
-    T convertTo(const U& a);
+    static T convertTo(const U& a);
 
 
 };
 
+/**
+ * @brief Convert some type into an other.
+ *
+ * Use strinstream >> and << operators
+ */
 template<typename T, typename U>
 T Tools::convertTo(const U &a)
 {
