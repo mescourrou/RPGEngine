@@ -1,12 +1,8 @@
 #pragma once
 
-// I/O
-#include <memory>
-
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
-#include <Config.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -14,6 +10,7 @@
 
 namespace config
 {
+class Config;
 
 #ifdef RPG_BUILD_TEST
 class ContextTest;

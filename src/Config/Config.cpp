@@ -1,4 +1,15 @@
 #include "Config.hpp"
+// I/O
+#include <iostream>
+#include <fstream>
+#include <memory>
+
+// standard library
+#include <string>
+#include <cstdlib>
+
+// Extern libs
+#include <glog/logging.h>
 
 /**
  * @brief Constructor of Config

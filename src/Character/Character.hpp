@@ -3,18 +3,16 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
-#include <Database.hpp>
-#include <Query.hpp>
-#include <Model.hpp>
 #include <BaseException.hpp>
 #include <Position.hpp>
-
-// Extern libs
-#include <glog/logging.h>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
+
+namespace database {
+class Database;
+}
 
 /** @namespace character
  * @brief Group all classes linked to Character business
@@ -46,31 +44,16 @@ public:
         CharacterException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
             BaseException(w, code) {}
     };
-
+    Character() = delete;
     Character(std::string name, std::shared_ptr<database::Database> db = {});
     virtual ~Character() = default;
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
 
     // Getters
-    /**
-     * @brief Get the name of the Character
-     * @return Name of the Character
-     */
-    const std::string& name() const noexcept { return m_name; }
-
-    /**
-     * @brief Get the position of the Character
-     * @return Position of the Character, modifyable
-     */
-    map::Position& position() { return m_position; }
-
-    /**
-     * @brief Get the position of the Character
-     * @return Position of the Character, constant
-     */
-    map::Position position() const { return m_position; }
-
+    const std::string& name() const noexcept;
+    map::Position& position();
+    map::Position position() const;
 
     // Setters
     /**

@@ -1,7 +1,12 @@
 #include "Position.hpp"
 
+// Project
+#include <Map.hpp>
 #include <Model.hpp>
 #include <Query.hpp>
+#include <Database.hpp>
+
+// Std lib
 #include <string>
 
 map::Position::Position(std::shared_ptr<map::Map> map, double x, double y, double z) :

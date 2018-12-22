@@ -1,4 +1,9 @@
 #include "Context.hpp"
+// I/O
+#include <memory>
+
+// Project
+#include <Config.hpp>
 /**
  * @brief Initialize a context from argc and argv
  * @param argc Number of arguments in argv

@@ -2,7 +2,6 @@
 #define TESTCONFIG_HPP
 
 #include <gtest/gtest.h>
-#include <Config.hpp>
 
 namespace config {
 

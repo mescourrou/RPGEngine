@@ -1,4 +1,6 @@
 #include "VectorTest.hpp"
+#include <Vector.hpp>
+
 namespace map {
 
 TEST_F(VectorTest, InitializerList)

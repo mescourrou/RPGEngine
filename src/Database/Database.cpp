@@ -1,6 +1,10 @@
 #include "Database.hpp"
+// Project
 #include <Query.hpp>
 
+// External libs
+#include <glog/logging.h>
+#include <sqlite3.h>
 /**
  * @brief Create and open the given database file
  * @param [in] path Path to the database

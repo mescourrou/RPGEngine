@@ -1,8 +1,6 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <Object.hpp>
-#include <glog/logging.h>
 
 namespace object {
 

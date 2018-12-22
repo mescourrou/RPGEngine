@@ -1,4 +1,9 @@
 #include "WorkerThread.hpp"
+
+// External libs
+#include <glog/logging.h>
+
+
 namespace events {
 WorkerThread WorkerThread::instance;
 

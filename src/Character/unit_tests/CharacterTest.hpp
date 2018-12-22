@@ -1,7 +1,10 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <Character.hpp>
+
+namespace database {
+class Database;
+}
 
 namespace character {
 

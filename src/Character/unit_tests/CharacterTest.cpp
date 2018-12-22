@@ -1,4 +1,7 @@
 #include "CharacterTest.hpp"
+#include <Character.hpp>
+
+#include <Database.hpp>
 
 #include <filesystem>
 

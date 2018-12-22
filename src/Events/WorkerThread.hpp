@@ -10,9 +10,6 @@
 #include <BaseObject.hpp>
 #include <Work.hpp>
 
-// External libs
-#include <glog/logging.h>
-
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif

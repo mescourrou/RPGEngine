@@ -8,9 +8,7 @@
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 
-// External libs
-#include <glog/logging.h>
-#include <sqlite3.h>
+class sqlite3;
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>

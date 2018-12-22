@@ -1,4 +1,7 @@
 #include "ObjectTest.hpp"
+#include <Object.hpp>
+#include <glog/logging.h>
+
 namespace object {
 
 /*

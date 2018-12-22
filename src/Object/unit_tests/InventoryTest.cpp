@@ -1,4 +1,7 @@
 #include "InventoryTest.hpp"
+#include <Inventory.hpp>
+#include <Object.hpp>
+
 namespace object {
 
 /*

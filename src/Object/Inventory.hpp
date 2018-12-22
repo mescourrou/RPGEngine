@@ -1,12 +1,9 @@
 #pragma once
 
-// Std lib
-#include <algorithm>
 
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
-#include <Object.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -14,6 +11,7 @@
 
 namespace object
 {
+class Object;
 
 #ifdef RPG_BUILD_TEST
 class InventoryTest;

@@ -1,5 +1,11 @@
 #include "Inventory.hpp"
 
+// Std lib
+#include <algorithm>
+
+// Project
+#include <Object.hpp>
+
 /**
  * @brief Get a pointer on the wanted object, but keep it on the inventory
  * @param index Number of the object (start with 0)

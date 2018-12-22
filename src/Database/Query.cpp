@@ -1,5 +1,8 @@
 #include "Query.hpp"
-#include "Database.hpp"
+
+// External libs
+#include <glog/logging.h>
+
 
 /**
  * @brief Get the datatype of a column

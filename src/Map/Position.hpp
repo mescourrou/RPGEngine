@@ -3,16 +3,20 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
-#include <Map.hpp>
+#include <BaseException.hpp>
 #include <Vector.hpp>
-#include <Database.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
 
+namespace database {
+class Database;
+}
+
 namespace map
 {
+class Map;
 
 #ifdef RPG_BUILD_TEST
 class PositionTest;

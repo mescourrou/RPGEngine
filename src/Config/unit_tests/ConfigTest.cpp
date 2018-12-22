@@ -1,5 +1,9 @@
 #include "ConfigTest.hpp"
 #include "ContextTest.hpp"
+
+#include <glog/logging.h>
+
+#include <Config.hpp>
 namespace config {
 
 /*

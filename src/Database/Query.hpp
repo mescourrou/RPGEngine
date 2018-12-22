@@ -1,14 +1,10 @@
 #pragma once
 
-
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
-#include "Database.hpp"
+#include <Database.hpp>
 #include <BaseException.hpp>
-
-// External libs
-#include <glog/logging.h>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -22,7 +18,6 @@ class QueryTest;
 #endif
 
 class Database;
-enum DataType : int;
 
 /**
  * @brief Abstract class for Query generation

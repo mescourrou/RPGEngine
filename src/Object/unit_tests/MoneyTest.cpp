@@ -1,4 +1,7 @@
 #include "MoneyTest.hpp"
+
+#include <Money.hpp>
+
 namespace object {
 
 using MoneyDeathTest = MoneyTest;

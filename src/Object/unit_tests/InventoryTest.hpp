@@ -1,9 +1,9 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include <Inventory.hpp>
 
 namespace object {
+class Inventory;
 
 class InventoryTest : public testing::Test
 {

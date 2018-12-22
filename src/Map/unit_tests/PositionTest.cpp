@@ -1,4 +1,7 @@
 #include "PositionTest.hpp"
+
+#include <Position.hpp>
+#include <Map.hpp>
 namespace map {
 
 TEST_F(PositionTest, ClassName)

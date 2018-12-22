@@ -1,5 +1,13 @@
 #include "Character.hpp"
 
+// Project
+#include <Database.hpp>
+#include <Query.hpp>
+#include <Model.hpp>
+
+// Extern libs
+#include <glog/logging.h>
+
 namespace character {
 
 /**
@@ -70,6 +78,33 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     if (goodColumns == 1)
         return true;
     return false;
+}
+
+/**
+ * @brief Get the name of the Character
+ * @return Name of the Character
+ */
+const std::string& Character::name() const noexcept
+{
+    return m_name;
+}
+
+/**
+ * @brief Get the position of the Character
+ * @return Position of the Character, modifyable
+ */
+map::Position& Character::position()
+{
+    return m_position;
+}
+
+/**
+ * @brief Get the position of the Character
+ * @return Position of the Character, constant
+ */
+map::Position Character::position() const
+{
+    return m_position;
 }
 
 }

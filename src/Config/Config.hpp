@@ -1,20 +1,10 @@
 #pragma once
 
-// I/O
-#include <iostream>
-#include <fstream>
-#include <memory>
-
-// standard library
-#include <string>
-#include <cstdlib>
-
 // Project
-#include "BaseObject.hpp"
+#include <BaseObject.hpp>
 
 // Extern libs
 #include <SimpleIni.h>
-#include <glog/logging.h>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>

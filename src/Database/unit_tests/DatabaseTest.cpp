@@ -1,5 +1,6 @@
 #include "DatabaseTest.hpp"
 #include "Query.hpp"
+#include <glog/logging.h>
 namespace database {
 
 /*
