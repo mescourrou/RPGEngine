@@ -29,7 +29,9 @@ class Inventory : public BaseObject
     FRIEND_TEST(InventoryTest, Push);
 #endif
 public:
+    /// @brief Constructor
     Inventory() = default;
+    /// @brief Destructor
     ~Inventory() override = default;
 
     std::string className() const noexcept override { return "Inventory"; }

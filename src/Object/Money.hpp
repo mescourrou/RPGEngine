@@ -35,6 +35,7 @@ class Money : public BaseObject
 public:
     Money();
     Money(std::initializer_list<unsigned int> values);
+    /// @brief Destructor
     ~Money() override = default;
     Money(const Money& copy) = default;
     Money(Money&& move) = default;
