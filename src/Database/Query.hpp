@@ -104,6 +104,7 @@ protected:
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& column, Operator op, std::string value) final;
     virtual void doColumn(std::vector<std::string>& columns, const std::string& column) final;
     virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value) final;
+    virtual void doSort(std::vector<std::string>& sortColumns, const std::string& column) final;
 
     std::string m_table; ///< Name of the table targeted by the Query
     std::shared_ptr<Database> m_db; ///< Database where the Query will apply (used for verifications)
@@ -127,6 +128,8 @@ public:
     SelectQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this;}
     /// @brief Add a filter condition
     SelectQuery& where(const std::string& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
+    /// @brief Add a sort column
+    SelectQuery& sort(const std::string& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
 
 
     std::string className() const noexcept override {return "SelectQuery";}
@@ -135,6 +138,8 @@ public:
 protected:
     std::vector<std::string> m_columns; ///< Columns selected
     std::vector<std::string> m_conditions; ///< Selection conditions
+    std::vector<std::string> m_sortColumns; ///< Columns to sort;
+    bool m_sortAscending = true;
 };
 
 /**

@@ -142,6 +142,12 @@ void database::Query::doValue(std::vector<std::pair<std::string, std::string>> &
     values.push_back(std::pair<std::string, std::string>(column, value));
 }
 
+void database::Query::doSort(std::vector<std::string>& sortColumns, const std::string &column)
+{
+    checkColumnName(column);
+    sortColumns.push_back(column);
+}
+
 /**
  * @brief Generate the string corresponding of the Query
  * @return std::string corresponding to the Query
@@ -172,7 +178,20 @@ std::string database::SelectQuery::str() const
                 ss << " AND ";
         }
     }
-
+    if (m_sortColumns.size() != 0)
+    {
+        ss << " ORDER BY ";
+        for (auto& column : m_sortColumns)
+        {
+            ss << column;
+            if (column != m_sortColumns.back())
+                ss << ", ";
+        }
+        if (m_sortAscending)
+            ss << " ASC";
+        else
+            ss << " DESC";
+    }
     ss << ";";
     return ss.str();
 }

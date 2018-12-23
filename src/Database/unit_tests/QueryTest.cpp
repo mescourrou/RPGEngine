@@ -25,6 +25,11 @@ TEST_F(QueryTest, Select)
     query = Query::createQuery<Query::SELECT>("table1", database).column("id").column("name").where("name", Query::EQUAL, "Jack");
 
     EXPECT_EQ(query.str(), expected);
+
+    expected = "SELECT id, name FROM table1 WHERE name = 'Jack' ORDER BY name DESC;";
+    query = Query::createQuery<Query::SELECT>("table1", database).column("id").column("name").where("name", Query::EQUAL, "Jack")
+            .sort("name", false);
+    EXPECT_EQ(query.str(), expected);
 }
 
 /*
