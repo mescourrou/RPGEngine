@@ -4,10 +4,15 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseException.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
+
+namespace database {
+class Database;
+}
 
 namespace object
 {
@@ -27,6 +32,11 @@ class Inventory : public BaseObject
     FRIEND_TEST(InventoryTest, Push);
 #endif
 public:
+    class InventoryException : public BaseException
+    {
+    public:
+        InventoryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+    };
     /// @brief Constructor
     Inventory() = default;
     /// @brief Destructor
@@ -40,10 +50,14 @@ public:
     std::shared_ptr<Object> pop(const std::string& objectName);
     void push(const std::shared_ptr<Object> &newObject);
 
+    bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName);
+
     /// @brief Return the size of the inventory
     unsigned int size() const { return m_inventory.size(); }
 
 private:
+    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 };
 

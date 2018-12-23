@@ -5,6 +5,8 @@
 
 // Project
 #include <Object.hpp>
+#include <Database.hpp>
+#include <Model.hpp>
 
 /**
  * @brief Get a pointer on the wanted object, but keep it on the inventory
@@ -79,5 +81,70 @@ void object::Inventory::push(const std::shared_ptr<object::Object>& newObject)
 {
     if (newObject)
         m_inventory.emplace_back(newObject);
+}
+
+/**
+ * @brief Load the inventory from the database.
+ *
+ * Instanciate all the objects saved in it
+ * @param [in] db Database to use
+ * @param [in] characterName Name of the Character owning the inventory
+ * @return Return true if the loading was successfull
+ */
+bool object::Inventory::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName)
+{
+    using namespace database;
+    if (!db)
+        throw InventoryException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+    if (!verifyDatabaseModel(db))
+        throw InventoryException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+
+    return true;
+}
+
+/**
+ * @brief Verify that the database contains all the information needed
+ * @param [in] db Database to verify
+ * @return Return true if the database is valid
+ */
+bool object::Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Inventory;
+    using namespace database;
+    if (!db->isTable(Model::TABLE))
+        return false;
+    auto columnList = db->columnList(Model::TABLE);
+
+    unsigned short goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::FK_CHARACTER)
+            goodColumns++;
+        else
+            return false;
+    }
+    if (goodColumns != 1)
+        return false;
+
+    if (!db->isTable(Model::InventoryObjects::TABLE))
+        return false;
+    columnList = db->columnList(Model::InventoryObjects::TABLE);
+
+    goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::InventoryObjects::FK_CHARACTER)
+            goodColumns++;
+        else if (column == Model::InventoryObjects::QUANTITY)
+            goodColumns++;
+        else if (column == Model::InventoryObjects::FK_OBJECT)
+            goodColumns++;
+        else
+            return false;
+    }
+    if (goodColumns != 3)
+        return false;
+
+    return true;
 }
 
