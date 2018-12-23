@@ -1,10 +1,47 @@
 #include "MoneyTest.hpp"
 
 #include <Money.hpp>
+#include <filesystem>
+#include <Database.hpp>
 
 namespace object {
 
 using MoneyDeathTest = MoneyTest;
+
+/*
+ * Test if the initialization step reorderize the moneys by value
+ */
+TEST_F(MoneyTest, ReorderInitialize)
+{
+    Money::initialize("bronze",
+                      std::pair<std::string, unsigned int>("or", 50000),
+                      std::pair<std::string, unsigned int>("argent", 100)
+                      );
+    auto names = Money::moneyNames();
+    ASSERT_EQ(names.size(), 3);
+    EXPECT_EQ(names.at(0), "bronze");
+    EXPECT_EQ(names.at(1), "argent");
+    EXPECT_EQ(names.at(2), "or");
+
+    EXPECT_EQ(Money::moneyValue("nonValidMoneyName"), 0);
+    EXPECT_EQ(Money::moneyValue("bronze"), 1);
+    EXPECT_EQ(Money::moneyValue("argent"), 100);
+    EXPECT_EQ(Money::moneyValue("or"), 50000);
+}
+
+TEST_F(MoneyTest, InitializeFromDatabase)
+{
+    std::filesystem::path modelFile = "data/sample1.sqlite";
+    std::filesystem::path useFile = "data/sample1.db";
+    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+
+    std::shared_ptr<database::Database> db(new database::Database(useFile));
+    Money::initializeFromDatabase(db);
+    EXPECT_EQ(Money::moneyValue("nonValidMoneyName"), 0);
+    EXPECT_EQ(Money::moneyValue("bronze"), 1);
+    EXPECT_EQ(Money::moneyValue("argent"), 50);
+    EXPECT_EQ(Money::moneyValue("or"), 100);
+}
 
 /*
  * Test behaviour when the money system is not initialized
@@ -370,7 +407,7 @@ void MoneyTest::SetUp()
     const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info();
     auto testName = std::string(test_info->name());
 
-    if (testName != "NotInitialized")
+    if (testName != "NotInitialized" && testName != "ReorderInitialize" && testName != "InitializeFromDatabase")
     {
         Money::initialize("bronze",
                           std::pair<std::string, unsigned int>("argent", 100),

@@ -9,6 +9,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseException.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -16,6 +17,10 @@
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
+
+namespace database {
+class Database;
+}
 
 namespace object
 {
@@ -33,6 +38,11 @@ class Money : public BaseObject
     friend class object::MoneyTest;
 #endif
 public:
+    class MoneyException : public BaseException
+    {
+    public:
+        MoneyException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+    };
     Money();
     Money(std::initializer_list<unsigned int> values);
     /// @brief Destructor
@@ -44,6 +54,7 @@ public:
 
     template<typename ...Args>
     static void initialize(const std::string& baseValueName, Args...);
+    static bool initializeFromDatabase(std::shared_ptr<database::Database> db);
 
     // --------- Getters ----------------
     // Static
@@ -93,6 +104,8 @@ protected:
     static void initializeAdditionnalValues(const std::pair<std::string, unsigned int> &value, Args... values);
     static void initializeAdditionnalValues(const std::pair<std::string, unsigned int> &value);
 
+    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+
     void spread();
 
     std::shared_ptr<std::vector<unsigned int>> m_values; ///< Values of the instanced money
@@ -111,6 +124,11 @@ void Money::initialize(const std::string &baseValueName, Args... values)
     m_moneyNames.clear();
     m_moneyNames.push_back(std::pair<std::string, unsigned int>(baseValueName, 1));
     initializeAdditionnalValues(values...);
+
+    std::sort(m_moneyNames.begin(), m_moneyNames.end(), [](std::pair<std::string, unsigned int> a, std::pair<std::string, unsigned int> b)
+    {
+        return a.second < b.second;
+    });
 
 }
 

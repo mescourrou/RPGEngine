@@ -1,4 +1,10 @@
 #include "Money.hpp"
+
+#include <Database.hpp>
+#include <Model.hpp>
+#include <Query.hpp>
+#include <Tools.hpp>
+
 bool object::Money::m_initialized = false;
 
 /**
@@ -30,6 +36,34 @@ object::Money::Money(std::initializer_list<unsigned int> values) : Money()
     }
     // Spread carry
     spread();
+}
+
+bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Money;
+    using namespace database;
+    if (!db)
+        throw MoneyException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+    if (!verifyDatabaseModel(db))
+        throw MoneyException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+    if (m_initialized)
+    {
+        m_moneyNames.clear();
+        m_initialized = false;
+    }
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).sort(Model::VALUE));
+
+    if (result.size() <= 1)
+        return false;
+    if (std::atoi(result.at(1).at(Model::VALUE).c_str()) != 1)
+        throw MoneyException("Invalid base value");
+    m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(1).at(Model::NAME), 1));
+    for (unsigned int i = 2; i < result.size(); i++)
+    {
+        m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(i).at(Model::NAME),
+                                                                    std::atoi(result.at(i).at(Model::VALUE).c_str())));
+    }
+    return true;
 }
 
 /**
@@ -149,6 +183,29 @@ void object::Money::initializeAdditionnalValues(const std::pair<std::string, uns
 {
     m_moneyNames.push_back(value);
     m_initialized = true;
+}
+
+bool object::Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Money;
+    using namespace database;
+    if (!db->isTable(Model::TABLE))
+        return false;
+    auto columnList = db->columnList(Model::TABLE);
+
+    unsigned short goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::NAME)
+            goodColumns++;
+        else if (column == Model::VALUE)
+            goodColumns++;
+        else
+            return false;
+    }
+    if (goodColumns != 2)
+        return false;
+    return true;
 }
 
 /**
