@@ -38,6 +38,11 @@ object::Money::Money(std::initializer_list<unsigned int> values) : Money()
     spread();
 }
 
+/**
+ * @brief Initialize the money system from the database
+ * @param [in] db Database to use
+ * @return Return true if the initialization is done correctly
+ */
 bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Money;
