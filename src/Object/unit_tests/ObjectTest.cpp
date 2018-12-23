@@ -1,5 +1,7 @@
 #include "ObjectTest.hpp"
 #include <Object.hpp>
+#include <filesystem>
+#include <Database.hpp>
 #include <glog/logging.h>
 
 namespace object {
@@ -11,6 +13,42 @@ TEST_F(ObjectTest, ClassName)
 {
     Object myObject;
     EXPECT_EQ(myObject.className(), "Object");
+}
+
+/*
+ * Test the object loading from database
+ */
+TEST_F(ObjectTest, LoadFromDatabase)
+{
+    std::filesystem::path modelFile = "data/sample2.sqlite";
+    std::filesystem::path useFile = "data/sample2.db";
+    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+
+    std::shared_ptr<database::Database> db(new database::Database(useFile));
+
+    Object myObject("myObject");
+    ASSERT_TRUE(myObject.loadFromDatabase(db));
+
+    EXPECT_EQ(myObject.value().convertToBaseMoney(), 100);
+
+}
+
+/*
+ * Test the creation of an object from database
+ */
+TEST_F(ObjectTest, CreateFromDatabaseObject)
+{
+    std::filesystem::path modelFile = "data/sample2.sqlite";
+    std::filesystem::path useFile = "data/sample2.db";
+    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+
+    std::shared_ptr<database::Database> db(new database::Database(useFile));
+
+    std::shared_ptr<Object> object = Object::createFromDatabase("myObject", db);
+
+    ASSERT_TRUE(object);
+    EXPECT_EQ(object->value().convertToBaseMoney(), 100);
+
 }
 
 /*

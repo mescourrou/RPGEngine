@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 namespace database {
 
 /**
@@ -30,6 +31,38 @@ namespace Model {
     constexpr char Z[] = "z";
     constexpr char FK_MAP[] = "fkMapName";
     } // namespace Position
+
+    namespace Inventory {
+    constexpr char TABLE[] = "Inventory";
+    constexpr char FK_CHARACTER[] = "fkCharacterName";
+    constexpr char MONEY[] = "money";
+
+        namespace InventoryObjects {
+        constexpr char TABLE[] = "InventoryObjects";
+        constexpr char FK_CHARACTER[] = "fkCharacterName";
+        constexpr char QUANTITY[] = "quantity";
+        constexpr char FK_OBJECT[] = "fkObjectName";
+        } // namespace InventoryObjects
+
+    } // namespace Inventory
+
+    namespace Object {
+    constexpr char TABLE[] = "Object";
+    constexpr char NAME[] = "name";
+    constexpr char TYPE[] = "type";
+    namespace ObjectType { // Allowed values in TYPE
+    constexpr char OBJECT[] = "Object";
+    constexpr char WEAPON[] = "Weapon";
+    } // namespace ObjectType
+    constexpr char VALUE[] = "value";
+
+    } // namespace Object
+
+    namespace Money {
+    constexpr char TABLE[] = "Money";
+    constexpr char NAME[] = "name";
+    constexpr char VALUE[] = "value";
+    } // namespace Money
 
 } // namespace Model
 

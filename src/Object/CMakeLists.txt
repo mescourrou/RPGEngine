@@ -6,7 +6,11 @@ add_library(Object
 	)
 
 
-target_link_libraries(Object BaseObject glog)
+target_link_libraries(Object
+	BaseObject
+	Database
+	Tools
+	glog)
 target_include_directories(Object PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Object PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 

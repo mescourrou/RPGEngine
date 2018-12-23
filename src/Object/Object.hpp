@@ -4,10 +4,15 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <Money.hpp>
+#include <BaseException.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
+
+namespace database {
+class Database;
+}
 
 /** @namespace object
  * @brief Group the classes usefull for object using
@@ -27,6 +32,12 @@ class Object : public BaseObject
     friend class object::ObjectTest;
 #endif
 public:
+    class ObjectException : public BaseException
+    {
+    public:
+        static const inline Errors UNKNOWN_OBJECT_TYPE = Errors(__COUNTER__);
+        ObjectException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+    };
     Object() = default;
     Object(std::string name);
     ~Object() override = default;
@@ -35,6 +46,9 @@ public:
     Object(Object&& moved) = default;
     virtual Object& operator=(const Object& copy) = default;
     virtual Object& operator=(Object&& moved) = default;
+
+    virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
+    static std::shared_ptr<Object> createFromDatabase(const std::string& name, std::shared_ptr<database::Database> db);
 
     // Getters
     std::string className() const noexcept override { return "Object"; }
@@ -65,6 +79,8 @@ public:
 
 
 protected:
+    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+
     std::string m_name = "Unkown object"; ///< Name of the object
     std::string m_description; ///< Description of the object
     Money m_value; ///< Value of the object
