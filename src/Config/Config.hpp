@@ -47,6 +47,8 @@ public:
 
     virtual std::vector<std::string> getAllValues(const std::string& section, const std::string& key) const final;
 
+    virtual std::vector<std::string> getAllSections() const final;
+
 protected:
     CSimpleIniCaseA m_iniFile; ///< INI file load in memory
 };

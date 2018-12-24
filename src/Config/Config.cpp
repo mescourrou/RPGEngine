@@ -104,3 +104,19 @@ std::vector<std::string> config::Config::getAllValues(const std::string &section
     }
     return ret;
 }
+
+/**
+ * @brief Get the list of the sections of the file
+ */
+std::vector<std::string> config::Config::getAllSections() const
+{
+    std::vector<std::string> sectionList;
+    CSimpleIniCaseA::TNamesDepend sections;
+    m_iniFile.GetAllSections(sections);
+
+    for (auto& section : sections)
+    {
+        sectionList.push_back(section.pItem);
+    }
+    return sectionList;
+}

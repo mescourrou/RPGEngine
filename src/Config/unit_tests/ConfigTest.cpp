@@ -82,6 +82,18 @@ TEST_F(ConfigTest, GetAllValues)
     EXPECT_EQ(values.at(2), "mod3");
 }
 
+TEST_F(ConfigTest, GetAllSections)
+{
+    Config conf("data/sample1.ini");
+
+    auto sections = conf.getAllSections();
+    ASSERT_EQ(sections.size(), 3);
+
+    EXPECT_EQ(sections.at(0), "Section 1");
+    EXPECT_EQ(sections.at(1), "Section 2");
+    EXPECT_EQ(sections.at(2), "Section 3");
+}
+
 }
 
 int main(int argc, char **argv)
