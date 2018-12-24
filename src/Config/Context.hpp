@@ -40,6 +40,8 @@ public:
     const std::string kConfigPath() const { return m_kConfigPath; }
     /// @brief Program arguments
     const std::vector<std::string>& kProgramArguments() const { return m_programArguments; }
+    /// @brief Get the location of the current running game
+    std::string& gameLocation() { return m_gameLocation; }
 
 private:
     std::vector<std::string> m_programArguments; ///< List of program arguments (from argv)
@@ -51,6 +53,7 @@ private:
     // Global variables
     std::string m_runtimeDirectory = ""; ///< Path to the runtime directory
     std::shared_ptr<Config> m_config; ///< Configuration
+    std::string m_gameLocation = "";
 };
 
 } // namespace config
