@@ -1,6 +1,8 @@
 #include "InventoryTest.hpp"
 #include <Inventory.hpp>
 #include <Object.hpp>
+#include <filesystem>
+#include <Database.hpp>
 
 namespace object {
 
@@ -66,6 +68,25 @@ TEST_F(InventoryTest, Pop)
     EXPECT_TRUE(object);
     EXPECT_EQ(object->name(), "Something very cool");
     EXPECT_EQ(inventory->size(), 1);
+}
+
+TEST_F(InventoryTest, LoadFromDatabase)
+{
+    std::filesystem::path modelFile = "data/sample3.sqlite";
+    std::filesystem::path useFile = "data/sample3.db";
+    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+
+    std::shared_ptr<database::Database> db(new database::Database(useFile));
+
+    Inventory myInventory;
+
+    ASSERT_TRUE(myInventory.loadFromDatabase(db, "Brian"));
+
+    ASSERT_EQ(myInventory.size(), 4);
+    EXPECT_EQ(myInventory.get(0)->name(), "object1");
+    EXPECT_EQ(myInventory.get(1)->name(), "object2");
+    EXPECT_EQ(myInventory.get(2)->name(), "object2");
+    EXPECT_EQ(myInventory.get(3)->name(), "object2");
 }
 
 /**

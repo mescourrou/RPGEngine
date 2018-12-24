@@ -6,6 +6,7 @@
 // Project
 #include <Object.hpp>
 #include <Database.hpp>
+#include <Query.hpp>
 #include <Model.hpp>
 
 /**
@@ -93,11 +94,38 @@ void object::Inventory::push(const std::shared_ptr<object::Object>& newObject)
  */
 bool object::Inventory::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName)
 {
+    namespace Model = database::Model::Inventory;
     using namespace database;
     if (!db)
         throw InventoryException("No database given.", Database::DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw InventoryException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+
+    // Load information from Model::TABLE => Main inventory table
+    {
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
+                            .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
+    if (result.size() <= 1)
+        return false;
+    m_money = Money{static_cast<unsigned int>(std::atoi(result.at(1).at(Model::MONEY).c_str()))};
+    }
+
+    // Load the objects
+    auto objectsToLoad = db->query(Query::createQuery<Query::SELECT>(Model::InventoryObjects::TABLE, db)
+                                   .column(Model::InventoryObjects::QUANTITY)
+                                   .column(Model::InventoryObjects::FK_OBJECT)
+                                   .where(Model::InventoryObjects::FK_CHARACTER, Query::EQUAL, characterName));
+
+    if (objectsToLoad.size() <= 1)
+        return true;
+
+    for (unsigned int j = 1; j < objectsToLoad.size(); j++)
+    {
+        for (unsigned int i = 0; i < static_cast<unsigned int>(std::atoi(objectsToLoad.at(j).at(Model::InventoryObjects::QUANTITY).c_str())); i++)
+        {
+            push(Object::createFromDatabase(objectsToLoad.at(j).at(Model::InventoryObjects::FK_OBJECT), db));
+        }
+    }
 
     return true;
 }
@@ -120,10 +148,12 @@ bool object::Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> 
     {
         if (column == Model::FK_CHARACTER)
             goodColumns++;
+        else if (column == Model::MONEY)
+            goodColumns++;
         else
             return false;
     }
-    if (goodColumns != 1)
+    if (goodColumns != 2)
         return false;
 
     if (!db->isTable(Model::InventoryObjects::TABLE))

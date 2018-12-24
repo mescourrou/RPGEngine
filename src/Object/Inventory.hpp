@@ -5,6 +5,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <Money.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -59,6 +60,8 @@ private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
 
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
+
+    Money m_money;
 };
 
 } // namespace object
