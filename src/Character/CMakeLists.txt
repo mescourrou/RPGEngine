@@ -5,6 +5,7 @@ add_library(Character
 target_link_libraries(Character
     glog BaseObject
     Database
+	Object
 	Tools
 	Map)
 target_include_directories(Character PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

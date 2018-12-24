@@ -4,6 +4,7 @@
 #include <Database.hpp>
 #include <Query.hpp>
 #include <Model.hpp>
+#include <Inventory.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -18,10 +19,16 @@ namespace character {
  * @param[in] name Name of the character, must match a name in the database
  * @param[in] db [optionnal] Database to use for loading the character.
  */
-Character::Character(std::string name, std::shared_ptr<database::Database> db) : m_name(std::move(name))
+Character::Character(std::string name, std::shared_ptr<database::Database> db) :
+    m_name(std::move(name)), m_inventory(new object::Inventory)
 {
     if (db)
         loadFromDatabase(db);
+}
+
+Character::~Character()
+{
+    m_inventory.reset();
 }
 
 /**
@@ -47,6 +54,9 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 
     if (!m_position.loadFromDatabase(db, m_name))
         return false;
+
+    m_inventory->loadFromDatabase(db, m_name);
+
 
     return true;
 }

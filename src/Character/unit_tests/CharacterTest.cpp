@@ -1,7 +1,10 @@
 #include "CharacterTest.hpp"
 #include <Character.hpp>
+#include <Inventory.hpp>
+#include <Object.hpp>
 
 #include <Database.hpp>
+#include <Money.hpp>
 
 #include <filesystem>
 
@@ -21,10 +24,21 @@ TEST_F(CharacterTest, LoadingCharacterFromDatabase)
     EXPECT_EQ(ch.position().x(), 1);
     EXPECT_EQ(ch.position().y(), 2);
     EXPECT_EQ(ch.position().z(), 3);
+
+    ASSERT_TRUE(ch.m_inventory);
+
+    ASSERT_EQ(ch.m_inventory->size(), 3);
+    EXPECT_EQ(ch.m_inventory->get(0)->name(), "object1");
+    EXPECT_EQ(ch.m_inventory->get(1)->name(), "object2");
+    EXPECT_EQ(ch.m_inventory->get(2)->name(), "object2");
+
 }
 
 void CharacterTest::SetUp()
 {
+    object::Money::initialize("bronze",
+                      std::pair<std::string, unsigned int>("argent", 100),
+                      std::pair<std::string, unsigned int>("or", 50000));
     std::filesystem::path usedFile = "data/sample1.db";
     std::filesystem::path modelFile = "data/sample1.sqlite";
     std::filesystem::copy(modelFile, usedFile, std::filesystem::copy_options::overwrite_existing);

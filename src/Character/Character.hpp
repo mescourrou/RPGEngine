@@ -14,6 +14,10 @@ namespace database {
 class Database;
 }
 
+namespace object {
+class Inventory;
+}
+
 /** @namespace character
  * @brief Group all classes linked to Character business
  */
@@ -45,8 +49,8 @@ public:
             BaseException(w, code) {}
     };
     Character() = delete;
-    Character(std::string name, std::shared_ptr<database::Database> db = {});
-    virtual ~Character() = default;
+    Character(std::string name, std::shared_ptr<database::Database> db = nullptr);
+    virtual ~Character();
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
 
@@ -74,6 +78,7 @@ protected:
 
     map::Position m_position;   ///< Position of the Character
 
+    std::unique_ptr<object::Inventory> m_inventory; ///< Inventory of the Character
 
 };
 
