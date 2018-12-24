@@ -1,5 +1,8 @@
 #pragma once
 
+// STL
+#include <vector>
+
 // Project
 #include <BaseObject.hpp>
 
@@ -42,9 +45,10 @@ public:
     virtual std::string getValue(const std::string& section, const std::string& key) const final;
     virtual std::string getValue(const std::string& key) const;
 
+    virtual std::vector<std::string> getAllValues(const std::string& section, const std::string& key) const final;
 
 protected:
-    CSimpleIniA m_iniFile; ///< INI file load in memory
+    CSimpleIniCaseA m_iniFile; ///< INI file load in memory
 };
 
 

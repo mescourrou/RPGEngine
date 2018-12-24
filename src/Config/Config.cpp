@@ -27,6 +27,8 @@ config::Config::Config(const std::string &filename)
  */
 bool config::Config::loadFile(const std::string &filename) noexcept
 {
+    m_iniFile.SetUnicode();
+    m_iniFile.SetMultiKey();
     if (m_iniFile.LoadFile(filename.c_str()) < 0)
         return false;
 
@@ -43,10 +45,13 @@ bool config::Config::loadFile(const std::string &filename) noexcept
  */
 std::string config::Config::getValue(const std::string &section, const std::string &key) const
 {
-    const char* rawValue = m_iniFile.GetValue(section.c_str(), key.c_str(), nullptr);
+    bool multipleValues = false;
+    const char* rawValue = m_iniFile.GetValue(section.c_str(), key.c_str(), nullptr, &multipleValues);
 
     if (!rawValue)
         return {};
+    if (multipleValues)
+        LOG(WARNING) << "Key '" << key << "' in section '" << section << "' may have multiple values";
     return std::string(rawValue);
 
 }
@@ -61,7 +66,7 @@ std::string config::Config::getValue(const std::string &section, const std::stri
  */
 std::string config::Config::getValue(const std::string &key) const
 {
-    CSimpleIniA::TNamesDepend sections;
+    CSimpleIniCaseA::TNamesDepend sections;
     m_iniFile.GetAllSections(sections);
 
     std::string ret;
@@ -75,4 +80,27 @@ std::string config::Config::getValue(const std::string &key) const
 
     return {};
 
+}
+
+/**
+ * @brief Get all the values of a key
+ * @param [in] section Section to look in
+ * @param [in] key Key to look for
+ * @return List of the values. Empty list if the pair section-key wasn't found
+ */
+std::vector<std::string> config::Config::getAllValues(const std::string &section, const std::string &key) const
+{
+    std::vector<std::string> ret;
+    CSimpleIniCaseA::TNamesDepend values;
+    m_iniFile.GetAllValues(section.c_str(), key.c_str(), values);
+
+    // sort the values into the original load order
+    values.sort(CSimpleIniCaseA::Entry::LoadOrder());
+
+    // output all of the items
+    CSimpleIniCaseA::TNamesDepend::const_iterator i;
+    for (i = values.begin(); i != values.end(); ++i) {
+        ret.push_back(i->pItem);
+    }
+    return ret;
 }
