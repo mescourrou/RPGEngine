@@ -28,5 +28,4 @@ set_target_properties(sqlite PROPERTIES
 	"IMPORTED_LOCATION" "${binary_dir}/libsqlite3.so"
 	INTERFACE_INCLUDE_DIRECTORIES "${sqlite_includes}"
 )
-message("${source_dir}/src/glog/")
 endif()

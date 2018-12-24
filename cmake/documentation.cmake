@@ -9,7 +9,6 @@ function(add_doc_target)
 
 	# Configure Doxygen and adoc variables
 	set (DOXYGEN_SRC_PATH          ${CMAKE_SOURCE_DIR}/src)
-	message("DOXYGEN_SRC_PATH : ${DOXYGEN_SRC_PATH}")
 
 	set (DOXYGEN_DST_FILENAME ${CMAKE_BINARY_DIR}/Doxyfile)
 	set (DOXYGEN_DST_PATH          ${CMAKE_CURRENT_BINARY_DIR}/doc)
