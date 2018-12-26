@@ -3,6 +3,7 @@
 // STL
 #include <vector>
 #include <thread>
+#include <tuple>
 
 // Project
 #include "general_config.hpp"
@@ -78,9 +79,14 @@ public:
      */
     void trigger(Args... arguments) const
     {
-        for (auto& call : m_callList)
+        for (auto& call : m_asyncCallList)
         {
             WorkerThread::newWork(call, arguments...);
+        }
+        std::tuple<Args...> args(arguments...);
+        for (auto& call : m_syncCallList)
+        {
+            std::apply(call, args);
         }
 
     }
@@ -88,13 +94,22 @@ public:
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
      */
-    void subscribe(std::function<void(Args...)> func)
+    void subscribeAsync(std::function<void(Args...)> func)
     {
-        m_callList.push_back(func);
+        m_asyncCallList.push_back(func);
+    }
+    /**
+     * @brief Subscribe the function to the Event
+     * @param [in] func Function to subscribe
+     */
+    void subscribeSync(std::function<void(Args...)> func)
+    {
+        m_syncCallList.push_back(func);
     }
 
 private:
-    std::vector<std::function<void(Args...)>> m_callList; ///< List of functions to call
+    std::vector<std::function<void(Args...)>> m_asyncCallList; ///< List of functions to call
+    std::vector<std::function<void(Args...)>> m_syncCallList; ///< List of functions to call
 };
 
 /**
@@ -126,22 +141,35 @@ public:
      */
     void trigger() const
     {
-        for (auto& call : m_callList)
+        for (auto& call : m_asyncCallList)
         {
             WorkerThread::newWork(call);
+        }
+        for (auto& call : m_syncCallList)
+        {
+            call();
         }
     }
     /**
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
      */
-    void subscribe(std::function<void(void)> func)
+    void subscribeAsync(std::function<void(void)> func)
     {
-        m_callList.push_back(func);
+        m_asyncCallList.push_back(func);
+    }
+    /**
+     * @brief Subscribe the function to the Event
+     * @param [in] func Function to subscribe
+     */
+    void subscribeSync(std::function<void(void)> func)
+    {
+        m_syncCallList.push_back(func);
     }
 
 private:
-    std::vector<std::function<void(void)>> m_callList; ///< List of functions to call
+    std::vector<std::function<void(void)>> m_asyncCallList; ///< List of functions to call
+    std::vector<std::function<void(void)>> m_syncCallList; ///< List of functions to call
 };
 
 

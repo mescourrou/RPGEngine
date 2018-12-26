@@ -9,7 +9,7 @@ TEST_F(EventTest, StandardFunction)
         noArgCb = true;
     };
 
-    e1.subscribe(cb);
+    e1.subscribeAsync(cb);
 
     e1.trigger();
 
@@ -20,7 +20,7 @@ TEST_F(EventTest, StandardFunction)
             argCb = true;
     };
 
-    e2.subscribe(cb2);
+    e2.subscribeAsync(cb2);
 
     e2.trigger(3);
 
@@ -50,11 +50,11 @@ TEST_F(EventTest, MethodFunction)
     Event<std::string> e2;
     AClass o;
 
-    e.subscribe(std::bind(&AClass::noArgMethod, &o));
+    e.subscribeSync(std::bind(&AClass::noArgMethod, &o));
 
     e.trigger();
 
-    e2.subscribe(std::bind(&AClass::argMethod, &o, std::placeholders::_1));
+    e2.subscribeSync(std::bind(&AClass::argMethod, &o, std::placeholders::_1));
 
     e2.trigger("Hello");
 
