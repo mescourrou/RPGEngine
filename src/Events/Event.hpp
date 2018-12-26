@@ -83,10 +83,9 @@ public:
         {
             WorkerThread::newWork(call, arguments...);
         }
-        std::tuple<Args...> args(arguments...);
         for (auto& call : m_syncCallList)
         {
-            std::apply(call, args);
+            call(arguments...);
         }
 
     }
