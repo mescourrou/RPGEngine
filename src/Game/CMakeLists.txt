@@ -15,6 +15,10 @@ target_link_libraries(Game BaseObject
 target_include_directories(Game PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Game PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 
+if (RPG_BUILD_GUI)
+	add_subdirectory(GUI)
+endif()
+
 if (RPG_BUILD_TEST)
 	find_package(gtest REQUIRED)
 	target_link_libraries(Game gtest)

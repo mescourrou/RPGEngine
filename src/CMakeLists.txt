@@ -1,7 +1,5 @@
 list(APPEND MODULES Maker)
-list(APPEND MODULES MakerGUI)
 list(APPEND MODULES Engine)
-list(APPEND MODULES EngineGUI)
 list(APPEND MODULES Game)
 list(APPEND MODULES Config)
 list(APPEND MODULES BaseObject)

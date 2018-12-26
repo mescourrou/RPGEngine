@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(RPG)
 
 option(RPG_BUILD_TEST "Compile Unit Tests" ON)
+option(RPG_BUILD_GUI "Compile Gui classes" ON)
 option(RPG_COMPILE_THIRDPARTIES "Compile third-party libs" ON)
 
 set(RPG_THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
