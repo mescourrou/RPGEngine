@@ -4,7 +4,8 @@ find_package(glog REQUIRED)
 
 add_library(Config
 	Config.cpp Config.hpp
-	Context.cpp Context.hpp)
+	Context.cpp Context.hpp
+	VerbosityLevels.hpp)
 target_link_libraries(Config simpleini glog
 	BaseObject
 	Tools

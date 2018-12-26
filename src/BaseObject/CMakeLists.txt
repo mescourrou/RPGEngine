@@ -1,5 +1,8 @@
-add_library(BaseObject BaseObject.cpp BaseObject.hpp)
+find_package(glog REQUIRED)
 
+add_library(BaseObject BaseObject.cpp BaseObject.hpp)
+target_link_libraries(BaseObject glog
+	Config)
 
 target_include_directories(BaseObject PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(BaseObject PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")

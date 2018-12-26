@@ -6,6 +6,7 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <Character.hpp>
+#include <VerbosityLevels.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -17,7 +18,7 @@ namespace game {
  */
 Game::Game(std::shared_ptr<config::Context> gameContext) : m_context(gameContext)
 {
-
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
 
 /**

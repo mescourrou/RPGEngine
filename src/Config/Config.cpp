@@ -8,6 +8,8 @@
 #include <string>
 #include <cstdlib>
 
+#include <VerbosityLevels.hpp>
+
 // Extern libs
 #include <glog/logging.h>
 
@@ -17,6 +19,7 @@
  */
 config::Config::Config(const std::string &filename)
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     if (!loadFile(filename))
         throw ConfigException("Impossible to load the config file");
 }

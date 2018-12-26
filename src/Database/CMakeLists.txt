@@ -7,6 +7,7 @@ add_library(Database
 	Model.hpp)
 target_link_libraries(Database glog sqlite
     BaseObject
+	Config
     Tools)
 target_include_directories(Database PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Database PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")

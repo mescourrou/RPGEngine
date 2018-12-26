@@ -7,6 +7,7 @@
 #include <Config.hpp>
 #include <Event.hpp>
 #include <WorkerThread.hpp>
+#include <VerbosityLevels.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -21,7 +22,9 @@ namespace game {
 GameLauncher::GameLauncher(int argc, char **argv)
 {
     google::InitGoogleLogging(argv[0]);
+    google::SetVLOGLevel("*", VERBOSE);
     google::LogToStderr();
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     m_context.reset(new config::Context(argc, argv));
 
 }
@@ -74,7 +77,7 @@ bool GameLauncher::initialize()
 
 /**
  * @brief Start the game given
- * @param [in] gameName Name of the game to start
+ * @param [in] gameName NameVERBOSE of the game to start
  */
 void GameLauncher::startGame(std::string gameName) const
 {

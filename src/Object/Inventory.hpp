@@ -39,7 +39,7 @@ public:
         InventoryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
     };
     /// @brief Constructor
-    Inventory() = default;
+    Inventory();
     /// @brief Destructor
     ~Inventory() override = default;
 

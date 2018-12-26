@@ -6,6 +6,7 @@
 
 // Project
 #include <Config.hpp>
+#include <VerbosityLevels.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -16,6 +17,7 @@
  */
 config::Context::Context(int argc, char **argv)
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     std::filesystem::path exec = std::string(argv[0]);
     if (argv)
         m_runtimeDirectory =  exec.parent_path();

@@ -1,4 +1,6 @@
 #include "BaseObject.hpp"
+#include <VerbosityLevels.hpp>
+#include <glog/logging.h>
 
 /**
  * \brief Constructor of the BaseObject

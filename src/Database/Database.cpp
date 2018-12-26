@@ -1,6 +1,7 @@
 #include "Database.hpp"
 // Project
 #include <Query.hpp>
+#include <VerbosityLevels.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -11,6 +12,7 @@
  */
 database::Database::Database(const std::string &path)
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
         LOG(ERROR) << "Can't open database: " << sqlite3_errmsg(m_sqlite3Handler);
@@ -85,7 +87,7 @@ bool database::Database::query(const std::string &query)
     char *zErrMsg;
     currentDatabase = this; ///< Pointer to the current database to be use in lambdas
     auto cb = [](void *, int argc, char **argv, char **colName) -> int { return currentDatabase->callback(nullptr, argc, argv, colName);};
-    DLOG(INFO) << "Execute query : " << query;
+    VLOG(verbosityLevel::DATABASE_QUERY) << "Execute query : " << query;
     int rc = sqlite3_exec(m_sqlite3Handler, query.c_str(), cb, nullptr, &zErrMsg);
     if( rc!=SQLITE_OK ){
         LOG(ERROR) << "SQL error: " << zErrMsg;

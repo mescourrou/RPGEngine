@@ -5,6 +5,7 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <Inventory.hpp>
+#include <VerbosityLevels.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -22,6 +23,7 @@ namespace character {
 Character::Character(std::string name, std::shared_ptr<database::Database> db) :
     m_name(std::move(name)), m_inventory(new object::Inventory)
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     if (db)
         loadFromDatabase(db);
 }

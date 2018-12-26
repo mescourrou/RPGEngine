@@ -8,12 +8,20 @@
 #include <Database.hpp>
 #include <Query.hpp>
 #include <Model.hpp>
+#include <VerbosityLevels.hpp>
+
+#include <glog/logging.h>
 
 /**
  * @brief Get a pointer on the wanted object, but keep it on the inventory
  * @param index Number of the object (start with 0)
  * @return Pointer on the object
  */
+object::Inventory::Inventory()
+{
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+}
+
 std::shared_ptr<object::Object> object::Inventory::get(unsigned int index) const
 {
     if (index < m_inventory.size())

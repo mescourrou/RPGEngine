@@ -2,6 +2,9 @@
 #include <Model.hpp>
 #include <Database.hpp>
 #include <Query.hpp>
+#include <VerbosityLevels.hpp>
+
+#include <glog/logging.h>
 
 /**
  * @brief Construct an object
@@ -9,7 +12,7 @@
  */
 object::Object::Object(std::string name) : m_name(std::move(name))
 {
-
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
 
 /**

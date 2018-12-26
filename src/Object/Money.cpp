@@ -68,6 +68,7 @@ bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> d
         m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(i).at(Model::NAME),
                                                                     std::atoi(result.at(i).at(Model::VALUE).c_str())));
     }
+    LOG(INFO) << "Initializing Money system successfully";
     return true;
 }
 

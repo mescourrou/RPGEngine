@@ -130,6 +130,7 @@ void Money::initialize(const std::string &baseValueName, Args... values)
         return a.second < b.second;
     });
 
+    LOG(INFO) << "Initializing Money system successfully";
 }
 
 /** @fn void Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value, Args... values)

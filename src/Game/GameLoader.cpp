@@ -4,6 +4,7 @@
 #include <Context.hpp>
 #include <Config.hpp>
 #include <Database.hpp>
+#include <VerbosityLevels.hpp>
 
 #include <glog/logging.h>
 
@@ -16,6 +17,7 @@ namespace game {
 GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
     m_context(context)
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     m_config.reset(new config::Config(context->gameLocation() + "/" + configFile::MAIN_CONFIGURATION_FILE));
 }
 
