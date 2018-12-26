@@ -17,7 +17,8 @@
  */
 config::Config::Config(const std::string &filename)
 {
-    loadFile(filename);
+    if (!loadFile(filename))
+        throw ConfigException("Impossible to load the config file");
 }
 
 /**
@@ -30,7 +31,10 @@ bool config::Config::loadFile(const std::string &filename) noexcept
     m_iniFile.SetUnicode();
     m_iniFile.SetMultiKey();
     if (m_iniFile.LoadFile(filename.c_str()) < 0)
+    {
+        LOG(ERROR) << "Impossible to load " << filename << " conf file";
         return false;
+    }
 
     LOG(INFO) << "Loading " << filename << " conf file";
 

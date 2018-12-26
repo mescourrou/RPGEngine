@@ -17,6 +17,9 @@ database::Database::Database(const std::string &path)
         sqlite3_close(m_sqlite3Handler);
         throw DatabaseException("Can't open database", DatabaseException::OPENING);
     }
+    else {
+        LOG(INFO) << "Open database '" << path << "'";
+    }
 
 }
 

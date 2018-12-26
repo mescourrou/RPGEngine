@@ -8,6 +8,7 @@ namespace events {
 class WorkerThreadTest : public testing::Test
 {
 public:
+    std::mutex mutex;
 };
 
 }

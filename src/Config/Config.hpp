@@ -5,6 +5,7 @@
 
 // Project
 #include <BaseObject.hpp>
+#include <BaseException.hpp>
 
 // Extern libs
 #include <SimpleIni.h>
@@ -33,6 +34,13 @@ class Config : public BaseObject
     friend class config::ConfigTest;
 #endif
 public:
+    class ConfigException : public BaseException
+    {
+    public:
+        static const inline Errors FILE_LOADING = Errors(__COUNTER__);
+        ConfigException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+            BaseException(w, code) {}
+    };
     /// @brief Constructor
     Config() = default;
     Config(const std::string& filename);

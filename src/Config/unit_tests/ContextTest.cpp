@@ -1,4 +1,6 @@
 #include "ContextTest.hpp"
+
+#include <filesystem>
 namespace config {
 
 char** ContextTest::m_argv = nullptr;
@@ -8,11 +10,11 @@ char** ContextTest::m_argv = nullptr;
  */
 TEST_F(ContextTest, Initialization)
 {
-    char* argv = "PathToRuntime";
+    char* argv = "Path/To/Runtime.sh";
 
     Context context(1, &argv);
     EXPECT_EQ(context.kProgramArguments().size(), 0);
-    EXPECT_STREQ(context.runtimeDirectory().c_str(), argv);
+    EXPECT_STREQ(context.runtimeDirectory().c_str(), "Path/To");
 }
 
 /*
@@ -20,7 +22,7 @@ TEST_F(ContextTest, Initialization)
  */
 TEST_F(ContextTest, InitializationWithMultiplesArguments)
 {
-    char* arg0 = "PathToRuntime", *arg1 = "1st arg", *arg2 = "2nd arg";
+    char* arg0 = "Path/To/Runtime.sh", *arg1 = "1st arg", *arg2 = "2nd arg";
     char* argv[3];
     argv[0] = arg0;
     argv[1] = arg1;
@@ -28,7 +30,7 @@ TEST_F(ContextTest, InitializationWithMultiplesArguments)
 
     Context context(3, argv);
     EXPECT_EQ(context.kProgramArguments().size(), 2);
-    EXPECT_STREQ(context.runtimeDirectory().c_str(), arg0);
+    EXPECT_STREQ(context.runtimeDirectory().c_str(), "Path/To");
     EXPECT_STREQ(context.kProgramArguments().at(0).c_str(), arg1);
     EXPECT_STREQ(context.kProgramArguments().at(1).c_str(), arg2);
 }
@@ -38,7 +40,8 @@ TEST_F(ContextTest, InitializationWithMultiplesArguments)
  */
 TEST_F(ContextTest, runtimeDirectory)
 {
-    EXPECT_EQ(m_context->runtimeDirectory(), std::string(m_argv[0]));
+    std::filesystem::path runtimeDir = std::string(m_argv[0]);
+    EXPECT_EQ(m_context->runtimeDirectory(), runtimeDir.parent_path().string());
 }
 
 void ContextTest::SetUp()

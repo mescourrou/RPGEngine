@@ -1,7 +1,7 @@
 #pragma once
 
 //STL
-#include <vector>
+#include <list>
 #include <thread>
 #include <mutex>
 
@@ -37,6 +37,8 @@ public:
     template<typename ...Args>
     static void newWork(std::function<void(Args...)> work, Args... arguments);
     static void newWork(std::function<void()> work);
+
+    static void waitForJoin();
 
 
 private:

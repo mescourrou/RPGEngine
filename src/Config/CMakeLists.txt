@@ -5,7 +5,10 @@ find_package(glog REQUIRED)
 add_library(Config
 	Config.cpp Config.hpp
 	Context.cpp Context.hpp)
-target_link_libraries(Config simpleini glog BaseObject)
+target_link_libraries(Config simpleini glog
+	BaseObject
+	Tools
+	stdc++fs)
 target_include_directories(Config PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Config PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 

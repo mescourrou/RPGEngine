@@ -35,8 +35,7 @@ void WorkerThread::worker(std::shared_ptr<AbstractWork> firstWork)
  */
 WorkerThread::~WorkerThread()
 {
-    for (auto& thread : m_workers)
-        thread.join();
+    waitForJoin();
 }
 
 /**
@@ -54,6 +53,15 @@ void WorkerThread::newWork(std::function<void()> work)
         instance.m_workers.push_back(std::thread(worker, std::make_shared<Work<void>>(Work<void>(work))));
     }
     m_mutex.unlock();
+}
+
+void WorkerThread::waitForJoin()
+{
+    for (int i = instance.m_workers.size() -1 ; i >= 0; i--)
+    {
+        instance.m_workers.at(i).join();
+        instance.m_workers.pop_back();
+    }
 }
 
 }

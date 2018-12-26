@@ -1,8 +1,9 @@
 #include "WorkerThreadTest.hpp"
 namespace events {
 
-TEST_F(WorkerThreadTest, Test)
+TEST_F(WorkerThreadTest, NewWork)
 {
+    mutex.lock();
     unsigned int cbCalls = 0;
     auto cb = [&cbCalls]() { cbCalls++; usleep(500); };
 
@@ -20,6 +21,25 @@ TEST_F(WorkerThreadTest, Test)
     usleep(100000);
 
     EXPECT_EQ(cbCalls, 10);
+    mutex.unlock();
+}
+
+TEST_F(WorkerThreadTest, WaitForJoin)
+{
+    mutex.lock();
+    bool active = false;
+    auto cb = [&]() {
+        active = true;
+        usleep(1000);
+        active = false;
+    };
+
+    WorkerThread::newWork(cb);
+    usleep(50);
+    EXPECT_TRUE(active);
+    WorkerThread::waitForJoin();
+    EXPECT_FALSE(active);
+    mutex.unlock();
 }
 
 }
