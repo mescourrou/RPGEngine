@@ -1,11 +1,11 @@
 #include <iostream>
 #include "general_config.hpp"
-#include "Config/Config.hpp"
+#include <GameLauncher.hpp>
 
 using namespace std;
 
-int main()
+int main(int argc, char **argv)
 {
-    cout << "Hello World!" << endl;
-    return 0;
+    game::GameLauncher launcher(argc, argv);
+    return launcher.start();
 }

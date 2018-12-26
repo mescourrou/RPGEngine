@@ -16,6 +16,15 @@ namespace database {
  */
 namespace Model {
 
+    namespace Game {
+    constexpr char TABLE[] = "Game";
+    constexpr char NAME[] = "name";
+    constexpr char VERSION[] = "version";
+    constexpr char ENGINE_VERSION[] = "engineVersion";
+    constexpr char FK_USER_CHARACTER[] = "fkUserCharacter";
+
+    } // namespace Game
+
     namespace Character {
     constexpr char TABLE[] = "Character";
     constexpr char NAME[] = "name";

@@ -1,3 +1,4 @@
 #pragma once
 constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
 #cmakedefine RPG_BUILD_TEST
+constexpr unsigned int VERSION = 000001;
