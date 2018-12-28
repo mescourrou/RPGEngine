@@ -24,6 +24,16 @@ class Inventory;
 namespace character
 {
 
+/**
+ * @brief The CharacterException class group exceptions linked to the Character
+ */
+class CharacterException : public BaseException
+{
+public:
+    CharacterException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+        BaseException(w, code) {}
+};
+
 #ifdef RPG_BUILD_TEST
 class CharacterTest;
 #endif
@@ -39,15 +49,6 @@ class Character : public BaseObject
     FRIEND_TEST(CharacterTest, LoadingCharacterFromDatabase);
 #endif
 public:
-    /**
-     * @brief The CharacterException class group exceptions linked to the Character
-     */
-    class CharacterException : public BaseException
-    {
-    public:
-        CharacterException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-            BaseException(w, code) {}
-    };
     Character() = delete;
     Character(std::string name, std::shared_ptr<database::Database> db = nullptr);
     virtual ~Character();

@@ -25,9 +25,9 @@ bool object::Object::loadFromDatabase(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Object;
     using namespace database;
     if (!db)
-        throw ObjectException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw ObjectException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw ObjectException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw ObjectException("The database model is not correct", DatabaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .where(Model::NAME, Query::EQUAL, m_name));
@@ -48,9 +48,9 @@ std::shared_ptr<object::Object> object::Object::createFromDatabase(const std::st
     namespace Model = database::Model::Object;
     using namespace database;
     if (!db)
-        throw ObjectException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw ObjectException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw ObjectException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw ObjectException("The database model is not correct", DatabaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                                       .column(Model::TYPE)
@@ -106,7 +106,7 @@ bool object::Object::createDatabaseModel(std::shared_ptr<database::Database> db)
     using namespace database;
 
     if (!db)
-        throw ObjectException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw ObjectException("No database given.", DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME, DataType::BLOB).constraint(Model::NAME, Query::PRIMARY_KEY)

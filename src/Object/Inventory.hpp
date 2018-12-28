@@ -17,6 +17,13 @@ class Database;
 
 namespace object
 {
+
+class InventoryException : public BaseException
+{
+public:
+    InventoryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+};
+
 class Object;
 
 #ifdef RPG_BUILD_TEST
@@ -33,11 +40,6 @@ class Inventory : public BaseObject
     FRIEND_TEST(InventoryTest, Push);
 #endif
 public:
-    class InventoryException : public BaseException
-    {
-    public:
-        InventoryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-    };
     /// @brief Constructor
     Inventory();
     /// @brief Destructor

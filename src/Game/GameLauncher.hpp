@@ -17,6 +17,17 @@ class Context;
 namespace game
 {
 
+/**
+ * @brief Manage the exceptions for the GameLaucher
+ */
+class GameLauncherException : public BaseException
+{
+public:
+    static const inline Errors NO_DIRECTORY = Errors(__COUNTER__); ///< The game directory wasn't found
+    GameLauncherException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+        BaseException(w, code) {}
+};
+
 #ifdef RPG_BUILD_TEST
 class GameLauncherTest;
 #endif
@@ -30,16 +41,7 @@ class GameLauncher : public BaseObject
 	friend class game::GameLauncherTest;
 #endif
 public:
-    /**
-     * @brief Manage the exceptions for the GameLaucher
-     */
-    class GameLauncherException : public BaseException
-    {
-    public:
-        static const inline Errors NO_DIRECTORY = Errors(__COUNTER__); ///< The game directory wasn't found
-        GameLauncherException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-            BaseException(w, code) {}
-    };
+
     GameLauncher(int argc, char **argv);
     /// @brief Destructor
 	~GameLauncher() override = default;

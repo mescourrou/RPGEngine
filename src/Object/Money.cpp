@@ -48,9 +48,9 @@ bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> d
     namespace Model = database::Model::Money;
     using namespace database;
     if (!db)
-        throw MoneyException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw MoneyException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw MoneyException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw MoneyException("The database model is not correct", DatabaseException::BAD_MODEL);
     if (m_initialized)
     {
         m_moneyNames.clear();
@@ -219,7 +219,7 @@ bool object::Money::createDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Money;
     using namespace database;
     if (!db)
-        throw MoneyException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw MoneyException("No database given.", DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)

@@ -44,9 +44,9 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw CharacterException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw CharacterException("The database model is not correct", DatabaseException::BAD_MODEL);
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                               .where(Model::NAME, Query::EQUAL, m_name));
     if (!Database::isQuerySuccessfull(result))
@@ -73,7 +73,7 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
@@ -97,7 +97,7 @@ bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY));

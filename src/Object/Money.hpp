@@ -25,6 +25,12 @@ class Database;
 namespace object
 {
 
+class MoneyException : public BaseException
+{
+public:
+    MoneyException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+};
+
 #ifdef RPG_BUILD_TEST
 class MoneyTest;
 #endif
@@ -38,11 +44,6 @@ class Money : public BaseObject
     friend class object::MoneyTest;
 #endif
 public:
-    class MoneyException : public BaseException
-    {
-    public:
-        MoneyException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-    };
     Money();
     Money(std::initializer_list<unsigned int> values);
     /// @brief Destructor

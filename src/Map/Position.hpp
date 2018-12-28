@@ -16,6 +16,16 @@ class Database;
 
 namespace map
 {
+/**
+ * @brief Manage position exception
+ */
+class PositionException : BaseException
+{
+public:
+    PositionException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+};
+
+
 class Map;
 
 #ifdef RPG_BUILD_TEST
@@ -27,15 +37,6 @@ class PositionTest;
  */
 class Position : public BaseObject
 {
-public:
-    /**
-     * @brief Manage position exception
-     */
-    class PositionException : BaseException
-    {
-    public:
-        PositionException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-    };
 #ifdef RPG_BUILD_TEST
     friend class map::PositionTest;
 #endif

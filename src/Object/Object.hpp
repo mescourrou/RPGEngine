@@ -20,6 +20,13 @@ class Database;
 namespace object
 {
 
+class ObjectException : public BaseException
+{
+public:
+    static const inline Errors UNKNOWN_OBJECT_TYPE = Errors(__COUNTER__);
+    ObjectException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
+};
+
 #ifdef RPG_BUILD_TEST
 class ObjectTest;
 #endif
@@ -32,12 +39,6 @@ class Object : public BaseObject
     friend class object::ObjectTest;
 #endif
 public:
-    class ObjectException : public BaseException
-    {
-    public:
-        static const inline Errors UNKNOWN_OBJECT_TYPE = Errors(__COUNTER__);
-        ObjectException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-    };
     Object() = default;
     Object(std::string name);
     ~Object() override = default;

@@ -105,9 +105,9 @@ bool object::Inventory::loadFromDatabase(std::shared_ptr<database::Database> db,
     namespace Model = database::Model::Inventory;
     using namespace database;
     if (!db)
-        throw InventoryException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw InventoryException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw InventoryException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw InventoryException("The database model is not correct", DatabaseException::BAD_MODEL);
 
     // Load information from Model::TABLE => Main inventory table
     {
@@ -192,7 +192,7 @@ bool object::Inventory::createDatabaseModel(std::shared_ptr<database::Database> 
     using namespace database;
 
     if (!db)
-        throw InventoryException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw InventoryException("No database given.", DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)

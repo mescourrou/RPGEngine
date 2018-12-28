@@ -30,9 +30,9 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     using namespace database;
     namespace Model = database::Model::Game;
     if (!db)
-        throw GameException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw GameException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw GameException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw GameException("The database model is not correct", DatabaseException::BAD_MODEL);
     m_db = db;
 
     auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::TABLE, m_db));
@@ -67,7 +67,7 @@ bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Game;
     using namespace database;
     if (!db)
-        throw GameException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw GameException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
@@ -97,7 +97,7 @@ bool Game::createDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Game;
     using namespace database;
     if (!db)
-        throw GameException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw GameException("No database given.", DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)

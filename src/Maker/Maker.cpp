@@ -24,8 +24,8 @@ void Maker::loadDatabase(const std::string &filename)
 {
     try {
         m_db.reset(new database::Database(filename));
-    } catch (const database::Database::DatabaseException& e) {
-        if (e.code() == database::Database::DatabaseException::OPENING)
+    } catch (const database::DatabaseException& e) {
+        if (e.code() == database::DatabaseException::OPENING)
         {
             m_signalDatabaseLoaded.trigger(DatabaseStatus::NOT_LOADED);
             return;
@@ -58,7 +58,7 @@ bool Maker::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 bool Maker::createDatabaseModel()
 {
     if (!m_db)
-        throw MakerException("No database loaded.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw MakerException("No database loaded.", database::DatabaseException::MISSING_DATABASE);
     return
             character::Character::createDatabaseModel(m_db) &&
             map::Position::createDatabaseModel(m_db) &&

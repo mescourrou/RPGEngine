@@ -21,6 +21,14 @@
 namespace config
 {
 
+class ConfigException : public BaseException
+{
+public:
+    static const inline Errors FILE_LOADING = Errors(__COUNTER__);
+    ConfigException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+        BaseException(w, code) {}
+};
+
 #ifdef RPG_BUILD_TEST
 class ConfigTest;
 #endif
@@ -34,13 +42,6 @@ class Config : public BaseObject
     friend class config::ConfigTest;
 #endif
 public:
-    class ConfigException : public BaseException
-    {
-    public:
-        static const inline Errors FILE_LOADING = Errors(__COUNTER__);
-        ConfigException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-            BaseException(w, code) {}
-    };
     /// @brief Constructor
     Config() = default;
     Config(const std::string& filename);

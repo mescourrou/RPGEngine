@@ -16,6 +16,16 @@ class Database;
 
 namespace maker
 {
+/**
+ * @brief Manage the exceptions of Game
+ */
+class MakerException : public BaseException
+{
+public:
+    static const inline Errors VERSION = Errors(__COUNTER__);
+    MakerException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+        BaseException(w, code) {}
+};
 
 #ifdef RPG_BUILD_TEST
 class MakerTest;
@@ -33,17 +43,7 @@ public:
         NOT_VALID,
         VALID
     };
-    /**
-     * @brief Manage the exceptions of Game
-     */
-    class MakerException : public BaseException
-    {
-    public:
-        static const inline Errors VERSION = Errors(__COUNTER__);
-        MakerException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-            BaseException(w, code) {}
-    };
-	Maker();
+    Maker();
     ~Maker() override = default;
 
     void loadDatabase(const std::string& filename);

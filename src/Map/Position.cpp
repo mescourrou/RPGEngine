@@ -19,9 +19,9 @@ bool map::Position::loadFromDatabase(std::shared_ptr<database::Database> db, con
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db)
-        throw PositionException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+        throw PositionException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw PositionException("The database model is not correct", Database::DatabaseException::BAD_MODEL);
+        throw PositionException("The database model is not correct", DatabaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
     if (!Database::isQuerySuccessfull(result))
@@ -114,7 +114,7 @@ bool map::Position::createDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db)
-        throw PositionException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+        throw PositionException("No database given.", DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)

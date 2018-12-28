@@ -21,6 +21,18 @@ class sqlite3;
 namespace database
 {
 
+class DatabaseException : public BaseException
+{
+public:
+    static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
+    static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
+    static const inline Errors MISSING_TABLE = Errors(__COUNTER__);
+    static const inline Errors BAD_MODEL = Errors(__COUNTER__);
+    DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
+        BaseException(w, code) {}
+    ~DatabaseException() override = default;
+};
+
 #ifdef RPG_BUILD_TEST
 class DatabaseTest;
 #endif
@@ -45,19 +57,6 @@ class Database : public BaseObject
     FRIEND_TEST(DatabaseTest, QueryText);
 #endif
 public:
-    class DatabaseException : public BaseException
-    {
-    public:
-        static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
-        static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
-        static const inline Errors MISSING_TABLE = Errors(__COUNTER__);
-        static const inline Errors BAD_MODEL = Errors(__COUNTER__);
-        DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
-            BaseException(w, code) {}
-        ~DatabaseException() override = default;
-    };
-
-
     Database(const std::string& path);
     ~Database() override;
 

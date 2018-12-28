@@ -32,6 +32,17 @@ class Character;
 namespace game
 {
 
+/**
+ * @brief Manage the exceptions of Game
+ */
+class GameException : public BaseException
+{
+public:
+    static const inline Errors VERSION = Errors(__COUNTER__);
+    GameException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+        BaseException(w, code) {}
+};
+
 #ifdef RPG_BUILD_TEST
 class GameTest;
 #endif
@@ -45,16 +56,7 @@ class Game : public BaseObject
 	friend class game::GameTest;
 #endif
 public:
-    /**
-     * @brief Manage the exceptions of Game
-     */
-    class GameException : public BaseException
-    {
-    public:
-        static const inline Errors VERSION = Errors(__COUNTER__);
-        GameException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-            BaseException(w, code) {}
-    };
+
     Game(std::shared_ptr<config::Context> gameContext);
     /// @brief Destructor
 	~Game() override = default;

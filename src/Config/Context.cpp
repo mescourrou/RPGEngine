@@ -32,7 +32,7 @@ config::Context::Context(int argc, char **argv)
         m_config.reset(new Config(std::string().append(m_runtimeDirectory).append("/")
                                   .append(m_kConfigPath).append("/")
                                   .append(m_kGlobalConfigFilename)));
-    } catch (const Config::ConfigException& e) {
+    } catch (const ConfigException& e) {
         LOG(WARNING) << "Error during loading the configuration : " << e.what();
         m_config.reset();
     }

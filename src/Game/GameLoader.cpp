@@ -37,7 +37,7 @@ bool GameLoader::load()
     databasePath = m_context->gameLocation() + "/" + databasePath;
     try {
         m_db.reset(new database::Database(databasePath));
-    } catch (const database::Database::DatabaseException& e) {
+    } catch (const database::DatabaseException& e) {
         throw e;
     }
 
