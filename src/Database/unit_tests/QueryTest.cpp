@@ -60,18 +60,37 @@ TEST_F(QueryTest, Create)
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    query = Query::createQuery<Query::CREATE>("newTable", database).contraint("PRIMARY KEY (first_name, last_name)");
+    query = Query::createQuery<Query::CREATE>("newTable", database).constraint("first_name", Query::PRIMARY_KEY)
+                                                                   .constraint("last_name", Query::PRIMARY_KEY);
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    expected = "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER PRIMARY KEY (first_name, last_name));";
+    expected = "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER, PRIMARY KEY(`first_name`, `last_name`));";
     query = Query::createQuery<Query::CREATE>("newTable", database)
             .column("first_name").column("last_name").column("age", INTEGER)
-            .contraint("PRIMARY KEY (first_name, last_name)");
+            .constraint("first_name", Query::PRIMARY_KEY)
+            .constraint("last_name", Query::PRIMARY_KEY);
 
     EXPECT_EQ(query.str(), expected);
     EXPECT_TRUE(query.isValid());
 
+    expected = "CREATE TABLE newTable (first_name BLOB UNIQUE, last_name BLOB NOT NULL, age INTEGER AUTOINCREMENT);";
+    query = Query::createQuery<Query::CREATE>("newTable", database)
+            .column("first_name").column("last_name").column("age", INTEGER)
+            .constraint("first_name", Query::UNIQUE)
+            .constraint("last_name", Query::NOT_NULL)
+            .constraint("age", Query::AUTOINCREMENT);
+
+    EXPECT_EQ(query.str(), expected);
+    EXPECT_TRUE(query.isValid());
+
+    expected = "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER);";
+    query = Query::createQuery<Query::CREATE>("newTable", database)
+            .column("first_name").column("last_name").column("age", INTEGER)
+            .constraint("not_a_column", Query::UNIQUE);
+
+    EXPECT_EQ(query.str(), expected);
+    EXPECT_TRUE(query.isValid());
 }
 
 /*

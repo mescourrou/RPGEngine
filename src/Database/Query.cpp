@@ -235,12 +235,51 @@ std::string database::InsertQuery::str() const
  * @param [in] columnContraints Column contrains
  * @return New Query
  */
-database::CreateQuery &database::CreateQuery::column(const std::string &columnName, DataType columnType, const std::string &columnContraints)
+database::CreateQuery &database::CreateQuery::column(const std::string &columnName, DataType columnType)
 {
     if (!checkColumnNameValidity(columnName))
         return *this;
     m_valid = true;
-    m_columns.push_back(std::tuple<std::string, DataType, std::string>{columnName, columnType, columnContraints});
+    m_columns.push_back(std::tuple<std::string, DataType>{columnName, columnType});
+    return *this;
+}
+
+database::CreateQuery &database::CreateQuery::constraint(const std::string &columnName, database::Query::Constraints constraintType)
+{
+    if (!checkColumnNameValidity(columnName))
+        return *this;
+
+    if (std::find_if(m_columns.begin(), m_columns.end(), [&](std::tuple<std::string, DataType> &a) -> bool
+                {
+                    if (std::get<0>(a) == columnName)
+                        return true;
+                    return false;
+                }
+            ) == m_columns.end())
+        return *this;
+
+    auto addIfNotFind = [](std::vector<std::string>& list, const std::string& item) {
+        if (list.size() == 0 || std::find(list.begin(), list.end(), item) == list.end())
+            list.push_back(item);
+    };
+    switch (constraintType) {
+    case Query::Constraints::PRIMARY_KEY:
+        addIfNotFind(m_primaryKeyColumns, columnName);
+        break;
+    case Query::Constraints::UNIQUE:
+        addIfNotFind(m_uniqueColumns, columnName);
+        break;
+    case Query::Constraints::NOT_NULL:
+        addIfNotFind(m_notNullColumns, columnName);
+        break;
+    case Query::Constraints::AUTOINCREMENT:
+        addIfNotFind(m_autoincrementColumns, columnName);
+        break;
+    default:
+        LOG(WARNING) << "Constraint type not supported (" << constraintType << ")";
+        break;
+    }
+
     return *this;
 }
 
@@ -258,22 +297,34 @@ std::string database::CreateQuery::str() const
         ss << "IF NOT EXISTS ";
     ss << m_table;
     ss << " (";
-    for (auto column : m_columns)
+    for (auto& column : m_columns)
     {
         ss << std::get<0>(column);
         ss << " " << Database::dataTypeAsString(std::get<1>(column));
-        if (!std::get<2>(column).empty())
-            ss << " " << std::get<2>(column);
-
+        if (std::find(m_notNullColumns.begin(), m_notNullColumns.end(), std::get<0>(column)) != m_notNullColumns.end())
+            ss << " NOT NULL";
+        if (m_primaryKeyColumns.size() == 1)
+        {
+            if (std::find(m_primaryKeyColumns.begin(), m_primaryKeyColumns.end(), std::get<0>(column)) != m_primaryKeyColumns.end())
+                ss << " PRIMARY KEY";
+        }
+        if (std::find(m_autoincrementColumns.begin(), m_autoincrementColumns.end(), std::get<0>(column)) != m_autoincrementColumns.end())
+            ss << " AUTOINCREMENT";
+        if (std::find(m_uniqueColumns.begin(), m_uniqueColumns.end(), std::get<0>(column)) != m_uniqueColumns.end())
+            ss << " UNIQUE";
         if (column != m_columns.back())
             ss << ", ";
     }
-    ss << " ";
-    for (auto contraint : m_contraints)
+    if (m_primaryKeyColumns.size() > 1)
     {
-        ss << contraint;
-        if (contraint != m_contraints.back())
-            ss << ", ";
+        ss << ", PRIMARY KEY(";
+        for (auto& column : m_primaryKeyColumns)
+        {
+            ss << "`" << column << "`";
+            if (column != m_primaryKeyColumns.back())
+                ss << ", ";
+        }
+        ss << ")";
     }
     ss << ")";
     ss << ";";

@@ -56,6 +56,13 @@ public:
         NOT
     };
 
+    enum Constraints {
+        PRIMARY_KEY,
+        UNIQUE,
+        AUTOINCREMENT,
+        NOT_NULL
+    };
+
 
 
 protected:
@@ -175,9 +182,9 @@ public:
     /// @brief Add "IF NOT EXISTS" statement to the create table query
     CreateQuery& ifNotExists() { m_ifNotExists = true; return *this; }
     CreateQuery& column(const std::string& columnName,
-                        DataType columnType = DataType::BLOB, const std::string& columnContraints = "");
+                        DataType columnType = DataType::BLOB);
     /// @brief Add the table contraint
-    CreateQuery& contraint(const std::string& contraint) { m_contraints.push_back(contraint); return *this; }
+    CreateQuery& constraint(const std::string& columnName, Query::Constraints constraintType);
 
     std::string str() const override;
 
@@ -193,11 +200,12 @@ protected:
      * - the type of the column
      * - column contraints, like primary, unique, ...
      */
-    std::vector<std::tuple<std::string, DataType, std::string>> m_columns;
-    /**
-     * @brief Contrains of the table, like primary, unique, ...
-     */
-    std::vector<std::string> m_contraints;
+    std::vector<std::tuple<std::string, DataType>> m_columns;
+
+    std::vector<std::string> m_primaryKeyColumns;
+    std::vector<std::string> m_uniqueColumns;
+    std::vector<std::string> m_autoincrementColumns;
+    std::vector<std::string> m_notNullColumns;
 
 };
 
