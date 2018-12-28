@@ -41,7 +41,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 
     auto gameInfo = result.at(1);
 
-    if (VERSION < std::atoi(gameInfo.at(Model::ENGINE_VERSION).c_str()))
+    if (VERSION < static_cast<unsigned int>(std::atoi(gameInfo.at(Model::ENGINE_VERSION).c_str())))
         throw GameException("Engine version too old for the game", GameException::VERSION);
     m_playerCharacter.reset(new character::Character(gameInfo.at(Model::FK_USER_CHARACTER), m_db));
     return true;
