@@ -235,12 +235,34 @@ std::string database::InsertQuery::str() const
  * @param [in] columnContraints Column contrains
  * @return New Query
  */
-database::CreateQuery &database::CreateQuery::column(const std::string &columnName, DataType columnType)
+database::CreateQuery &database::CreateQuery::column(const std::string &columnName, DataType columnType,
+                                                     const std::string& fkTable, const std::string& fkField)
 {
     if (!checkColumnNameValidity(columnName))
         return *this;
+    if (!fkTable.empty())
+    {
+        if (fkField.empty())
+        {
+            m_valid = false;
+            return *this;
+        }
+        if (!m_db->isTable(fkTable))
+        {
+            m_valid = false;
+            return *this;
+        }
+
+        auto columnList = m_db->columnList(fkTable);
+        if (std::find(columnList.begin(), columnList.end(), fkField) == columnList.end())
+        {
+            m_valid = false;
+            return *this;
+        }
+    }
     m_valid = true;
-    m_columns.push_back(std::tuple<std::string, DataType>{columnName, columnType});
+    m_columns.push_back(std::tuple<std::string, DataType, std::string, std::string>{
+                            columnName, columnType, fkTable, fkField});
     return *this;
 }
 
@@ -249,7 +271,7 @@ database::CreateQuery &database::CreateQuery::constraint(const std::string &colu
     if (!checkColumnNameValidity(columnName))
         return *this;
 
-    if (std::find_if(m_columns.begin(), m_columns.end(), [&](std::tuple<std::string, DataType> &a) -> bool
+    if (std::find_if(m_columns.begin(), m_columns.end(), [&](std::tuple<std::string, DataType, std::string, std::string> &a) -> bool
                 {
                     if (std::get<0>(a) == columnName)
                         return true;
@@ -312,6 +334,10 @@ std::string database::CreateQuery::str() const
             ss << " AUTOINCREMENT";
         if (std::find(m_uniqueColumns.begin(), m_uniqueColumns.end(), std::get<0>(column)) != m_uniqueColumns.end())
             ss << " UNIQUE";
+        if (!std::get<2>(column).empty())
+        {
+            ss << " REFERENCES " << std::get<2>(column) << "(`" << std::get<3>(column) << "`)";
+        }
         if (column != m_columns.back())
             ss << ", ";
     }

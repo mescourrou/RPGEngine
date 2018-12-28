@@ -1,5 +1,7 @@
 #include "QueryTest.hpp"
 #include "Database.hpp"
+
+#include <filesystem>
 namespace database {
 
 /*
@@ -88,6 +90,24 @@ TEST_F(QueryTest, Create)
     query = Query::createQuery<Query::CREATE>("newTable", database)
             .column("first_name").column("last_name").column("age", INTEGER)
             .constraint("not_a_column", Query::UNIQUE);
+
+    EXPECT_EQ(query.str(), expected);
+    EXPECT_TRUE(query.isValid());
+}
+
+TEST_F(QueryTest, CreateWithForeignKey)
+{
+    std::filesystem::path usedFile = "data/sample0.db";
+    std::filesystem::remove(usedFile);
+
+    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+
+    db->query(Query::createQuery<Query::CREATE>("table1", db)
+              .column("column1", DataType::BLOB));
+
+    std::string expected = "CREATE TABLE newTable (first_name BLOB REFERENCES table1(`column1`));";
+    auto query = Query::createQuery<Query::CREATE>("newTable", db)
+                        .column("first_name", DataType::BLOB, "table1", "column1");
 
     EXPECT_EQ(query.str(), expected);
     EXPECT_TRUE(query.isValid());

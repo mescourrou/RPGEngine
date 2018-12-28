@@ -182,7 +182,9 @@ public:
     /// @brief Add "IF NOT EXISTS" statement to the create table query
     CreateQuery& ifNotExists() { m_ifNotExists = true; return *this; }
     CreateQuery& column(const std::string& columnName,
-                        DataType columnType = DataType::BLOB);
+                        DataType columnType = DataType::BLOB,
+                        const std::string &fkTable = "",
+                        const std::string &fkField = "");
     /// @brief Add the table contraint
     CreateQuery& constraint(const std::string& columnName, Query::Constraints constraintType);
 
@@ -198,9 +200,10 @@ protected:
      * The tuple contains :
      * - the column name
      * - the type of the column
-     * - column contraints, like primary, unique, ...
+     * - table for primary key
+     * - fields for the primary key
      */
-    std::vector<std::tuple<std::string, DataType>> m_columns;
+    std::vector<std::tuple<std::string, DataType, std::string, std::string>> m_columns;
 
     std::vector<std::string> m_primaryKeyColumns;
     std::vector<std::string> m_uniqueColumns;
