@@ -214,6 +214,20 @@ bool object::Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return true;
 }
 
+bool object::Money::createDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Money;
+    using namespace database;
+    if (!db)
+        throw MoneyException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+
+    db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
+              .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)
+              .column(Model::VALUE, DataType::INTEGER).constraint(Model::VALUE, Query::UNIQUE));
+
+    return verifyDatabaseModel(db);
+}
+
 /**
  * @brief Spread carry over the money types
  */

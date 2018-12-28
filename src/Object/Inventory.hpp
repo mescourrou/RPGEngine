@@ -56,8 +56,9 @@ public:
     /// @brief Return the size of the inventory
     unsigned int size() const { return m_inventory.size(); }
 
-private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+private:
 
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 

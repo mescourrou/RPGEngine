@@ -6,7 +6,7 @@ add_executable(Object_test
 	InventoryTest.cpp InventoryTest.hpp
 	)
 
-target_link_libraries(Object_test gtest Object
+target_link_libraries(Object_test gtest Object Character
 	stdc++fs)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")

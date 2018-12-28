@@ -108,3 +108,22 @@ bool map::Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
         return true;
     return false;
 }
+
+bool map::Position::createDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Position;
+    using namespace database;
+    if (!db)
+        throw PositionException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+
+    db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
+              .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)
+              .constraint(Model::FK_CHARACTER, Query::PRIMARY_KEY)
+              .column(Model::X, DataType::INTEGER)
+              .column(Model::Y, DataType::INTEGER)
+              .column(Model::Z, DataType::INTEGER)
+              .column(Model::FK_MAP, DataType::BLOB));
+
+    return verifyDatabaseModel(db);
+
+}

@@ -84,8 +84,10 @@ public:
     bool operator!=(const Position& other);
 
     std::string className() const noexcept override { return "Position"; }
-private:
+
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+private:
 
     std::shared_ptr<Map> m_map; ///< Map where we are on
     Vector<3> m_position; ///< Position vector

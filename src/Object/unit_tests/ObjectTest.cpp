@@ -80,6 +80,16 @@ TEST_F(ObjectTest, StreamOperator)
 
 }
 
+TEST_F(ObjectTest, CreatingDatabaseModel)
+{
+    std::filesystem::path usedFile = "data/sample0.db";
+    std::filesystem::remove(usedFile);
+    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+
+    EXPECT_TRUE(Object::createDatabaseModel(db));
+
+}
+
 /**
  * @brief Initialize money system for object using
  */

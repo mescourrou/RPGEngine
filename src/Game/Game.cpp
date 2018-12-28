@@ -88,8 +88,25 @@ bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     }
 
     if (goodColumns != 4)
-        return true;
-    return false;
+        return false;
+    return true;
+}
+
+bool Game::createDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Game;
+    using namespace database;
+    if (!db)
+        throw GameException("No database given.", Database::DatabaseException::MISSING_DATABASE);
+
+    db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
+              .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)
+              .column(Model::VERSION, DataType::INTEGER)
+              .column(Model::ENGINE_VERSION, DataType::INTEGER)
+              .column(Model::FK_USER_CHARACTER, DataType::BLOB,
+                      database::Model::Character::TABLE, database::Model::Character::NAME));
+
+    return verifyDatabaseModel(db);
 }
 
 }

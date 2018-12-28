@@ -95,6 +95,8 @@ public:
     bool sub(const std::string& moneyName, unsigned int quantity);
 
 
+    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 protected:
     static bool m_initialized; ///< Say if the money system is initialized
     /// Contains the name of the moneys and their values from the base value
@@ -104,7 +106,6 @@ protected:
     static void initializeAdditionnalValues(const std::pair<std::string, unsigned int> &value, Args... values);
     static void initializeAdditionnalValues(const std::pair<std::string, unsigned int> &value);
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
 
     void spread();
 

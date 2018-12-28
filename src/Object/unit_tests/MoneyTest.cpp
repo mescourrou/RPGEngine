@@ -394,6 +394,16 @@ TEST_F(MoneyTest, StreamOperator)
     EXPECT_EQ(output, ss.str());
 }
 
+TEST_F(MoneyTest, CreatingDatabaseModel)
+{
+    std::filesystem::path usedFile = "data/sample0.db";
+    std::filesystem::remove(usedFile);
+    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+
+    EXPECT_TRUE(Money::createDatabaseModel(db));
+
+}
+
 /**
  * @brief Set up the Money test
  *

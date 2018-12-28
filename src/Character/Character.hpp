@@ -71,8 +71,9 @@ public:
 
     std::string className() const noexcept override { return "Character"; }
 
-protected:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+protected:
 
     std::string m_name;         ///< Name of the Character
 

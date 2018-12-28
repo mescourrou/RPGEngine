@@ -186,3 +186,26 @@ bool object::Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> 
     return true;
 }
 
+bool object::Inventory::createDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Inventory;
+    using namespace database;
+
+    if (!db)
+        throw InventoryException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+
+    db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
+              .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)
+              .column(Model::MONEY, DataType::INTEGER)
+              .constraint(Model::FK_CHARACTER, Query::PRIMARY_KEY));
+
+    db->query(Query::createQuery<Query::CREATE>(Model::InventoryObjects::TABLE, db).ifNotExists()
+              .column(Model::InventoryObjects::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)
+              .column(Model::InventoryObjects::QUANTITY, DataType::INTEGER)
+              .column(Model::InventoryObjects::FK_OBJECT, DataType::BLOB, database::Model::Object::TABLE, database::Model::Object::NAME)
+              .constraint(Model::InventoryObjects::FK_CHARACTER, Query::PRIMARY_KEY)
+              .constraint(Model::InventoryObjects::FK_OBJECT, Query::PRIMARY_KEY));
+
+    return verifyDatabaseModel(db);
+}
+

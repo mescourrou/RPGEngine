@@ -34,6 +34,16 @@ TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 
 }
 
+TEST_F(CharacterTest, CreatingDatabaseModel)
+{
+    std::filesystem::path usedFile = "data/sample0.db";
+    std::filesystem::remove(usedFile);
+    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+
+    EXPECT_TRUE(Character::createDatabaseModel(db));
+
+}
+
 void CharacterTest::SetUp()
 {
     object::Money::initialize("bronze",

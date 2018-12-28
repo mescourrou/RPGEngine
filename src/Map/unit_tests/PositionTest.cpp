@@ -2,6 +2,10 @@
 
 #include <Position.hpp>
 #include <Map.hpp>
+#include <filesystem>
+#include <Database.hpp>
+#include <Character.hpp>
+
 namespace map {
 
 TEST_F(PositionTest, ClassName)
@@ -96,6 +100,18 @@ TEST_F(PositionTest, Distance)
     Position pos2(9,-3,3);
 
     EXPECT_EQ(pos1 - pos2, sqrt(pow(9-2, 2) + pow(-3-4, 2) + pow(3 - 6, 2)));
+}
+
+TEST_F(PositionTest, CreatingDatabaseModel)
+{
+    std::filesystem::path usedFile = "data/sample0.db";
+    std::filesystem::remove(usedFile);
+    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+
+    character::Character::createDatabaseModel(db);
+
+    EXPECT_TRUE(Position::createDatabaseModel(db));
+
 }
 
 }

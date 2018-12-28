@@ -4,7 +4,7 @@ add_executable(Map_test
 	MapTest.cpp MapTest.hpp
 	PositionTest.cpp PositionTest.hpp
 	VectorTest.cpp VectorTest.hpp)
-target_link_libraries(Map_test gtest Map)
+target_link_libraries(Map_test gtest Map Character)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET Map_test POST_BUILD

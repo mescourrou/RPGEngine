@@ -1,6 +1,7 @@
 #include "InventoryTest.hpp"
 #include <Inventory.hpp>
 #include <Object.hpp>
+#include <Character.hpp>
 #include <filesystem>
 #include <Database.hpp>
 
@@ -87,6 +88,19 @@ TEST_F(InventoryTest, LoadFromDatabase)
     EXPECT_EQ(myInventory.get(1)->name(), "object2");
     EXPECT_EQ(myInventory.get(2)->name(), "object2");
     EXPECT_EQ(myInventory.get(3)->name(), "object2");
+}
+
+TEST_F(InventoryTest, CreatingDatabaseModel)
+{
+    std::filesystem::path usedFile = "data/sample0.db";
+    std::filesystem::remove(usedFile);
+    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+
+    character::Character::createDatabaseModel(db);
+    object::Object::createDatabaseModel(db);
+
+    EXPECT_TRUE(Inventory::createDatabaseModel(db));
+
 }
 
 /**

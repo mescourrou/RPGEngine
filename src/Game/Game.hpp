@@ -65,8 +65,9 @@ public:
 	
 	std::string className() const noexcept override { return "Game"; }
 
-private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+private:
 
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game

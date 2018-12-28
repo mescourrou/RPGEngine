@@ -78,8 +78,9 @@ public:
     virtual void setValue(const Money& value) final { m_value = value; }
 
 
-protected:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+protected:
 
     std::string m_name = "Unkown object"; ///< Name of the object
     std::string m_description; ///< Description of the object

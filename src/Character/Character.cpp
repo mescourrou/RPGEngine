@@ -92,6 +92,19 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return false;
 }
 
+bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
+{
+    namespace Model = database::Model::Character;
+    using namespace database;
+    if (!db)
+        throw CharacterException("No database given.", database::Database::DatabaseException::MISSING_DATABASE);
+
+    db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
+              .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY));
+
+    return verifyDatabaseModel(db);
+}
+
 /**
  * @brief Get the name of the Character
  * @return Name of the Character
