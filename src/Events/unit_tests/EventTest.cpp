@@ -50,11 +50,11 @@ TEST_F(EventTest, MethodFunction)
     Event<std::string> e2;
     AClass o;
 
-    e.subscribeSync(std::bind(&AClass::noArgMethod, &o));
+    e.subscribeSync(&o, &AClass::noArgMethod);
 
     e.trigger();
 
-    e2.subscribeSync(std::bind(&AClass::argMethod, &o, std::placeholders::_1));
+    e2.subscribeSync(&o, &AClass::argMethod);
 
     e2.trigger("Hello");
 

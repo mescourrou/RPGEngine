@@ -106,6 +106,29 @@ public:
         m_syncCallList.push_back(func);
     }
 
+    /**
+     * @brief Subscribe the function to the Event
+     * @param [in] func Function to subscribe
+     */
+    template<typename T, typename M>
+    void subscribeAsync(T* instance, M func)
+    {
+        m_asyncCallList.push_back([=](Args... args){
+            std::bind(func, instance, args...)();
+        });
+    }
+    /**
+     * @brief Subscribe the function to the Event
+     * @param [in] func Function to subscribe
+     */
+    template<typename T, typename M>
+    void subscribeSync(T* instance, M func)
+    {
+        m_syncCallList.push_back([=](Args... args){
+            std::bind(func, instance, args...)();
+        });
+    }
+
 private:
     std::vector<std::function<void(Args...)>> m_asyncCallList; ///< List of functions to call
     std::vector<std::function<void(Args...)>> m_syncCallList; ///< List of functions to call
@@ -164,6 +187,29 @@ public:
     void subscribeSync(std::function<void(void)> func)
     {
         m_syncCallList.push_back(func);
+    }
+
+    /**
+     * @brief Subscribe the function to the Event
+     * @param [in] func Function to subscribe
+     */
+    template<typename T, typename M>
+    void subscribeAsync(T* instance, M func)
+    {
+        m_asyncCallList.push_back([=](){
+            std::bind(func, instance)();
+        });
+    }
+    /**
+     * @brief Subscribe the function to the Event
+     * @param [in] func Function to subscribe
+     */
+    template<typename T, typename M>
+    void subscribeSync(T* instance, M func)
+    {
+        m_syncCallList.push_back([=](){
+            std::bind(func, instance)();
+        });
     }
 
 private:
