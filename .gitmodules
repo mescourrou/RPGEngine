@@ -10,3 +10,9 @@
 [submodule "thirdparty/sqlite3"]
 	path = thirdparty/sqlite3
 	url = https://github.com/LuaDist/libsqlite3.git
+[submodule "thirdparty/sfml"]
+	path = thirdparty/sfml
+	url = https://github.com/SFML/SFML.git
+[submodule "thirdparty/gameGUI"]
+	path = thirdparty/gameGUI
+	url = https://github.com/mescourrou/GameGUI.git
