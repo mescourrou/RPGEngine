@@ -13,7 +13,7 @@
 #include <glog/logging.h>
 
 #include <gflags/gflags.h>
-DEFINE_uint64(verbose, VERBOSE, "Verbosity level");
+DEFINE_int32(verbose, VERBOSE, "Verbosity level");
 
 
 namespace game {
