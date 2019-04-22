@@ -16,3 +16,6 @@
 [submodule "thirdparty/gameGUI"]
 	path = thirdparty/gameGUI
 	url = https://github.com/mescourrou/GameGUI.git
+[submodule "thirdparty/gflags"]
+	path = thirdparty/gflags
+	url = https://github.com/gflags/gflags.git
