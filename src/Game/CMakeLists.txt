@@ -1,4 +1,5 @@
 find_package(glog REQUIRED)
+find_package(gflags REQUIRED)
 
 add_library(Game
 	GameLauncher.cpp GameLauncher.hpp
@@ -11,6 +12,7 @@ target_link_libraries(Game BaseObject
 	Database
 	Events
 	glog
+	gflags
 	stdc++fs)
 target_include_directories(Game PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Game PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")

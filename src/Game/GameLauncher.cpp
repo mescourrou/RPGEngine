@@ -12,6 +12,10 @@
 // External libs
 #include <glog/logging.h>
 
+#include <gflags/gflags.h>
+DEFINE_int32(verbose, VERBOSE, "Verbosity level");
+
+
 namespace game {
 
 /**
@@ -22,7 +26,12 @@ namespace game {
 GameLauncher::GameLauncher(int argc, char **argv)
 {
     google::InitGoogleLogging(argv[0]);
-    google::SetVLOGLevel("*", VERBOSE);
+    gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR) + "."
+                             + std::to_string(VERSION_BUILD));
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    std::cout << "Flag verbose : " << FLAGS_verbose << std::endl;
+
+    google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     m_context.reset(new config::Context(argc, argv));

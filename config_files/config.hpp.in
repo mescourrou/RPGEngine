@@ -1,5 +1,10 @@
 #pragma once
+// File generated from @RPG_CONFIG_FILE_DIR@/config.hpp.in
 constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
 #cmakedefine RPG_BUILD_TEST
 #cmakedefine RPG_BUILD_GUI
-constexpr unsigned int VERSION = 000001;
+constexpr unsigned int VERSION_MAJOR = 0;
+constexpr unsigned int VERSION_MINOR = 1;
+constexpr unsigned int VERSION_BUILD = 1;
+
+constexpr unsigned int VERSION = VERSION_MAJOR*10000 + VERSION_MINOR*100 + VERSION_BUILD;
