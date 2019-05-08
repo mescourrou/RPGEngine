@@ -27,12 +27,7 @@ namespace character
 /**
  * @brief The CharacterException class group exceptions linked to the Character
  */
-class CharacterException : public BaseException
-{
-public:
-    CharacterException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-        BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Character)
 
 #ifdef RPG_BUILD_TEST
 class CharacterTest;
@@ -43,6 +38,8 @@ class CharacterTest;
  */
 class Character : public BaseObject
 {
+    DECLARE_BASEOBJECT(Character)
+
 #ifdef RPG_BUILD_TEST
     friend class character::CharacterTest;
     FRIEND_TEST(CharacterTest, VerifyDatabaseModel);
@@ -68,9 +65,6 @@ public:
      * @param[in] name New name of the Character
      */
     void setName(std::string name) { m_name = std::move(name); }
-
-
-    std::string className() const noexcept override { return "Character"; }
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);

@@ -21,17 +21,11 @@ class sqlite3;
 namespace database
 {
 
-class DatabaseException : public BaseException
-{
-public:
-    static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
-    static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
-    static const inline Errors MISSING_TABLE = Errors(__COUNTER__);
-    static const inline Errors BAD_MODEL = Errors(__COUNTER__);
-    DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
-        BaseException(w, code) {}
-    ~DatabaseException() override = default;
-};
+CREATE_EXCEPTION_CLASS(Database,
+                       ADD_EXCEPTION_CODE(OPENING) \
+                       ADD_EXCEPTION_CODE(MISSING_DATABASE) \
+                       ADD_EXCEPTION_CODE(MISSING_TABLE) \
+                       ADD_EXCEPTION_CODE(BAD_MODEL))
 
 #ifdef RPG_BUILD_TEST
 class DatabaseTest;
@@ -52,6 +46,7 @@ enum DataType : int {
  */
 class Database : public BaseObject
 {
+    DECLARE_BASEOBJECT(Database)
 #ifdef RPG_BUILD_TEST
     friend class database::DatabaseTest;
     FRIEND_TEST(DatabaseTest, QueryText);
@@ -59,8 +54,6 @@ class Database : public BaseObject
 public:
     Database(const std::string& path);
     ~Database() override;
-
-    std::string className() const noexcept override { return "Database"; }
 
     std::vector<std::map<std::string, std::string>> query(const Query& dbQuery);
     bool query(const std::string& query);

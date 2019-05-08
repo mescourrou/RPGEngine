@@ -35,6 +35,7 @@ class ObjectTest;
  */
 class Object : public BaseObject
 {
+    DECLARE_BASEOBJECT(Object)
 #ifdef RPG_BUILD_TEST
     friend class object::ObjectTest;
 #endif
@@ -52,7 +53,6 @@ public:
     static std::shared_ptr<Object> createFromDatabase(const std::string& name, std::shared_ptr<database::Database> db);
 
     // Getters
-    std::string className() const noexcept override { return "Object"; }
     /// @brief Get the object name
     virtual std::string name() const noexcept final { return m_name; }
     /// @brief Get the object description

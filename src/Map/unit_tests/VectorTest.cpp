@@ -13,10 +13,7 @@ TEST_F(VectorTest, InitializerList)
 TEST_F(VectorTest, ClassName)
 {
     Vector<2> myVect;
-    EXPECT_EQ(myVect.className(), "Vector<2>");
-
-    Vector<5> myOtherVect;
-    EXPECT_EQ(myOtherVect.className(), "Vector<5>");
+    EXPECT_EQ(myVect.className(), "Vector");
 }
 
 TEST_F(VectorTest, AtToModify)
