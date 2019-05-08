@@ -21,7 +21,7 @@ class BaseObjectTest;
 
 #define DECLARE_BASEOBJECT(name)                                                                    \
     public:                                                                                         \
-        std::string className() const noexcept override { return "##name"; }                        \
+        std::string className() const noexcept override { return #name; }                        \
     private:                                                                                        \
 
 
