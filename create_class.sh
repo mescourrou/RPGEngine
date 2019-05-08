@@ -15,8 +15,8 @@ function add_files_to_project
 	upper_case="$(tr '[:lower:]' '[:upper:]' <<< ${1:0:1})${1:1}"
 	lower_case="$(tr '[:upper:]' '[:lower:]' <<< ${1:0:1})${1:1}"
 	echo "-> Do not forget to add "
-	echo "${upper_case}.cpp and ${upper_case}.hpp to ${source_dir}/${2}/CMakeLists.txt"
-	echo "${upper_case}Test.cpp and ${upper_case}Test.hpp to ${source_dir}/${2}/unit_tests/CMakeLists.txt"
+	echo "'${upper_case}.cpp ${upper_case}.hpp' to ${source_dir}/${2}/CMakeLists.txt"
+	echo "'${upper_case}Test.cpp ${upper_case}Test.hpp' to ${source_dir}/${2}/unit_tests/CMakeLists.txt"
 }
 
 
@@ -56,14 +56,13 @@ class ${upper_case}Test;
 
 class $upper_case : public BaseObject
 {
+	DECLARE_BASEOBJECT($upper_case)
 #ifdef RPG_BUILD_TEST
 	friend class ${lower_case}::${upper_case}Test;
 #endif
 public:
 	$upper_case();
 	~${upper_case}() override = default;
-
-	std::string className() const noexcept override { return \"${upper_case}\"; }
 };
 
 } // namespace $lower_case
