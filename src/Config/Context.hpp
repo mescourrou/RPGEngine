@@ -21,6 +21,7 @@ class ContextTest;
  */
 class Context : public BaseObject
 {
+    DECLARE_BASEOBJECT(Context)
 #ifdef RPG_BUILD_TEST
     friend class config::ContextTest;
     FRIEND_TEST(ContextTest, Initialization);
@@ -29,8 +30,6 @@ public:
     Context() = delete;
     Context(int argc, char **argv);
     ~Context() override = default;
-
-    std::string className() const noexcept override { return "Context"; }
 
     /// @brief Return the path to the runtime directory
     std::string runtimeDirectory() const { return m_runtimeDirectory; }

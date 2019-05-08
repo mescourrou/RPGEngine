@@ -18,11 +18,7 @@ class Database;
 namespace object
 {
 
-class InventoryException : public BaseException
-{
-public:
-    InventoryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Inventory)
 
 class Object;
 

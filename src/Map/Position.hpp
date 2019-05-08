@@ -19,11 +19,7 @@ namespace map
 /**
  * @brief Manage position exception
  */
-class PositionException : BaseException
-{
-public:
-    PositionException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Position)
 
 
 class Map;
@@ -37,6 +33,7 @@ class PositionTest;
  */
 class Position : public BaseObject
 {
+    DECLARE_BASEOBJECT(Position)
 #ifdef RPG_BUILD_TEST
     friend class map::PositionTest;
 #endif
@@ -83,8 +80,6 @@ public:
     Position& operator+=(const Vector<3>& m) { move(m); return *this; }
     bool operator==(const Position& other);
     bool operator!=(const Position& other);
-
-    std::string className() const noexcept override { return "Position"; }
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);

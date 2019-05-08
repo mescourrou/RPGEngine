@@ -57,3 +57,15 @@ protected:
     Errors m_code; ///< Error code
 };
 
+#define ADD_EXCEPTION_CODE(NAME)                                                                        \
+    static const inline Errors NAME = Errors(__COUNTER__);                                              \
+
+#define CREATE_EXCEPTION_CLASS(NAME, ...)                                                               \
+    class NAME##Exception : public BaseException                                                        \
+    {                                                                                                   \
+    public:                                                                                             \
+    __VA_ARGS__                                                                                         \
+    NAME##Exception(const std::string& w, const Errors& code = BaseException::UNKNOWN):                 \
+        BaseException(w, code) {}                                                                       \
+    ~NAME##Exception() override = default;                                                              \
+};

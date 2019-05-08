@@ -3,6 +3,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseException.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -19,11 +20,14 @@ namespace map
 class MapTest;
 #endif
 
+CREATE_EXCEPTION_CLASS(Map)
+
 /**
  * @brief Manage the core map
  */
 class Map : public BaseObject
 {
+    DECLARE_BASEOBJECT(Map)
 #ifdef RPG_BUILD_TEST
     friend class map::MapTest;
 #endif
@@ -42,8 +46,6 @@ public:
 
     bool operator==(const Map& other) const noexcept { return m_name == other.m_name; }
     bool operator!=(const Map& other) const noexcept { return m_name != other.m_name; }
-
-    std::string className() const noexcept override { return "Map"; }
 
 private:
     std::string m_name; ///< Name of the map

@@ -25,6 +25,7 @@ class VectorTest;
 template <const unsigned int m_kSize>
 class Vector : public BaseObject
 {
+    DECLARE_BASEOBJECT(Vector)
 #ifdef RPG_BUILD_TEST
     friend class map::VectorTest;
 #endif
@@ -172,9 +173,6 @@ public:
         }
         return false;
     }
-
-
-    std::string className() const noexcept override { return "Vector<"+std::to_string(m_kSize)+">"; }
 
 protected:
     std::vector<double> m_vector; ///< Vector

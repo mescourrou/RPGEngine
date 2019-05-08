@@ -19,13 +19,8 @@ namespace maker
 /**
  * @brief Manage the exceptions of Game
  */
-class MakerException : public BaseException
-{
-public:
-    static const inline Errors VERSION = Errors(__COUNTER__);
-    MakerException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-        BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Maker,
+                       ADD_EXCEPTION_CODE(VERSION))
 
 #ifdef RPG_BUILD_TEST
 class MakerTest;
@@ -33,6 +28,7 @@ class MakerTest;
 
 class Maker : public BaseObject
 {
+    DECLARE_BASEOBJECT(Maker)
 #ifdef RPG_BUILD_TEST
 	friend class maker::MakerTest;
 #endif
@@ -48,8 +44,6 @@ public:
 
     void loadDatabase(const std::string& filename);
     void subscribeDatabaseLoaded(std::function<void(DatabaseStatus)> func) { m_signalDatabaseLoaded.subscribeAsync(func);}
-
-	std::string className() const noexcept override { return "Maker"; }
 
     bool createDatabaseModel();
 private:

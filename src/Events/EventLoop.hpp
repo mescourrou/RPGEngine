@@ -17,14 +17,13 @@ class EventLoopTest;
 
 class EventLoop : public BaseObject
 {
+    DECLARE_BASEOBJECT(EventLoop)
 #ifdef RPG_BUILD_TEST
 	friend class events::EventLoopTest;
 #endif
 public:
 	EventLoop();
 	~EventLoop() override = default;
-
-	std::string className() const noexcept override { return "EventLoop"; }
 };
 
 } // namespace events

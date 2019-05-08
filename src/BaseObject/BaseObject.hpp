@@ -19,6 +19,12 @@
 class BaseObjectTest;
 #endif
 
+#define DECLARE_BASEOBJECT(name)                                                                    \
+    public:                                                                                         \
+        std::string className() const noexcept override { return "##name"; }                        \
+    private:                                                                                        \
+
+
 /**
  * @brief Common root object
  */
