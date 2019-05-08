@@ -1,6 +1,9 @@
 find_package(gtest REQUIRED)
 
-add_executable(Quest_test QuestTest.cpp QuestTest.hpp)
+add_executable(Quest_test
+	QuestTest.cpp QuestTest.hpp
+	QuestJournalTest.cpp QuestJournalTest.hpp
+	DialogueTest.cpp DialogueTest.hpp)
 target_link_libraries(Quest_test gtest Quest)
 
 if(EXISTS /data AND IS_DIRECTORY /data)
