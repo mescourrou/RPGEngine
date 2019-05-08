@@ -40,6 +40,7 @@ class MoneyTest;
  */
 class Money : public BaseObject
 {
+    DECLARE_BASEOBJECT(Money)
 #ifdef RPG_BUILD_TEST
     friend class object::MoneyTest;
 #endif
@@ -67,7 +68,6 @@ public:
     static unsigned long numberOfMoney() { return m_moneyNames.size(); }
 
     // Non static
-    std::string className() const noexcept override { return "Money"; }
     unsigned int value(const std::string& moneyName) const;
 
 

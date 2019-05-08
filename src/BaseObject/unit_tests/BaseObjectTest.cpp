@@ -5,11 +5,11 @@
  */
 class AnObject : public BaseObject
 {
+    DECLARE_BASEOBJECT(AnObject)
     friend class BaseObjectTest;
 public:
     AnObject(BaseObject* parent = nullptr) : BaseObject(parent) {}
     ~AnObject() override = default;
-    std::string className() const noexcept override { return "AnObject"; }
 };
 
 /*

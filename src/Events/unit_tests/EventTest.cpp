@@ -33,11 +33,11 @@ TEST_F(EventTest, StandardFunction)
 
 class AClass : public BaseObject
 {
+    DECLARE_BASEOBJECT(AClass)
 public:
     AClass() = default;
     ~AClass() override = default;
 
-    std::string className() const noexcept override { return "AClass"; }
     void noArgMethod() { m_noArgMethod = true; }
     void argMethod(std::string word) { if (word == "Hello") m_noArgMethod = true; }
 

@@ -1,3 +1,7 @@
+/**
+ * @file BaseObject.hpp
+ * @brief Declaration of the abstract BaseObject class and some usefull macros
+ */
 #pragma once
 
 // I/O
@@ -7,6 +11,7 @@
 #include <list>
 #include <algorithm>
 #include <string>
+#include <string_view>
 
 // Project
 #include "general_config.hpp"
@@ -19,9 +24,15 @@
 class BaseObjectTest;
 #endif
 
+/**
+ * @def DECLARE_BASEOBJECT(name)
+ * @brief Create the must have methods for every class derivated from BaseObject
+ *
+ * @param name Name of the class
+ */
 #define DECLARE_BASEOBJECT(name)                                                                    \
     public:                                                                                         \
-        std::string className() const noexcept override { return #name; }                        \
+        std::string className() const noexcept override { return #name; }                           \
     private:                                                                                        \
 
 
@@ -41,12 +52,7 @@ public:
     virtual ~BaseObject() noexcept ;
 
     virtual BaseObject *parent() const noexcept final;
-    /** @fn std::string className() const noexcept
-     * @brief Return the class name
-     * Must be overrided in each derived classes
-     */
     virtual std::string className() const noexcept = 0;
-
 protected:
     virtual void setParent(BaseObject* parent) noexcept final;
 
