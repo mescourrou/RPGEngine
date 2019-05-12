@@ -5,7 +5,7 @@ INCLUDE(ExternalProject)
 ExternalProject_Add(
 	sfml_project
 
-	SOURCE_DIR "${CONFIG_THIRDPARTY_DIR}/sfml"
+	SOURCE_DIR "${RPG_THIRDPARTY_DIR}/sfml"
 	PREFIX "${CMAKE_BINARY_DIR}/SFML"
 	INSTALL_COMMAND ""
 	)
