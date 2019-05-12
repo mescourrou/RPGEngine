@@ -6,7 +6,7 @@ add_executable(Quest_test
 	DialogueTest.cpp DialogueTest.hpp)
 target_link_libraries(Quest_test gtest Quest)
 
-if(EXISTS /data AND IS_DIRECTORY /data)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET Quest_test POST_BUILD
   COMMAND "${CMAKE_COMMAND}" -E copy_directory
 	 "${CMAKE_CURRENT_SOURCE_DIR}/data"
