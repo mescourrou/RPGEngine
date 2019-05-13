@@ -2,6 +2,8 @@
 
 #include <glog/logging.h>
 #include <VerbosityLevels.hpp>
+
+#include <json.hpp>
 /**
  * @brief Constructor of the map
  * @param name Name of the map. Must match the database
