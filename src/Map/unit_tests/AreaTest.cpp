@@ -80,4 +80,28 @@ TEST_F(AreaTest, IntersectYHalfLine)
 
 }
 
+TEST_F(AreaTest, IsInsideConvex)
+{
+    Area a{{0,0}, {1,1}, {1,2}, {-1,1}, {0,1}};
+
+    EXPECT_TRUE(a.isInside(Vector<2>{1,1}));
+    EXPECT_FALSE(a.isInside(Vector<2>{0.6,0.5}));
+    EXPECT_TRUE(a.isInside(Vector<2>{1,2}));
+    EXPECT_FALSE(a.isInside(Vector<2>{0,2}));
+    EXPECT_FALSE(a.isInside(Vector<2>{-2,1}));
+    EXPECT_TRUE(a.isInside(Vector<2>{-0.5,1}));
+    EXPECT_FALSE(a.isInside(Vector<2>{-0.5,1.5}));
+}
+
+TEST_F(AreaTest, IsInsideConcave)
+{
+    Area a{{0,0}, {2,0},{2,1.5}, {1,0.5}, {0,1.5}};
+
+    EXPECT_TRUE(a.isInside(Vector<2>{0.5,0.5}));
+    EXPECT_TRUE(a.isInside(Vector<2>{1.5,0.5}));
+    EXPECT_FALSE(a.isInside(Vector<2>{1,1}));
+    EXPECT_FALSE(a.isInside(Vector<2>{-0.5,0.5}));
+
+}
+
 }
