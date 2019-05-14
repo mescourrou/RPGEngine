@@ -4,7 +4,8 @@ find_package(json REQUIRED)
 add_library(Map
 	Map.cpp Map.hpp
 	Position.cpp Position.hpp
-	Vector.cpp Vector.hpp)
+	Vector.cpp Vector.hpp
+	Area.cpp Area.hpp)
 target_link_libraries(Map
 	BaseObject
 	Database

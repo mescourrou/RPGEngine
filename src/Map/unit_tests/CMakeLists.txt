@@ -3,7 +3,8 @@ find_package(gtest REQUIRED)
 add_executable(Map_test
 	MapTest.cpp MapTest.hpp
 	PositionTest.cpp PositionTest.hpp
-	VectorTest.cpp VectorTest.hpp)
+	VectorTest.cpp VectorTest.hpp
+	AreaTest.cpp AreaTest.hpp)
 target_link_libraries(Map_test gtest Map Character)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")

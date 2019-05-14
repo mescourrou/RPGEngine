@@ -178,5 +178,18 @@ protected:
     std::vector<double> m_vector; ///< Vector
 };
 
+template<const unsigned int kSize>
+std::ostream& operator<<(std::ostream& stream, const Vector<kSize>& vector)
+{
+    stream << "(";
+    for (unsigned int i = 0; i < kSize; i++)
+    {
+        stream << vector.at(i);
+        if (i != kSize-1)
+            stream << ", ";
+    }
+    stream << ")";
+}
+
 } // namespace map
 
