@@ -25,7 +25,7 @@ public:
     Area(std::initializer_list<Vector<2>> list);
 
     void addPoint(const Vector<2>& point, int index = -1);
-    bool isInside(const Vector<2>& point);
+    bool isInside(const Vector<2>& point) const;
 
     std::vector<Vector<2>> pointList() const;
     size_t pointCount() const;

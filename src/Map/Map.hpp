@@ -1,9 +1,15 @@
 #pragma once
+// STL
+#include <vector>
+#include <map>
 
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <Vector.hpp>
+#include <Position.hpp>
+#include <Area.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -47,8 +53,19 @@ public:
     bool operator==(const Map& other) const noexcept { return m_name == other.m_name; }
     bool operator!=(const Map& other) const noexcept { return m_name != other.m_name; }
 
+    void addCollisionArea(const Area& area);
+    bool collision(const Vector<2>& point) const;
+
+    void addTeleportArea(const Area& area, const Position& destination);
+    bool doITeleport(const Vector<2>& point, Position& destination) const;
+
 private:
     std::string m_name; ///< Name of the map
+
+    std::vector<Area> m_collisionLayer;
+    // std::vector<NPC> m_npcLayer; ///< TODO: Add this when NPC created
+    std::map<Area, Position> m_teleportArea;
+
 };
 
 } // namespace map

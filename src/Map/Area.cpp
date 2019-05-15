@@ -23,7 +23,7 @@ void Area::addPoint(const Vector<2> &point, int index)
     m_points.insert(it, point);
 }
 
-bool Area::isInside(const Vector<2> &point)
+bool Area::isInside(const Vector<2> &point) const
 {
     unsigned int nbIntersections = 0;
 
