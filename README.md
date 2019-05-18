@@ -16,8 +16,9 @@ git submodule update --init --recursive
 
 ## Configuration
 Here are the CMake variables:
+
 | Variable | Type | Description | Default |
-| ------ | ------ | ------ | ------ |
+| --- | --- | --- | --- |
 | RPG_BUILD_GUI | Bool | Enable the building of the GUI part of the engine | ON |
 | RPG_BUILD_TEST | Bool | Enable the build of tests. Disable this if you do not want to build the tests and googletest dependency | ON |
 | RPG_COMPILE_THIRDPARTIES | Bool | Enable the build of the thirdparties. | ON |
@@ -37,3 +38,9 @@ make
 
 ## Documentation
 You can build the documentation with `make doc` when you are in the build directory. You can use `make show_dow` to open the html in you browser.
+
+# Contribute
+To contribute, proceed by pull requests.
+
+Please add some tests for your feature. Thus, your feature would be tested before each merge and will stay functionnal.
+Do not forget to add documentation too !
