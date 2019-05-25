@@ -37,6 +37,7 @@ public:
     std::shared_ptr<Config> config() const { return  m_config; }
     /// @brief Access the config directory (from runtime directory)
     const std::string kConfigPath() const { return m_kConfigPath; }
+    const std::string kMapPath() const { return m_kRessourcesDirPath + '/' + m_kMapDirPath; }
     /// @brief Program arguments
     const std::vector<std::string>& kProgramArguments() const { return m_programArguments; }
     /// @brief Get the location of the current running game
@@ -48,6 +49,9 @@ private:
     // Constants
     const std::string m_kConfigPath = "config"; ///< Directory where are the config files
     const std::string m_kGlobalConfigFilename = "global.ini"; ///< Main config filename
+
+    const std::string m_kRessourcesDirPath = "ressources";
+    const std::string m_kMapDirPath = "map";
 
     // Global variables
     std::string m_runtimeDirectory = ""; ///< Path to the runtime directory

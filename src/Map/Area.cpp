@@ -9,7 +9,7 @@ Area::Area(std::initializer_list<Vector<2>> list) : m_points{list}
 
 void Area::addPoint(const Vector<2> &point, int index)
 {
-    if (std::abs(index) >= m_points.size())
+    if (std::abs(index) >= m_points.size() && index != -1)
         return;
     if (index < 0)
     {
@@ -49,6 +49,14 @@ bool Area::isInside(const Vector<2> &point) const
     return nbIntersections % 2 == 1;
 }
 
+void Area::move(const Vector<2> &vector)
+{
+    for (auto& pt : m_points)
+    {
+        pt += vector;
+    }
+}
+
 std::vector<Vector<2>> Area::pointList() const
 {
     return m_points;
@@ -86,4 +94,18 @@ bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const 
     return false;
 }
 
+std::ostream& operator<<(std::ostream& stream, const Area& area)
+{
+    stream << "{ ";
+    for (auto pt = area.m_points.begin(); pt != area.m_points.end(); ++pt)
+    {
+        stream << *pt;
+        if (pt != area.m_points.end())
+            stream << ", ";
+    }
+    stream << "}";
+
+    return stream;
+}
 } // namespace map
+

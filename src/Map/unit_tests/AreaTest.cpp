@@ -26,6 +26,19 @@ TEST_F(AreaTest, InsertPointAtTheEnd)
 
 }
 
+TEST_F(AreaTest, InsertPointWhenEmpty)
+{
+    Area a;
+    a.addPoint({1,2});
+    a.addPoint({3,4});
+    a.addPoint({5,6});
+
+    ASSERT_EQ(a.pointCount(), 3);
+    EXPECT_EQ(a.pointList().at(0), Vector<2>({1,2}));
+    EXPECT_EQ(a.pointList().at(1), Vector<2>({3,4}));
+    EXPECT_EQ(a.pointList().at(2), Vector<2>({5,6}));
+}
+
 TEST_F(AreaTest, IntersectYHalfLine)
 {
     {
