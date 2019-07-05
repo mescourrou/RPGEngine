@@ -50,7 +50,10 @@ public:
     /**
      * @brief Return the description of the exception
      */
-    const char* what() const noexcept override { return m_what.c_str(); }
+    const char* what() const noexcept override
+    {
+        return m_what.c_str();
+    }
     /**
      * @brief Return the code of the error
      */
@@ -119,4 +122,8 @@ protected:
     NAME##Exception(const std::string& w, const Errors& code = BaseException::UNKNOWN):                 \
         BaseException(w, code) {}                                                                       \
     ~NAME##Exception() override = default;                                                              \
+    const char* what() const noexcept override                                                          \
+    {                                                                                                   \
+        return m_what.c_str();                                                                          \
+    }                                                                                                   \
 };

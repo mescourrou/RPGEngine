@@ -3,6 +3,8 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <VerbosityLevels.hpp>
+#include <glog/logging.h>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -27,22 +29,32 @@ class Context : public BaseObject
     FRIEND_TEST(ContextTest, Initialization);
 #endif
 public:
-    Context() = delete;
     Context(int argc, char **argv);
     ~Context() override = default;
 
     /// @brief Return the path to the runtime directory
-    std::string runtimeDirectory() const { return m_runtimeDirectory; }
+    virtual std::string runtimeDirectory() const { VLOG(verbosityLevel::FUNCTION_CALL) << "runtimeDirectory";
+                                           return m_runtimeDirectory; }
     /// @brief Return the config
-    std::shared_ptr<Config> config() const { return  m_config; }
+    virtual std::shared_ptr<Config> config() const { VLOG(verbosityLevel::FUNCTION_CALL) << "config";
+                                             return  m_config; }
     /// @brief Access the config directory (from runtime directory)
-    const std::string kConfigPath() const { return m_kConfigPath; }
-    const std::string kMapPath() const { return m_kRessourcesDirPath + '/' + m_kMapDirPath; }
+    virtual const std::string kConfigPath() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kConfigPath";
+                                            return m_kConfigPath; }
+    virtual const std::string kMapPath() const
+    {
+        return std::string(m_gameLocation).append("/")
+                .append(m_kRessourcesDirPath).append("/").append(m_kMapDirPath);
+    }
     /// @brief Program arguments
-    const std::vector<std::string>& kProgramArguments() const { return m_programArguments; }
+    virtual const std::vector<std::string>& kProgramArguments() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kProgramArguments";
+                                                                return m_programArguments; }
     /// @brief Get the location of the current running game
-    std::string& gameLocation() { return m_gameLocation; }
+    virtual std::string& gameLocation() { VLOG(verbosityLevel::FUNCTION_CALL) << "gameLocation";
+                                  return m_gameLocation; }
 
+protected:
+    Context() = default; // For mocking
 private:
     std::vector<std::string> m_programArguments; ///< List of program arguments (from argv)
 

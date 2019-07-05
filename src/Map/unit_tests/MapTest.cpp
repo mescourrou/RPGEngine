@@ -4,20 +4,24 @@ namespace map {
 
 TEST_F(MapTest, ClassName)
 {
-    Map map("Somewhere");
+    Map map({}, "Somewhere");
     EXPECT_EQ(map.className(), "Map");
 }
 
 TEST_F(MapTest, Init)
 {
-    Map map("Somewhere");
+    Map map({}, "Somewhere");
     EXPECT_EQ(map.name(), "Somewhere");
 }
 
 TEST_F(MapTest, LoadCollisionLayer)
 {
-    Map map("Map1");
-    ASSERT_TRUE(map.load("data/Map1.json"));
+    using ::testing::Return;
+    config::ContextMock* context = new config::ContextMock;
+    EXPECT_CALL((*context), kMapPath()).WillOnce(Return("data"));
+    auto contextPtr = std::shared_ptr<config::Context>(static_cast<config::Context*>(context));
+    Map map(contextPtr, "Map1");
+    ASSERT_TRUE(map.load("Map1"));
 
     EXPECT_TRUE(map.collision(Vector<2>{950,1390}));
     EXPECT_TRUE(map.collision(Vector<2>{1141,1328}));
@@ -62,6 +66,7 @@ TEST_F(MapTest, JsonTests)
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
+    ::testing::InitGoogleMock(&argc, argv);
     return RUN_ALL_TESTS();
 }
 

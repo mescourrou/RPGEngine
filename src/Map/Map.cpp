@@ -14,7 +14,8 @@ namespace map {
  * @brief Constructor of the map
  * @param name Name of the map. Must match the database
  */
-Map::Map(const std::string &name) : m_name(name)
+Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :
+    m_name(name), m_context(context)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 
@@ -22,7 +23,7 @@ Map::Map(const std::string &name) : m_name(name)
 
 bool Map::load(const std::string& filename)
 {
-    std::ifstream file(filename);
+    std::ifstream file(m_context->kMapPath() + "/" + filename + ".json");
     if (file.is_open())
     {
         m_json.clear();
@@ -30,6 +31,8 @@ bool Map::load(const std::string& filename)
         if (!m_json.is_object())
             return false;
 
+        if (!doLoadTilesets(m_json))
+            return false;
 
         if (!m_json[KEY_LAYERS].is_array())
             return false;
@@ -39,15 +42,25 @@ bool Map::load(const std::string& filename)
             if (!layer[KEY_LAYER_NAME].is_string())
                 return false;
             if (layer[KEY_LAYER_NAME] == NAME_COLLISIONS_LAYER)
-                loadCollisionLayer(layer);
+            {
+                if (!loadCollisionLayer(layer))
+                    return false;
+            }
             else if (layer[KEY_LAYER_NAME] == NAME_TELEPORTS_LAYER)
+            {
                 std::cout << "Found teleports" << std::endl;
+            }
+            else if (layer[KEY_LAYER_TYPE] == TYPE_DATA_LAYER)
+            {
+                if (!doLoadTiles(layer))
+                    return false;
+            }
         }
 
         return true;
     }
     else {
-        LOG(ERROR) << "Impossible to open " << filename;
+        LOG(ERROR) << "Impossible to open " << m_context->kMapPath() + "/" + filename + ".json";
         return false;
     }
 }
@@ -65,6 +78,11 @@ bool Map::collision(const Vector<2> &point) const
             return true;
     }
     return false;
+}
+
+void Map::addTeleportArea(const Area &area, const Position &destination)
+{
+
 }
 
 bool Map::doITeleport(const Vector<2> &point, Position &destination) const
@@ -136,6 +154,8 @@ bool Map::loadCollisionLayer(const json& layer)
             }
         }
     }
+
+    return true;
 }
 
 }

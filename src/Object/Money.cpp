@@ -69,6 +69,7 @@ bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> d
                                                                     std::atoi(result.at(i).at(Model::VALUE).c_str())));
     }
     LOG(INFO) << "Initializing Money system successfully";
+    m_initialized = true;
     return true;
 }
 

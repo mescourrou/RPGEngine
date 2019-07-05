@@ -14,6 +14,15 @@ add_custom_command(TARGET ${EngineName} POST_BUILD
 message("Copying config directory")
 endif()
 
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/game1" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/game1")
+add_custom_command(TARGET ${EngineName} POST_BUILD
+  COMMAND "${CMAKE_COMMAND}" -E copy_directory
+	 "${CMAKE_CURRENT_SOURCE_DIR}/game1"
+	 "${CMAKE_CURRENT_BINARY_DIR}/game1"
+  COMMENT "Copying config directory")
+message("Copying game1 directory")
+endif()
+
 if (RPG_BUILD_GUI)
 	add_subdirectory(GUI)
 endif()

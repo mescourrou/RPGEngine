@@ -46,17 +46,6 @@ protected:
     std::shared_ptr<config::Config> m_config;   ///< Game configuration
     std::shared_ptr<database::Database> m_db;   ///< Game database
     std::shared_ptr<Game> m_game;               ///< Game to prepare
-
-    /**
-     * @brief Contains the structure of the .ini file
-     */
-    struct configFile {
-    static constexpr char MAIN_CONFIGURATION_FILE[] = "main.ini";
-    struct ressources {
-    static constexpr char SECTION[] = "Ressources";
-    static constexpr char DATABASE[] = "database";
-    };
-    };
 };
 
 } // namespace game

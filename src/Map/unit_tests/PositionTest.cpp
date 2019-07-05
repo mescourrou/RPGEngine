@@ -26,7 +26,7 @@ TEST_F(PositionTest, Constructors)
     EXPECT_EQ(withoutMap.y(), 5);
     EXPECT_EQ(withoutMap.z(), 3);
 
-    Map map("France");
+    Map map({}, "France");
     Position withMap(std::make_shared<Map>(map), 3,4,2);
     EXPECT_EQ(withMap.x(), 3);
     EXPECT_EQ(withMap.y(), 4);
@@ -69,7 +69,7 @@ TEST_F(PositionTest, Equal)
     EXPECT_TRUE(posRef != posDiff);
     }
     // With Same Map
-    Map map("France");
+    Map map({}, "France");
     {
     Position posRef(std::make_shared<Map>(map),2,3,5);
     Position posDiff(std::make_shared<Map>(map),4,-3,5);
@@ -81,7 +81,7 @@ TEST_F(PositionTest, Equal)
     EXPECT_TRUE(posRef != posDiff);
     }
 
-    Map map2("Spain");
+    Map map2({}, "Spain");
     {
     Position posRef(std::make_shared<Map>(map),2,3,5);
     Position posDiff(std::make_shared<Map>(map2),2,3,5);

@@ -25,11 +25,7 @@ class Database;
 namespace object
 {
 
-class MoneyException : public BaseException
-{
-public:
-    MoneyException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Money)
 
 #ifdef RPG_BUILD_TEST
 class MoneyTest;
