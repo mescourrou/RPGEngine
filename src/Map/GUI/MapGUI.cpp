@@ -2,6 +2,7 @@
 #include <tinyxml2.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 #include <glog/logging.h>
 
@@ -15,6 +16,20 @@ map::GUI::MapGUI::MapGUI(std::shared_ptr<config::Context> context, const std::st
 
 }
 
+void MapGUI::move(double offsetX, double offsetY)
+{
+    m_centerOfView += Vector<2>{offsetX, offsetY};
+    if (m_centerOfView.x() < 0)
+        m_centerOfView.x() = 0;
+    if (m_centerOfView.y() < 0)
+        m_centerOfView.y() = 0;
+
+    if (m_centerOfView.x() >= (m_width-1)*m_tileWidth)
+        m_centerOfView.x() = (m_width-1)*m_tileWidth;
+    if (m_centerOfView.y() >= (m_height-1)*m_tileHeight)
+        m_centerOfView.y() = (m_height-1)*m_tileHeight;
+}
+
 void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     // Position on the map of the top left corner of the screen
@@ -23,31 +38,36 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
                                  m_centerOfView.y() - target.getSize().y / 2);
 
     // Coordinates of the tile of the top left corner
-    unsigned int i = topLeftPosition.x / m_tileWidth;
-    unsigned int j = topLeftPosition.y / m_tileHeight;
+    int i = topLeftPosition.x / m_tileWidth;
+    int j = topLeftPosition.y / m_tileHeight;
 
     sf::Vector2f origin;
     // Position on the screen of the top left displayed tile
     // It's negative to cover all the screen
-    origin.x = - (m_tileWidth - static_cast<int>(m_centerOfView.x()) % m_tileWidth);
-    origin.y = - (m_tileHeight - static_cast<int>(m_centerOfView.y()) % m_tileHeight);
+    origin.x = - (static_cast<int>(m_tileWidth) - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth));
+    origin.y = - (static_cast<int>(m_tileHeight) - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight));
 
     // Copy to iterate without modify the origin
     sf::Vector2f tilePosition(origin);
 
-    while (tilePosition.y < topLeftPosition.y + target.getSize().y)
+    while (tilePosition.y < target.getSize().y)
     {
-        while(tilePosition.x < topLeftPosition.x + target.getSize().x)
+        while(tilePosition.x < target.getSize().x)
         {
-            sf::Sprite tile(m_tiles.at(m_idMap.at(i).at(j)));
-            tile.setPosition(tilePosition);
-
-            target.draw(tile, states);
+            if (i >= 0 && j >= 0 && i < m_width && j < m_height)
+            {
+                sf::Sprite tile(m_tiles.at(m_idMap.at(i).at(j)));
+                tile.setPosition(tilePosition);
+                target.draw(tile, states);
+            }
 
             tilePosition.x += m_tileWidth;
+            i++;
         }
         tilePosition.x = origin.x;
         tilePosition.y += m_tileHeight;
+        i = topLeftPosition.x / m_tileWidth;
+        j++;
     }
 }
 
@@ -99,10 +119,12 @@ bool MapGUI::doLoadTilesets(const json &json)
         if (!loadTileset(tileset))
             return false;
     }
+    return true;
 }
 
 bool MapGUI::loadTileset(const json &tileset)
 {
+    VLOG(verbosityLevel::FUNCTION_CALL) << "loadTileset";
     if (!tileset.is_object())
         return false;
     if (!tileset.contains(KEY_TILESET_FIRST_ID) || !tileset[KEY_TILESET_FIRST_ID].is_number_integer())
@@ -158,7 +180,8 @@ bool MapGUI::loadTileset(const json &tileset)
     imageFilename = m_context->kMapPath() + '/' + imageFilename;
 
     sf::Texture texture;
-    texture.loadFromFile(imageFilename);
+    if (!texture.loadFromFile(imageFilename))
+        LOG(WARNING) << "Texture from " << imageFilename << " not loaded";
 
     for (unsigned int line = 0; ; line++)
     {

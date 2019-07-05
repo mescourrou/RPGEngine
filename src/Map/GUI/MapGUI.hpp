@@ -23,6 +23,8 @@ public:
     MapGUI(std::shared_ptr<config::Context> context, const std::string& name);
     ~MapGUI() override final = default;
 
+    void move(double offsetX, double offsetY);
+
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     bool doLoadTiles(const json &layer) override;

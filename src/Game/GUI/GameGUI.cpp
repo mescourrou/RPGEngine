@@ -53,7 +53,11 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
         return false;
     LOG(INFO) << "Load first map";
     m_map = std::make_shared<map::GUI::MapGUI>(m_context, result.at(1).at(Model::FIRST_MAP_NAME));
-    m_map->load(result.at(1).at(Model::FIRST_MAP_NAME));
+    if (!m_map->load(result.at(1).at(Model::FIRST_MAP_NAME)))
+    {
+        LOG(ERROR) << "Error during loading the map";
+        return false;
+    }
     return true;
 }
 
@@ -68,6 +72,24 @@ void GameGUI::eventManager()
         {
             m_window->close();
             m_cbOnClose();
+        }
+        if (event.type == sf::Event::KeyPressed)
+        {
+            switch (event.key.code)
+            {
+            case sf::Keyboard::Left:
+                m_map->move(-10, 0);
+                break;
+            case sf::Keyboard::Right:
+                m_map->move(10, 0);
+                break;
+            case sf::Keyboard::Up:
+                m_map->move(0, -10);
+                break;
+            case sf::Keyboard::Down:
+                m_map->move(0, 10);
+                break;
+            }
         }
     }
 }
