@@ -4,6 +4,9 @@
 
 namespace map {
 
+/*
+ * Test if the initialization with a initializerList works
+ */
 TEST_F(AreaTest, InitializerList)
 {
     Area a{{1,2},{3,4},{5,6}};
@@ -14,6 +17,9 @@ TEST_F(AreaTest, InitializerList)
     EXPECT_EQ(a.pointList().at(2), Vector<2>({5,6}));
 }
 
+/*
+ * Test insertion of a point at the end
+ */
 TEST_F(AreaTest, InsertPointAtTheEnd)
 {
     Area a{{1,2},{3,4}};
@@ -23,9 +29,11 @@ TEST_F(AreaTest, InsertPointAtTheEnd)
     EXPECT_EQ(a.pointList().at(0), Vector<2>({1,2}));
     EXPECT_EQ(a.pointList().at(1), Vector<2>({3,4}));
     EXPECT_EQ(a.pointList().at(2), Vector<2>({5,6}));
-
 }
 
+/*
+ * Insertion of a point when empty
+ */
 TEST_F(AreaTest, InsertPointWhenEmpty)
 {
     Area a;
@@ -39,6 +47,9 @@ TEST_F(AreaTest, InsertPointWhenEmpty)
     EXPECT_EQ(a.pointList().at(2), Vector<2>({5,6}));
 }
 
+/*
+ * Test the intersection algorithm
+ */
 TEST_F(AreaTest, IntersectYHalfLine)
 {
     {
@@ -93,6 +104,9 @@ TEST_F(AreaTest, IntersectYHalfLine)
 
 }
 
+/*
+ * Test Inside with a convex polygon
+ */
 TEST_F(AreaTest, IsInsideConvex)
 {
     Area a{{0,0}, {1,1}, {1,2}, {-1,1}, {0,1}};
@@ -106,6 +120,9 @@ TEST_F(AreaTest, IsInsideConvex)
     EXPECT_FALSE(a.isInside(Vector<2>{-0.5,1.5}));
 }
 
+/*
+ * Test Inside with a concave polygon
+ */
 TEST_F(AreaTest, IsInsideConcave)
 {
     Area a{{0,0}, {2,0},{2,1.5}, {1,0.5}, {0,1.5}};

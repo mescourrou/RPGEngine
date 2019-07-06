@@ -4,6 +4,8 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <VerbosityLevels.hpp>
+
+// External libs
 #include <glog/logging.h>
 
 #ifdef RPG_BUILD_TEST

@@ -1,6 +1,4 @@
-#ifndef TESTCONFIG_HPP
-#define TESTCONFIG_HPP
-
+#pragma once
 #include <gtest/gtest.h>
 
 namespace config {
@@ -12,4 +10,3 @@ public:
 };
 
 }
-#endif // TESTCONFIG_HPP

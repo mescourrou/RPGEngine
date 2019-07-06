@@ -1,6 +1,8 @@
 #include "ContextTest.hpp"
-
 #include <filesystem>
+
+#include <Context.hpp>
+
 namespace config {
 
 char** ContextTest::m_argv = nullptr;
@@ -44,16 +46,12 @@ TEST_F(ContextTest, runtimeDirectory)
     EXPECT_EQ(m_context->runtimeDirectory(), runtimeDir.parent_path().string());
 }
 
+/**
+ * @brief Setting the context
+ */
 void ContextTest::SetUp()
 {
-    const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info();
-    auto testName = std::string(test_info->name());
-
     m_context = std::make_shared<Context>(Context(1, m_argv));
-}
-
-void ContextTest::TearDown()
-{
 }
 
 }

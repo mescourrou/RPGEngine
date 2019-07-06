@@ -17,6 +17,9 @@ namespace GUI {
 
 CREATE_EXCEPTION_CLASS(MapGUI)
 
+/**
+ * @brief GUI part of the Map
+ */
 class MapGUI : public Map, public sf::Transformable, public sf::Drawable
 {
     DECLARE_BASEOBJECT(MapGUI)
@@ -51,20 +54,20 @@ protected:
 private:
     bool loadTileset(const json& tileset);
 
-    std::map<unsigned int, sf::Sprite> m_tiles;
-    std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap;
+    std::map<unsigned int, sf::Sprite> m_tiles;         ///< List of tiles and their id
+    std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position
 
-    Vector<2> m_centerOfView;
+    Vector<2> m_centerOfView;               ///< Center of the view
 
-    std::vector<sf::Texture*> m_textures;
+    std::vector<sf::Texture*> m_textures;   ///< List of textures, freed in the destructor
 
-    unsigned int m_height;
-    unsigned int m_width;
+    unsigned int m_height;                  ///< Height of the map (in tiles)
+    unsigned int m_width;                   ///< Width of the map (in tiles)
 
-    unsigned int m_tileHeight;
-    unsigned int m_tileWidth;
+    unsigned int m_tileHeight;              ///< Height of a tile (in pixel)
+    unsigned int m_tileWidth;               ///< Width of a tile (in pixel)
 
-    float m_zoom = 1;
+    float m_zoom = 1;                       ///< Zoom @todo: Use it
 
 };
 

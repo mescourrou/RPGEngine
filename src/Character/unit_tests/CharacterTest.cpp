@@ -10,23 +10,33 @@
 
 namespace character {
 
+/*
+ * Database model verification
+ */
 TEST_F(CharacterTest, VerifyDatabaseModel)
 {
     ASSERT_TRUE(Character::verifyDatabaseModel(database));
 }
 
+/*
+ * Test the well loading of the character from the database
+ */
 TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 {
     Character ch("Brian");
 
+    // Load from the database
     ASSERT_TRUE(ch.loadFromDatabase(database));
 
+    // Test the position
     EXPECT_EQ(ch.position().x(), 1);
     EXPECT_EQ(ch.position().y(), 2);
     EXPECT_EQ(ch.position().z(), 3);
 
+    // Can't continue if the inventory is null
     ASSERT_TRUE(ch.m_inventory);
 
+    // Inventory loading verification
     ASSERT_EQ(ch.m_inventory->size(), 3);
     EXPECT_EQ(ch.m_inventory->get(0)->name(), "object1");
     EXPECT_EQ(ch.m_inventory->get(1)->name(), "object2");
@@ -34,6 +44,9 @@ TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 
 }
 
+/*
+ * Test the creation of the database model linked to the Character
+ */
 TEST_F(CharacterTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
@@ -44,6 +57,9 @@ TEST_F(CharacterTest, CreatingDatabaseModel)
 
 }
 
+/**
+ * @brief Prepare the database usage
+ */
 void CharacterTest::SetUp()
 {
     object::Money::initialize("bronze",

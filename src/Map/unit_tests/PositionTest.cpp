@@ -1,19 +1,28 @@
 #include "PositionTest.hpp"
 
+// Stl
+#include <filesystem>
+
+// Project
 #include <Position.hpp>
 #include <Map.hpp>
-#include <filesystem>
 #include <Database.hpp>
 #include <Character.hpp>
 
 namespace map {
 
+/*
+ * Test class name
+ */
 TEST_F(PositionTest, ClassName)
 {
     Position pos;
     EXPECT_EQ(pos.className(), "Position");
 }
 
+/*
+ * Test the constructors
+ */
 TEST_F(PositionTest, Constructors)
 {
     Position zero;
@@ -40,6 +49,9 @@ TEST_F(PositionTest, Constructors)
     EXPECT_EQ(zeroWithMap.map()->name(), "France");
 }
 
+/*
+ * Test moving the position
+ */
 TEST_F(PositionTest, Move)
 {
     Position pos(2,3,4);
@@ -55,6 +67,9 @@ TEST_F(PositionTest, Move)
     EXPECT_EQ(pos.z(), 5);
 }
 
+/*
+ * Equality test
+ */
 TEST_F(PositionTest, Equal)
 {
     // Without map
@@ -94,6 +109,9 @@ TEST_F(PositionTest, Equal)
     }
 }
 
+/*
+ * Test of the distance
+ */
 TEST_F(PositionTest, Distance)
 {
     Position pos1(2,4,6);
@@ -102,6 +120,9 @@ TEST_F(PositionTest, Distance)
     EXPECT_EQ(pos1 - pos2, sqrt(pow(9-2, 2) + pow(-3-4, 2) + pow(3 - 6, 2)));
 }
 
+/*
+ * Test the creation of the database model
+ */
 TEST_F(PositionTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";

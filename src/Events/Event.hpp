@@ -73,22 +73,7 @@ public:
      */
     ~Event() = default;
 
-    /**
-     * @brief Trigger all the function which have subscribe
-     * @param [in] arguments Arguments to pass to the functions
-     */
-    void trigger(Args... arguments) const
-    {
-        for (auto& call : m_asyncCallList)
-        {
-            WorkerThread::newWork(call, arguments...);
-        }
-        for (auto& call : m_syncCallList)
-        {
-            call(arguments...);
-        }
-
-    }
+    void trigger(Args... arguments) const;
     /**
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
@@ -133,6 +118,24 @@ private:
     std::vector<std::function<void(Args...)>> m_asyncCallList; ///< List of functions to call
     std::vector<std::function<void(Args...)>> m_syncCallList; ///< List of functions to call
 };
+
+/**
+ * @brief Trigger all the function which have subscribe
+ * @param [in] arguments Arguments to pass to the functions
+ */
+template<typename... Args>
+void Event<Args...>::trigger(Args... arguments) const
+{
+    for (auto& call : m_asyncCallList)
+    {
+        WorkerThread::newWork(call, arguments...);
+    }
+    for (auto& call : m_syncCallList)
+    {
+        call(arguments...);
+    }
+
+}
 
 /**
  * @code

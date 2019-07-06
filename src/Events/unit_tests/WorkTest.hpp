@@ -12,7 +12,6 @@ public:
     static inline bool callEffectuated1 = false;
     static inline bool callEffectuated2 = false;
     static inline bool callEffectuated3 = false;
-    static inline bool callEffectuated4 = false;
 };
 
 }

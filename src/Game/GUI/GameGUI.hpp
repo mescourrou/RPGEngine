@@ -1,14 +1,19 @@
 #pragma once
 
+// Stl
 #include <memory>
 
+// Project
 #include <BaseException.hpp>
 #include <BaseObject.hpp>
 #include <Context.hpp>
-
 #include <MapGUI.hpp>
+#include <Event.hpp>
 
-#include <SFML/Graphics/RenderWindow.hpp>
+namespace sf {
+class RenderWindow;
+}
+
 
 namespace game {
 
@@ -32,19 +37,22 @@ public:
 
     bool createDatabaseModel(std::shared_ptr<database::Database> db);
 
-    void setOnClose(std::function<void(void)> cb) { m_cbOnClose = cb; }
+    /**
+     * @brief Get the event triggered when the user close the game
+     */
+    void subscribeOnClose(std::function<void(void)> func) { return m_signalOnClose.subscribeSync(func); }
 
 protected:
     bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
 
-    std::shared_ptr<config::Context> m_context;
-    std::shared_ptr<map::GUI::MapGUI> m_map;
+    std::shared_ptr<config::Context> m_context;     ///< Context to use
+    std::shared_ptr<map::GUI::MapGUI> m_map;        ///< GUI Map
 
-    std::shared_ptr<database::Database> m_db;
+    std::shared_ptr<database::Database> m_db;       ///< Database to use
 
-    std::shared_ptr<sf::RenderWindow> m_window;
+    std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
-    std::function<void(void)> m_cbOnClose;
+    events::Event<void> m_signalOnClose;             ///< Event when the user close the game
 private:
 
 };

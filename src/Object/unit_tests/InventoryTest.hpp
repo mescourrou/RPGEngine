@@ -10,7 +10,7 @@ class InventoryTest : public testing::Test
 public:
     void SetUp() override;
 
-    std::shared_ptr<Inventory> inventory;
+    std::shared_ptr<Inventory> inventory; ///< Inventory to use
 };
 
 }

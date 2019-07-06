@@ -1,6 +1,9 @@
 #include "Game.hpp"
-#include "config.h"
+// Stl
+#include <thread>
 
+// Project
+#include <general_config.hpp>
 #include <Config.hpp>
 #include <Context.hpp>
 #include <Database.hpp>
@@ -11,19 +14,18 @@
 #include <MapGUI.hpp>
 #include <Money.hpp>
 
-#include <thread>
-
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
 #endif
 
 // External libs
 #include <glog/logging.h>
+
 namespace game {
 
 /**
  * @brief Construct a game with a context
- * @param gameContext
+ * @param gameContext Context
  */
 Game::Game(std::shared_ptr<config::Context> gameContext) :
     m_context(gameContext), m_gui(std::make_shared<GUI::GameGUI>(m_context))
@@ -33,7 +35,8 @@ Game::Game(std::shared_ptr<config::Context> gameContext) :
 
 /**
  * @brief Initialize the game : load the saved datas, ...
- * @return
+ * @param[in] db Database to use for initialization
+ * @return Return true if the initialization went well
  */
 bool Game::initialize(std::shared_ptr<database::Database> db)
 {
@@ -66,16 +69,17 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 
     // Create the player character
     LOG(INFO) << "Create the player character";
-    m_playerCharacter.reset(new character::Character(gameInfo.at(Model::FK_USER_CHARACTER), m_db));
+    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_db);
 
 #ifdef RPG_BUILD_GUI
+    // Initialize the GUI
     LOG(INFO) << "Initialize GUI";
     if (!m_gui->initialize(m_db))
     {
         LOG(ERROR) << "Fail to initialize GUI";
         return false;
     }
-    m_gui->setOnClose([this](){ m_running = false; });
+    m_gui->subscribeOnClose([this](){ m_running = false; });
 #else
     LOG(INFO) << "No GUI initialization because GUI building is not activated";
 #endif
@@ -90,8 +94,12 @@ bool Game::run()
 {
     LOG(INFO) << "Starting";
 
+    using namespace std::chrono_literals;
+
+    // Framerate control
     auto clock = std::chrono::high_resolution_clock::now();
-    auto period = std::chrono::duration(std::chrono::milliseconds(20));
+    auto period = std::chrono::duration(20ms);
+
     while(m_running)
     {
 #ifdef RPG_BUILD_GUI
@@ -145,6 +153,11 @@ bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return true;
 }
 
+/**
+ * @brief Create the table needed for the Game in the database
+ * @param[in] db Database to populate
+ * @return Return true if the database was well populated
+ */
 bool Game::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Game;

@@ -1,7 +1,9 @@
 #pragma once
 
+// Stl
 #include <vector>
 
+// Project
 #include <Vector.hpp>
 
 #ifdef RPG_BUILD_TEST
@@ -18,6 +20,9 @@ namespace map {
 class AreaTest;
 #endif
 
+/**
+ * @brief Area tool class. Manage polygon based area
+ */
 class Area
 {
 #ifdef RPG_BUILD_TEST
@@ -26,6 +31,7 @@ class Area
 #endif
     friend std::ostream& operator<<(std::ostream& stream, const Area& area);
 public:
+    /// @brief Constructor
     Area() = default;
     Area(std::initializer_list<Vector<2>> list);
 
@@ -37,13 +43,16 @@ public:
     size_t pointCount() const;
 
 protected:
+    /**
+     * @brief Direction to look for intersection
+     */
     enum Direction {
         LEFT,
         RIGHT
     };
     static bool intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const Vector<2>& origin, Direction dir = RIGHT);
 
-    std::vector<Vector<2>> m_points;
+    std::vector<Vector<2>> m_points; ///< List of the area points
 };
 
 std::ostream& operator<<(std::ostream& stream, const Area& area);

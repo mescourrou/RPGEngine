@@ -29,6 +29,9 @@ TEST_F(MoneyTest, ReorderInitialize)
     EXPECT_EQ(Money::moneyValue("or"), 50000);
 }
 
+/*
+ * Test initializing money from the database
+ */
 TEST_F(MoneyTest, InitializeFromDatabase)
 {
     std::filesystem::path modelFile = "data/sample1.sqlite";

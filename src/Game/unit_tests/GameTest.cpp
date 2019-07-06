@@ -4,6 +4,9 @@
 #include <Character.hpp>
 
 namespace game {
+/*
+ * Testing if the creation of the database model is correct
+ */
 TEST_F(GameTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";

@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * @namespace verbosityLevel
+ * @brief Differents verbosity levels
+ */
 namespace verbosityLevel {
 
 constexpr unsigned int OBJECT_CREATION = 5;

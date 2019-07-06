@@ -28,6 +28,9 @@ Character::Character(std::string name, std::shared_ptr<database::Database> db) :
         loadFromDatabase(db);
 }
 
+/**
+ * @brief Destructor
+ */
 Character::~Character()
 {
     m_inventory.reset();
@@ -92,6 +95,11 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return false;
 }
 
+/**
+ * @brief Add the needed table to the database
+ * @param[in] db Database to populate
+ * @return Return true if the database was well populated
+ */
 bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Character;
@@ -133,5 +141,3 @@ map::Position Character::position() const
 }
 
 }
-
-

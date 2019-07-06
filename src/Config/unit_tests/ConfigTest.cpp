@@ -4,6 +4,7 @@
 #include <glog/logging.h>
 
 #include <Config.hpp>
+
 namespace config {
 
 /*
@@ -63,6 +64,9 @@ TEST_F(ConfigTest, GetNonExistentValues)
     EXPECT_EQ(conf.getValue("nothing"), "");
 }
 
+/*
+ * Test getting all values when the value is non existant
+ */
 TEST_F(ConfigTest, GetAllValuesEmpty)
 {
     Config conf("data/sample1.ini");
@@ -70,6 +74,9 @@ TEST_F(ConfigTest, GetAllValuesEmpty)
     EXPECT_EQ(conf.getAllValues("Section 3", "a_non_existant_value").size(), 0);
 }
 
+/*
+ * Test getting all the values of a couple section+key
+ */
 TEST_F(ConfigTest, GetAllValues)
 {
     Config conf("data/sample1.ini");
@@ -82,6 +89,9 @@ TEST_F(ConfigTest, GetAllValues)
     EXPECT_EQ(values.at(2), "mod3");
 }
 
+/*
+ * Test getting the section list
+ */
 TEST_F(ConfigTest, GetAllSections)
 {
     Config conf("data/sample1.ini");

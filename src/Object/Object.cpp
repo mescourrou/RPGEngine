@@ -1,16 +1,21 @@
 #include "Object.hpp"
+
+// Project
 #include <Model.hpp>
 #include <Database.hpp>
 #include <Query.hpp>
 #include <VerbosityLevels.hpp>
 
+// External lib
 #include <glog/logging.h>
+
+namespace object {
 
 /**
  * @brief Construct an object
  * @param name Name of the object
  */
-object::Object::Object(std::string name) : m_name(std::move(name))
+Object::Object(std::string name) : m_name(std::move(name))
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
@@ -20,7 +25,7 @@ object::Object::Object(std::string name) : m_name(std::move(name))
  * @param [in] db Database to use
  * @return Return true if the loading was successfull
  */
-bool object::Object::loadFromDatabase(std::shared_ptr<database::Database> db)
+bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Object;
     using namespace database;
@@ -43,7 +48,7 @@ bool object::Object::loadFromDatabase(std::shared_ptr<database::Database> db)
  * @param [in] db Database to use
  * @return Return a object, or a derived type
  */
-std::shared_ptr<object::Object> object::Object::createFromDatabase(const std::string &name, std::shared_ptr<database::Database> db)
+std::shared_ptr<Object> Object::createFromDatabase(const std::string &name, std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Object;
     using namespace database;
@@ -75,7 +80,7 @@ std::shared_ptr<object::Object> object::Object::createFromDatabase(const std::st
  * @param [in] db Database to verify
  * @return Return true if the database if valid
  */
-bool object::Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Object;
     if (!db->isTable(Model::TABLE))
@@ -100,7 +105,12 @@ bool object::Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return true;
 }
 
-bool object::Object::createDatabaseModel(std::shared_ptr<database::Database> db)
+/**
+ * @brief Create the table needed in the database
+ * @param db Database to populate
+ * @return Return true if the database was well populated
+ */
+bool Object::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Object;
     using namespace database;
@@ -116,6 +126,7 @@ bool object::Object::createDatabaseModel(std::shared_ptr<database::Database> db)
     return verifyDatabaseModel(db);
 }
 
+} // namespace object
 
 /**
  * @brief Print the object into the stream
@@ -130,4 +141,3 @@ std::ostream &object::operator<<(std::ostream &stream, const Object& object)
 
     return stream;
 }
-

@@ -7,6 +7,9 @@
 
 namespace maker {
 
+/*
+ * Test the loading of a non existant database
+ */
 TEST_F(MakerTest, LoadingDatabaseOpenning)
 {
     std::string dbFilename = "not_existing_directory/sample0.db";
@@ -25,6 +28,9 @@ TEST_F(MakerTest, LoadingDatabaseOpenning)
     EXPECT_EQ(actualStatus, expectedStatus);
 }
 
+/*
+ * Test the loading of an empty database
+ */
 TEST_F(MakerTest, LoadingDatabaseEmpty)
 {
     std::filesystem::path usedFile = "data/sample0.db";
@@ -45,6 +51,9 @@ TEST_F(MakerTest, LoadingDatabaseEmpty)
     EXPECT_EQ(actualStatus, expectedStatus);
 }
 
+/*
+ * Test the creation of the database
+ */
 TEST_F(MakerTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";

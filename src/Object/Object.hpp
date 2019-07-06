@@ -36,8 +36,10 @@ class Object : public BaseObject
     friend class object::ObjectTest;
 #endif
 public:
+    /// @brief Default constructor
     Object() = default;
     Object(std::string name);
+    /// @brief Default destructor
     ~Object() override = default;
 
     Object(const Object& copy) = default;

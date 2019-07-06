@@ -74,7 +74,7 @@ public:
     static std::string dataTypeAsString(const DataType& data);
     static DataType dataTypeFromString(const std::string& data);
 protected:
-    int callback(void*, int argc, char** argv, char** colName);
+    int callback(int argc, char** argv, char** colName);
 
     std::mutex m_queryMutex;
 
@@ -84,5 +84,5 @@ protected:
 };
 
 
-} // namespace config
+} // namespace database
 
