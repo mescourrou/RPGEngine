@@ -71,6 +71,9 @@ TEST_F(InventoryTest, Pop)
     EXPECT_EQ(inventory->size(), 1);
 }
 
+/*
+ * Test loading from the database
+ */
 TEST_F(InventoryTest, LoadFromDatabase)
 {
     std::filesystem::path modelFile = "data/sample3.sqlite";
@@ -90,6 +93,9 @@ TEST_F(InventoryTest, LoadFromDatabase)
     EXPECT_EQ(myInventory.get(3)->name(), "object2");
 }
 
+/*
+ * Test the creation of the database model
+ */
 TEST_F(InventoryTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";

@@ -21,13 +21,8 @@
 namespace config
 {
 
-class ConfigException : public BaseException
-{
-public:
-    static const inline Errors FILE_LOADING = Errors(__COUNTER__);
-    ConfigException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-        BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Config,
+                       ADD_EXCEPTION_CODE(FILE_LOADING))
 
 #ifdef RPG_BUILD_TEST
 class ConfigTest;
@@ -38,6 +33,7 @@ class ConfigTest;
  */
 class Config : public BaseObject
 {
+    DECLARE_BASEOBJECT(Config)
 #ifdef RPG_BUILD_TEST
     friend class config::ConfigTest;
 #endif
@@ -46,8 +42,6 @@ public:
     Config() = default;
     Config(const std::string& filename);
     ~Config() override = default;
-
-    std::string className() const noexcept override { return "Config"; }
 
     virtual bool loadFile(const std::string& filename) noexcept final;
 

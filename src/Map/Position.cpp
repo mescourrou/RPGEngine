@@ -9,12 +9,27 @@
 // Std lib
 #include <string>
 
-map::Position::Position(std::shared_ptr<map::Map> map, double x, double y, double z) :
+namespace map {
+
+/**
+ * @brief Construct a position from the given map and coordinates
+ * @param map Map
+ * @param x Coordinate x
+ * @param y Coordinate y
+ * @param z Coordinate z
+ */
+Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
     m_map(map), m_position{x,y,z}
 {
 }
 
-bool map::Position::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string &characterName)
+/**
+ * @brief Load the character position from the database
+ * @param db Database to use
+ * @param characterName Character from whom loading the position
+ * @return Return true if all went well
+ */
+bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string &characterName)
 {
     namespace Model = database::Model::Position;
     using namespace database;
@@ -37,17 +52,30 @@ bool map::Position::loadFromDatabase(std::shared_ptr<database::Database> db, con
 
 }
 
-map::Position::Position(double x, double y, double z) :
+/**
+ * @brief Create the position with the given coordinates
+ * @param x Coordinate x
+ * @param y Coordinate y
+ * @param z Coordinate z
+ */
+Position::Position(double x, double y, double z) :
     m_position{x,y,z}
 {
 }
 
-void map::Position::move(const Vector<3> &move)
+/**
+ * @brief Move the position
+ * @param move Vector to follow
+ */
+void Position::move(const Vector<3> &move)
 {
     m_position += move;
 }
 
-double map::Position::distanceTo(const map::Position &other) const
+/**
+ * @brief Calculate the distance to the other position
+ */
+double Position::distanceTo(const Position &other) const
 {
     if (m_map && other.m_map)
     {
@@ -57,7 +85,7 @@ double map::Position::distanceTo(const map::Position &other) const
     return Vector<3>(other.m_position - m_position).norm();
 }
 
-bool map::Position::operator==(const map::Position &other)
+bool Position::operator==(const Position &other)
 {
     bool same = true;
     if (m_map && other.m_map)
@@ -68,7 +96,7 @@ bool map::Position::operator==(const map::Position &other)
     return m_position == other.m_position && same;
 }
 
-bool map::Position::operator!=(const map::Position &other)
+bool Position::operator!=(const Position &other)
 {
     bool diff = false;
     if (m_map && other.m_map)
@@ -79,7 +107,12 @@ bool map::Position::operator!=(const map::Position &other)
     return m_position != other.m_position || diff;
 }
 
-bool map::Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+/**
+ * @brief Verify the database model
+ * @param db Database to verify
+ * @return Return true if the model is good
+ */
+bool Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Position;
     using namespace database;
@@ -109,7 +142,12 @@ bool map::Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return false;
 }
 
-bool map::Position::createDatabaseModel(std::shared_ptr<database::Database> db)
+/**
+ * @brief Create the table needed
+ * @param db Database to populate
+ * @return Return true if all went well
+ */
+bool Position::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Position;
     using namespace database;
@@ -127,3 +165,5 @@ bool map::Position::createDatabaseModel(std::shared_ptr<database::Database> db)
     return verifyDatabaseModel(db);
 
 }
+
+} // namespace map

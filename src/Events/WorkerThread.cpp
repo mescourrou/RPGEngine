@@ -55,11 +55,15 @@ void WorkerThread::newWork(std::function<void()> work)
     m_mutex.unlock();
 }
 
+/**
+ * @brief Wait for all threads to finish
+ */
 void WorkerThread::waitForJoin()
 {
-    for (int i = instance.m_workers.size() -1 ; i >= 0; i--)
+    //for (size_t i = instance.m_workers.size() -1 ; i >= 0; i--)
+    while(instance.m_workers.size() != 0)
     {
-        instance.m_workers.at(i).join();
+        instance.m_workers.back().join();
         instance.m_workers.pop_back();
     }
 }

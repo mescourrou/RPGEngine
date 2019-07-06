@@ -19,3 +19,9 @@
 [submodule "thirdparty/gflags"]
 	path = thirdparty/gflags
 	url = https://github.com/gflags/gflags.git
+[submodule "thirdparty/json"]
+	path = thirdparty/json
+	url = https://github.com/nlohmann/json.git
+[submodule "thirdparty/tinyxml"]
+	path = thirdparty/tinyxml
+	url = https://github.com/leethomason/tinyxml2.git

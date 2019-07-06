@@ -9,6 +9,7 @@
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 
+// External lib
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
@@ -31,17 +32,15 @@ class Character;
  */
 namespace game
 {
+namespace GUI {
+class GameGUI;
+}
 
 /**
  * @brief Manage the exceptions of Game
  */
-class GameException : public BaseException
-{
-public:
-    static const inline Errors VERSION = Errors(__COUNTER__);
-    GameException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-        BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Game,
+                       ADD_EXCEPTION_CODE(VERSION))
 
 #ifdef RPG_BUILD_TEST
 class GameTest;
@@ -52,6 +51,7 @@ class GameTest;
  */
 class Game : public BaseObject
 {
+    DECLARE_BASEOBJECT(Game)
 #ifdef RPG_BUILD_TEST
 	friend class game::GameTest;
 #endif
@@ -64,8 +64,6 @@ public:
     bool initialize(std::shared_ptr<database::Database> db);
 
     bool run();
-	
-	std::string className() const noexcept override { return "Game"; }
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
@@ -74,6 +72,10 @@ private:
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
+#ifdef RPG_BUILD_TEST
+    std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
+#endif
+    bool m_running = true;                                  ///< Main loop condition
 
 };
 

@@ -19,24 +19,22 @@ class QueryTest;
 
 class Database;
 
+
+CREATE_EXCEPTION_CLASS(Query,
+                       ADD_EXCEPTION_CODE(INVALID_COLUMN_NAME) \
+                       ADD_EXCEPTION_CODE(INEXISTANT_COLUMN_NAME))
+
 /**
  * @brief Abstract class for Query generation
  */
 class Query : BaseObject
 {
+    DECLARE_BASEOBJECT(Query)
 #ifdef RPG_BUILD_TEST
     friend class database::QueryTest;
 #endif
 public:
-    class QueryException : public BaseException
-    {
-    public:
-        static const inline Errors INVALID_COLUMN_NAME = Errors(__COUNTER__);
-        static const inline Errors INEXISTANT_COLUMN_NAME = Errors(__COUNTER__);
-        QueryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
-            BaseException(w, code) {}
-        ~QueryException() override = default;
-    };
+
     /**
      * @brief Types of Query available
      */
@@ -47,28 +45,33 @@ public:
         UPDATE ///< Update query : edit values
     };
 
+    /**
+     * @brief Comparaison operators
+     */
     enum Operator {
-        EQUAL,
-        GT,
-        GE,
-        LT,
-        LE,
-        NOT
+        EQUAL, ///< Equal
+        GT, ///< Greater Than
+        GE, ///< Greater or Equal
+        LT, ///< Lesser than
+        LE, ///< Lesser or Equal
+        NOT ///< Not equal
     };
 
+    /**
+     * @brief Column constraints
+     */
     enum Constraints {
-        PRIMARY_KEY,
-        UNIQUE,
-        AUTOINCREMENT,
-        NOT_NULL
+        PRIMARY_KEY, ///< Primary key
+        UNIQUE, ///< Unique
+        AUTOINCREMENT, ///< Auto increment
+        NOT_NULL ///< Not null
     };
 
 
-
-protected:
+private:
     /**
      * @struct FindQueryType
-     * @brief Return the class type associated with the QueryTypes given
+     * @brief Return the class type associated with the QueryTypes given (specified later)
      */
     template<QueryTypes T>
     struct FindQueryType{};
@@ -91,8 +94,6 @@ public:
      * @return If the query is not valid, str() will return ""
      */
     virtual bool isValid() const { return m_valid; }
-
-    std::string className() const noexcept override {return "Query";}
 protected:
     DataType dataType(const std::string& column);
     std::string operatorAsString(Operator op);
@@ -124,6 +125,7 @@ protected:
  */
 class SelectQuery : public Query
 {
+    DECLARE_BASEOBJECT(SelectQuery)
 public:
     /// @brief Construct a SELECT Query
     SelectQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) { m_valid = true; }
@@ -138,15 +140,13 @@ public:
     /// @brief Add a sort column
     SelectQuery& sort(const std::string& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
 
-
-    std::string className() const noexcept override {return "SelectQuery";}
     std::string str() const override;
 
 protected:
     std::vector<std::string> m_columns; ///< Columns selected
     std::vector<std::string> m_conditions; ///< Selection conditions
     std::vector<std::string> m_sortColumns; ///< Columns to sort;
-    bool m_sortAscending = true;
+    bool m_sortAscending = true; ///< Result sorting
 };
 
 /**
@@ -154,6 +154,7 @@ protected:
  */
 class InsertQuery : public Query
 {
+    DECLARE_BASEOBJECT(InsertQuery)
 public:
     /// @brief Construct an INSERT Query
     InsertQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
@@ -163,8 +164,6 @@ public:
     InsertQuery& value(const std::string& column, const std::string& value) { doValue(m_values, column, value); return *this; }
 
     std::string str() const override;
-
-    std::string className() const noexcept override {return "InsertQuery";}
 protected:
     std::vector<std::pair<std::string, std::string>> m_values; ///< Values to insert
 };
@@ -174,6 +173,7 @@ protected:
  */
 class CreateQuery : public Query
 {
+    DECLARE_BASEOBJECT(CreateQuery)
 public:
     /// @brief Construct a CREATE TABLE Query
     CreateQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
@@ -189,8 +189,6 @@ public:
     CreateQuery& constraint(const std::string& columnName, Query::Constraints constraintType);
 
     std::string str() const override;
-
-    std::string className() const noexcept override { return "CreateQuery"; }
 protected:
     bool m_ifNotExists = false; ///< "IF NOT EXISTS" statement add
 
@@ -205,10 +203,10 @@ protected:
      */
     std::vector<std::tuple<std::string, DataType, std::string, std::string>> m_columns;
 
-    std::vector<std::string> m_primaryKeyColumns;
-    std::vector<std::string> m_uniqueColumns;
-    std::vector<std::string> m_autoincrementColumns;
-    std::vector<std::string> m_notNullColumns;
+    std::vector<std::string> m_primaryKeyColumns; ///< Columns with Primary Key constraint
+    std::vector<std::string> m_uniqueColumns;  ///< Columns with Unique constraint
+    std::vector<std::string> m_autoincrementColumns;  ///< Columns with Auto increment constraint
+    std::vector<std::string> m_notNullColumns; ///< Columns with Not null constraint
 
 };
 
@@ -217,6 +215,7 @@ protected:
  */
 class UpdateQuery : public Query
 {
+    DECLARE_BASEOBJECT(UpdateQuery)
 public:
     /// @brief Construct a UPDATE Query
     UpdateQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) {}
@@ -227,8 +226,6 @@ public:
     UpdateQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
 
     std::string str() const override;
-
-    std::string className() const noexcept override { return "UpdateQuery"; }
 protected:
     std::map<std::string, std::string> m_set; ///< Couples column name / new value
     std::vector<std::string> m_conditions; ///< Filter for update
@@ -255,5 +252,5 @@ typename Query::FindQueryType<T>::type Query::createQuery(const std::string& tab
     return typename Query::FindQueryType<T>::type(table, db);
 }
 
-} // namespace config
+} // namespace database
 

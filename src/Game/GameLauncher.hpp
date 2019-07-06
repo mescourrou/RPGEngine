@@ -20,13 +20,8 @@ namespace game
 /**
  * @brief Manage the exceptions for the GameLaucher
  */
-class GameLauncherException : public BaseException
-{
-public:
-    static const inline Errors NO_DIRECTORY = Errors(__COUNTER__); ///< The game directory wasn't found
-    GameLauncherException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
-        BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(GameLauncher,
+                       ADD_EXCEPTION_CODE(NO_DIRECTORY))
 
 #ifdef RPG_BUILD_TEST
 class GameLauncherTest;
@@ -37,6 +32,7 @@ class GameLauncherTest;
  */
 class GameLauncher : public BaseObject
 {
+    DECLARE_BASEOBJECT(GameLauncher)
 #ifdef RPG_BUILD_TEST
 	friend class game::GameLauncherTest;
 #endif
@@ -48,18 +44,11 @@ public:
 
     int start();
 
-	std::string className() const noexcept override { return "GameLauncher"; }
-
 protected:
     bool initialize();
-
     void startGame(std::string gameName) const;
-
     std::shared_ptr<config::Context> m_context;     ///< Context
-
     std::vector<std::string> m_gameList;            ///< List of the founded games
-
-    static constexpr char DIRECTORY_KEY[] = "directory"; ///< Key to find the directory in .ini file
 };
 
 } // namespace game

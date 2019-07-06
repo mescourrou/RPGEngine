@@ -5,6 +5,7 @@
 #include <Config.hpp>
 #include <Database.hpp>
 #include <VerbosityLevels.hpp>
+#include <ConfigFiles.hpp>
 
 #include <glog/logging.h>
 
@@ -18,7 +19,7 @@ GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
     m_context(context)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    m_config.reset(new config::Config(context->gameLocation() + "/" + configFile::MAIN_CONFIGURATION_FILE));
+    m_config.reset(new config::Config(context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME));
 }
 
 /**
@@ -27,11 +28,12 @@ GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
  */
 bool GameLoader::load()
 {
-    std::string databasePath = m_config->getValue(configFile::ressources::SECTION,
-                                                  configFile::ressources::DATABASE);
+    namespace structure = config::structure::globalFile;
+    std::string databasePath = m_config->getValue(structure::ressources::SECTION,
+                                                  structure::ressources::DATABASE);
     if (databasePath.empty())
     {
-        LOG(ERROR) << "'database' field in configuration file not found";
+        LOG(ERROR) << "'" << structure::ressources::SECTION << ":" << structure::ressources::DATABASE << "' field in configuration file not found";
         return false;
     }
     databasePath = m_context->gameLocation() + "/" + databasePath;

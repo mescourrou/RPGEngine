@@ -3,6 +3,9 @@
 
 namespace map {
 
+/*
+ * Test the Vector Initializer List
+ */
 TEST_F(VectorTest, InitializerList)
 {
     Vector<2> myVect{1,2};
@@ -10,15 +13,18 @@ TEST_F(VectorTest, InitializerList)
     EXPECT_EQ(myVect.at(1), 2);
 }
 
+/*
+ * Test class name
+ */
 TEST_F(VectorTest, ClassName)
 {
     Vector<2> myVect;
-    EXPECT_EQ(myVect.className(), "Vector<2>");
-
-    Vector<5> myOtherVect;
-    EXPECT_EQ(myOtherVect.className(), "Vector<5>");
+    EXPECT_EQ(myVect.className(), "Vector");
 }
 
+/*
+ * Test coordinate modification
+ */
 TEST_F(VectorTest, AtToModify)
 {
     Vector<3> myVector{1,2,3};
@@ -30,6 +36,9 @@ TEST_F(VectorTest, AtToModify)
     EXPECT_EQ(myVector.at(1), 5);
 }
 
+/*
+ * Test the implementation of x(), y() and z() shortcuts
+ */
 TEST_F(VectorTest, XYZImplementation)
 {
     Vector<3> myVector{1,2,3};
@@ -45,6 +54,9 @@ TEST_F(VectorTest, XYZImplementation)
     EXPECT_EQ(myVector.z(), 7);
 }
 
+/*
+ * Norm test
+ */
 TEST_F(VectorTest, Norm)
 {
     Vector<3> myVector{3,4,4};

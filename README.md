@@ -16,14 +16,15 @@ git submodule update --init --recursive
 
 ## Configuration
 Here are the CMake variables:
-
-| Variable | Type | Description | Default |
-| --- | --- | --- | --- |
-| RPG_BUILD_GUI | Bool | Enable the building of the GUI part of the engine | ON |
-| RPG_BUILD_TEST | Bool | Enable the build of tests. Disable this if you do not want to build the tests and googletest dependency | ON |
-| RPG_COMPILE_THIRDPARTIES | Bool | Enable the build of the thirdparties. | ON |
-| RPG_VERBOSE | Number | Set the level of the verbosity (see Config/VerbosityLevel.hpp) | 10 |
-
+| CMake Option    | Default Value  | Description                                    |
+|-----------------|----------------|------------------------------------------------|
+| RPG_BUILD_TEST  | ON             | Build the tests                                |
+| RPG_BUILD_GUI   | ON             | Build the GUI classes and dependencies         |
+| RPG_COMPILE_THIRDPARTIES | ON    | Build the thirdparties libs   		    |
+| RPG_VERBOSE     | 10             | Default level of verbosity                     |
+| BUILD_USE_FILESYSTEM_PATH | ON   | Disable this if you have issues with std::filesystem::path |
+| GAME_AUTO_CHOOSE| ON             | Choose automatically the 1st game in the list  |
+| GAME_DEFAULT_RESOLUTION|"800x600"| Default resolution of the window               |
 
 ## Building
 To build the project, execute these commands :
@@ -39,8 +40,5 @@ make
 ## Documentation
 You can build the documentation with `make doc` when you are in the build directory. You can use `make show_dow` to open the html in you browser.
 
-# Contribute
-To contribute, proceed by pull requests.
-
-Please add some tests for your feature. Thus, your feature would be tested before each merge and will stay functionnal.
-Do not forget to add documentation too !
+# Installation
+No installation for now, the executable is in the build directory, build/bin/Engine/RPGEngine.

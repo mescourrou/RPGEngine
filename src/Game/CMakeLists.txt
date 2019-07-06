@@ -19,6 +19,8 @@ target_include_directories(Game PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DI
 
 if (RPG_BUILD_GUI)
 	add_subdirectory(GUI)
+
+	target_link_libraries(Game GameGUI)
 endif()
 
 if (RPG_BUILD_TEST)

@@ -18,11 +18,7 @@ class Database;
 namespace object
 {
 
-class InventoryException : public BaseException
-{
-public:
-    InventoryException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Inventory)
 
 class Object;
 
@@ -35,6 +31,7 @@ class InventoryTest;
  */
 class Inventory : public BaseObject
 {
+    DECLARE_BASEOBJECT(Inventory)
 #ifdef RPG_BUILD_TEST
     friend class object::InventoryTest;
     FRIEND_TEST(InventoryTest, Push);
@@ -44,8 +41,6 @@ public:
     Inventory();
     /// @brief Destructor
     ~Inventory() override = default;
-
-    std::string className() const noexcept override { return "Inventory"; }
 
     std::shared_ptr<Object> get(unsigned int index) const;
     std::shared_ptr<Object> get(const std::string& objectName) const;
@@ -64,7 +59,7 @@ private:
 
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 
-    Money m_money;
+    Money m_money;  ///< Money contained in the inventory
 };
 
 } // namespace object

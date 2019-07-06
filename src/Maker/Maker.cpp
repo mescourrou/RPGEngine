@@ -15,11 +15,10 @@
 
 namespace maker {
 
-Maker::Maker()
-{
-
-}
-
+/**
+ * @brief Load the Maker from the database
+ * @param filename Name of the database
+ */
 void Maker::loadDatabase(const std::string &filename)
 {
     try {
@@ -44,6 +43,11 @@ void Maker::loadDatabase(const std::string &filename)
         m_signalDatabaseLoaded.trigger(DatabaseStatus::NOT_VALID);
 }
 
+/**
+ * @brief Verify the model of the database
+ * @param db Database to verify
+ * @return Return true if the database is correct
+ */
 bool Maker::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
     return
@@ -55,6 +59,10 @@ bool Maker::verifyDatabaseModel(std::shared_ptr<database::Database> db)
             game::Game::verifyDatabaseModel(db);
 }
 
+/**
+ * @brief Create the tables needed in the database loaded
+ * @return Return true if all went well
+ */
 bool Maker::createDatabaseModel()
 {
     if (!m_db)

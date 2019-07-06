@@ -12,17 +12,18 @@ ExternalProject_Add(
 
 
 endif()
+
 ExternalProject_Get_Property(googleflags source_dir binary_dir)
 
-
 if (NOT TARGET gflags)
+	if (NOT EXISTS ${binary_dir}/include)
+		file(MAKE_DIRECTORY ${binary_dir}/include)
+	endif()
 add_library(gflags STATIC IMPORTED GLOBAL)
 add_dependencies(gflags googleflags)
 
-list(APPEND gflags_includes "${binary_dir}/include")
-
 set_target_properties(gflags PROPERTIES
 	"IMPORTED_LOCATION" "${binary_dir}/lib/libgflags.a"
-	INTERFACE_INCLUDE_DIRECTORIES "${gflags_includes}"
+	"INTERFACE_INCLUDE_DIRECTORIES" "${binary_dir}/include"
 )
 endif()

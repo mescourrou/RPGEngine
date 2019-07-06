@@ -3,8 +3,12 @@
 constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
 #cmakedefine RPG_BUILD_TEST
 #cmakedefine RPG_BUILD_GUI
-constexpr unsigned int VERSION_MAJOR = 0;
-constexpr unsigned int VERSION_MINOR = 1;
-constexpr unsigned int VERSION_BUILD = 1;
+constexpr unsigned char VERSION_MAJOR = 0;
+constexpr unsigned char VERSION_MINOR = 1;
+constexpr unsigned char VERSION_BUILD = 1;
 
 constexpr unsigned int VERSION = VERSION_MAJOR*10000 + VERSION_MINOR*100 + VERSION_BUILD;
+
+constexpr char GAME_DEFAULT_RESOLUTION[] = "@GAME_DEFAULT_RESOLUTION@";
+#cmakedefine BUILD_USE_FILESYSTEM_PATH
+#cmakedefine GAME_AUTO_CHOOSE

@@ -20,12 +20,8 @@ class Database;
 namespace object
 {
 
-class ObjectException : public BaseException
-{
-public:
-    static const inline Errors UNKNOWN_OBJECT_TYPE = Errors(__COUNTER__);
-    ObjectException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Object,
+                       ADD_EXCEPTION_CODE(UNKNOWN_OBJECT_TYPE))
 
 #ifdef RPG_BUILD_TEST
 class ObjectTest;
@@ -35,12 +31,15 @@ class ObjectTest;
  */
 class Object : public BaseObject
 {
+    DECLARE_BASEOBJECT(Object)
 #ifdef RPG_BUILD_TEST
     friend class object::ObjectTest;
 #endif
 public:
+    /// @brief Default constructor
     Object() = default;
     Object(std::string name);
+    /// @brief Default destructor
     ~Object() override = default;
 
     Object(const Object& copy) = default;
@@ -52,7 +51,6 @@ public:
     static std::shared_ptr<Object> createFromDatabase(const std::string& name, std::shared_ptr<database::Database> db);
 
     // Getters
-    std::string className() const noexcept override { return "Object"; }
     /// @brief Get the object name
     virtual std::string name() const noexcept final { return m_name; }
     /// @brief Get the object description

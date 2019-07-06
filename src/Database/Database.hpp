@@ -21,24 +21,20 @@ class sqlite3;
 namespace database
 {
 
-class DatabaseException : public BaseException
-{
-public:
-    static const inline BaseException::Errors OPENING = Errors(__COUNTER__);
-    static const inline Errors MISSING_DATABASE = Errors(__COUNTER__);
-    static const inline Errors MISSING_TABLE = Errors(__COUNTER__);
-    static const inline Errors BAD_MODEL = Errors(__COUNTER__);
-    DatabaseException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept :
-        BaseException(w, code) {}
-    ~DatabaseException() override = default;
-};
+CREATE_EXCEPTION_CLASS(Database,
+                       ADD_EXCEPTION_CODE(OPENING) \
+                       ADD_EXCEPTION_CODE(MISSING_DATABASE) \
+                       ADD_EXCEPTION_CODE(MISSING_TABLE) \
+                       ADD_EXCEPTION_CODE(BAD_MODEL))
 
 #ifdef RPG_BUILD_TEST
 class DatabaseTest;
 #endif
 class Query;
 
-
+/**
+ * @brief Possibles types of the data
+ */
 enum DataType : int {
     INTEGER,
     TEXT,
@@ -52,6 +48,7 @@ enum DataType : int {
  */
 class Database : public BaseObject
 {
+    DECLARE_BASEOBJECT(Database)
 #ifdef RPG_BUILD_TEST
     friend class database::DatabaseTest;
     FRIEND_TEST(DatabaseTest, QueryText);
@@ -59,8 +56,6 @@ class Database : public BaseObject
 public:
     Database(const std::string& path);
     ~Database() override;
-
-    std::string className() const noexcept override { return "Database"; }
 
     std::vector<std::map<std::string, std::string>> query(const Query& dbQuery);
     bool query(const std::string& query);
@@ -81,9 +76,9 @@ public:
     static std::string dataTypeAsString(const DataType& data);
     static DataType dataTypeFromString(const std::string& data);
 protected:
-    int callback(void*, int argc, char** argv, char** colName);
+    int callback(int argc, char** argv, char** colName);
 
-    std::mutex m_queryMutex;
+    std::mutex m_queryMutex;    ///< Mutex to protect the result access
 
     sqlite3* m_sqlite3Handler = nullptr; ///< Pointer on sqlite handler
     std::unique_ptr<std::vector<std::map<std::string, std::string>>> m_result; ///< Saving results temporary
@@ -91,5 +86,5 @@ protected:
 };
 
 
-} // namespace config
+} // namespace database
 

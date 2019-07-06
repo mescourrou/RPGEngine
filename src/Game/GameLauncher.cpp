@@ -2,12 +2,15 @@
 // STL
 #include <filesystem>
 
+// Project
+#include <general_config.hpp>
 #include <GameLoader.hpp>
 #include <Context.hpp>
 #include <Config.hpp>
 #include <Event.hpp>
 #include <WorkerThread.hpp>
 #include <VerbosityLevels.hpp>
+#include <ConfigFiles.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -29,12 +32,14 @@ GameLauncher::GameLauncher(int argc, char **argv)
     gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR) + "."
                              + std::to_string(VERSION_BUILD));
     gflags::ParseCommandLineFlags(&argc, &argv, true);
-    std::cout << "Flag verbose : " << FLAGS_verbose << std::endl;
+    if (FLAGS_verbose > 0)
+        LOG(INFO) << "Flag verbose : " << FLAGS_verbose;
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
+    LOG(INFO) << "Starting GameLauncher v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_BUILD;
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    m_context.reset(new config::Context(argc, argv));
+    m_context = std::make_shared<config::Context>(argc, argv);
 
 }
 
@@ -48,7 +53,8 @@ int GameLauncher::start()
         return -2;
     int choice = -1;
     events::Event<std::string> eventStartingGame;
-    eventStartingGame.subscribeSync(std::bind(&GameLauncher::startGame, this, std::placeholders::_1));
+    eventStartingGame.subscribeSync(this, &GameLauncher::startGame);
+
     do
     {
         std::cout << "Available games : " << std::endl;
@@ -59,17 +65,21 @@ int GameLauncher::start()
         }
         std::cout << "Which game do you choose ? : ";
         std::string in;
-        //getline(std::cin, in);
-        //choice = std::atoi(in.c_str());
+#ifndef GAME_AUTO_CHOOSE
+        getline(std::cin, in);
+        choice = std::atoi(in.c_str());
+#else
         choice = 1;
-        if (choice > 0 && choice - 1 < m_gameList.size())
+#endif
+        if (choice > 0 && choice - 1 < static_cast<int>(m_gameList.size()))
         {
-            eventStartingGame.trigger(m_gameList.at(choice-1));
+            eventStartingGame.trigger(m_gameList.at(static_cast<size_t>(choice-1)));
+            choice = 0;
         }
         else if (choice != 0)
             std::cout << "Choose an available option (0 to quit)" << std::endl;
-        choice = 0;
-    }while(choice != 0);
+    } while(choice != 0);
+
     return 0;
 }
 
@@ -92,11 +102,11 @@ void GameLauncher::startGame(std::string gameName) const
 {
     LOG(INFO) << "Starting " << gameName;
     try {
-        std::filesystem::path gameDirectory = m_context->config()->getValue(gameName, DIRECTORY_KEY);
+        std::filesystem::path gameDirectory = m_context->config()->getValue(gameName, config::structure::gameListFile::DIRECTORY_KEY);
         if (gameDirectory.empty())
             throw GameLauncherException("No directory specified", GameLauncherException::NO_DIRECTORY);
         if (!std::filesystem::exists(gameDirectory))
-            throw GameLauncherException("Directory non existent", GameLauncherException::NO_DIRECTORY);
+            throw GameLauncherException("Directory non existent : " + gameDirectory.string(), GameLauncherException::NO_DIRECTORY);
         if (!std::filesystem::is_directory(gameDirectory))
             throw GameLauncherException("This is not a directory", GameLauncherException::NO_DIRECTORY);
 

@@ -1,3 +1,7 @@
+/**
+ * @file BaseException.hpp
+ * @brief Define the BaseException class and usefull macros
+ */
 #pragma once
 
 // Project
@@ -41,12 +45,16 @@ public:
      */
     BaseException(const std::string& w, const BaseException::Errors& errorCode = UNKNOWN) noexcept :
         m_what(w), m_code(errorCode) {}
+    /// @brief Default destructor
     ~BaseException() override = default;
 
     /**
      * @brief Return the description of the exception
      */
-    const char* what() const noexcept override { return m_what.c_str(); }
+    const char* what() const noexcept override
+    {
+        return m_what.c_str();
+    }
     /**
      * @brief Return the code of the error
      */
@@ -57,3 +65,66 @@ protected:
     Errors m_code; ///< Error code
 };
 
+/**
+ * @def ADD_EXCEPTION_CODE(NAME)
+ * @brief Create a new Error code attribute for Exception classes
+ *
+ * @param NAME Name of the error code
+ */
+#define ADD_EXCEPTION_CODE(NAME)                                                                        \
+    static const inline Errors NAME = Errors(__COUNTER__);                                              \
+
+/**
+ * @def CREATE_EXCEPTION_CLASS(NAME, ...)
+ * @brief Create the exception class corresponding to the given class name.
+ *
+ * To add codes, just add the list of ADD_EXCEPTION_CODE macro after the name of the class.
+ *
+ * Exemple:
+ * @code
+ * // Simple exception class
+ * CREATE_EXCEPTION_CLASS(MySimpleClass)
+ *
+ * // With exceptions codes:
+ * CREATE_EXCEPTION_CLASS(MyComplexClass,
+ *                        ADD_EXCEPTION_CODE(CODE1) \
+ *                        ADD_EXCEPTION_CODE(CODE2))
+ * @endcode
+ *
+ * The exemple above will be processed into :
+ * @code
+ * class MySimpleClassException : public BaseException
+ * {
+ * public:
+ * MySimpleClassException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+ *        BaseException(w, code) {}
+ * ~MySimpleClassException() override = default;
+ * };
+ *
+ *
+ * class MyComplexClassException : public BaseException
+ * {
+ * public:
+ * static const inline Errors CODE1 = Errors(__COUNTER__);
+ * static const inline Errors CODE2 = Errors(__COUNTER__);
+ * MyComplexClassException(const std::string& w, const Errors& code = BaseException::UNKNOWN):
+ *        BaseException(w, code) {}
+ * ~MyComplexClassException() override = default;
+ * };
+ * @endcode
+ *
+ * @param NAME Name of the class attached to the Exception class
+ */
+#define CREATE_EXCEPTION_CLASS(NAME, ...)                                                               \
+    class NAME##Exception : public BaseException                                                        \
+    {                                                                                                   \
+    public:                                                                                             \
+    __VA_ARGS__                                                                                         \
+    NAME##Exception(const std::string& w, const Errors& code = BaseException::UNKNOWN):                 \
+        BaseException(w, code) {}                                                                       \
+    ~NAME##Exception() override = default;                                                              \
+    const char* what() const noexcept override                                                          \
+    {                                                                                                   \
+        return m_what.c_str();                                                                          \
+    }                                                                                                   \
+};

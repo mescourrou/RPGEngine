@@ -80,6 +80,9 @@ TEST_F(ObjectTest, StreamOperator)
 
 }
 
+/*
+ * Test the creation of the database model
+ */
 TEST_F(ObjectTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";

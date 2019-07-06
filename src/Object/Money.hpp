@@ -25,11 +25,7 @@ class Database;
 namespace object
 {
 
-class MoneyException : public BaseException
-{
-public:
-    MoneyException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Money)
 
 #ifdef RPG_BUILD_TEST
 class MoneyTest;
@@ -40,6 +36,7 @@ class MoneyTest;
  */
 class Money : public BaseObject
 {
+    DECLARE_BASEOBJECT(Money)
 #ifdef RPG_BUILD_TEST
     friend class object::MoneyTest;
 #endif
@@ -67,7 +64,6 @@ public:
     static unsigned long numberOfMoney() { return m_moneyNames.size(); }
 
     // Non static
-    std::string className() const noexcept override { return "Money"; }
     unsigned int value(const std::string& moneyName) const;
 
 

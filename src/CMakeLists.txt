@@ -9,6 +9,7 @@ list(APPEND MODULES Character)
 list(APPEND MODULES Map)
 list(APPEND MODULES Tools)
 list(APPEND MODULES Events)
+list(APPEND MODULES Quest)
 
 foreach(module ${MODULES})
 	add_subdirectory(${module})

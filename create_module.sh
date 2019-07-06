@@ -71,14 +71,13 @@ class ${upper_case}Test;
 
 class $upper_case : public BaseObject
 {
+	DECLARE_BASEOBJECT($upper_case)
 #ifdef RPG_BUILD_TEST
 	friend class ${lower_case}::${upper_case}Test;
 #endif
 public:
 	$upper_case();
 	~${upper_case}() override = default;
-	
-	std::string className() const noexcept override { return \"${upper_case}\"; }
 };
 
 } // namespace $lower_case

@@ -30,6 +30,7 @@ class GameLoaderTest;
  */
 class GameLoader : public BaseObject
 {
+    DECLARE_BASEOBJECT(GameLoader)
 #ifdef RPG_BUILD_TEST
 	friend class game::GameLoaderTest;
 #endif
@@ -38,7 +39,6 @@ public:
     /// @brief Destructor
 	~GameLoader() override = default;
 
-	std::string className() const noexcept override { return "GameLoader"; }
     bool load();
     bool run();
 protected:
@@ -46,17 +46,6 @@ protected:
     std::shared_ptr<config::Config> m_config;   ///< Game configuration
     std::shared_ptr<database::Database> m_db;   ///< Game database
     std::shared_ptr<Game> m_game;               ///< Game to prepare
-
-    /**
-     * @brief Contains the structure of the .ini file
-     */
-    struct configFile {
-    static constexpr char MAIN_CONFIGURATION_FILE[] = "main.ini";
-    struct ressources {
-    static constexpr char SECTION[] = "Ressources";
-    static constexpr char DATABASE[] = "database";
-    };
-    };
 };
 
 } // namespace game
