@@ -8,3 +8,6 @@ constexpr unsigned int VERSION_MINOR = 1;
 constexpr unsigned int VERSION_BUILD = 1;
 
 constexpr unsigned int VERSION = VERSION_MAJOR*10000 + VERSION_MINOR*100 + VERSION_BUILD;
+
+#cmakedefine GAME_DEFAULT_RESOLUTION "@GAME_DEFAULT_RESOLUTION@"
+#cmakedefine BUILD_USE_FILESYSTEM_PATH

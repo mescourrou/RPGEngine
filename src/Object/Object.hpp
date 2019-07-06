@@ -20,12 +20,8 @@ class Database;
 namespace object
 {
 
-class ObjectException : public BaseException
-{
-public:
-    static const inline Errors UNKNOWN_OBJECT_TYPE = Errors(__COUNTER__);
-    ObjectException(const std::string& w, const Errors& code = BaseException::UNKNOWN) noexcept : BaseException(w, code) {}
-};
+CREATE_EXCEPTION_CLASS(Object,
+                       ADD_EXCEPTION_CODE(UNKNOWN_OBJECT_TYPE))
 
 #ifdef RPG_BUILD_TEST
 class ObjectTest;

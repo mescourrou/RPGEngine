@@ -96,7 +96,7 @@ void GameLauncher::startGame(std::string gameName) const
         if (gameDirectory.empty())
             throw GameLauncherException("No directory specified", GameLauncherException::NO_DIRECTORY);
         if (!std::filesystem::exists(gameDirectory))
-            throw GameLauncherException("Directory non existent", GameLauncherException::NO_DIRECTORY);
+            throw GameLauncherException("Directory non existent : " + gameDirectory.string(), GameLauncherException::NO_DIRECTORY);
         if (!std::filesystem::is_directory(gameDirectory))
             throw GameLauncherException("This is not a directory", GameLauncherException::NO_DIRECTORY);
 

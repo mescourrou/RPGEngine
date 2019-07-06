@@ -22,6 +22,7 @@ namespace Model {
     constexpr char VERSION[] = "version";
     constexpr char ENGINE_VERSION[] = "engineVersion";
     constexpr char FK_USER_CHARACTER[] = "fkUserCharacter";
+    constexpr char FIRST_MAP_NAME[] = "firstMapName";
 
     } // namespace Game
 

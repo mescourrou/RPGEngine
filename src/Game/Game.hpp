@@ -31,6 +31,9 @@ class Character;
  */
 namespace game
 {
+namespace GUI {
+class GameGUI;
+}
 
 /**
  * @brief Manage the exceptions of Game
@@ -68,6 +71,10 @@ private:
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
+
+    std::shared_ptr<game::GUI::GameGUI> m_gui;
+
+    bool m_running = true;
 
 };
 

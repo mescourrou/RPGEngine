@@ -31,6 +31,7 @@ config::Config::Config(const std::string &filename)
  */
 bool config::Config::loadFile(const std::string &filename) noexcept
 {
+    VLOG(verbosityLevel::FUNCTION_CALL) << "Call loadFile(" << filename << ")";
     m_iniFile.SetUnicode();
     m_iniFile.SetMultiKey();
     if (m_iniFile.LoadFile(filename.c_str()) < 0)
