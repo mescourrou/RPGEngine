@@ -1,17 +1,21 @@
 #include "Map.hpp"
 
+// Stl
 #include <fstream>
 
-#include <glog/logging.h>
+// Project
 #include <VerbosityLevels.hpp>
 #include <Area.hpp>
 
+// External lib
+#include <glog/logging.h>
 #include <json.hpp>
 
 namespace map {
 
 /**
  * @brief Constructor of the map
+ * @param context Context to use
  * @param name Name of the map. Must match the database
  */
 Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :
@@ -21,6 +25,13 @@ Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :
 
 }
 
+/**
+ * @brief Load the map from the json file given
+ *
+ * We use Tiled to generate the files : https://www.mapeditor.org/
+ * @param filename File to use
+ * @return Return true if all went well
+ */
 bool Map::load(const std::string& filename)
 {
     std::ifstream file(m_context->kMapPath() + "/" + filename + ".json");
@@ -57,19 +68,28 @@ bool Map::load(const std::string& filename)
             }
         }
 
-        return true;
     }
     else {
         LOG(ERROR) << "Impossible to open " << m_context->kMapPath() + "/" + filename + ".json";
         return false;
     }
+    return true;
 }
 
+/**
+ * @brief Add a collision area to the collision layer
+ * @param area Area to add
+ */
 void Map::addCollisionArea(const map::Area &area)
 {
     m_collisionLayer.push_back(area);
 }
 
+/**
+ * @brief Tells if the point is in a collision area
+ * @param point Point to test
+ * @return Return true if the point is in a collision area
+ */
 bool Map::collision(const Vector<2> &point) const
 {
     for (const auto& area : m_collisionLayer)
@@ -80,11 +100,22 @@ bool Map::collision(const Vector<2> &point) const
     return false;
 }
 
+/**
+ * @brief Add a teleport area
+ * @param area Area of the teleport
+ * @param destination Destination
+ */
 void Map::addTeleportArea(const Area &area, const Position &destination)
 {
 
 }
 
+/**
+ * @brief Tells if the point is in a teleport area
+ * @param point Point to test
+ * @param[out] destination Destination to teleport to
+ * @return Return true if you are in a teleport area
+ */
 bool Map::doITeleport(const Vector<2> &point, Position &destination) const
 {
     for (const auto& area : m_teleportArea)
@@ -98,6 +129,11 @@ bool Map::doITeleport(const Vector<2> &point, Position &destination) const
     return false;
 }
 
+/**
+ * @brief Load the collision layer from the json object given
+ * @param layer Json object containing the layer
+ * @return Return true if all went well
+ */
 bool Map::loadCollisionLayer(const json& layer)
 {
     if (!layer.is_object())

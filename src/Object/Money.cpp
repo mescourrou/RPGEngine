@@ -1,30 +1,35 @@
 #include "Money.hpp"
 
+// Project
 #include <Database.hpp>
 #include <Model.hpp>
 #include <Query.hpp>
 #include <Tools.hpp>
+#include <VerbosityLevels.hpp>
 
-bool object::Money::m_initialized = false;
+namespace object {
+
+bool Money::m_initialized = false;
 
 /**
  * @brief Construct a money amount
  */
-object::Money::Money()
+Money::Money()
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     if (!m_initialized)
     {
         LOG(ERROR) << "Money system must be initialized before using";
         throw std::string("Money system must be initialized before using");
     }
-    m_values.reset(new std::vector<unsigned int>(m_moneyNames.size(), 0));
+    m_values = std::make_shared<std::vector<unsigned int>>(m_moneyNames.size(), 0);
 }
 
 /**
  * @brief Create the amount of money given
  * @param values Initializer list. Go from the base money to the most valuable type of money
  */
-object::Money::Money(std::initializer_list<unsigned int> values) : Money()
+Money::Money(std::initializer_list<unsigned int> values) : Money()
 {
     if (values.size() > m_moneyNames.size())
         LOG(FATAL) << "Number of values must be at worse equal to the number of money";
@@ -43,7 +48,7 @@ object::Money::Money(std::initializer_list<unsigned int> values) : Money()
  * @param [in] db Database to use
  * @return Return true if the initialization is done correctly
  */
-bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
+bool Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Money;
     using namespace database;
@@ -77,7 +82,7 @@ bool object::Money::initializeFromDatabase(std::shared_ptr<database::Database> d
  * @brief Get the value of the money wanted
  * @param moneyName Name of the money to get
  */
-unsigned int object::Money::value(const std::string &moneyName) const
+unsigned int Money::value(const std::string &moneyName) const
 {
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
@@ -90,65 +95,65 @@ unsigned int object::Money::value(const std::string &moneyName) const
     return 0;
 }
 
-bool object::Money::operator==(const object::Money &other) const
+bool Money::operator==(const Money &other) const
 {
     return convertToBaseMoney() == other.convertToBaseMoney();
 }
 
-bool object::Money::operator!=(const object::Money &other) const
+bool Money::operator!=(const Money &other) const
 {
     return convertToBaseMoney() != other.convertToBaseMoney();
 }
 
-bool object::Money::operator<=(const object::Money &other) const
+bool Money::operator<=(const Money &other) const
 {
     return convertToBaseMoney() <= other.convertToBaseMoney();
 }
 
-bool object::Money::operator>=(const object::Money &other) const
+bool Money::operator>=(const Money &other) const
 {
     return convertToBaseMoney() >= other.convertToBaseMoney();
 }
 
-bool object::Money::operator>(const object::Money &other) const
+bool Money::operator>(const Money &other) const
 {
     return convertToBaseMoney() > other.convertToBaseMoney();
 }
 
-bool object::Money::operator<(const object::Money &other) const
+bool Money::operator<(const Money &other) const
 {
     return convertToBaseMoney() < other.convertToBaseMoney();
 }
 
-object::Money object::Money::operator+(const object::Money &other) const
+Money Money::operator+(const Money &other) const
 {
     return Money{convertToBaseMoney() + other.convertToBaseMoney()};
 }
 
-object::Money &object::Money::operator++(int)
+Money &Money::operator++(int)
 {
     add(m_moneyNames.front().first, 1);
     return *this;
 }
 
-object::Money &object::Money::operator+=(const object::Money &other)
+Money &Money::operator+=(const Money &other)
 {
     add(m_moneyNames.front().first, other.convertToBaseMoney());
     return *this;
 }
 
-object::Money object::Money::operator+(unsigned int toAdd) const
+Money Money::operator+(unsigned int toAdd) const
 {
     return Money{convertToBaseMoney() + toAdd};
 }
 
-object::Money &object::Money::operator+=(unsigned int toAdd)
+Money &Money::operator+=(unsigned int toAdd)
 {
     add(m_moneyNames.front().first, toAdd);
     return *this;
 }
 
-object::Money object::Money::operator-(const object::Money &other) const
+Money Money::operator-(const Money &other) const
 {
     long sub = convertToBaseMoney() - other.convertToBaseMoney();
     if (sub < 0)
@@ -156,19 +161,19 @@ object::Money object::Money::operator-(const object::Money &other) const
     return Money{static_cast<unsigned int>(sub)};
 }
 
-object::Money &object::Money::operator--(int)
+Money &Money::operator--(int)
 {
     sub(m_moneyNames.front().first, 1);
     return *this;
 }
 
-object::Money &object::Money::operator-=(const object::Money &other)
+Money &Money::operator-=(const Money &other)
 {
     sub(m_moneyNames.front().first, other.convertToBaseMoney());
     return *this;
 }
 
-object::Money object::Money::operator-(unsigned int toAdd) const
+Money Money::operator-(unsigned int toAdd) const
 {
     long sub = convertToBaseMoney() - toAdd;
     if (sub < 0)
@@ -176,7 +181,7 @@ object::Money object::Money::operator-(unsigned int toAdd) const
     return Money{static_cast<unsigned int>(sub)};
 }
 
-object::Money &object::Money::operator-=(unsigned int toAdd)
+Money &Money::operator-=(unsigned int toAdd)
 {
     sub(m_moneyNames.front().first, toAdd);
     return *this;
@@ -186,13 +191,18 @@ object::Money &object::Money::operator-=(unsigned int toAdd)
  * @brief End of initialize chain with variadic parameters
  * @param value Money name to add
  */
-void object::Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value)
+void Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value)
 {
     m_moneyNames.push_back(value);
     m_initialized = true;
 }
 
-bool object::Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+/**
+ * @brief Verify the database model
+ * @param db Database to verify
+ * @return Return true if the database contains the good tables
+ */
+bool Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Money;
     using namespace database;
@@ -215,7 +225,12 @@ bool object::Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return true;
 }
 
-bool object::Money::createDatabaseModel(std::shared_ptr<database::Database> db)
+/**
+ * @brief Create the table needed in the database
+ * @param db Database to populate
+ * @return Return true if the database was well populated
+ */
+bool Money::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Money;
     using namespace database;
@@ -232,7 +247,7 @@ bool object::Money::createDatabaseModel(std::shared_ptr<database::Database> db)
 /**
  * @brief Spread carry over the money types
  */
-void object::Money::spread()
+void Money::spread()
 {
     for(unsigned int i = 0; i < m_moneyNames.size() -1; i++)
     {
@@ -247,7 +262,7 @@ void object::Money::spread()
 /**
  * @brief Get the names of the money types
  */
-std::vector<std::string> object::Money::moneyNames()
+std::vector<std::string> Money::moneyNames()
 {
     std::vector<std::string> retList;
     for (auto& money : m_moneyNames)
@@ -261,7 +276,7 @@ std::vector<std::string> object::Money::moneyNames()
  * @brief Get the value of the asked money type
  * @param moneyName Type of the money asked
  */
-unsigned int object::Money::moneyValue(const std::string &moneyName)
+unsigned int Money::moneyValue(const std::string &moneyName)
 {
     for (auto& money : m_moneyNames)
     {
@@ -275,7 +290,7 @@ unsigned int object::Money::moneyValue(const std::string &moneyName)
 /**
  * @brief Convert the money into only the base value
  */
-unsigned int object::Money::convertToBaseMoney() const
+unsigned int Money::convertToBaseMoney() const
 {
     unsigned int sum = 0;
     for (unsigned int i = 0; i < m_moneyNames.size(); i++)
@@ -291,7 +306,7 @@ unsigned int object::Money::convertToBaseMoney() const
  * @param moneyName Type of the money you want to add
  * @param quantity Amount of money to add
  */
-void object::Money::add(const std::string &moneyName, unsigned int quantity)
+void Money::add(const std::string &moneyName, unsigned int quantity)
 {
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
@@ -314,7 +329,7 @@ void object::Money::add(const std::string &moneyName, unsigned int quantity)
  * @param moneyName Type of the money you want to remove
  * @param quantity Amount of money to substract
  */
-bool object::Money::sub(const std::string &moneyName, unsigned int quantity)
+bool Money::sub(const std::string &moneyName, unsigned int quantity)
 {
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
@@ -352,6 +367,7 @@ bool object::Money::sub(const std::string &moneyName, unsigned int quantity)
     throw std::string("Money ") + moneyName + std::string(" not found");
 }
 
+} // namespace object
 /**
  * @brief Print the money into the stream
  * @param stream
@@ -372,3 +388,4 @@ std::ostream &operator<<(std::ostream &stream, const object::Money &money)
     }
     return stream;
 }
+

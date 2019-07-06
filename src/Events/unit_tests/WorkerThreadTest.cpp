@@ -1,6 +1,9 @@
 #include "WorkerThreadTest.hpp"
 namespace events {
 
+/*
+ * Test adding new work to the worker thread
+ */
 TEST_F(WorkerThreadTest, NewWork)
 {
     mutex.lock();
@@ -17,13 +20,21 @@ TEST_F(WorkerThreadTest, NewWork)
     WorkerThread::newWork(cb); // 8
     WorkerThread::newWork(cb); // 9
     WorkerThread::newWork(cb); // 10
+    WorkerThread::newWork(cb); // 11
+    WorkerThread::newWork(cb); // 12
+    WorkerThread::newWork(cb); // 13
+    WorkerThread::newWork(cb); // 14
+    WorkerThread::newWork(cb); // 15
 
     usleep(100000);
 
-    EXPECT_EQ(cbCalls, 10);
+    EXPECT_EQ(cbCalls, 15);
     mutex.unlock();
 }
 
+/*
+ * Test waiting for all threads to finish
+ */
 TEST_F(WorkerThreadTest, WaitForJoin)
 {
     mutex.lock();

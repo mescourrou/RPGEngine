@@ -1,24 +1,31 @@
 #include "GameGUI.hpp"
 
+// Project
 #include <Model.hpp>
 #include <Database.hpp>
-#include <glog/logging.h>
 #include <VerbosityLevels.hpp>
 #include <Query.hpp>
 #include <Config.hpp>
 #include <ConfigFiles.hpp>
-
 #include <general_config.hpp>
 
+// External lib
+#include <glog/logging.h>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 
 namespace game {
 
 namespace GUI {
 
+/**
+ * @brief Construct the GameGUI
+ * @param context Context to use
+ */
 GameGUI::GameGUI(std::shared_ptr<config::Context> context):
     m_context(context)
 {
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     namespace structure = config::structure::globalFile;
     bool fullscreen = false;
     if (m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::FULLSCREEN) == "true")
@@ -41,6 +48,11 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context):
         m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
 }
 
+/**
+ * @brief Initialize the GUI part of Game
+ * @param db Database to use
+ * @return Return true if the initialization went well
+ */
 bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
@@ -48,9 +60,11 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     using namespace database;
     if (!db)
         throw GameGUIException("No database given.", DatabaseException::MISSING_DATABASE);
+
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).column(Model::FIRST_MAP_NAME));
     if (result.size() == 0)
         return false;
+
     LOG(INFO) << "Load first map";
     m_map = std::make_shared<map::GUI::MapGUI>(m_context, result.at(1).at(Model::FIRST_MAP_NAME));
     if (!m_map->load(result.at(1).at(Model::FIRST_MAP_NAME)))
@@ -61,6 +75,9 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     return true;
 }
 
+/**
+ * @brief Manage the SFML events
+ */
 void GameGUI::eventManager()
 {
     // Process events
@@ -71,7 +88,7 @@ void GameGUI::eventManager()
         if (event.type == sf::Event::Closed)
         {
             m_window->close();
-            m_cbOnClose();
+            m_signalOnClose.trigger();
         }
         if (event.type == sf::Event::KeyPressed)
         {
@@ -96,14 +113,15 @@ void GameGUI::eventManager()
     }
 }
 
+/**
+ * @brief Draw the window and the widgets
+ */
 void GameGUI::draw()
 {
     m_window->clear();
     m_window->draw(*m_map);
     m_window->display();
 }
-
-
 
 } // namespace GUI
 

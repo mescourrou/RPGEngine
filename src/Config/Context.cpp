@@ -1,16 +1,11 @@
 #include "Context.hpp"
-// I/O
+// Stl
 #include <memory>
-
 #include <filesystem>
 
 // Project
 #include <Config.hpp>
-#include <VerbosityLevels.hpp>
-#include <config.h>
 
-// External libs
-#include <glog/logging.h>
 /**
  * @brief Initialize a context from argc and argv
  * @param argc Number of arguments in argv
@@ -37,7 +32,7 @@ config::Context::Context(int argc, char **argv)
     }
     if (argc > 1)
     {
-        for (unsigned int i = 1; i < argc; i++)
+        for (int i = 1; i < argc; i++)
         {
             m_programArguments.push_back(argv[i]);
         }

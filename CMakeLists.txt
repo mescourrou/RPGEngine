@@ -9,7 +9,7 @@ set(RPG_THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
 
 set(RPG_CONFIG_FILE_DIR "config_files" CACHE STRING "Directory containing template for configure_file")
 
-set(RPG_VERBOSE 10 CACHE STRING "Level of verbosity")
+set(RPG_VERBOSE 10 CACHE STRING "Default level of verbosity")
 
 set(SOURCES "")
 
@@ -22,6 +22,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_USE_FILESYSTEM_PATH "Use the filesystem path" OFF)
+option(GAME_AUTO_CHOOSE "Chosse automaticaly the 1st game" ON)
 
 set(GAME_DEFAULT_RESOLUTION "800x600")
 mark_as_advanced(GAME_DEFAULT_RESOLUTION BUILD_USE_FILESYSTEM_PATH)

@@ -2,18 +2,27 @@
 #include <fstream>
 namespace map {
 
+/*
+ * Test the classname
+ */
 TEST_F(MapTest, ClassName)
 {
     Map map({}, "Somewhere");
     EXPECT_EQ(map.className(), "Map");
 }
 
+/*
+ * Test init
+ */
 TEST_F(MapTest, Init)
 {
     Map map({}, "Somewhere");
     EXPECT_EQ(map.name(), "Somewhere");
 }
 
+/*
+ * Test to load a collision layer
+ */
 TEST_F(MapTest, LoadCollisionLayer)
 {
     using ::testing::Return;
@@ -28,36 +37,6 @@ TEST_F(MapTest, LoadCollisionLayer)
     EXPECT_TRUE(map.collision(Vector<2>{1279,1289}));
     EXPECT_FALSE(map.collision(Vector<2>{1232,1334}));
     EXPECT_FALSE(map.collision(Vector<2>{1260,1301}));
-
-}
-
-TEST_F(MapTest, JsonTests)
-{
-    json myJson;
-    std::ifstream file("data/Map1.json");
-    ASSERT_TRUE(file.is_open());
-
-    file >> myJson;
-
-    ASSERT_TRUE(myJson.is_object());
-    auto layers = myJson["layers"];
-
-    ASSERT_TRUE(layers.is_array());
-    for (auto layer : layers)
-    {
-        if (layer["name"] == "collisions")
-        {
-            std::cout << "Found collisions" << std::endl;
-            for (auto object : layer["objects"])
-            {
-                if (object["visible"].get<bool>())
-                    std::cout << "Polygone visible" << std::endl;
-                else
-                    std::cout << "Polygone invisible" << std::endl;
-            }
-        }
-
-    }
 
 }
 

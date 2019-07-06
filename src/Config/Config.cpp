@@ -8,6 +8,7 @@
 #include <string>
 #include <cstdlib>
 
+// Project
 #include <VerbosityLevels.hpp>
 
 // Extern libs
@@ -26,7 +27,7 @@ config::Config::Config(const std::string &filename)
 
 /**
  * @brief Load ini file into configuration
- * @param filename Path name
+ * @param[in] filename Path name
  * @return Return false if the file couldn't be loaded
  */
 bool config::Config::loadFile(const std::string &filename) noexcept
@@ -47,8 +48,8 @@ bool config::Config::loadFile(const std::string &filename) noexcept
 
 /**
  * @brief Get the value targetted by the section and the key given
- * @param section Config section
- * @param key Config key
+ * @param[in] section Config section
+ * @param[in] key Config key
  * @return Return the value in string, even for numbers. Empty string if not found
  */
 std::string config::Config::getValue(const std::string &section, const std::string &key) const
@@ -69,7 +70,7 @@ std::string config::Config::getValue(const std::string &section, const std::stri
  *
  * The purpose of this method is to be used in file without sections
  *
- * @param key Key to search
+ * @param[in] key Key to search
  * @return Value of the key. Empty string if not found
  */
 std::string config::Config::getValue(const std::string &key) const

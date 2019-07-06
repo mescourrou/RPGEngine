@@ -1,6 +1,9 @@
 #include "EventTest.hpp"
 namespace events {
 
+/*
+ * Test the subscribe and trigger for standard function (no object)
+ */
 TEST_F(EventTest, StandardFunction)
 {
     Event<void> e1;
@@ -44,6 +47,9 @@ public:
     bool m_noArgMethod = false;
 };
 
+/*
+ * Test subscribe and trigger for objet's methods
+ */
 TEST_F(EventTest, MethodFunction)
 {
     Event<void> e;

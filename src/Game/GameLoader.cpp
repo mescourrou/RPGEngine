@@ -19,7 +19,7 @@ GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
     m_context(context)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    m_config.reset(new config::Config(context->gameLocation() + "/" + config::structure::globalFile::MAIN_CONFIGURATION_FILE));
+    m_config.reset(new config::Config(context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME));
 }
 
 /**

@@ -1,4 +1,8 @@
 #include "MapGUI.hpp"
+
+// Project
+
+// External library
 #include <tinyxml2.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -10,18 +14,33 @@ namespace map {
 
 namespace GUI {
 
+/**
+ * @brief Construct the GUI Map
+ * @param context Context to use
+ * @param name Name of the map
+ */
 map::GUI::MapGUI::MapGUI(std::shared_ptr<config::Context> context, const std::string& name) :
     Map(context, name)
 {
 
 }
 
+/**
+ * @brief Destructor
+ *
+ * Free the textures
+ */
 MapGUI::~MapGUI()
 {
     for (auto ptr : m_textures)
         delete ptr;
 }
 
+/**
+ * @brief Move the center of the view
+ * @param offsetX X move
+ * @param offsetY Y move
+ */
 void MapGUI::move(double offsetX, double offsetY)
 {
     m_centerOfView += Vector<2>{offsetX, offsetY};
@@ -36,6 +55,11 @@ void MapGUI::move(double offsetX, double offsetY)
         m_centerOfView.y() = (m_height-1)*m_tileHeight;
 }
 
+/**
+ * @brief Draw the map on the target
+ * @param target Target to draw on
+ * @param states Render states to use
+ */
 void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     // Position on the map of the top left corner of the screen
@@ -84,11 +108,19 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
         i = iOrigin;
         j++;
     }
+    // Print a rectangle in the middle of the screen
     sf::RectangleShape pos(sf::Vector2f(5,5));
     pos.setPosition(target.getSize().x / 2 - pos.getSize().x /2 , target.getSize().y / 2 - pos.getSize().y /2);
     target.draw(pos);
 }
 
+/**
+ * @brief Load the tiles from the json layer
+ *
+ * We use Tiled to generate the json : https://www.mapeditor.org/
+ * @param layer Layer to use
+ * @return Return true if all went well
+ */
 bool MapGUI::doLoadTiles(const json &layer)
 {
     if (!layer.contains(KEY_TILE_DATA))
@@ -112,6 +144,13 @@ bool MapGUI::doLoadTiles(const json &layer)
     return true;
 }
 
+/**
+ * @brief Load the tilesets from the json layer
+ *
+ * We use Tiled to generate the json : https://www.mapeditor.org/
+ * @param json Json object to use
+ * @return Return true if all went well
+ */
 bool MapGUI::doLoadTilesets(const json &json)
 {
     if (!json.contains(KEY_WIDTH) || !json[KEY_WIDTH].is_number_integer())
@@ -140,6 +179,13 @@ bool MapGUI::doLoadTilesets(const json &json)
     return true;
 }
 
+/**
+ * @brief Load the tileset from the json tileset
+ *
+ * We use Tiled to generate the json : https://www.mapeditor.org/
+ * @param tileset Tileset to use
+ * @return Return true if all went well
+ */
 bool MapGUI::loadTileset(const json &tileset)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "loadTileset";

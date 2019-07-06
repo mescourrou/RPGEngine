@@ -3,13 +3,15 @@
 // External libs
 #include <glog/logging.h>
 
+namespace database
+{
 
 /**
  * @brief Get the datatype of a column
  * @param [in] column Column to look for
  * @return database::DataType matching
  */
-database::DataType database::Query::dataType(const std::string &column)
+DataType Query::dataType(const std::string &column)
 {
     if (!m_db)
         throw QueryException("No database given", DatabaseException::MISSING_DATABASE);
@@ -28,7 +30,7 @@ database::DataType database::Query::dataType(const std::string &column)
  * @param [in] op Operator to convert
  * @return std::string corresponding to the operator
  */
-std::string database::Query::operatorAsString(database::Query::Operator op)
+std::string Query::operatorAsString(Query::Operator op)
 {
     switch (op) {
     case EQUAL:
@@ -51,7 +53,7 @@ std::string database::Query::operatorAsString(database::Query::Operator op)
  * @brief Check if the column name is valid and if the column exists
  * @param [in] name Name of the column to check
  */
-void database::Query::checkColumnName(const std::string &name)
+void Query::checkColumnName(const std::string &name)
 {
     if (!checkColumnNameValidity(name))
         throw QueryException(std::string("Column name not valid : ").append(name), QueryException::INVALID_COLUMN_NAME);
@@ -68,7 +70,7 @@ void database::Query::checkColumnName(const std::string &name)
  * @param [in] name Name to check
  * @return Return true if the name is valid
  */
-bool database::Query::checkColumnNameValidity(const std::string &name)
+bool Query::checkColumnNameValidity(const std::string &name)
 {
     if (name.find(' ') != std::string::npos)
     {
@@ -86,7 +88,7 @@ bool database::Query::checkColumnNameValidity(const std::string &name)
  * @param [in] name Name of the column to check
  * @return Return true if the column exists
  */
-bool database::Query::checkColumnExistance(const std::string &name)
+bool Query::checkColumnExistance(const std::string &name)
 {
     auto columnList = m_db->columnList(m_table);
     if (std::find(columnList.begin(), columnList.end(), name) == columnList.end())
@@ -105,7 +107,7 @@ bool database::Query::checkColumnExistance(const std::string &name)
  * @param [in] op Operator of comparison
  * @param [in] value Value to compare to
  */
-void database::Query::doWhere(std::vector<std::string> &conditions, const std::string &column, database::Query::Operator op, std::string value)
+void Query::doWhere(std::vector<std::string> &conditions, const std::string &column, Query::Operator op, std::string value)
 {
 
     auto type = dataType(column);
@@ -120,7 +122,7 @@ void database::Query::doWhere(std::vector<std::string> &conditions, const std::s
  * @param [in,out] columns Column list to modify
  * @param [in] column Column to add
  */
-void database::Query::doColumn(std::vector<std::string> &columns, const std::string &column)
+void Query::doColumn(std::vector<std::string> &columns, const std::string &column)
 {
     checkColumnName(column);
     columns.push_back(column);
@@ -132,7 +134,7 @@ void database::Query::doColumn(std::vector<std::string> &columns, const std::str
  * @param [in] value Value to insert
  * @return New query
  */
-void database::Query::doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value)
+void Query::doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value)
 {
     checkColumnName(column);
     auto type = dataType(column);
@@ -142,7 +144,7 @@ void database::Query::doValue(std::vector<std::pair<std::string, std::string>> &
     values.push_back(std::pair<std::string, std::string>(column, value));
 }
 
-void database::Query::doSort(std::vector<std::string>& sortColumns, const std::string &column)
+void Query::doSort(std::vector<std::string>& sortColumns, const std::string &column)
 {
     checkColumnName(column);
     sortColumns.push_back(column);
@@ -152,7 +154,7 @@ void database::Query::doSort(std::vector<std::string>& sortColumns, const std::s
  * @brief Generate the string corresponding of the Query
  * @return std::string corresponding to the Query
  */
-std::string database::SelectQuery::str() const
+std::string SelectQuery::str() const
 {
     std::stringstream ss;
     ss << "SELECT ";
@@ -200,7 +202,7 @@ std::string database::SelectQuery::str() const
  * @brief Generate the string corresponding of the Query
  * @return std::string corresponding to the Query
  */
-std::string database::InsertQuery::str() const
+std::string InsertQuery::str() const
 {
     if (!isValid())
         return {};
@@ -232,10 +234,11 @@ std::string database::InsertQuery::str() const
  * @brief Add a column to the Creation Query
  * @param [in] columnName Name of the new column
  * @param [in] columnType Column type
- * @param [in] columnContraints Column contrains
+ * @param [in] fkTable (optional) Table of the foreign key
+ * @param [in] fkField (optional) Field of the foreign key
  * @return New Query
  */
-database::CreateQuery &database::CreateQuery::column(const std::string &columnName, DataType columnType,
+CreateQuery &CreateQuery::column(const std::string &columnName, DataType columnType,
                                                      const std::string& fkTable, const std::string& fkField)
 {
     if (!checkColumnNameValidity(columnName))
@@ -266,12 +269,21 @@ database::CreateQuery &database::CreateQuery::column(const std::string &columnNa
     return *this;
 }
 
-database::CreateQuery &database::CreateQuery::constraint(const std::string &columnName, database::Query::Constraints constraintType)
+/**
+ * @brief Add column constraint like a primary key, an autoincrement, ...
+ *
+ * See Query::Constraints
+ * @param[in] columnName Name of the column
+ * @param[in] constraintType Constraint type
+ * @return Return the new Query
+ */
+CreateQuery &CreateQuery::constraint(const std::string &columnName, Query::Constraints constraintType)
 {
     if (!checkColumnNameValidity(columnName))
         return *this;
 
-    if (std::find_if(m_columns.begin(), m_columns.end(), [&](std::tuple<std::string, DataType, std::string, std::string> &a) -> bool
+    if (std::find_if(m_columns.begin(), m_columns.end(),
+                [&](std::tuple<std::string, DataType, std::string, std::string> &a) -> bool
                 {
                     if (std::get<0>(a) == columnName)
                         return true;
@@ -309,7 +321,7 @@ database::CreateQuery &database::CreateQuery::constraint(const std::string &colu
  * @brief Generate the string corresponding of the Query
  * @return std::string corresponding to the Query
  */
-std::string database::CreateQuery::str() const
+std::string CreateQuery::str() const
 {
     if (!isValid())
         return {};
@@ -363,7 +375,7 @@ std::string database::CreateQuery::str() const
  * @param value New value
  * @return Updated Query
  */
-database::UpdateQuery &database::UpdateQuery::set(const std::string &columnName, const std::string &value)
+UpdateQuery &UpdateQuery::set(const std::string &columnName, const std::string &value)
 {
     checkColumnName(columnName);
     m_valid = true;
@@ -376,7 +388,7 @@ database::UpdateQuery &database::UpdateQuery::set(const std::string &columnName,
  * @brief Generate the string corresponding of the Query
  * @return std::string corresponding to the Query
  */
-std::string database::UpdateQuery::str() const
+std::string UpdateQuery::str() const
 {
     if (!isValid())
         return {};
@@ -408,3 +420,5 @@ std::string database::UpdateQuery::str() const
     ss << ";";
     return ss.str();
 }
+
+} // namespace database

@@ -59,7 +59,7 @@ private:
 
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 
-    Money m_money;
+    Money m_money;  ///< Money contained in the inventory
 };
 
 } // namespace object

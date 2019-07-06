@@ -68,13 +68,20 @@ public:
 
 protected:
     bool loadCollisionLayer(const json &layer);
+    /**
+     * @brief Load the tiles from the json. To be specified in GUI Class
+     */
     virtual bool doLoadTiles(const json&) { return true; }
+    /**
+     * @brief Load the tilesets from the json. To be specified in GUI Class
+     */
     virtual bool doLoadTilesets(const json&) { return true; }
-    json m_json;
+
+    json m_json; ///< Json used
 
     std::string m_name; ///< Name of the map
 
-    std::shared_ptr<config::Context> m_context;
+    std::shared_ptr<config::Context> m_context; ///< Context used
 
     static inline constexpr char KEY_LAYERS[] = "layers";
     static inline constexpr char KEY_LAYER_NAME[] = "name";
@@ -91,11 +98,9 @@ protected:
     static inline constexpr char KEY_POLYGON[] = "polygon";
 private:
 
-    std::vector<Area> m_collisionLayer;
+    std::vector<Area> m_collisionLayer; ///< List of the collisions areas
     // std::vector<NPC> m_npcLayer; ///< TODO: Add this when NPC created
-    std::map<Area, Position> m_teleportArea;
-
-
+    std::map<Area, Position> m_teleportArea; ///< List of the teleports areas
 };
 
 } // namespace map

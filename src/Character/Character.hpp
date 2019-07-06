@@ -48,7 +48,7 @@ class Character : public BaseObject
 public:
     Character() = delete;
     Character(std::string name, std::shared_ptr<database::Database> db = nullptr);
-    virtual ~Character();
+    ~Character() override;
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
 

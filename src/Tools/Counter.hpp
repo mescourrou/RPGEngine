@@ -12,6 +12,9 @@
 class CounterTest;
 #endif
 
+/**
+ * @brief Not used
+ */
 class Counter
 {
 #ifdef RPG_BUILD_TEST

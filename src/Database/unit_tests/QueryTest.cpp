@@ -139,7 +139,6 @@ TEST_F(QueryTest, Update)
 
 void QueryTest::SetUp()
 {
-
     database.reset(new Database("data/db_sample2.db"));
 }
 

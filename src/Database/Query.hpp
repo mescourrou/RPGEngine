@@ -45,28 +45,33 @@ public:
         UPDATE ///< Update query : edit values
     };
 
+    /**
+     * @brief Comparaison operators
+     */
     enum Operator {
-        EQUAL,
-        GT,
-        GE,
-        LT,
-        LE,
-        NOT
+        EQUAL, ///< Equal
+        GT, ///< Greater Than
+        GE, ///< Greater or Equal
+        LT, ///< Lesser than
+        LE, ///< Lesser or Equal
+        NOT ///< Not equal
     };
 
+    /**
+     * @brief Column constraints
+     */
     enum Constraints {
-        PRIMARY_KEY,
-        UNIQUE,
-        AUTOINCREMENT,
-        NOT_NULL
+        PRIMARY_KEY, ///< Primary key
+        UNIQUE, ///< Unique
+        AUTOINCREMENT, ///< Auto increment
+        NOT_NULL ///< Not null
     };
 
 
-
-protected:
+private:
     /**
      * @struct FindQueryType
-     * @brief Return the class type associated with the QueryTypes given
+     * @brief Return the class type associated with the QueryTypes given (specified later)
      */
     template<QueryTypes T>
     struct FindQueryType{};
@@ -141,7 +146,7 @@ protected:
     std::vector<std::string> m_columns; ///< Columns selected
     std::vector<std::string> m_conditions; ///< Selection conditions
     std::vector<std::string> m_sortColumns; ///< Columns to sort;
-    bool m_sortAscending = true;
+    bool m_sortAscending = true; ///< Result sorting
 };
 
 /**
@@ -198,10 +203,10 @@ protected:
      */
     std::vector<std::tuple<std::string, DataType, std::string, std::string>> m_columns;
 
-    std::vector<std::string> m_primaryKeyColumns;
-    std::vector<std::string> m_uniqueColumns;
-    std::vector<std::string> m_autoincrementColumns;
-    std::vector<std::string> m_notNullColumns;
+    std::vector<std::string> m_primaryKeyColumns; ///< Columns with Primary Key constraint
+    std::vector<std::string> m_uniqueColumns;  ///< Columns with Unique constraint
+    std::vector<std::string> m_autoincrementColumns;  ///< Columns with Auto increment constraint
+    std::vector<std::string> m_notNullColumns; ///< Columns with Not null constraint
 
 };
 
@@ -247,5 +252,5 @@ typename Query::FindQueryType<T>::type Query::createQuery(const std::string& tab
     return typename Query::FindQueryType<T>::type(table, db);
 }
 
-} // namespace config
+} // namespace database
 

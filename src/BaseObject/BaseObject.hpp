@@ -52,6 +52,9 @@ public:
     virtual ~BaseObject() noexcept ;
 
     virtual BaseObject *parent() const noexcept final;
+    /**
+     * @brief Get the class name
+     */
     virtual std::string className() const noexcept = 0;
 protected:
     virtual void setParent(BaseObject* parent) noexcept final;

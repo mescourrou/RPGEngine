@@ -46,14 +46,9 @@ public:
 
 protected:
     bool initialize();
-
     void startGame(std::string gameName) const;
-
     std::shared_ptr<config::Context> m_context;     ///< Context
-
     std::vector<std::string> m_gameList;            ///< List of the founded games
-
-    static constexpr char DIRECTORY_KEY[] = "directory"; ///< Key to find the directory in .ini file
 };
 
 } // namespace game

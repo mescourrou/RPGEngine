@@ -45,6 +45,7 @@ public:
      */
     BaseException(const std::string& w, const BaseException::Errors& errorCode = UNKNOWN) noexcept :
         m_what(w), m_code(errorCode) {}
+    /// @brief Default destructor
     ~BaseException() override = default;
 
     /**

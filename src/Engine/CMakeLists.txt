@@ -22,7 +22,3 @@ add_custom_command(TARGET ${EngineName} POST_BUILD
   COMMENT "Copying config directory")
 message("Copying game1 directory")
 endif()
-
-if (RPG_BUILD_GUI)
-	add_subdirectory(GUI)
-endif()
