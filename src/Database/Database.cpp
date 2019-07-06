@@ -1,4 +1,9 @@
 #include "Database.hpp"
+
+// Stl
+#include <filesystem>
+#include <fstream>
+
 // Project
 #include <Query.hpp>
 #include <VerbosityLevels.hpp>
@@ -17,9 +22,13 @@ namespace database
 Database::Database(const std::string &path)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    sqlite3_initialize();
+    if (!std::filesystem::exists(std::filesystem::path(path).parent_path()))
+        std::filesystem::create_directories(std::filesystem::path(path).parent_path());
+
     if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
-        LOG(ERROR) << "Can't open database: " << sqlite3_errmsg(m_sqlite3Handler);
+        LOG(ERROR) << "Can't open database " << path << ": " << sqlite3_errmsg(m_sqlite3Handler);
         sqlite3_close(m_sqlite3Handler);
         throw DatabaseException("Can't open database", DatabaseException::OPENING);
     }

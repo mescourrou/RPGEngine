@@ -8,14 +8,17 @@
 namespace maker {
 
 /*
- * Test the loading of a non existant database
+ * Test the loading of a non existant database : create the database
  */
 TEST_F(MakerTest, LoadingDatabaseOpenning)
 {
+    if (std::filesystem::exists("not_existing_directory"))
+        std::filesystem::remove_all("not_existing_directory");
+
     std::string dbFilename = "not_existing_directory/sample0.db";
     Maker maker;
 
-    Maker::DatabaseStatus expectedStatus = Maker::NOT_LOADED;
+    Maker::DatabaseStatus expectedStatus = Maker::EMPTY;
     Maker::DatabaseStatus actualStatus;
 
     auto cb = [&](Maker::DatabaseStatus status){ actualStatus = status;};
