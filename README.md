@@ -16,15 +16,16 @@ git submodule update --init --recursive
 
 ## Configuration
 Here are the CMake variables:
-| CMake Option    | Default Value  | Description                                    |
-|-----------------|----------------|------------------------------------------------|
-| RPG_BUILD_TEST  | ON             | Build the tests                                |
-| RPG_BUILD_GUI   | ON             | Build the GUI classes and dependencies         |
-| RPG_COMPILE_THIRDPARTIES | ON    | Build the thirdparties libs   		    |
-| RPG_VERBOSE     | 10             | Default level of verbosity                     |
-| BUILD_USE_FILESYSTEM_PATH | ON   | Disable this if you have issues with std::filesystem::path |
-| GAME_AUTO_CHOOSE| ON             | Choose automatically the 1st game in the list  |
-| GAME_DEFAULT_RESOLUTION|"800x600"| Default resolution of the window               |
+
+| CMake Option               | Default Value  | Description                                                |
+|----------------------------|----------------|------------------------------------------------------------|
+| RPG_BUILD_TEST             | ON             | Build the tests                                            |
+| RPG_BUILD_GUI              | ON             | Build the GUI classes and dependencies                     |
+| RPG_COMPILE_THIRDPARTIES   | ON             | Build the thirdparties libs   		                         |
+| RPG_VERBOSE                | 10             | Default level of verbosity                                 |
+| BUILD_USE_FILESYSTEM_PATH  | ON             | Disable this if you have issues with std::filesystem::path |
+| GAME_AUTO_CHOOSE           | ON             | Choose automatically the 1st game in the list              |
+| GAME_DEFAULT_RESOLUTION    | "800x600"      | Default resolution of the window                           |
 
 ## Building
 To build the project, execute these commands :
