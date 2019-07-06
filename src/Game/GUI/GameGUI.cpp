@@ -89,6 +89,8 @@ void GameGUI::eventManager()
             case sf::Keyboard::Down:
                 m_map->move(0, 10);
                 break;
+            default:
+                break;
             }
         }
     }

@@ -16,6 +16,12 @@ map::GUI::MapGUI::MapGUI(std::shared_ptr<config::Context> context, const std::st
 
 }
 
+MapGUI::~MapGUI()
+{
+    for (auto ptr : m_textures)
+        delete ptr;
+}
+
 void MapGUI::move(double offsetX, double offsetY)
 {
     m_centerOfView += Vector<2>{offsetX, offsetY};
@@ -38,15 +44,15 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
                                  m_centerOfView.y() - target.getSize().y / 2);
 
     // Coordinates of the tile of the top left corner
-    int i = topLeftPosition.x / m_tileWidth;
-    int j = topLeftPosition.y / m_tileHeight;
+    int i = std::ceil(topLeftPosition.x / m_tileWidth);
+    int j = std::ceil(topLeftPosition.y / m_tileHeight);
+    int iOrigin = i;
 
     sf::Vector2f origin;
     // Position on the screen of the top left displayed tile
     // It's negative to cover all the screen
-    origin.x = - (static_cast<int>(m_tileWidth) - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth));
-    origin.y = - (static_cast<int>(m_tileHeight) - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight));
-
+    origin.x = - (static_cast<int>(m_tileWidth) - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth)) + static_cast<int>(m_tileWidth/2);
+    origin.y = - (static_cast<int>(m_tileHeight) - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight)) + static_cast<int>(m_tileHeight/2);
     // Copy to iterate without modify the origin
     sf::Vector2f tilePosition(origin);
 
@@ -56,9 +62,18 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
         {
             if (i >= 0 && j >= 0 && i < m_width && j < m_height)
             {
-                sf::Sprite tile(m_tiles.at(m_idMap.at(i).at(j)));
-                tile.setPosition(tilePosition);
-                target.draw(tile, states);
+                unsigned int id = m_idMap.at(i).at(j);
+                if (m_tiles.find(id) != m_tiles.end())
+                {
+                    sf::Sprite tile(m_tiles.at(id));
+                    tile.setPosition(tilePosition);
+                    target.draw(tile, states);
+                }
+                else {
+                    sf::RectangleShape emptyTile(sf::Vector2f(m_tileWidth, m_tileHeight));
+                    emptyTile.setPosition(tilePosition);
+                    target.draw(emptyTile, states);
+                }
             }
 
             tilePosition.x += m_tileWidth;
@@ -66,9 +81,12 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
         }
         tilePosition.x = origin.x;
         tilePosition.y += m_tileHeight;
-        i = topLeftPosition.x / m_tileWidth;
+        i = iOrigin;
         j++;
     }
+    sf::RectangleShape pos(sf::Vector2f(5,5));
+    pos.setPosition(target.getSize().x / 2 - pos.getSize().x /2 , target.getSize().y / 2 - pos.getSize().y /2);
+    target.draw(pos);
 }
 
 bool MapGUI::doLoadTiles(const json &layer)
@@ -82,10 +100,10 @@ bool MapGUI::doLoadTiles(const json &layer)
     unsigned int j = 0;
     for (auto& id : layer[KEY_TILE_DATA])
     {
-        m_idMap[i][j] = id;
+        m_idMap[j][i] = id;
 
         j++;
-        if (j >= m_width)
+        if (j >= m_height)
         {
             j = 0;
             i++;
@@ -179,22 +197,22 @@ bool MapGUI::loadTileset(const json &tileset)
     std::string imageFilename = xmlImage->FindAttribute(PROPERTY_IMAGE_SOURCE)->Value();
     imageFilename = m_context->kMapPath() + '/' + imageFilename;
 
-    sf::Texture texture;
-    if (!texture.loadFromFile(imageFilename))
+    m_textures.push_back(new sf::Texture);
+    if (!m_textures.back()->loadFromFile(imageFilename))
         LOG(WARNING) << "Texture from " << imageFilename << " not loaded";
 
     for (unsigned int line = 0; ; line++)
     {
         for (unsigned int col = 0; col < columns; col++)
         {
-            sf::Sprite tile(texture, sf::IntRect(col*width, line*height, width, height));
-            m_tiles.insert(std::pair<unsigned int, sf::Sprite>(id, tile));
+            sf::Sprite tile(*m_textures.back(), sf::IntRect(col*width, line*height, width, height));
+            m_tiles.insert(std::pair<unsigned int, sf::Sprite>((const unsigned int)id, tile));
 
             id++;
-            if (id >= tilecount)
+            if (id > tilecount)
                 break;
         }
-        if (id >= tilecount)
+        if (id > tilecount)
             break;
     }
 

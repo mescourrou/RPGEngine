@@ -9,6 +9,7 @@
 #include <Vector.hpp>
 #include <Map.hpp>
 #include <Context.hpp>
+#include <memory>
 
 namespace map {
 
@@ -21,7 +22,7 @@ class MapGUI : public Map, public sf::Transformable, public sf::Drawable
     DECLARE_BASEOBJECT(MapGUI)
 public:
     MapGUI(std::shared_ptr<config::Context> context, const std::string& name);
-    ~MapGUI() override final = default;
+    ~MapGUI() override final;
 
     void move(double offsetX, double offsetY);
 
@@ -54,6 +55,8 @@ private:
     std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap;
 
     Vector<2> m_centerOfView;
+
+    std::vector<sf::Texture*> m_textures;
 
     unsigned int m_height;
     unsigned int m_width;

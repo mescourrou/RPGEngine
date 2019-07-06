@@ -11,6 +11,8 @@
 #include <MapGUI.hpp>
 #include <Money.hpp>
 
+#include <thread>
+
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
 #endif
@@ -88,6 +90,8 @@ bool Game::run()
 {
     LOG(INFO) << "Starting";
 
+    auto clock = std::chrono::high_resolution_clock::now();
+    auto period = std::chrono::duration(std::chrono::milliseconds(20));
     while(m_running)
     {
 #ifdef RPG_BUILD_GUI
@@ -98,7 +102,8 @@ bool Game::run()
 #ifdef RPG_BUILD_GUI
         m_gui->draw();
 #endif
-
+        std::this_thread::sleep_until(clock+period);
+        clock = std::chrono::high_resolution_clock::now();
     }
     return true;
 }
