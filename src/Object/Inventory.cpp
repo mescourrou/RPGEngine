@@ -16,9 +16,7 @@
 namespace object {
 
 /**
- * @brief Get a pointer on the wanted object, but keep it on the inventory
- * @param index Number of the object (start with 0)
- * @return Pointer on the object
+ * @brief Constructor
  */
 Inventory::Inventory()
 {
@@ -26,9 +24,10 @@ Inventory::Inventory()
 }
 
 /**
- * @brief Get the object from the inventory
- * @param index Index of the object to get
- * @return
+ * @brief Get a pointer on the wanted object, but keep it on the inventory
+ * @param index Number of the object (start with 0)
+ * @return Pointer on the object
+ * @todo Use weak_ptr
  */
 std::shared_ptr<Object> Inventory::get(unsigned int index) const
 {

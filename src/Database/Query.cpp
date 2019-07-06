@@ -234,7 +234,8 @@ std::string InsertQuery::str() const
  * @brief Add a column to the Creation Query
  * @param [in] columnName Name of the new column
  * @param [in] columnType Column type
- * @param [in] columnContraints Column contrains
+ * @param [in] fkTable (optional) Table of the foreign key
+ * @param [in] fkField (optional) Field of the foreign key
  * @return New Query
  */
 CreateQuery &CreateQuery::column(const std::string &columnName, DataType columnType,

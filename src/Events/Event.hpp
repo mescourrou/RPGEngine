@@ -94,6 +94,7 @@ public:
     /**
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
+     * @param[in] instance Instace of the object to call
      */
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
@@ -105,6 +106,7 @@ public:
     /**
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
+     * @param[in] instance Instace of the object to call
      */
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
@@ -195,6 +197,7 @@ public:
     /**
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
+     * @param[in] instance Instace of the object to call
      */
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
@@ -206,6 +209,7 @@ public:
     /**
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
+     * @param[in] instance Instace of the object to call
      */
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)

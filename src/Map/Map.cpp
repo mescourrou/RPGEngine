@@ -15,6 +15,7 @@ namespace map {
 
 /**
  * @brief Constructor of the map
+ * @param context Context to use
  * @param name Name of the map. Must match the database
  */
 Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :

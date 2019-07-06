@@ -43,6 +43,7 @@ public:
     /// @brief Access the config directory (from runtime directory)
     virtual const std::string kConfigPath() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kConfigPath";
                                             return m_kConfigPath; }
+    /// @brief Get the full path to the map directory
     virtual const std::string kMapPath() const
     {
         return std::string(m_gameLocation).append("/")

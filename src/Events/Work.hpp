@@ -59,9 +59,17 @@ template<typename ...Args>
 class Work : public AbstractWork
 {
 public:
+    /**
+     * @brief Construct a work with the given function
+     * @param func Function to do
+     * @param arguments Arguments of the function
+     */
     Work(std::function<void(Args...)> func, Args... arguments) : m_func(func), m_arguments(arguments...) {}
     ~Work() override = default;
 
+    /**
+     * @brief Run the job
+     */
     void run() override
     {
         std::apply(m_func, m_arguments);
@@ -81,8 +89,15 @@ template<>
 class Work<void> : public AbstractWork
 {
 public:
+    /**
+     * @brief Construct a work with the given function
+     * @param func Function to do
+     */
     Work(std::function<void(void)> func) : m_func(func) {}
     ~Work() override = default;
+    /**
+     * @brief Run the job
+     */
     void run() override
     {
         m_func();

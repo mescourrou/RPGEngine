@@ -35,15 +35,12 @@ public:
 
     void draw();
 
-    bool createDatabaseModel(std::shared_ptr<database::Database> db);
-
     /**
      * @brief Get the event triggered when the user close the game
      */
     void subscribeOnClose(std::function<void(void)> func) { return m_signalOnClose.subscribeSync(func); }
 
 protected:
-    bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
 
     std::shared_ptr<config::Context> m_context;     ///< Context to use
     std::shared_ptr<map::GUI::MapGUI> m_map;        ///< GUI Map

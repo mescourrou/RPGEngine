@@ -32,7 +32,9 @@ class DatabaseTest;
 #endif
 class Query;
 
-
+/**
+ * @brief Possibles types of the data
+ */
 enum DataType : int {
     INTEGER,
     TEXT,
@@ -76,7 +78,7 @@ public:
 protected:
     int callback(int argc, char** argv, char** colName);
 
-    std::mutex m_queryMutex;
+    std::mutex m_queryMutex;    ///< Mutex to protect the result access
 
     sqlite3* m_sqlite3Handler = nullptr; ///< Pointer on sqlite handler
     std::unique_ptr<std::vector<std::map<std::string, std::string>>> m_result; ///< Saving results temporary

@@ -148,7 +148,7 @@ bool MapGUI::doLoadTiles(const json &layer)
  * @brief Load the tilesets from the json layer
  *
  * We use Tiled to generate the json : https://www.mapeditor.org/
- * @param layer Layer to use
+ * @param json Json object to use
  * @return Return true if all went well
  */
 bool MapGUI::doLoadTilesets(const json &json)
