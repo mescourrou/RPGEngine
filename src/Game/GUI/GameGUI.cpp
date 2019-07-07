@@ -127,10 +127,31 @@ void GameGUI::eventManager()
         moveVector += {0, 10};
     if (moveVector != map::Vector<2>{0,0})
     {
-        moveVector.x() = moveVector.x() / moveVector.norm() * 5;
-        moveVector.y() = moveVector.y() / moveVector.norm() * 5;
-        position += moveVector;
-        m_map->setCenterOfView(position);
+        moveVector.x() = moveVector.x() / moveVector.norm() * 10;
+        moveVector.y() = moveVector.y() / moveVector.norm() * 10;
+        map::Vector<2> intersection;
+        if (!m_map->collision(position, moveVector, intersection))
+        {
+            position += moveVector;
+            m_map->setCenterOfView(position);
+        }
+        else
+        {
+            std::cout << "Intersection : " << intersection << std::endl;
+            if (intersection != map::Vector<2>{-1, -1})
+            {
+                if (moveVector.x() > 0)
+                    intersection.x() -= 1;
+                else if (moveVector.x() < 0)
+                    intersection.x() += 1;
+                if (moveVector.y() > 0)
+                    intersection.y() -= 1;
+                else if (moveVector.y() < 0)
+                    intersection.y() += 1;
+                position = intersection;
+                m_map->setCenterOfView(position);
+            }
+        }
     }
 }
 

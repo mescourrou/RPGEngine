@@ -7,6 +7,8 @@ constexpr unsigned char VERSION_MAJOR = 0;
 constexpr unsigned char VERSION_MINOR = 1;
 constexpr unsigned char VERSION_BUILD = 1;
 
+constexpr double ZERO_EPSILON = 0.00001;
+
 constexpr unsigned int VERSION = VERSION_MAJOR*10000 + VERSION_MINOR*100 + VERSION_BUILD;
 
 constexpr char GAME_DEFAULT_RESOLUTION[] = "@GAME_DEFAULT_RESOLUTION@";
