@@ -7,7 +7,7 @@
 #include <BaseException.hpp>
 #include <BaseObject.hpp>
 #include <Context.hpp>
-#include <MapGUI.hpp>
+#include <Map.hpp>
 #include <Event.hpp>
 
 namespace sf {
@@ -43,7 +43,7 @@ public:
 protected:
 
     std::shared_ptr<config::Context> m_context;     ///< Context to use
-    std::shared_ptr<map::GUI::MapGUI> m_map;        ///< GUI Map
+    std::shared_ptr<map::Map> m_map;        ///< GUI Map
 
     std::shared_ptr<database::Database> m_db;       ///< Database to use
 

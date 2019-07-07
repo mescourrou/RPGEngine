@@ -7,9 +7,12 @@
 
 #include <BaseException.hpp>
 #include <Vector.hpp>
-#include <Map.hpp>
 #include <Context.hpp>
 #include <memory>
+
+// External libs
+#include <json.hpp>
+using json = nlohmann::json;
 
 namespace map {
 
@@ -20,20 +23,19 @@ CREATE_EXCEPTION_CLASS(MapGUI)
 /**
  * @brief GUI part of the Map
  */
-class MapGUI : public Map, public sf::Transformable, public sf::Drawable
+class MapGUI : public sf::Transformable, public sf::Drawable
 {
-    DECLARE_BASEOBJECT(MapGUI)
 public:
-    MapGUI(std::shared_ptr<config::Context> context, const std::string& name);
-    ~MapGUI() override final;
+    MapGUI() = default;
+    ~MapGUI() override;
 
     void move(double offsetX, double offsetY);
     void setCenterOfView(const Vector<2>& centerOfView);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    bool doLoadTiles(const json &layer) override;
-    bool doLoadTilesets(const json& json) override;
+    bool loadTiles(const json &layer);
+    bool loadTilesets(const std::string &mapDirPath, const json& json);
 
     static inline constexpr char KEY_TILE_DATA[] = "data";
     static inline constexpr char KEY_TILESETS[] = "tilesets";
@@ -54,7 +56,7 @@ protected:
     static inline constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
 private:
     void saturateCenterOfView();
-    bool loadTileset(const json& tileset);
+    bool loadTileset(const std::string& mapDirPath, const json& tileset);
 
     std::map<unsigned int, sf::Sprite> m_tiles;         ///< List of tiles and their id
     std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position

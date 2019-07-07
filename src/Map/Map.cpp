@@ -41,10 +41,10 @@ bool Map::load(const std::string& filename)
         file >> m_json;
         if (!m_json.is_object())
             return false;
-
-        if (!doLoadTilesets(m_json))
+#ifdef RPG_BUILD_GUI
+        if (!loadTilesets(m_context->kMapPath(), m_json))
             return false;
-
+#endif
         if (!m_json[KEY_LAYERS].is_array())
             return false;
 
@@ -63,8 +63,10 @@ bool Map::load(const std::string& filename)
             }
             else if (layer[KEY_LAYER_TYPE] == TYPE_DATA_LAYER)
             {
-                if (!doLoadTiles(layer))
+#ifdef RPG_BUILD_GUI
+                if (!loadTiles(layer))
                     return false;
+#endif
             }
         }
 

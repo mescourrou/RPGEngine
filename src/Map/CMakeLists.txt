@@ -17,6 +17,7 @@ target_include_directories(Map PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR
 
 if (RPG_BUILD_GUI)
 	add_subdirectory(GUI)
+    target_link_libraries(Map MapGUI)
 endif()
 
 if (RPG_BUILD_TEST)

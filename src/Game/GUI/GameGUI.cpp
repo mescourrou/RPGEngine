@@ -66,7 +66,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
         return false;
 
     LOG(INFO) << "Load first map";
-    m_map = std::make_shared<map::GUI::MapGUI>(m_context, result.at(1).at(Model::FIRST_MAP_NAME));
+    m_map = std::make_shared<map::Map>(m_context, result.at(1).at(Model::FIRST_MAP_NAME));
     if (!m_map->load(result.at(1).at(Model::FIRST_MAP_NAME)))
     {
         LOG(ERROR) << "Error during loading the map";
@@ -92,30 +92,6 @@ void GameGUI::eventManager()
             m_window->close();
             m_signalOnClose.trigger();
         }
-        if (event.type == sf::Event::KeyPressed)
-        {
-            /*switch (event.key.code)
-            {
-            case sf::Keyboard::Left:
-                position += {-10, 0};
-                m_map->setCenterOfView(position);
-                break;
-            case sf::Keyboard::Right:
-                position += {10, 0};
-                m_map->setCenterOfView(position);
-                break;
-            case sf::Keyboard::Up:
-                position += {0, -10};
-                m_map->setCenterOfView(position);
-                break;
-            case sf::Keyboard::Down:
-                position += {0, 10};
-                m_map->setCenterOfView(position);
-                break;
-            default:
-                break;
-            }*/
-        }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         moveVector += {-10, 0};
@@ -137,7 +113,6 @@ void GameGUI::eventManager()
         }
         else
         {
-            std::cout << "Intersection : " << intersection << std::endl;
             if (intersection != map::Vector<2>{-1, -1})
             {
                 if (moveVector.x() > 0)

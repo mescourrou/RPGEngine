@@ -15,17 +15,6 @@ namespace map {
 namespace GUI {
 
 /**
- * @brief Construct the GUI Map
- * @param context Context to use
- * @param name Name of the map
- */
-map::GUI::MapGUI::MapGUI(std::shared_ptr<config::Context> context, const std::string& name) :
-    Map(context, name)
-{
-
-}
-
-/**
  * @brief Destructor
  *
  * Free the textures
@@ -122,7 +111,7 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
  * @param layer Layer to use
  * @return Return true if all went well
  */
-bool MapGUI::doLoadTiles(const json &layer)
+bool MapGUI::loadTiles(const json &layer)
 {
     if (!layer.contains(KEY_TILE_DATA))
         return false;
@@ -152,7 +141,7 @@ bool MapGUI::doLoadTiles(const json &layer)
  * @param json Json object to use
  * @return Return true if all went well
  */
-bool MapGUI::doLoadTilesets(const json &json)
+bool MapGUI::loadTilesets(const std::string& mapDirPath, const json &json)
 {
     if (!json.contains(KEY_WIDTH) || !json[KEY_WIDTH].is_number_integer())
         return false;
@@ -174,7 +163,7 @@ bool MapGUI::doLoadTilesets(const json &json)
 
     for (auto& tileset : tilesets)
     {
-        if (!loadTileset(tileset))
+        if (!loadTileset(mapDirPath, tileset))
             return false;
     }
     return true;
@@ -203,7 +192,7 @@ void MapGUI::saturateCenterOfView()
  * @param tileset Tileset to use
  * @return Return true if all went well
  */
-bool MapGUI::loadTileset(const json &tileset)
+bool MapGUI::loadTileset(const std::string& mapDirPath, const json &tileset)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "loadTileset";
     if (!tileset.is_object())
@@ -216,7 +205,7 @@ bool MapGUI::loadTileset(const json &tileset)
         return false;
 
     tinyxml2::XMLDocument doc;
-    tinyxml2::XMLError err = doc.LoadFile(std::string(m_context->kMapPath() + '/' + tileset[KEY_TILESET_SOURCE].get<std::string>()).c_str());
+    tinyxml2::XMLError err = doc.LoadFile(std::string(mapDirPath + '/' + tileset[KEY_TILESET_SOURCE].get<std::string>()).c_str());
     if (err)
     {
         LOG(ERROR) << "Error during loading file " << tileset[KEY_TILESET_SOURCE].get<std::string>().c_str();
@@ -225,40 +214,40 @@ bool MapGUI::loadTileset(const json &tileset)
     auto xmlTileset = doc.FirstChildElement(ELEMENT_TILESET);
     if (!xmlTileset)
     {
-        LOG(ERROR) << "No " << ELEMENT_TILESET << " in the Tileset " << m_context->kMapPath() << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << ELEMENT_TILESET << " in the Tileset " << mapDirPath << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
     if (!xmlTileset->FindAttribute(PROPERTY_TILE_WIDTH))
     {
-        LOG(ERROR) << "No " << PROPERTY_TILE_WIDTH << " in the Tileset " << m_context->kMapPath() << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << PROPERTY_TILE_WIDTH << " in the Tileset " << mapDirPath << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
     unsigned int width = xmlTileset->FindAttribute(PROPERTY_TILE_WIDTH)->IntValue();
 
     if (!xmlTileset->FindAttribute(PROPERTY_TILE_HEIGHT))
     {
-        LOG(ERROR) << "No " << PROPERTY_TILE_HEIGHT << " in the Tileset " << m_context->kMapPath() << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << PROPERTY_TILE_HEIGHT << " in the Tileset " << mapDirPath << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
     unsigned int height = xmlTileset->FindAttribute(PROPERTY_TILE_HEIGHT)->IntValue();
 
     if (!xmlTileset->FindAttribute(PROPERTY_TILE_COUNT))
     {
-        LOG(ERROR) << "No " << PROPERTY_TILE_COUNT << " in the Tileset " << m_context->kMapPath() << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << PROPERTY_TILE_COUNT << " in the Tileset " << mapDirPath << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
     unsigned int tilecount = xmlTileset->FindAttribute(PROPERTY_TILE_COUNT)->IntValue();
 
     if (!xmlTileset->FindAttribute(PROPERTY_TILE_COLUMNS))
     {
-        LOG(ERROR) << "No " << PROPERTY_TILE_COLUMNS << " in the Tileset " << m_context->kMapPath() << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << PROPERTY_TILE_COLUMNS << " in the Tileset " << mapDirPath << '/' << tileset[KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
     unsigned int columns = xmlTileset->FindAttribute(PROPERTY_TILE_COLUMNS)->IntValue();
 
     auto xmlImage = xmlTileset->FirstChildElement(ELEMENT_IMAGE);
     std::string imageFilename = xmlImage->FindAttribute(PROPERTY_IMAGE_SOURCE)->Value();
-    imageFilename = m_context->kMapPath() + '/' + imageFilename;
+    imageFilename = mapDirPath + '/' + imageFilename;
 
     m_textures.push_back(new sf::Texture);
     if (!m_textures.back()->loadFromFile(imageFilename))

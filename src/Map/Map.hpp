@@ -20,6 +20,13 @@ using json = nlohmann::json;
 #include <gtest/gtest.h>
 #endif
 
+#ifdef RPG_BUILD_GUI
+#define GUI_CLASS , public GUI::MapGUI
+#include <MapGUI.hpp>
+#else
+#define GUI_CLASS
+#endif
+
 /**
  * @namespace map
  * @brief Namespace grouping all map related classes
@@ -36,7 +43,7 @@ CREATE_EXCEPTION_CLASS(Map)
 /**
  * @brief Manage the core map
  */
-class Map : public BaseObject
+class Map : public BaseObject GUI_CLASS
 {
     DECLARE_BASEOBJECT(Map)
 #ifdef RPG_BUILD_TEST
@@ -69,14 +76,6 @@ public:
 
 protected:
     bool loadCollisionLayer(const json &layer);
-    /**
-     * @brief Load the tiles from the json. To be specified in GUI Class
-     */
-    virtual bool doLoadTiles(const json&) { return true; }
-    /**
-     * @brief Load the tilesets from the json. To be specified in GUI Class
-     */
-    virtual bool doLoadTilesets(const json&) { return true; }
 
     json m_json; ///< Json used
 
