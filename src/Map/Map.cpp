@@ -100,6 +100,16 @@ bool Map::collision(const Vector<2> &point) const
     return false;
 }
 
+bool Map::collision(const Vector<2>& origin, const Vector<2>& moveVector, Vector<2>& intersect) const
+{
+    for (const auto& area : m_collisionLayer)
+    {
+        if (area.intersect(origin, moveVector, intersect))
+            return true;
+    }
+    return false;
+}
+
 /**
  * @brief Add a teleport area
  * @param area Area of the teleport

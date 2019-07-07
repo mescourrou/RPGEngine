@@ -25,7 +25,7 @@ option(BUILD_USE_FILESYSTEM_PATH "Use the filesystem path" OFF)
 option(GAME_AUTO_CHOOSE "Chosse automaticaly the 1st game" ON)
 
 set(GAME_DEFAULT_RESOLUTION "800x600")
-mark_as_advanced(GAME_DEFAULT_RESOLUTION BUILD_USE_FILESYSTEM_PATH)
+mark_as_advanced(GAME_DEFAULT_RESOLUTION)
 
 mark_as_advanced(BUILD_USE_FILESYSTEM_PATH)
 if (RPG_BUILD_TEST)

@@ -80,6 +80,8 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
  */
 void GameGUI::eventManager()
 {
+    static map::Vector<2> position;
+    map::Vector<2> moveVector;
     // Process events
     sf::Event event;
     while (m_window->pollEvent(event))
@@ -92,22 +94,62 @@ void GameGUI::eventManager()
         }
         if (event.type == sf::Event::KeyPressed)
         {
-            switch (event.key.code)
+            /*switch (event.key.code)
             {
             case sf::Keyboard::Left:
-                m_map->move(-10, 0);
+                position += {-10, 0};
+                m_map->setCenterOfView(position);
                 break;
             case sf::Keyboard::Right:
-                m_map->move(10, 0);
+                position += {10, 0};
+                m_map->setCenterOfView(position);
                 break;
             case sf::Keyboard::Up:
-                m_map->move(0, -10);
+                position += {0, -10};
+                m_map->setCenterOfView(position);
                 break;
             case sf::Keyboard::Down:
-                m_map->move(0, 10);
+                position += {0, 10};
+                m_map->setCenterOfView(position);
                 break;
             default:
                 break;
+            }*/
+        }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        moveVector += {-10, 0};
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        moveVector += {10, 0};
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        moveVector += {0, -10};
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        moveVector += {0, 10};
+    if (moveVector != map::Vector<2>{0,0})
+    {
+        moveVector.x() = moveVector.x() / moveVector.norm() * 10;
+        moveVector.y() = moveVector.y() / moveVector.norm() * 10;
+        map::Vector<2> intersection;
+        if (!m_map->collision(position, moveVector, intersection))
+        {
+            position += moveVector;
+            m_map->setCenterOfView(position);
+        }
+        else
+        {
+            std::cout << "Intersection : " << intersection << std::endl;
+            if (intersection != map::Vector<2>{-1, -1})
+            {
+                if (moveVector.x() > 0)
+                    intersection.x() -= 1;
+                else if (moveVector.x() < 0)
+                    intersection.x() += 1;
+                if (moveVector.y() > 0)
+                    intersection.y() -= 1;
+                else if (moveVector.y() < 0)
+                    intersection.y() += 1;
+                position = intersection;
+                m_map->setCenterOfView(position);
             }
         }
     }

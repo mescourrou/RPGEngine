@@ -62,6 +62,7 @@ public:
 
     virtual void addCollisionArea(const Area& area) final;
     virtual bool collision(const Vector<2>& point) const final;
+    virtual bool collision(const Vector<2>& origin, const Vector<2>& moveVector, Vector<2> &intersect) const final;
 
     virtual void addTeleportArea(const Area& area, const Position& destination) final;
     virtual bool doITeleport(const Vector<2>& point, Position& destination) const final;
