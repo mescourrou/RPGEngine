@@ -44,15 +44,16 @@ MapGUI::~MapGUI()
 void MapGUI::move(double offsetX, double offsetY)
 {
     m_centerOfView += Vector<2>{offsetX, offsetY};
-    if (m_centerOfView.x() < 0)
-        m_centerOfView.x() = 0;
-    if (m_centerOfView.y() < 0)
-        m_centerOfView.y() = 0;
+    saturateCenterOfView();
+}
 
-    if (m_centerOfView.x() >= (m_width-1)*m_tileWidth)
-        m_centerOfView.x() = (m_width-1)*m_tileWidth;
-    if (m_centerOfView.y() >= (m_height-1)*m_tileHeight)
-        m_centerOfView.y() = (m_height-1)*m_tileHeight;
+/**
+ * @brief m_centerOfView setter
+ */
+void MapGUI::setCenterOfView(const Vector<2>& centerOfView)
+{
+    m_centerOfView = centerOfView;
+    saturateCenterOfView();
 }
 
 /**
@@ -68,15 +69,15 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
                                  m_centerOfView.y() - target.getSize().y / 2);
 
     // Coordinates of the tile of the top left corner
-    int i = std::ceil(topLeftPosition.x / m_tileWidth);
-    int j = std::ceil(topLeftPosition.y / m_tileHeight);
+    int i = std::floor(topLeftPosition.x / m_tileWidth);
+    int j = std::floor(topLeftPosition.y / m_tileHeight);
     int iOrigin = i;
 
     sf::Vector2f origin;
     // Position on the screen of the top left displayed tile
     // It's negative to cover all the screen
-    origin.x = - (static_cast<int>(m_tileWidth) - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth)) + static_cast<int>(m_tileWidth/2);
-    origin.y = - (static_cast<int>(m_tileHeight) - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight)) + static_cast<int>(m_tileHeight/2);
+    origin.x = - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth);
+    origin.y = - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight);
     // Copy to iterate without modify the origin
     sf::Vector2f tilePosition(origin);
 
@@ -177,6 +178,22 @@ bool MapGUI::doLoadTilesets(const json &json)
             return false;
     }
     return true;
+}
+
+/**
+ * @brief Keep the center of view between 0 and the edge of the map
+ */
+void MapGUI::saturateCenterOfView()
+{
+    if (m_centerOfView.x() < 0)
+        m_centerOfView.x() = 0;
+    if (m_centerOfView.y() < 0)
+        m_centerOfView.y() = 0;
+
+    if (m_centerOfView.x() >= (m_width-1)*m_tileWidth)
+        m_centerOfView.x() = (m_width-1)*m_tileWidth;
+    if (m_centerOfView.y() >= (m_height-1)*m_tileHeight)
+        m_centerOfView.y() = (m_height-1)*m_tileHeight;
 }
 
 /**

@@ -28,6 +28,7 @@ public:
     ~MapGUI() override final;
 
     void move(double offsetX, double offsetY);
+    void setCenterOfView(const Vector<2>& centerOfView);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -52,6 +53,7 @@ protected:
     static inline constexpr char PROPERTY_IMAGE_WIDTH[] = "width";
     static inline constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
 private:
+    void saturateCenterOfView();
     bool loadTileset(const json& tileset);
 
     std::map<unsigned int, sf::Sprite> m_tiles;         ///< List of tiles and their id

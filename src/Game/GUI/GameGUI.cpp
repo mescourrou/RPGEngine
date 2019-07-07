@@ -80,6 +80,8 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
  */
 void GameGUI::eventManager()
 {
+    static map::Vector<2> position;
+    map::Vector<2> moveVector;
     // Process events
     sf::Event event;
     while (m_window->pollEvent(event))
@@ -92,24 +94,43 @@ void GameGUI::eventManager()
         }
         if (event.type == sf::Event::KeyPressed)
         {
-            switch (event.key.code)
+            /*switch (event.key.code)
             {
             case sf::Keyboard::Left:
-                m_map->move(-10, 0);
+                position += {-10, 0};
+                m_map->setCenterOfView(position);
                 break;
             case sf::Keyboard::Right:
-                m_map->move(10, 0);
+                position += {10, 0};
+                m_map->setCenterOfView(position);
                 break;
             case sf::Keyboard::Up:
-                m_map->move(0, -10);
+                position += {0, -10};
+                m_map->setCenterOfView(position);
                 break;
             case sf::Keyboard::Down:
-                m_map->move(0, 10);
+                position += {0, 10};
+                m_map->setCenterOfView(position);
                 break;
             default:
                 break;
-            }
+            }*/
         }
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        moveVector += {-10, 0};
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        moveVector += {10, 0};
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        moveVector += {0, -10};
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        moveVector += {0, 10};
+    if (moveVector != map::Vector<2>{0,0})
+    {
+        moveVector.x() = moveVector.x() / moveVector.norm() * 5;
+        moveVector.y() = moveVector.y() / moveVector.norm() * 5;
+        position += moveVector;
+        m_map->setCenterOfView(position);
     }
 }
 
