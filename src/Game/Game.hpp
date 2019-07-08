@@ -31,9 +31,11 @@ class Character;
  */
 namespace game
 {
+#ifdef RPG_BUILD_GUI
 namespace GUI {
 class GameGUI;
 }
+#endif
 
 /**
  * @brief Manage the exceptions of Game
@@ -54,6 +56,9 @@ class Game : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class game::GameTest;
 #endif
+#ifdef RPG_BUILD_GUI
+    friend class GUI::GameGUI;
+#endif
 public:
 
     Game(std::shared_ptr<config::Context> gameContext);
@@ -66,7 +71,7 @@ public:
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-private:
+protected:
 
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game

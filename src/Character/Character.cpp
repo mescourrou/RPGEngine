@@ -20,12 +20,11 @@ namespace character {
  * @param[in] name Name of the character, must match a name in the database
  * @param[in] db [optionnal] Database to use for loading the character.
  */
-Character::Character(std::string name, std::shared_ptr<database::Database> db) :
-    m_name(std::move(name)), m_inventory(new object::Inventory)
+Character::Character(std::string name, std::shared_ptr<config::Context> context) :
+    m_name(std::move(name)), m_context(context), m_inventory(std::make_unique<object::Inventory>())
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    if (db)
-        loadFromDatabase(db);
+    setPosition(m_position);
 }
 
 /**
@@ -62,6 +61,13 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 
     m_inventory->loadFromDatabase(db, m_name);
 
+#ifdef RPG_BUILD_GUI
+    if (!GUI::CharacterGUI::load(m_name, m_context->kCharacterPath()))
+    {
+        LOG(ERROR) << "Error during loading the GUI elements of " << m_name;
+        return false;
+    }
+#endif
 
     return true;
 }
@@ -122,13 +128,9 @@ const std::string& Character::name() const noexcept
     return m_name;
 }
 
-/**
- * @brief Get the position of the Character
- * @return Position of the Character, modifyable
- */
-map::Position& Character::position()
+void Character::setPosition(const map::Position &position)
 {
-    return m_position;
+    m_position = position;
 }
 
 /**

@@ -28,7 +28,7 @@ namespace game {
  * @param gameContext Context
  */
 Game::Game(std::shared_ptr<config::Context> gameContext) :
-    m_context(gameContext), m_gui(std::make_shared<GUI::GameGUI>(m_context))
+    m_context(gameContext), m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
@@ -69,7 +69,9 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 
     // Create the player character
     LOG(INFO) << "Create the player character";
-    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_db);
+    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_context);
+    if (!m_playerCharacter->loadFromDatabase(m_db))
+        LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() << " from the database";
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI

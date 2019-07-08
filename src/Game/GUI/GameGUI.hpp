@@ -27,7 +27,7 @@ class GameGUI : public BaseObject
 {
     DECLARE_BASEOBJECT(GameGUI)
 public:
-    GameGUI(std::shared_ptr<config::Context> context);
+    GameGUI(std::shared_ptr<config::Context> context, Game *game);
     ~GameGUI() override = default;
 
     bool initialize(std::shared_ptr<database::Database> db);
@@ -50,6 +50,7 @@ protected:
     std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
     events::Event<void> m_signalOnClose;             ///< Event when the user close the game
+    Game* m_game;
 private:
 
 };

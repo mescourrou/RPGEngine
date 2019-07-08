@@ -1,0 +1,27 @@
+{
+    "spriteSets":[
+    {
+        "firstId":1,
+        "setFile":"superman.png",
+        "height":4,
+        "width":3,
+        "spriteHeight":32,
+        "spriteWidth":32,
+        "horizontalShift":2,
+        "verticalShift":0,
+        "background":[178,214,179],
+        "originX":16,
+        "originY":26
+    }
+    ],
+    "actions":{
+    "downStopped":[2],
+    "down":[2,1,2,3],
+    "upStopped":[5],
+    "up":[5,4,5,6],
+    "rightStopped":[8],
+    "right":[8,7,8,9],
+    "leftStopped":[11],
+    "left":[11,10,11,12]
+    }
+}

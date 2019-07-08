@@ -8,6 +8,8 @@
 #include <Config.hpp>
 #include <ConfigFiles.hpp>
 #include <general_config.hpp>
+#include <Game.hpp>
+#include <Character.hpp>
 
 // External lib
 #include <glog/logging.h>
@@ -22,8 +24,8 @@ namespace GUI {
  * @brief Construct the GameGUI
  * @param context Context to use
  */
-GameGUI::GameGUI(std::shared_ptr<config::Context> context):
-    m_context(context)
+GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
+    m_context(context), m_game(game)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     namespace structure = config::structure::globalFile;
@@ -137,6 +139,7 @@ void GameGUI::draw()
 {
     m_window->clear();
     m_window->draw(*m_map);
+    m_window->draw(*m_game->m_playerCharacter);
     m_window->display();
 }
 

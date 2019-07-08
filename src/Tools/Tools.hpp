@@ -29,6 +29,8 @@ public:
     template<typename T, typename U>
     static T convertTo(const U& a);
 
+    static std::string snakeCase(std::string str);
+
 
 };
 
