@@ -17,11 +17,12 @@ CharacterGUI::~CharacterGUI()
         delete ptr;
 }
 
-void CharacterGUI::doSubscribeKeyPressed(game::GUI::GameGUI* game)
+void CharacterGUI::doSubscribeKeyEvents(game::GUI::GameGUI* game)
 {
     if (game)
     {
-        game->signalKeyPressed().subscribeSync(this, &CharacterGUI::eventKeyPressed);
+        game->signalKeyPressed.subscribeSync(this, &CharacterGUI::eventKeyPressed);
+        game->signalKeyReleased.subscribeSync(this, &CharacterGUI::eventKeyReleased);
     }
 }
 
@@ -136,7 +137,7 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
     return true;
 }
 
-void CharacterGUI::eventKeyPressed(sf::Event::KeyEvent key)
+void CharacterGUI::eventKeyPressed(sf::Event::KeyEvent)
 {
     auto actualiseCurrentSprite = [this](const std::vector<unsigned int>& action){
         m_currentSprite = &(m_sprites[action.at(m_spriteCinematicIndex)]);
@@ -144,31 +145,50 @@ void CharacterGUI::eventKeyPressed(sf::Event::KeyEvent key)
         if (m_spriteCinematicIndex >= action.size())
             m_spriteCinematicIndex = 0;
     };
-    switch (key.code) {
-    case sf::Keyboard::Left:
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && (!m_moving || m_currentDirection == Left))
+    {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::LEFT]);
         doMove(Left);
-        break;
-    case sf::Keyboard::Right:
+        m_currentDirection = Left;
+        m_moving = true;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && (!m_moving || m_currentDirection == Right))
+    {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::RIGHT]);
         doMove(Right);
-        break;
-    case sf::Keyboard::Down:
+        m_currentDirection = Right;
+        m_moving = true;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && (!m_moving || m_currentDirection == Down))
+    {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::DOWN]);
         doMove(Down);
-        break;
-    case sf::Keyboard::Up:
+        m_currentDirection = Down;
+        m_moving = true;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && (!m_moving || m_currentDirection == Up))
+    {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::UP]);
         doMove(Up);
-        break;
+        m_currentDirection = Up;
+        m_moving = true;
     }
     m_tics++;
     if (m_tics >= m_spriteChangeTics)
         m_tics = 0;
+}
+
+void CharacterGUI::eventKeyReleased(sf::Event::KeyEvent)
+{
+    m_tics = 0;
+    m_spriteCinematicIndex = 0;
+    m_moving = false;
+    eventKeyPressed(sf::Event::KeyEvent());
+
 }
 
 void CharacterGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const

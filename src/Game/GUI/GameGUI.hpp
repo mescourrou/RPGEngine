@@ -36,8 +36,9 @@ public:
     void eventManager();
 
     void draw();
-    events::Event<sf::Event::KeyEvent>& signalKeyPressed() { return m_signalKeyPressed; }
 
+    events::Event<sf::Event::KeyEvent> signalKeyPressed;
+    events::Event<sf::Event::KeyEvent> signalKeyReleased;
     /**
      * @brief Get the event triggered when the user close the game
      */
@@ -52,7 +53,7 @@ protected:
     std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
     events::Event<void> m_signalOnClose;             ///< Event when the user close the game
-    events::Event<sf::Event::KeyEvent> m_signalKeyPressed;
+
 
     Game* m_game;
 private:

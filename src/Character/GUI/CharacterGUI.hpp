@@ -36,16 +36,18 @@ public:
 
     void setPosition(float x, float y);
 
-    void doSubscribeKeyPressed(game::GUI::GameGUI* game);
+    void doSubscribeKeyEvents(game::GUI::GameGUI* game);
 
 protected:
     bool load(const std::string& name, const std::string& characterRessourcesDir);
-    void eventKeyPressed(sf::Event::KeyEvent key);
+    void eventKeyPressed(sf::Event::KeyEvent);
+    void eventKeyReleased(sf::Event::KeyEvent);
 
     enum Direction {
         Up, Down, Left, Right
     };
-
+    Direction m_currentDirection = Down;
+    bool m_moving = false;
     virtual void doMove(Direction dir) = 0;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

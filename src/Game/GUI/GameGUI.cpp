@@ -69,7 +69,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 
 
 
-    m_game->m_playerCharacter->doSubscribeKeyPressed(this);
+    m_game->m_playerCharacter->doSubscribeKeyEvents(this);
     m_game->m_playerCharacter->signalPositionChanged.subscribeAsync([this](){
         m_game->m_playerCharacter->position().map()->setCenterOfView({m_game->m_playerCharacter->position().x(),
                                 m_game->m_playerCharacter->position().y()});
@@ -96,7 +96,11 @@ void GameGUI::eventManager()
         }
         if (event.type == sf::Event::KeyPressed)
         {
-            m_signalKeyPressed.trigger(event.key);
+            signalKeyPressed.trigger(event.key);
+        }
+        if (event.type == sf::Event::KeyReleased)
+        {
+            signalKeyReleased.trigger(event.key);
         }
     }
 
