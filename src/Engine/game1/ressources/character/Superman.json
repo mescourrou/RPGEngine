@@ -16,12 +16,12 @@
     ],
     "actions":{
     "downStopped":[2],
-    "down":[2,1,2,3],
+    "down":[1,2,3,2],
     "upStopped":[5],
-    "up":[5,4,5,6],
+    "up":[4,5,6,5],
     "rightStopped":[8],
-    "right":[8,7,8,9],
+    "right":[7,8,9,8],
     "leftStopped":[11],
-    "left":[11,10,11,12]
+    "left":[10,11,12,11]
     }
 }

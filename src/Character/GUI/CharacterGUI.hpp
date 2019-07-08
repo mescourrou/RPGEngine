@@ -2,16 +2,15 @@
 
 #include <memory>
 
-#include <SFML/Graphics/Shape.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-
 #include <BaseException.hpp>
 #include <Vector.hpp>
 #include <Context.hpp>
 #include <memory>
+#include <BaseGUIObject.hpp>
 
 // External libs
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <json.hpp>
 using json = nlohmann::json;
 
@@ -26,9 +25,9 @@ namespace GUI {
 CREATE_EXCEPTION_CLASS(CharacterGUI)
 
 /**
- * @brief GUI part of the Map
+ * @brief GUI interface for Character
  */
-class CharacterGUI : public sf::Transformable, public sf::Drawable
+class CharacterGUI : public BaseGUIObject
 {
 public:
     CharacterGUI() = default;
@@ -38,10 +37,12 @@ public:
 
     void doSubscribeKeyEvents(game::GUI::GameGUI* game);
 
+    void prepare() override;
+
 protected:
     bool load(const std::string& name, const std::string& characterRessourcesDir);
     void eventKeyPressed(sf::Event::KeyEvent);
-    void eventKeyReleased(sf::Event::KeyEvent);
+    void eventKeyReleased(sf::Event::KeyEvent key);
 
     enum Direction {
         Up, Down, Left, Right

@@ -98,10 +98,6 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
         i = iOrigin;
         j++;
     }
-    // Print a rectangle in the middle of the screen
-    sf::RectangleShape pos(sf::Vector2f(5,5));
-    pos.setPosition(target.getSize().x / 2 - pos.getSize().x /2 , target.getSize().y / 2 - pos.getSize().y /2);
-    target.draw(pos);
 }
 
 /**

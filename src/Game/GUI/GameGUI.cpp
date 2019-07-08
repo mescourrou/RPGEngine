@@ -111,6 +111,7 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
+    m_game->m_playerCharacter->prepare();
     m_window->clear();
     m_window->draw(*m_game->m_playerCharacter->position().map());
     m_window->draw(*m_game->m_playerCharacter);
