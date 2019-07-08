@@ -42,7 +42,7 @@ WorkerThread::~WorkerThread()
  * @brief Add a new work to the working list. Start it immedialty if it is possible
  * @param [in] work Work to add
  */
-void WorkerThread::newWork(std::function<void()> work)
+void WorkerThread::newWork(const std::function<void()>& work)
 {
     m_mutex.lock();
     if (m_activeThreads >= maxThreads)

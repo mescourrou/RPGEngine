@@ -5,6 +5,7 @@
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 #include <Position.hpp>
+#include <Event.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -72,10 +73,17 @@ public:
      * @param[in] name New name of the Character
      */
     void setName(std::string name) { m_name = std::move(name); }
+    void move(const map::Vector<2> &move);
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+
+    events::Event<void> signalPositionChanged;
 protected:
+#ifdef RPG_BUILD_GUI
+    void doMove(Direction dir) override;
+#endif
+
     std::shared_ptr<config::Context> m_context;
 
     std::string m_name;         ///< Name of the Character

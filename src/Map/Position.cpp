@@ -29,7 +29,7 @@ Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
  * @param characterName Character from whom loading the position
  * @return Return true if all went well
  */
-bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string &characterName)
+bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, std::shared_ptr<config::Context> context, const std::string &characterName)
 {
     namespace Model = database::Model::Position;
     using namespace database;
@@ -47,6 +47,13 @@ bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, const st
     m_position.x() = std::stod(result.at(1).at(Model::X));
     m_position.y() = std::stod(result.at(1).at(Model::Y));
     m_position.z() = std::stod(result.at(1).at(Model::Z));
+
+    m_map = std::make_shared<map::Map>(context, result.at(1).at(Model::FK_MAP));
+    if (!m_map->load(result.at(1).at(Model::FK_MAP)))
+    {
+        LOG(ERROR) << "Error during loading the map";
+        return false;
+    }
 
     return true;
 

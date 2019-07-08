@@ -11,8 +11,13 @@
 #include <memory>
 
 // External libs
+#include <SFML/Window/Event.hpp>
 #include <json.hpp>
 using json = nlohmann::json;
+
+namespace game::GUI {
+class GameGUI;
+}
 
 namespace character {
 
@@ -31,8 +36,17 @@ public:
 
     void setPosition(float x, float y);
 
+    void doSubscribeKeyPressed(game::GUI::GameGUI* game);
+
 protected:
     bool load(const std::string& name, const std::string& characterRessourcesDir);
+    void eventKeyPressed(sf::Event::KeyEvent key);
+
+    enum Direction {
+        Up, Down, Left, Right
+    };
+
+    virtual void doMove(Direction dir) = 0;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 private:
@@ -41,6 +55,10 @@ private:
     std::map<std::string, std::vector<unsigned int>> m_actions;
 
     mutable sf::Sprite* m_currentSprite = nullptr;
+    unsigned int m_spriteCinematicIndex = 0;
+
+    unsigned int m_spriteChangeTics = 5;
+    unsigned int m_tics = 0;
 
     static constexpr char SPRITE_SETS[] = "spriteSets";
     static constexpr char FIRST_ID[] = "firstId";

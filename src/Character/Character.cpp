@@ -6,6 +6,7 @@
 #include <Model.hpp>
 #include <Inventory.hpp>
 #include <VerbosityLevels.hpp>
+#include <Map.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -56,7 +57,7 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
     if (result.size() <= 1) // No result
         return false;
 
-    if (!m_position.loadFromDatabase(db, m_name))
+    if (!m_position.loadFromDatabase(db, m_context, m_name))
         return false;
 
     m_inventory->loadFromDatabase(db, m_name);
@@ -119,6 +120,26 @@ bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
     return verifyDatabaseModel(db);
 }
 
+#ifdef RPG_BUILD_GUI
+void Character::doMove(GUI::CharacterGUI::Direction dir)
+{
+    switch (dir) {
+    case Up:
+        move({0, -5});
+        break;
+    case Down:
+        move({0, 5});
+        break;
+    case Left:
+        move({-5,0});
+        break;
+    case Right:
+        move({5,0});
+        break;
+    }
+}
+#endif
+
 /**
  * @brief Get the name of the Character
  * @return Name of the Character
@@ -140,6 +161,35 @@ void Character::setPosition(const map::Position &position)
 map::Position Character::position() const
 {
     return m_position;
+}
+
+void Character::move(const map::Vector<2>& move)
+{
+    map::Vector<2> intersection;
+
+    if (m_position.map()->collision({m_position.x(), m_position.y()}, move, intersection))
+    {
+        if (intersection != map::Vector<2>{-1, -1})
+        {
+            if (move.x() > 0)
+                intersection.x() -= 1;
+            else if (move.x() < 0)
+                intersection.x() += 1;
+            if (move.y() > 0)
+                intersection.y() -= 1;
+            else if (move.y() < 0)
+                intersection.y() += 1;
+            m_position.x() = intersection.x();
+            m_position.y() = intersection.y();
+        }
+    }
+    else
+    {
+        m_position.x() += move.x();
+        m_position.y() += move.y();
+    }
+
+    signalPositionChanged.trigger();
 }
 
 }

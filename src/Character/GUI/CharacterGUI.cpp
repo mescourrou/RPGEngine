@@ -7,12 +7,22 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <filesystem>
 
+#include <GameGUI.hpp>
+
 namespace character::GUI {
 
 CharacterGUI::~CharacterGUI()
 {
     for (auto& ptr : m_textures)
         delete ptr;
+}
+
+void CharacterGUI::doSubscribeKeyPressed(game::GUI::GameGUI* game)
+{
+    if (game)
+    {
+        game->signalKeyPressed().subscribeSync(this, &CharacterGUI::eventKeyPressed);
+    }
 }
 
 bool CharacterGUI::load(const std::string &name, const std::string &characterRessourcesDir)
@@ -124,6 +134,41 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
                         "/" + Tools::snakeCase(name) << ".json";
 
     return true;
+}
+
+void CharacterGUI::eventKeyPressed(sf::Event::KeyEvent key)
+{
+    auto actualiseCurrentSprite = [this](const std::vector<unsigned int>& action){
+        m_currentSprite = &(m_sprites[action.at(m_spriteCinematicIndex)]);
+        m_spriteCinematicIndex++;
+        if (m_spriteCinematicIndex >= action.size())
+            m_spriteCinematicIndex = 0;
+    };
+    switch (key.code) {
+    case sf::Keyboard::Left:
+        if (m_tics == 0)
+            actualiseCurrentSprite(m_actions[actions::LEFT]);
+        doMove(Left);
+        break;
+    case sf::Keyboard::Right:
+        if (m_tics == 0)
+            actualiseCurrentSprite(m_actions[actions::RIGHT]);
+        doMove(Right);
+        break;
+    case sf::Keyboard::Down:
+        if (m_tics == 0)
+            actualiseCurrentSprite(m_actions[actions::DOWN]);
+        doMove(Down);
+        break;
+    case sf::Keyboard::Up:
+        if (m_tics == 0)
+            actualiseCurrentSprite(m_actions[actions::UP]);
+        doMove(Up);
+        break;
+    }
+    m_tics++;
+    if (m_tics >= m_spriteChangeTics)
+        m_tics = 0;
 }
 
 void CharacterGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const

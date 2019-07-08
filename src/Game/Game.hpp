@@ -7,6 +7,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <Map.hpp>
 
 // External lib
 #ifdef RPG_BUILD_TEST
@@ -76,6 +77,7 @@ protected:
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
+    std::shared_ptr<map::Map> m_map;                        ///< GUI Map
 #ifdef RPG_BUILD_TEST
     std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
 #endif
