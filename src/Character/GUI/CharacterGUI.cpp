@@ -5,7 +5,10 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 
 #include <GameGUI.hpp>
 
