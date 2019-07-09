@@ -21,15 +21,18 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-option(BUILD_USE_FILESYSTEM_PATH "Use the filesystem path" OFF)
+option(BUILD_USE_FILESYSTEM "Use the filesystem from c++17" ON)
 option(GAME_AUTO_CHOOSE "Chosse automaticaly the 1st game" ON)
 
 set(GAME_DEFAULT_RESOLUTION "800x600")
-mark_as_advanced(GAME_DEFAULT_RESOLUTION)
+mark_as_advanced(GAME_DEFAULT_RESOLUTION BUILD_USE_FILESYSTEM)
 
-mark_as_advanced(BUILD_USE_FILESYSTEM_PATH)
+set(FILESYSTEM_LIB stdc++fs)
+if(BUILD_USE_FILESYSTEM)
+    set(FILESYSTEM_LIB)
+endif()
 if (RPG_BUILD_TEST)
-	enable_testing()
+    enable_testing()
 endif()
 
 include(documentation)

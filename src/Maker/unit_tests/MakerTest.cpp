@@ -6,7 +6,7 @@
 #include <filesystem>
 
 namespace maker {
-
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test the loading of a non existant database : create the database
  */
@@ -76,7 +76,7 @@ TEST_F(MakerTest, CreatingDatabaseModel)
 
     EXPECT_TRUE(maker.createDatabaseModel());
 }
-
+#endif
 }
 
 int main(int argc, char **argv)

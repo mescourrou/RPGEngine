@@ -1,8 +1,12 @@
 #include "ObjectTest.hpp"
 #include <Object.hpp>
-#include <filesystem>
 #include <Database.hpp>
 #include <glog/logging.h>
+#include <general_config.hpp>
+
+#ifdef BUILD_USE_FILESYSTEM
+#include <filesystem>
+#endif
 
 namespace object {
 
@@ -14,7 +18,7 @@ TEST_F(ObjectTest, ClassName)
     Object myObject;
     EXPECT_EQ(myObject.className(), "Object");
 }
-
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test the object loading from database
  */
@@ -50,7 +54,7 @@ TEST_F(ObjectTest, CreateFromDatabaseObject)
     EXPECT_EQ(object->value().convertToBaseMoney(), 100);
 
 }
-
+#endif
 /*
  * Testing default values
  */
@@ -80,6 +84,7 @@ TEST_F(ObjectTest, StreamOperator)
 
 }
 
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test the creation of the database model
  */
@@ -92,7 +97,7 @@ TEST_F(ObjectTest, CreatingDatabaseModel)
     EXPECT_TRUE(Object::createDatabaseModel(db));
 
 }
-
+#endif
 /**
  * @brief Initialize money system for object using
  */

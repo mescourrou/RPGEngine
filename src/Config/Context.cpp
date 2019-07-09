@@ -1,7 +1,9 @@
 #include "Context.hpp"
 // Stl
 #include <memory>
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 
 // Project
 #include <Config.hpp>
@@ -21,7 +23,7 @@ config::Context::Context(int argc, char **argv)
     }
     if (argc >= 1)
     {
-#ifdef BUILD_USE_FILESYSTEM_PATH
+#ifdef BUILD_USE_FILESYSTEM
         m_runtimeDirectory = std::filesystem::path(argv[0]).parent_path();
 #else
         m_runtimeDirectory = argv[0];

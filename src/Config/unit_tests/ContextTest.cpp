@@ -1,5 +1,8 @@
 #include "ContextTest.hpp"
+#include <general_config.hpp>
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 
 #include <Context.hpp>
 
@@ -42,8 +45,15 @@ TEST_F(ContextTest, InitializationWithMultiplesArguments)
  */
 TEST_F(ContextTest, runtimeDirectory)
 {
+#ifdef BUILD_USE_FILESYSTEM
     std::filesystem::path runtimeDir = std::string(m_argv[0]);
     EXPECT_EQ(m_context->runtimeDirectory(), runtimeDir.parent_path().string());
+#else
+    std::string runtimeDirectory = m_argv[0];
+    auto lastSeparator = runtimeDirectory.find_last_of('/');
+    runtimeDirectory = runtimeDirectory.substr(0, lastSeparator);
+    EXPECT_EQ(m_context->runtimeDirectory(), runtimeDirectory);
+#endif
 }
 
 /**

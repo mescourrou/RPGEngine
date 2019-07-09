@@ -1,8 +1,12 @@
 #include "MoneyTest.hpp"
 
 #include <Money.hpp>
-#include <filesystem>
 #include <Database.hpp>
+#include <general_config.hpp>
+
+#ifdef BUILD_USE_FILESYSTEM
+#include <filesystem>
+#endif
 
 namespace object {
 
@@ -29,6 +33,7 @@ TEST_F(MoneyTest, ReorderInitialize)
     EXPECT_EQ(Money::moneyValue("or"), 50000);
 }
 
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test initializing money from the database
  */
@@ -45,7 +50,7 @@ TEST_F(MoneyTest, InitializeFromDatabase)
     EXPECT_EQ(Money::moneyValue("argent"), 50);
     EXPECT_EQ(Money::moneyValue("or"), 100);
 }
-
+#endif
 /*
  * Test behaviour when the money system is not initialized
  */
@@ -397,6 +402,7 @@ TEST_F(MoneyTest, StreamOperator)
     EXPECT_EQ(output, ss.str());
 }
 
+#ifdef BUILD_USE_FILESYSTEM
 TEST_F(MoneyTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
@@ -406,6 +412,7 @@ TEST_F(MoneyTest, CreatingDatabaseModel)
     EXPECT_TRUE(Money::createDatabaseModel(db));
 
 }
+#endif
 
 /**
  * @brief Set up the Money test
