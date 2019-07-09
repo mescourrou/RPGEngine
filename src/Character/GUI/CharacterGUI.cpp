@@ -19,8 +19,7 @@
 namespace character::GUI {
 
 /**
- * @brief Subscribe on the game key events
- * @param game Game hosting the events
+ * @brief Constructor
  */
 CharacterGUI::CharacterGUI() :
     m_requiredActions({actions::UP, actions::DOWN, actions::LEFT, actions::RIGHT,
@@ -29,6 +28,10 @@ CharacterGUI::CharacterGUI() :
 
 }
 
+/**
+ * @brief Subscribe on the game key events
+ * @param game Game hosting the events
+ */
 void CharacterGUI::doSubscribeKeyEvents(game::GUI::GameGUI* game)
 {
     if (game)
@@ -78,6 +81,7 @@ void CharacterGUI::prepare()
         m_currentDirection = Up;
         m_moving = true;
     }
+    // If not moving, we cycle the stopped sprites
     if (!m_moving)
     {
         switch (m_currentDirection) {

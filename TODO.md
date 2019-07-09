@@ -12,7 +12,6 @@ This TODO list is not complete !
 - NPC trainers
 - NPC Quest giver
 - Spells and habilities
-- Printing the character on the map
 - GUI inventory
 - Fights
 - Caracteristics
