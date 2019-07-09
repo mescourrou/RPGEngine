@@ -1,15 +1,18 @@
 #pragma once
 
+// Stl
 #include <memory>
 
-#include <SFML/Graphics/Shape.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-
+// Project
 #include <BaseException.hpp>
 #include <BaseGUIObject.hpp>
 #include <Vector.hpp>
 #include <Context.hpp>
-#include <memory>
+
+// External lib
+#include <SFML/Graphics/Shape.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+
 
 // External libs
 #include <json.hpp>

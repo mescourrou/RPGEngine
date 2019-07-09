@@ -1,33 +1,43 @@
 #include "CharacterGUI.hpp"
+
+// Stl
 #include <fstream>
+#ifdef BUILD_USE_FILESYSTEM
+#include <filesystem>
+#endif
+
+// Project
 #include <Tools.hpp>
+#include <GameGUI.hpp>
+
+// External libs
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
-#ifdef BUILD_USE_FILESYSTEM
-#include <filesystem>
-#endif
-
-#include <GameGUI.hpp>
-
 namespace character::GUI {
 
-CharacterGUI::~CharacterGUI()
+/**
+ * @brief Subscribe on the game key events
+ * @param game Game hosting the events
+ */
+CharacterGUI::CharacterGUI() :
+    m_requiredActions({actions::UP, actions::DOWN, actions::LEFT, actions::RIGHT,
+                             actions::UP_STOPPED, actions::DOWN_STOPPED, actions::LEFT_STOPPED, actions::RIGHT_STOPPED})
 {
-    for (auto& ptr : m_textures)
-        delete ptr;
+
 }
 
 void CharacterGUI::doSubscribeKeyEvents(game::GUI::GameGUI* game)
 {
     if (game)
-    {
         game->signalKeyReleased.subscribeSync(this, &CharacterGUI::eventKeyReleased);
-    }
 }
 
+/**
+ * @brief Implementation of BaseGUIObject::prepare : change the sprite according to the current state (moving and direction)
+ */
 void CharacterGUI::prepare()
 {
     auto actualiseCurrentSprite = [this](const std::vector<unsigned int>& action){
@@ -94,6 +104,12 @@ void CharacterGUI::prepare()
         m_tics = 0;
 }
 
+/**
+ * @brief Load the Character from the file (snakeCase form of the name)
+ * @param name Name of the character, used to find the file
+ * @param characterRessourcesDir Directory where are stored the characters files and sprites
+ * @return Return true if the load was successfull
+ */
 bool CharacterGUI::load(const std::string &name, const std::string &characterRessourcesDir)
 {
     std::ifstream file(characterRessourcesDir + "/" + Tools::snakeCase(name) + ".json");
@@ -153,7 +169,7 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
             unsigned int vShift = set[VERTICAL_SHIFT].get<unsigned int>();
 
             sf::Vector2f origin(set[ORIGIN_X].get<unsigned int>(), set[ORIGIN_Y].get<unsigned int>());
-
+            // Remove backgroung if specified
             if (set.contains(BACKGROUND) && set[BACKGROUND].is_array())
             {
                 if (set[BACKGROUND].size() != 3)
@@ -162,7 +178,7 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
                 image.createMaskFromColor(backgroundColor);
             }
 
-            m_textures.push_back(new sf::Texture());
+            m_textures.push_back(std::make_shared<sf::Texture>());
             m_textures.back()->loadFromImage(image);
 
             for (unsigned int i = 0; i < height ; i++)
@@ -178,7 +194,7 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
             }
 
         }
-
+        // Get all the actions
         for (auto a : json[ACTIONS].items())
         {
             if (!a.value().is_array())
@@ -192,10 +208,15 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
             }
             m_actions[a.key()] = spriteList;
         }
-        if (m_actions.find(actions::DOWN_STOPPED) == m_actions.end())
-            return false;
-        else
-            m_currentSprite = &(m_sprites[m_actions[actions::DOWN_STOPPED].front()]);
+
+        for (const auto& actionName : m_requiredActions)
+        {
+            if (m_actions.find(actionName) == m_actions.end())
+                return false;
+        }
+
+        // Initialize the first sprite
+        m_currentSprite = &(m_sprites[m_actions[actions::DOWN_STOPPED].front()]);
 
     }
     else
@@ -205,6 +226,10 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
     return true;
 }
 
+/**
+ * @brief Method to execute when a key is released : Reset tics and cinematic index to have coherent turns
+ * @param key Key released
+ */
 void CharacterGUI::eventKeyReleased(sf::Event::KeyEvent key)
 {
     if ((key.code == sf::Keyboard::Left && m_currentDirection == Left) ||
@@ -219,6 +244,11 @@ void CharacterGUI::eventKeyReleased(sf::Event::KeyEvent key)
 
 }
 
+/**
+ * @brief Draw the Character on the target
+ * @param target Target to draw on
+ * @param states Render states to use
+ */
 void CharacterGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     m_currentSprite->setPosition(target.getSize().x / 2, target.getSize().y / 2);

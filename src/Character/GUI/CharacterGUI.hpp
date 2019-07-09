@@ -30,8 +30,9 @@ CREATE_EXCEPTION_CLASS(CharacterGUI)
 class CharacterGUI : public BaseGUIObject
 {
 public:
-    CharacterGUI() = default;
-    ~CharacterGUI() override;
+    CharacterGUI();
+    /// @brief Default destructor
+    ~CharacterGUI() override = default;
 
     void setPosition(float x, float y);
 
@@ -44,24 +45,34 @@ protected:
     void eventKeyPressed(sf::Event::KeyEvent);
     void eventKeyReleased(sf::Event::KeyEvent key);
 
+    /**
+     * @brief Direction of the character
+     */
     enum Direction {
         Up, Down, Left, Right
     };
-    Direction m_currentDirection = Down;
-    bool m_moving = false;
+    /**
+     * @brief Hook to process the instruction to move the character
+     * @param dir Direction to move the character to
+     */
     virtual void doMove(Direction dir) = 0;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 private:
-    std::map<unsigned int, sf::Sprite> m_sprites;
-    std::vector<sf::Texture*> m_textures;
-    std::map<std::string, std::vector<unsigned int>> m_actions;
+    std::map<unsigned int, sf::Sprite> m_sprites;               ///< Sprites of the Character, assigned by id
+    std::vector<std::shared_ptr<sf::Texture>> m_textures;       ///< List of the textures to keep the ownership
+    std::map<std::string, std::vector<unsigned int>> m_actions; ///< List of sprites associated with the actions
 
-    mutable sf::Sprite* m_currentSprite = nullptr;
-    unsigned int m_spriteCinematicIndex = 0;
+    mutable sf::Sprite* m_currentSprite = nullptr;              ///< Current sprite pointer
+    unsigned int m_spriteCinematicIndex = 0;                    ///< Current index on the current action sprite list
 
-    unsigned int m_spriteChangeTics = 5;
-    unsigned int m_tics = 0;
+    unsigned int m_spriteChangeTics = 5;                        ///< Number of image refreshing before changing the sprite
+    unsigned int m_tics = 0;                                    ///< Image counter, see m_spriteChangeTics
+
+    Direction m_currentDirection = Down;                        ///< Current player direction
+    bool m_moving = false;                                      ///< Is the player moving ?
+
+    std::vector<std::string> m_requiredActions;                 ///< Actions wich need to be found in the loaded file
 
     static constexpr char SPRITE_SETS[] = "spriteSets";
     static constexpr char FIRST_ID[] = "firstId";
@@ -77,6 +88,9 @@ private:
     static constexpr char ORIGIN_Y[] = "originY";
     static constexpr char ACTIONS[] = "actions";
 
+    /**
+     * @brief Differents actions names
+     */
     struct actions {
     static constexpr char DOWN_STOPPED[] = "downStopped";
     static constexpr char DOWN[] = "down";
