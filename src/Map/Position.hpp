@@ -13,6 +13,9 @@
 namespace database {
 class Database;
 }
+namespace config {
+class Context;
+}
 
 namespace map
 {
@@ -50,10 +53,10 @@ public:
     /// @brief Destructor
     ~Position() override = default;
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string& characterName);
+    bool loadFromDatabase(std::shared_ptr<database::Database> db, std::shared_ptr<config::Context> context, const std::string& characterName);
 
-    /// @brief Get the map, but can't be modified
-    const std::shared_ptr<Map> map() const noexcept { return m_map; }
+    /// @brief Get the map
+    std::shared_ptr<Map> map() const noexcept { return m_map; }
     /// @brief Change the map
     void setMap(std::shared_ptr<Map> map) { m_map = map; }
 

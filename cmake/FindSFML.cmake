@@ -22,9 +22,9 @@ if (NOT TARGET sfml_audio)
 	set_target_properties(sfml_audio PROPERTIES
 		IMPORTED_LOCATION "${binary_dir}/lib/libsfml-audio.so"
 		INTERFACE_INCLUDE_DIRECTORIES "${source_dir}/include"
-	)
-list(APPEND SFML_TARGETS sfml_audio)
+    )
 endif()
+list(APPEND SFML_TARGETS sfml_audio)
 
 if (NOT TARGET sfml_graphics)
 	add_library(sfml_graphics SHARED IMPORTED GLOBAL)
@@ -33,9 +33,9 @@ if (NOT TARGET sfml_graphics)
 	set_target_properties(sfml_graphics PROPERTIES
 		IMPORTED_LOCATION "${binary_dir}/lib/libsfml-graphics.so"
 		INTERFACE_INCLUDE_DIRECTORIES "${source_dir}/include"
-	)
-list(APPEND SFML_TARGETS sfml_graphics)
+    )
 endif()
+list(APPEND SFML_TARGETS sfml_graphics)
 
 if (NOT TARGET sfml_network)
 	add_library(sfml_network SHARED IMPORTED GLOBAL)
@@ -44,9 +44,9 @@ if (NOT TARGET sfml_network)
 	set_target_properties(sfml_network PROPERTIES
 		IMPORTED_LOCATION "${binary_dir}/lib/libsfml-network.so"
 		INTERFACE_INCLUDE_DIRECTORIES "${source_dir}/include"
-	)
-list(APPEND SFML_TARGETS sfml_graphics)
+    )
 endif()
+list(APPEND SFML_TARGETS sfml_graphics)
 
 if (NOT TARGET sfml_system)
 	add_library(sfml_system SHARED IMPORTED GLOBAL)
@@ -55,9 +55,9 @@ if (NOT TARGET sfml_system)
 	set_target_properties(sfml_system PROPERTIES
 		IMPORTED_LOCATION "${binary_dir}/lib/libsfml-system.so"
 		INTERFACE_INCLUDE_DIRECTORIES "${source_dir}/include"
-	)
-list(APPEND SFML_TARGETS sfml_system)
+    )
 endif()
+list(APPEND SFML_TARGETS sfml_system)
 
 if (NOT TARGET sfml_window)
 	add_library(sfml_window SHARED IMPORTED GLOBAL)
@@ -66,6 +66,6 @@ if (NOT TARGET sfml_window)
 	set_target_properties(sfml_window PROPERTIES
 		IMPORTED_LOCATION "${binary_dir}/lib/libsfml-window.so"
 		INTERFACE_INCLUDE_DIRECTORIES "${source_dir}/include"
-	)
-list(APPEND SFML_TARGETS sfml_window)
+    )
 endif()
+list(APPEND SFML_TARGETS sfml_window)

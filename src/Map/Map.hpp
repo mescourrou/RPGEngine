@@ -21,10 +21,10 @@ using json = nlohmann::json;
 #endif
 
 #ifdef RPG_BUILD_GUI
-#define GUI_CLASS , public GUI::MapGUI
+#define MAP_GUI_CLASS , public GUI::MapGUI
 #include <MapGUI.hpp>
 #else
-#define GUI_CLASS
+#define MAP_GUI_CLASS
 #endif
 
 /**
@@ -43,7 +43,7 @@ CREATE_EXCEPTION_CLASS(Map)
 /**
  * @brief Manage the core map
  */
-class Map : public BaseObject GUI_CLASS
+class Map : public BaseObject MAP_GUI_CLASS
 {
     DECLARE_BASEOBJECT(Map)
 #ifdef RPG_BUILD_TEST

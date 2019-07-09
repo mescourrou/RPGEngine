@@ -6,6 +6,7 @@
 #include <Model.hpp>
 #include <Inventory.hpp>
 #include <VerbosityLevels.hpp>
+#include <Map.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -20,12 +21,11 @@ namespace character {
  * @param[in] name Name of the character, must match a name in the database
  * @param[in] db [optionnal] Database to use for loading the character.
  */
-Character::Character(std::string name, std::shared_ptr<database::Database> db) :
-    m_name(std::move(name)), m_inventory(new object::Inventory)
+Character::Character(std::string name, std::shared_ptr<config::Context> context) :
+    m_name(std::move(name)), m_context(context), m_inventory(std::make_unique<object::Inventory>())
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    if (db)
-        loadFromDatabase(db);
+    setPosition(m_position);
 }
 
 /**
@@ -57,11 +57,18 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
     if (result.size() <= 1) // No result
         return false;
 
-    if (!m_position.loadFromDatabase(db, m_name))
+    if (!m_position.loadFromDatabase(db, m_context, m_name))
         return false;
 
     m_inventory->loadFromDatabase(db, m_name);
 
+#ifdef RPG_BUILD_GUI
+    if (!GUI::CharacterGUI::load(m_name, m_context->kCharacterPath()))
+    {
+        LOG(ERROR) << "Error during loading the GUI elements of " << m_name;
+        return false;
+    }
+#endif
 
     return true;
 }
@@ -113,6 +120,26 @@ bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
     return verifyDatabaseModel(db);
 }
 
+#ifdef RPG_BUILD_GUI
+void Character::doMove(GUI::CharacterGUI::Direction dir)
+{
+    switch (dir) {
+    case Up:
+        move({0, -5});
+        break;
+    case Down:
+        move({0, 5});
+        break;
+    case Left:
+        move({-5,0});
+        break;
+    case Right:
+        move({5,0});
+        break;
+    }
+}
+#endif
+
 /**
  * @brief Get the name of the Character
  * @return Name of the Character
@@ -122,13 +149,9 @@ const std::string& Character::name() const noexcept
     return m_name;
 }
 
-/**
- * @brief Get the position of the Character
- * @return Position of the Character, modifyable
- */
-map::Position& Character::position()
+void Character::setPosition(const map::Position &position)
 {
-    return m_position;
+    m_position = position;
 }
 
 /**
@@ -138,6 +161,35 @@ map::Position& Character::position()
 map::Position Character::position() const
 {
     return m_position;
+}
+
+void Character::move(const map::Vector<2>& move)
+{
+    map::Vector<2> intersection;
+
+    if (m_position.map()->collision({m_position.x(), m_position.y()}, move, intersection))
+    {
+        if (intersection != map::Vector<2>{-1, -1})
+        {
+            if (move.x() > 0)
+                intersection.x() -= 1;
+            else if (move.x() < 0)
+                intersection.x() += 1;
+            if (move.y() > 0)
+                intersection.y() -= 1;
+            else if (move.y() < 0)
+                intersection.y() += 1;
+            m_position.x() = intersection.x();
+            m_position.y() = intersection.y();
+        }
+    }
+    else
+    {
+        m_position.x() += move.x();
+        m_position.y() += move.y();
+    }
+
+    signalPositionChanged.trigger();
 }
 
 }

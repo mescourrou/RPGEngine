@@ -27,7 +27,7 @@ TEST_F(CharacterTest, VerifyDatabaseModel)
  */
 TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 {
-    Character ch("Brian");
+    Character ch("Brian", {});
 
     // Load from the database
     ASSERT_TRUE(ch.loadFromDatabase(database));

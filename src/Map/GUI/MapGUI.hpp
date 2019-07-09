@@ -1,14 +1,18 @@
 #pragma once
 
+// Stl
 #include <memory>
 
+// Project
+#include <BaseException.hpp>
+#include <BaseGUIObject.hpp>
+#include <Vector.hpp>
+#include <Context.hpp>
+
+// External lib
 #include <SFML/Graphics/Shape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-#include <BaseException.hpp>
-#include <Vector.hpp>
-#include <Context.hpp>
-#include <memory>
 
 // External libs
 #include <json.hpp>
@@ -23,7 +27,7 @@ CREATE_EXCEPTION_CLASS(MapGUI)
 /**
  * @brief GUI part of the Map
  */
-class MapGUI : public sf::Transformable, public sf::Drawable
+class MapGUI : public BaseGUIObject
 {
 public:
     MapGUI() = default;
@@ -31,6 +35,8 @@ public:
 
     void move(double offsetX, double offsetY);
     void setCenterOfView(const Vector<2>& centerOfView);
+
+    void prepare() override {}
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;

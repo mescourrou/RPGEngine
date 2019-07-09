@@ -5,9 +5,17 @@
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 #include <Position.hpp>
+#include <Event.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
+#endif
+
+#ifdef RPG_BUILD_GUI
+#define CHARACTER_GUI_CLASS , public GUI::CharacterGUI
+#include <CharacterGUI.hpp>
+#else
+#define CHARACTER_GUI_CLASS
 #endif
 
 namespace database {
@@ -36,7 +44,7 @@ class CharacterTest;
 /**
  * @brief Root character class
  */
-class Character : public BaseObject
+class Character : public BaseObject CHARACTER_GUI_CLASS
 {
     DECLARE_BASEOBJECT(Character)
 
@@ -47,14 +55,14 @@ class Character : public BaseObject
 #endif
 public:
     Character() = delete;
-    Character(std::string name, std::shared_ptr<database::Database> db = nullptr);
+    Character(std::string name, std::shared_ptr<config::Context> context);
     ~Character() override;
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
 
     // Getters
     const std::string& name() const noexcept;
-    map::Position& position();
+    void setPosition(const map::Position& position);
     map::Position position() const;
 
     // Setters
@@ -65,10 +73,18 @@ public:
      * @param[in] name New name of the Character
      */
     void setName(std::string name) { m_name = std::move(name); }
+    void move(const map::Vector<2> &move);
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+
+    events::Event<void> signalPositionChanged;
 protected:
+#ifdef RPG_BUILD_GUI
+    void doMove(Direction dir) override;
+#endif
+
+    std::shared_ptr<config::Context> m_context;
 
     std::string m_name;         ///< Name of the Character
 

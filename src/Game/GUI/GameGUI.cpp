@@ -8,6 +8,8 @@
 #include <Config.hpp>
 #include <ConfigFiles.hpp>
 #include <general_config.hpp>
+#include <Game.hpp>
+#include <Character.hpp>
 
 // External lib
 #include <glog/logging.h>
@@ -22,8 +24,8 @@ namespace GUI {
  * @brief Construct the GameGUI
  * @param context Context to use
  */
-GameGUI::GameGUI(std::shared_ptr<config::Context> context):
-    m_context(context)
+GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
+    m_context(context), m_game(game)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     namespace structure = config::structure::globalFile;
@@ -65,13 +67,13 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     if (result.size() == 0)
         return false;
 
-    LOG(INFO) << "Load first map";
-    m_map = std::make_shared<map::Map>(m_context, result.at(1).at(Model::FIRST_MAP_NAME));
-    if (!m_map->load(result.at(1).at(Model::FIRST_MAP_NAME)))
-    {
-        LOG(ERROR) << "Error during loading the map";
-        return false;
-    }
+
+
+    m_game->m_playerCharacter->doSubscribeKeyEvents(this);
+    m_game->m_playerCharacter->signalPositionChanged.subscribeAsync([this](){
+        m_game->m_playerCharacter->position().map()->setCenterOfView({m_game->m_playerCharacter->position().x(),
+                                m_game->m_playerCharacter->position().y()});
+    });
     return true;
 }
 
@@ -92,42 +94,16 @@ void GameGUI::eventManager()
             m_window->close();
             m_signalOnClose.trigger();
         }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        moveVector += {-10, 0};
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        moveVector += {10, 0};
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        moveVector += {0, -10};
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        moveVector += {0, 10};
-    if (moveVector != map::Vector<2>{0,0})
-    {
-        moveVector.x() = moveVector.x() / moveVector.norm() * 10;
-        moveVector.y() = moveVector.y() / moveVector.norm() * 10;
-        map::Vector<2> intersection;
-        if (!m_map->collision(position, moveVector, intersection))
+        if (event.type == sf::Event::KeyPressed)
         {
-            position += moveVector;
-            m_map->setCenterOfView(position);
+            signalKeyPressed.trigger(event.key);
         }
-        else
+        if (event.type == sf::Event::KeyReleased)
         {
-            if (intersection != map::Vector<2>{-1, -1})
-            {
-                if (moveVector.x() > 0)
-                    intersection.x() -= 1;
-                else if (moveVector.x() < 0)
-                    intersection.x() += 1;
-                if (moveVector.y() > 0)
-                    intersection.y() -= 1;
-                else if (moveVector.y() < 0)
-                    intersection.y() += 1;
-                position = intersection;
-                m_map->setCenterOfView(position);
-            }
+            signalKeyReleased.trigger(event.key);
         }
     }
+
 }
 
 /**
@@ -135,8 +111,10 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
+    m_game->m_playerCharacter->prepare();
     m_window->clear();
-    m_window->draw(*m_map);
+    m_window->draw(*m_game->m_playerCharacter->position().map());
+    m_window->draw(*m_game->m_playerCharacter);
     m_window->display();
 }
 
