@@ -10,5 +10,5 @@ constexpr unsigned char VERSION_BUILD = 1;
 constexpr unsigned int VERSION = VERSION_MAJOR*10000 + VERSION_MINOR*100 + VERSION_BUILD;
 
 constexpr char GAME_DEFAULT_RESOLUTION[] = "@GAME_DEFAULT_RESOLUTION@";
-#cmakedefine BUILD_USE_FILESYSTEM_PATH
+#cmakedefine BUILD_USE_FILESYSTEM
 #cmakedefine GAME_AUTO_CHOOSE

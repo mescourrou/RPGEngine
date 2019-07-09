@@ -1,7 +1,10 @@
 #include "PositionTest.hpp"
 
+#include <general_config.hpp>
 // Stl
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 
 // Project
 #include <Position.hpp>
@@ -120,6 +123,7 @@ TEST_F(PositionTest, Distance)
     EXPECT_EQ(pos1 - pos2, sqrt(pow(9-2, 2) + pow(-3-4, 2) + pow(3 - 6, 2)));
 }
 
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test the creation of the database model
  */
@@ -134,7 +138,7 @@ TEST_F(PositionTest, CreatingDatabaseModel)
     EXPECT_TRUE(Position::createDatabaseModel(db));
 
 }
-
+#endif
 }
 
 
