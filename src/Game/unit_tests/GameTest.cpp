@@ -1,5 +1,9 @@
 #include "GameTest.hpp"
 
+#ifdef BUILD_USE_FILESYSTEM
+#include <filesystem>
+#endif
+
 #include <Database.hpp>
 #include <Character.hpp>
 
@@ -9,12 +13,14 @@ namespace game {
  */
 TEST_F(GameTest, CreatingDatabaseModel)
 {
+#ifdef BUILD_USE_FILESYSTEM
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
     auto db = std::make_shared<database::Database>(usedFile);
     character::Character::createDatabaseModel(db);
 
     EXPECT_TRUE(Game::createDatabaseModel(db));
+#endif
 
 }
 }

@@ -1,7 +1,10 @@
 #include "QueryTest.hpp"
 #include "Database.hpp"
+#include <general_config.hpp>
 
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 namespace database {
 
 /*
@@ -97,6 +100,7 @@ TEST_F(QueryTest, Create)
 
 TEST_F(QueryTest, CreateWithForeignKey)
 {
+#ifdef BUILD_USE_FILESYSTEM
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
 
@@ -111,6 +115,7 @@ TEST_F(QueryTest, CreateWithForeignKey)
 
     EXPECT_EQ(query.str(), expected);
     EXPECT_TRUE(query.isValid());
+#endif
 }
 
 /*

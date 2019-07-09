@@ -2,11 +2,14 @@
 #include <Inventory.hpp>
 #include <Object.hpp>
 #include <Character.hpp>
+#include <general_config.hpp>
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 #include <Database.hpp>
 
 namespace object {
-
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test the good initialization of the inventory : empty
  */
@@ -131,7 +134,7 @@ void InventoryTest::SetUp()
         inventory->m_inventory.push_back(std::make_shared<Object>(Object("Trash")));
     }
 }
-
+#endif
 }
 
 

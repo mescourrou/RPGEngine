@@ -2,7 +2,6 @@
 
 // Std lib
 #include <memory>
-#include <filesystem>
 
 // Project
 #include "general_config.hpp"
@@ -53,13 +52,13 @@ class Game : public BaseObject
 {
     DECLARE_BASEOBJECT(Game)
 #ifdef RPG_BUILD_TEST
-	friend class game::GameTest;
+    friend class game::GameTest;
 #endif
 public:
 
     Game(std::shared_ptr<config::Context> gameContext);
     /// @brief Destructor
-	~Game() override = default;
+    ~Game() override = default;
 
     bool initialize(std::shared_ptr<database::Database> db);
 

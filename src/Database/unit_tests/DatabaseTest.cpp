@@ -1,8 +1,13 @@
 #include "DatabaseTest.hpp"
 #include "Query.hpp"
 #include <glog/logging.h>
+
+#ifdef BUILD_USE_FILESYSTEM
+#include <filesystem>
+#endif
 namespace database {
 
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Test query execution and good return
  */
@@ -150,6 +155,7 @@ void DatabaseTest::SetUp()
     m_database.reset(new Database(usedFile));
 }
 
+#endif
 }
 
 

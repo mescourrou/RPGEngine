@@ -1,7 +1,11 @@
 #include "Database.hpp"
 
+#include <general_config.hpp>
+
 // Stl
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 #include <fstream>
 
 // Project
@@ -23,9 +27,10 @@ Database::Database(const std::string &path)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     sqlite3_initialize();
+#ifdef  BUILD_USE_FILESYSTEM
     if (!std::filesystem::exists(std::filesystem::path(path).parent_path()))
         std::filesystem::create_directories(std::filesystem::path(path).parent_path());
-
+#endif
     if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
         LOG(ERROR) << "Can't open database " << path << ": " << sqlite3_errmsg(m_sqlite3Handler);

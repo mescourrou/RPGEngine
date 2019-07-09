@@ -2,14 +2,18 @@
 #include <Character.hpp>
 #include <Inventory.hpp>
 #include <Object.hpp>
+#include <general_config.hpp>
 
 #include <Database.hpp>
 #include <Money.hpp>
 
+#ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
+#endif
 
 namespace character {
 
+#ifdef BUILD_USE_FILESYSTEM
 /*
  * Database model verification
  */
@@ -71,7 +75,7 @@ void CharacterTest::SetUp()
 
     database = std::shared_ptr<database::Database>(new database::Database(usedFile));
 }
-
+#endif
 }
 
 int main(int argc, char **argv)
