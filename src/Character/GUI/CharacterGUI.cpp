@@ -128,6 +128,10 @@ bool CharacterGUI::load(const std::string &name, const std::string &characterRes
         if (!json.contains(ACTIONS) || !json[ACTIONS].is_object())
             return false;
 
+        if (!json.contains(SPRITE_PERIOD) || !json[SPRITE_PERIOD].is_number_unsigned())
+            return false;
+        m_spriteChangeTics = json[SPRITE_PERIOD].get<unsigned int>();
+
         for (auto set : json[SPRITE_SETS])
         {
             if (!set.is_object())

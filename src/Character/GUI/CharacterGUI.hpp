@@ -66,7 +66,7 @@ private:
     mutable sf::Sprite* m_currentSprite = nullptr;              ///< Current sprite pointer
     unsigned int m_spriteCinematicIndex = 0;                    ///< Current index on the current action sprite list
 
-    unsigned int m_spriteChangeTics = 5;                        ///< Number of image refreshing before changing the sprite
+    unsigned int m_spriteChangeTics;                        ///< Number of image refreshing before changing the sprite
     unsigned int m_tics = 0;                                    ///< Image counter, see m_spriteChangeTics
 
     Direction m_currentDirection = Down;                        ///< Current player direction
@@ -86,6 +86,7 @@ private:
     static constexpr char BACKGROUND[] = "background";
     static constexpr char ORIGIN_X[] = "originX";
     static constexpr char ORIGIN_Y[] = "originY";
+    static constexpr char SPRITE_PERIOD[] = "spritePeriod";
     static constexpr char ACTIONS[] = "actions";
 
     /**
