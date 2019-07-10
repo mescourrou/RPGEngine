@@ -3,6 +3,10 @@
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 
+namespace map {
+class Position;
+} // namespace map
+
 /**
  * @brief Base GUI interface
  */

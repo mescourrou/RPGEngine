@@ -1,6 +1,7 @@
 #include "MapGUI.hpp"
 
 // Project
+#include <Position.hpp>
 
 // External library
 #include <tinyxml2.h>
@@ -45,6 +46,15 @@ void MapGUI::setCenterOfView(const Vector<2>& centerOfView)
     saturateCenterOfView();
 }
 
+void MapGUI::prepare()
+{
+}
+
+sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
+{
+    return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x, static_cast<float>(position.y()) - m_topLeftPosition.y);
+}
+
 /**
  * @brief Draw the map on the target
  * @param target Target to draw on
@@ -54,12 +64,11 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
 {
     // Position on the map of the top left corner of the screen
     // Unit : pixels
-    sf::Vector2f topLeftPosition(m_centerOfView.x() - target.getSize().x / 2,
-                                 m_centerOfView.y() - target.getSize().y / 2);
-
+    m_topLeftPosition.x = m_centerOfView.x() - target.getSize().x / 2;
+    m_topLeftPosition.y = m_centerOfView.y() - target.getSize().y / 2;
     // Coordinates of the tile of the top left corner
-    int i = std::floor(topLeftPosition.x / m_tileWidth);
-    int j = std::floor(topLeftPosition.y / m_tileHeight);
+    int i = std::floor(m_topLeftPosition.x / m_tileWidth);
+    int j = std::floor(m_topLeftPosition.y / m_tileHeight);
     int iOrigin = i;
 
     sf::Vector2f origin;

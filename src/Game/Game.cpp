@@ -1,6 +1,7 @@
 #include "Game.hpp"
 // Stl
 #include <thread>
+#include <memory>
 
 // Project
 #include <general_config.hpp>
@@ -83,6 +84,8 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
         LOG(ERROR) << "Fail to load the map " << m_playerCharacter->position().map()->name();
         return false;
     }
+    m_currentMap = m_playerCharacter->position().map();
+    loadMap(m_currentMap.lock()->name());
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI
@@ -127,6 +130,35 @@ bool Game::run()
         clock = std::chrono::high_resolution_clock::now();
     }
     return true;
+}
+
+void Game::loadMap(const std::string &mapName)
+{
+    using namespace database;
+
+    // Loading the NPCs of the current map
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE, m_db)
+                              .where(Model::Position::FK_MAP, Query::EQUAL, mapName)
+                              .column(Model::Position::FK_CHARACTER));
+    if (!Database::isQuerySuccessfull(result))
+    {
+        LOG(WARNING) << "Warning : abort loading contents of map " << mapName;
+        return;
+    }
+
+    for (unsigned int i = 1; i < result.size(); i++)
+    {
+        auto& characterName = result.at(i).at(Model::Position::FK_CHARACTER);
+        if (characterName != m_playerCharacter->name())
+        {
+            m_characterList.emplace_back(characterName, m_context).loadFromDatabase(m_db);
+        }
+    }
+}
+
+void Game::unloadCurrentMap()
+{
+    m_characterList.clear();
 }
 
 /**

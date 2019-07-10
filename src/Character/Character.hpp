@@ -58,6 +58,12 @@ public:
     Character(std::string name, std::shared_ptr<config::Context> context);
     ~Character() override = default;
 
+    Character(const Character&) = default;
+    Character(Character&&) = default;
+
+    Character& operator=(const Character&) = default;
+    Character& operator=(Character&&) = default;
+
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
 
     // Getters

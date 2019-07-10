@@ -36,7 +36,9 @@ public:
     void move(double offsetX, double offsetY);
     void setCenterOfView(const Vector<2>& centerOfView);
 
-    void prepare() override {}
+    void prepare() override;
+
+    sf::Vector2f positionOnScreenFrom(const map::Position& position);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -68,6 +70,7 @@ private:
     std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position
 
     Vector<2> m_centerOfView;               ///< Center of the view
+    mutable sf::Vector2f m_topLeftPosition;
 
     std::vector<sf::Texture*> m_textures;   ///< List of textures, freed in the destructor
 
