@@ -56,7 +56,7 @@ class Character : public BaseObject CHARACTER_GUI_CLASS
 public:
     Character() = delete;
     Character(std::string name, std::shared_ptr<config::Context> context);
-    ~Character() override;
+    ~Character() override = default;
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
 
@@ -90,7 +90,7 @@ protected:
 
     map::Position m_position;   ///< Position of the Character
 
-    std::unique_ptr<object::Inventory> m_inventory; ///< Inventory of the Character
+    std::shared_ptr<object::Inventory> m_inventory; ///< Inventory of the Character
 
 };
 

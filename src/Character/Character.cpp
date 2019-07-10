@@ -29,14 +29,6 @@ Character::Character(std::string name, std::shared_ptr<config::Context> context)
 }
 
 /**
- * @brief Destructor
- */
-Character::~Character()
-{
-    m_inventory.reset();
-}
-
-/**
  * @brief Load the character paramaters from the database
  *
  * @param [in] db (Not null) Database to use for loading
