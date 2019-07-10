@@ -15,13 +15,3 @@ public:
 
 }
 
-namespace config {
-class ContextMock : public Context
-{
-public:
-    ContextMock() {}
-    MOCK_CONST_METHOD0(kMapPath, const std::string());
-};
-
-}
-

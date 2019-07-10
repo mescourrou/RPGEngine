@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
@@ -32,12 +35,12 @@ class GameLoader : public BaseObject
 {
     DECLARE_BASEOBJECT(GameLoader)
 #ifdef RPG_BUILD_TEST
-	friend class game::GameLoaderTest;
+    friend class game::GameLoaderTest;
 #endif
 public:
     GameLoader(std::shared_ptr<config::Context> context);
     /// @brief Destructor
-	~GameLoader() override = default;
+    ~GameLoader() override = default;
 
     bool load();
     bool run();

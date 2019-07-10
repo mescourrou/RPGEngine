@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>

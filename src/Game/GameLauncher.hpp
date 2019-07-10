@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
@@ -34,13 +37,13 @@ class GameLauncher : public BaseObject
 {
     DECLARE_BASEOBJECT(GameLauncher)
 #ifdef RPG_BUILD_TEST
-	friend class game::GameLauncherTest;
+    friend class game::GameLauncherTest;
 #endif
 public:
 
     GameLauncher(int argc, char **argv);
     /// @brief Destructor
-	~GameLauncher() override = default;
+    ~GameLauncher() override = default;
 
     int start();
 

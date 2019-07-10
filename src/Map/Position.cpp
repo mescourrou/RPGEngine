@@ -48,12 +48,9 @@ bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, std::sha
     m_position.y() = std::stod(result.at(1).at(Model::Y));
     m_position.z() = std::stod(result.at(1).at(Model::Z));
 
-    m_map = std::make_shared<map::Map>(context, result.at(1).at(Model::FK_MAP));
-    if (!m_map->load(result.at(1).at(Model::FK_MAP)))
-    {
-        LOG(ERROR) << "Error during loading the map";
+    if (result.at(1).at(Model::FK_MAP) == "NULL")
         return false;
-    }
+    m_map = std::make_shared<map::Map>(context, result.at(1).at(Model::FK_MAP));
 
     return true;
 

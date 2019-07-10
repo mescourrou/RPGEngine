@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 namespace database {
 
 /**
@@ -30,8 +29,21 @@ namespace Model {
     constexpr char TABLE[] = "Character";
     constexpr char NAME[] = "name";
 
-
     } // namespace Character
+
+    namespace NPC {
+    constexpr char TABLE[] = "NPC";
+    constexpr char NAME[] = "name";
+
+    } // namespace NPC
+
+    namespace NPCPath {
+    constexpr char TABLE[] = "NPCPath";
+    constexpr char FK_NPC_NAME[] = "fkNPCName";
+    constexpr char X[] = "x";
+    constexpr char Y[] = "y";
+    constexpr char Z[] = "z";
+    } // namespace NPCPath
 
     namespace Position {
     constexpr char TABLE[] = "Position";

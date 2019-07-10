@@ -250,7 +250,7 @@ bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const 
 
         if (dir == RIGHT && intersect.x() >= origin.x())
             return true;
-        else if (intersect.x() <= origin.x())
+        else if (dir == LEFT && intersect.x() <= origin.x())
             return true;
     }
     return false;
@@ -285,7 +285,7 @@ bool Area::intersectXHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const 
 
         if (dir == DOWN && intersect.y() >= origin.y())
             return true;
-        else if (intersect.y() <= origin.y())
+        else if (dir == UP && intersect.y() <= origin.y())
             return true;
     }
     return false;

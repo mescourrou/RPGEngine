@@ -78,7 +78,7 @@ protected:
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
     std::shared_ptr<map::Map> m_map;                        ///< GUI Map
-#ifdef RPG_BUILD_TEST
+#ifdef RPG_BUILD_GUI
     std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
 #endif
     bool m_running = true;                                  ///< Main loop condition

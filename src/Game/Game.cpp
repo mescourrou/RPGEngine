@@ -11,11 +11,11 @@
 #include <Model.hpp>
 #include <Character.hpp>
 #include <VerbosityLevels.hpp>
-#include <MapGUI.hpp>
 #include <Money.hpp>
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
+#include <MapGUI.hpp>
 #endif
 
 // External libs
@@ -28,7 +28,10 @@ namespace game {
  * @param gameContext Context
  */
 Game::Game(std::shared_ptr<config::Context> gameContext) :
-    m_context(gameContext), m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
+    m_context(gameContext)
+#ifdef RPG_BUILD_GUI
+  , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
+#endif
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
@@ -71,7 +74,15 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     LOG(INFO) << "Create the player character";
     m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_context);
     if (!m_playerCharacter->loadFromDatabase(m_db))
+    {
         LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() << " from the database";
+        return false;
+    }
+    if (!m_playerCharacter->position().map()->load())
+    {
+        LOG(ERROR) << "Fail to load the map " << m_playerCharacter->position().map()->name();
+        return false;
+    }
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI

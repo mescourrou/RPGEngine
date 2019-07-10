@@ -9,6 +9,7 @@ target_link_libraries(Character
     Database
     Object
     Tools
+    Events
     Map)
 target_include_directories(Character PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Character PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
