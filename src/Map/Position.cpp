@@ -26,6 +26,7 @@ Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
 /**
  * @brief Load the character position from the database
  * @param db Database to use
+ * @param context Context to use to create the map
  * @param characterName Character from whom loading the position
  * @return Return true if all went well
  */

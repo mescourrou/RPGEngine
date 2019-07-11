@@ -5,12 +5,22 @@
 
 namespace character {
 
+/**
+ * @brief Constructor
+ * @param name Name of the NPC
+ * @param context Context to use
+ */
 NPC::NPC(std::string name, std::shared_ptr<config::Context> context):
     Character (std::move(name), context)
 {
 
 }
 
+/**
+ * @brief Load the NPC from the database
+ * @param db Database to use
+ * @return Return true if the loading was successfull
+ */
 bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::NPC;
@@ -32,6 +42,11 @@ bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
     return true;
 }
 
+/**
+ * @brief Verify the database model related to the NPC : NPC and NPCPath tables
+ * @param db Database to verify
+ * @return Return true if the model is correct
+ */
 bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
     using namespace database;
@@ -78,6 +93,11 @@ bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
     return true;
 }
 
+/**
+ * @brief Create the tables needed by the NPC class
+ * @param db Database to populate
+ * @return Return true if all went well
+ */
 bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
 
@@ -102,6 +122,9 @@ bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
     return verifyDatabaseModel(db);
 }
 
+/**
+ * @brief Compute the new position of the NPC
+ */
 void NPC::updatePosition()
 {
 

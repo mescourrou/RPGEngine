@@ -46,10 +46,18 @@ void MapGUI::setCenterOfView(const Vector<2>& centerOfView)
     saturateCenterOfView();
 }
 
+/**
+ * @brief Prepare the drawing
+ */
 void MapGUI::prepare()
 {
 }
 
+/**
+ * @brief Convert the given map position into a pixel position on the screen
+ * @param position Position on the map
+ * @return Position on the screen
+ */
 sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
 {
     return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x, static_cast<float>(position.y()) - m_topLeftPosition.y);

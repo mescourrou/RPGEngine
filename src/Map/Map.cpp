@@ -27,10 +27,9 @@ Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :
 }
 
 /**
- * @brief Load the map from the json file given
+ * @brief Load the map from the json file named like the map
  *
  * We use Tiled to generate the files : https://www.mapeditor.org/
- * @param filename File to use
  * @return Return true if all went well
  */
 bool Map::load()

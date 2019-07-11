@@ -35,8 +35,6 @@ public:
     /// @brief Default destructor
     ~CharacterGUI() override = default;
 
-    void setPosition(float x, float y);
-
     void doSubscribeKeyEvents(game::GUI::GameGUI* game);
 
     void prepare() override;
@@ -47,7 +45,6 @@ public:
 
 protected:
     bool load(const std::string& name, const std::string& characterRessourcesDir);
-    void eventKeyPressed(sf::Event::KeyEvent);
     void eventKeyReleased(sf::Event::KeyEvent key);
 
     /**

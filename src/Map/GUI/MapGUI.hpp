@@ -70,7 +70,7 @@ private:
     std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position
 
     Vector<2> m_centerOfView;               ///< Center of the view
-    mutable sf::Vector2f m_topLeftPosition;
+    mutable sf::Vector2f m_topLeftPosition; ///< Position on the map of the top left corner of the screen (in pixels)
 
     std::vector<sf::Texture*> m_textures;   ///< List of textures, freed in the destructor
 

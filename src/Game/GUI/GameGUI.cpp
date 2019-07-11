@@ -23,6 +23,7 @@ namespace GUI {
 /**
  * @brief Construct the GameGUI
  * @param context Context to use
+ * @param game Game attached
  */
 GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     m_context(context), m_game(game)

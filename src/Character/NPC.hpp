@@ -6,12 +6,16 @@
 
 namespace character {
 
+/**
+ * @brief Class managing all Non Playable Character
+ */
 class NPC : public Character
 {
     DECLARE_BASEOBJECT(NPC)
 public:
     NPC() = delete;
     NPC(std::string name, std::shared_ptr<config::Context> context);
+    /// @brief Default constructor
     ~NPC() override = default;
 
     bool loadFromDatabase(std::shared_ptr<database::Database> db) override;
@@ -21,8 +25,8 @@ public:
 
     virtual void updatePosition();
 protected:
-    std::list<map::Position> m_path;
-    map::Position* m_targettedPosition = nullptr;
+    std::list<map::Position> m_path;                    ///< List of points to follow
+    map::Position* m_targettedPosition = nullptr;       ///< Current point targetted
 
 };
 

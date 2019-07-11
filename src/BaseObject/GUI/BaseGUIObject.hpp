@@ -13,6 +13,9 @@ class Position;
 class BaseGUIObject : public sf::Transformable, public sf::Drawable
 {
 public:
+    /**
+     * @brief Prepare the drawing
+     */
     virtual void prepare() = 0;
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Project
 #include "general_config.hpp"
@@ -56,12 +56,17 @@ class Character : public BaseObject CHARACTER_GUI_CLASS
 public:
     Character() = delete;
     Character(std::string name, std::shared_ptr<config::Context> context);
+    /// @brief Default constructor
     ~Character() override = default;
 
+    /// @brief Default copy constructor
     Character(const Character&) = default;
+    /// @brief Default move constructor
     Character(Character&&) = default;
 
+    /// @brief Default copy operator
     Character& operator=(const Character&) = default;
+    /// @brief Default move operator
     Character& operator=(Character&&) = default;
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
@@ -84,13 +89,13 @@ public:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 
-    events::Event<void> signalPositionChanged;
+    events::Event<void> signalPositionChanged;      ///< Signal when the player position changed
 protected:
 #ifdef RPG_BUILD_GUI
     void doMove(Direction dir) override;
 #endif
 
-    std::shared_ptr<config::Context> m_context;
+    std::shared_ptr<config::Context> m_context;     ///< Context used
 
     std::string m_name;         ///< Name of the Character
 

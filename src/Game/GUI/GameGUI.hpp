@@ -37,8 +37,8 @@ public:
 
     void draw();
 
-    events::Event<sf::Event::KeyEvent> signalKeyPressed;
-    events::Event<sf::Event::KeyEvent> signalKeyReleased;
+    events::Event<sf::Event::KeyEvent> signalKeyPressed;    ///< Signal when a key is pressed
+    events::Event<sf::Event::KeyEvent> signalKeyReleased;   ///< Signal when a key is released
     /**
      * @brief Get the event triggered when the user close the game
      */
@@ -54,8 +54,7 @@ protected:
 
     events::Event<void> m_signalOnClose;             ///< Event when the user close the game
 
-
-    Game* m_game;
+    Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
 private:
 
 };

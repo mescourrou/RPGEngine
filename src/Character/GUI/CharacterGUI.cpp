@@ -100,11 +100,18 @@ void CharacterGUI::prepare()
         m_tics = 0;
 }
 
+/**
+ * @brief Set the position of the current sprite on the screen
+ * @param position Position of the sprite
+ */
 void CharacterGUI::setPositionOnScreen(const sf::Vector2f &position)
 {
     m_currentSprite->setPosition(position);
 }
 
+/**
+ * @brief Verify the key pressed on the keyboard and prepare the actions
+ */
 void CharacterGUI::watchKeyboard()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && (!m_moving || m_currentDirection == Left))

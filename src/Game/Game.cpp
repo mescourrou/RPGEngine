@@ -85,7 +85,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
         return false;
     }
     m_currentMap = m_playerCharacter->position().map();
-    loadMap(m_currentMap.lock()->name());
+    loadMapContents(m_currentMap.lock()->name());
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI
@@ -132,7 +132,11 @@ bool Game::run()
     return true;
 }
 
-void Game::loadMap(const std::string &mapName)
+/**
+ * @brief Load the elements of the map
+ * @param mapName Map to load
+ */
+void Game::loadMapContents(const std::string &mapName)
 {
     using namespace database;
 
@@ -156,6 +160,9 @@ void Game::loadMap(const std::string &mapName)
     }
 }
 
+/**
+ * @brief Free all the current map contents
+ */
 void Game::unloadCurrentMap()
 {
     m_characterList.clear();
