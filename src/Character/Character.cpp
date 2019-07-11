@@ -19,21 +19,13 @@ namespace character {
  * If a database is given, the loading from the database is performed automatically.
  *
  * @param[in] name Name of the character, must match a name in the database
- * @param[in] db [optionnal] Database to use for loading the character.
+ * @param[in] context Context to use
  */
 Character::Character(std::string name, std::shared_ptr<config::Context> context) :
     m_name(std::move(name)), m_context(context), m_inventory(std::make_unique<object::Inventory>())
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     setPosition(m_position);
-}
-
-/**
- * @brief Destructor
- */
-Character::~Character()
-{
-    m_inventory.reset();
 }
 
 /**
@@ -76,7 +68,7 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 /**
  * @brief Verify if the database has the good character Model
  * @param[in] db Database to modify
- * @return
+ * @return True if the model is correct
  */
 bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
@@ -121,6 +113,10 @@ bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
 }
 
 #ifdef RPG_BUILD_GUI
+/**
+ * @brief Hook from the GUI to move the character
+ * @param dir Direction to follow
+ */
 void Character::doMove(GUI::CharacterGUI::Direction dir)
 {
     switch (dir) {
@@ -149,6 +145,10 @@ const std::string& Character::name() const noexcept
     return m_name;
 }
 
+/**
+ * @brief Set the position of the Character on the map
+ * @param position
+ */
 void Character::setPosition(const map::Position &position)
 {
     m_position = position;
@@ -163,6 +163,10 @@ map::Position Character::position() const
     return m_position;
 }
 
+/**
+ * @brief Move the Character following the given vector
+ * @param move Move to execute
+ */
 void Character::move(const map::Vector<2>& move)
 {
     map::Vector<2> intersection;

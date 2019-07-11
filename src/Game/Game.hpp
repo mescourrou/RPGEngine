@@ -70,6 +70,9 @@ public:
 
     bool run();
 
+    void loadMapContents(const std::string& mapName);
+    void unloadCurrentMap();
+
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 protected:
@@ -77,8 +80,10 @@ protected:
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
-    std::shared_ptr<map::Map> m_map;                        ///< GUI Map
-#ifdef RPG_BUILD_TEST
+    std::weak_ptr<map::Map> m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
+
+    std::list<character::Character> m_characterList;        ///< List of characters, excepted the character of the player
+#ifdef RPG_BUILD_GUI
     std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
 #endif
     bool m_running = true;                                  ///< Main loop condition

@@ -59,7 +59,7 @@ public:
     Map& operator=(const Map& copy) = default;
     Map& operator=(Map&& move) = default;
 
-    virtual bool load(const std::string& filename) final;
+    virtual bool load() final;
 
     /// @brief Get the name of the map
     virtual std::string name() const noexcept final { return m_name; }

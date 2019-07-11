@@ -6,6 +6,7 @@
 #include <Vector.hpp>
 #include <Context.hpp>
 #include <memory>
+#include <Position.hpp>
 #include <BaseGUIObject.hpp>
 
 // External libs
@@ -34,15 +35,16 @@ public:
     /// @brief Default destructor
     ~CharacterGUI() override = default;
 
-    void setPosition(float x, float y);
-
     void doSubscribeKeyEvents(game::GUI::GameGUI* game);
 
     void prepare() override;
 
+    void setPositionOnScreen(const sf::Vector2f& position);
+
+    void watchKeyboard();
+
 protected:
     bool load(const std::string& name, const std::string& characterRessourcesDir);
-    void eventKeyPressed(sf::Event::KeyEvent);
     void eventKeyReleased(sf::Event::KeyEvent key);
 
     /**
@@ -63,10 +65,10 @@ private:
     std::vector<std::shared_ptr<sf::Texture>> m_textures;       ///< List of the textures to keep the ownership
     std::map<std::string, std::vector<unsigned int>> m_actions; ///< List of sprites associated with the actions
 
-    mutable sf::Sprite* m_currentSprite = nullptr;              ///< Current sprite pointer
+    sf::Sprite* m_currentSprite = nullptr;                      ///< Current sprite pointer
     unsigned int m_spriteCinematicIndex = 0;                    ///< Current index on the current action sprite list
 
-    unsigned int m_spriteChangeTics;                        ///< Number of image refreshing before changing the sprite
+    unsigned int m_spriteChangeTics;                            ///< Number of image refreshing before changing the sprite
     unsigned int m_tics = 0;                                    ///< Image counter, see m_spriteChangeTics
 
     Direction m_currentDirection = Down;                        ///< Current player direction

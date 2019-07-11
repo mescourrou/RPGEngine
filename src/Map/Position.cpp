@@ -26,6 +26,7 @@ Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
 /**
  * @brief Load the character position from the database
  * @param db Database to use
+ * @param context Context to use to create the map
  * @param characterName Character from whom loading the position
  * @return Return true if all went well
  */
@@ -48,12 +49,9 @@ bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, std::sha
     m_position.y() = std::stod(result.at(1).at(Model::Y));
     m_position.z() = std::stod(result.at(1).at(Model::Z));
 
-    m_map = std::make_shared<map::Map>(context, result.at(1).at(Model::FK_MAP));
-    if (!m_map->load(result.at(1).at(Model::FK_MAP)))
-    {
-        LOG(ERROR) << "Error during loading the map";
+    if (result.at(1).at(Model::FK_MAP) == "NULL")
         return false;
-    }
+    m_map = std::make_shared<map::Map>(context, result.at(1).at(Model::FK_MAP));
 
     return true;
 

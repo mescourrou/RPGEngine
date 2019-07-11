@@ -23,6 +23,7 @@ namespace GUI {
 /**
  * @brief Construct the GameGUI
  * @param context Context to use
+ * @param game Game attached
  */
 GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     m_context(context), m_game(game)
@@ -58,20 +59,13 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
 bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
-    namespace Model = database::Model::Game;
-    using namespace database;
-    if (!db)
-        throw GameGUIException("No database given.", DatabaseException::MISSING_DATABASE);
 
-    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).column(Model::FIRST_MAP_NAME));
-    if (result.size() == 0)
-        return false;
-
-
+    m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
+                                                  m_game->m_playerCharacter->position().y()});
 
     m_game->m_playerCharacter->doSubscribeKeyEvents(this);
     m_game->m_playerCharacter->signalPositionChanged.subscribeAsync([this](){
-        m_game->m_playerCharacter->position().map()->setCenterOfView({m_game->m_playerCharacter->position().x(),
+        m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
                                 m_game->m_playerCharacter->position().y()});
     });
     return true;
@@ -103,6 +97,7 @@ void GameGUI::eventManager()
             signalKeyReleased.trigger(event.key);
         }
     }
+    m_game->m_playerCharacter->watchKeyboard();
 
 }
 
@@ -111,9 +106,23 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
+    auto& characterList = m_game->m_characterList;
+    for (auto& character : characterList)
+    {
+        character.prepare();
+    }
     m_game->m_playerCharacter->prepare();
+    m_game->m_playerCharacter->setPositionOnScreen(sf::Vector2f(m_window->getSize().x/2, m_window->getSize().y/2));
     m_window->clear();
-    m_window->draw(*m_game->m_playerCharacter->position().map());
+    m_window->draw(*m_game->m_currentMap.lock());
+
+
+    for (auto& character : characterList)
+    {
+        character.setPositionOnScreen(m_game->m_currentMap.lock()->positionOnScreenFrom(character.position()));
+        m_window->draw(character);
+    }
+
     m_window->draw(*m_game->m_playerCharacter);
     m_window->display();
 }

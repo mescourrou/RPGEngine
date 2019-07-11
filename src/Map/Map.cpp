@@ -6,6 +6,7 @@
 // Project
 #include <VerbosityLevels.hpp>
 #include <Area.hpp>
+#include <Tools.hpp>
 
 // External lib
 #include <glog/logging.h>
@@ -26,15 +27,14 @@ Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :
 }
 
 /**
- * @brief Load the map from the json file given
+ * @brief Load the map from the json file named like the map
  *
  * We use Tiled to generate the files : https://www.mapeditor.org/
- * @param filename File to use
  * @return Return true if all went well
  */
-bool Map::load(const std::string& filename)
+bool Map::load()
 {
-    std::ifstream file(m_context->kMapPath() + "/" + filename + ".json");
+    std::ifstream file(m_context->kMapPath() + "/" + Tools::snakeCase(m_name) + ".json");
     if (file.is_open())
     {
         m_json.clear();
@@ -72,7 +72,7 @@ bool Map::load(const std::string& filename)
 
     }
     else {
-        LOG(ERROR) << "Impossible to open " << m_context->kMapPath() + "/" + filename + ".json";
+        LOG(ERROR) << "Impossible to open " << m_context->kMapPath() + "/" + Tools::snakeCase(m_name) + ".json";
         return false;
     }
     return true;

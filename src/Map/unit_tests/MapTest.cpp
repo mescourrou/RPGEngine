@@ -1,5 +1,6 @@
 #include "MapTest.hpp"
 #include <fstream>
+#include <unit_tests/ContextTest.hpp>
 namespace map {
 
 /*
@@ -30,7 +31,7 @@ TEST_F(MapTest, LoadCollisionLayer)
     EXPECT_CALL((*context), kMapPath()).WillOnce(Return("data"));
     auto contextPtr = std::shared_ptr<config::Context>(static_cast<config::Context*>(context));
     Map map(contextPtr, "Map1");
-    ASSERT_TRUE(map.load("Map1"));
+    ASSERT_TRUE(map.load());
 
     EXPECT_TRUE(map.collision(Vector<2>{950,1390}));
     EXPECT_TRUE(map.collision(Vector<2>{1141,1328}));

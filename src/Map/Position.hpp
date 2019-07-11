@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
@@ -44,6 +47,12 @@ public:
     /// @brief Default constructor
     Position() = default;
     Position(double x, double y, double z = 0);
+
+    Position(const Position&) = default;
+    Position(Position&&) = default;
+    Position& operator=(const Position&) = default;
+    Position& operator=(Position&&) = default;
+
     /**
      * @brief Create a Position at origin of the map given
      * @param map Map to create the position with

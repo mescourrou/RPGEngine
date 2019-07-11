@@ -33,7 +33,13 @@ public:
     /**
      * @brief Create a zero-full vector
      */
-    Vector() : m_vector(m_kSize, 0) {}
+    Vector()
+    {
+        for (unsigned int i = 0; i < m_kSize; i++)
+        {
+            m_vector[i] = 0;
+        }
+    }
 
     /**
      * @brief Create a vector from an initialize list.
@@ -43,10 +49,12 @@ public:
      */
     Vector(const std::initializer_list<double> list)
     {
-        assert(list.size() <= m_kSize);
+        unsigned int i = 0;
         for (auto& element : list)
         {
-            m_vector.push_back(element);
+            if (i < m_kSize)
+                m_vector[i] = element;
+            i++;
         }
 
     }
@@ -175,7 +183,7 @@ public:
     }
 
 protected:
-    std::vector<double> m_vector; ///< Vector
+    std::array<double,m_kSize> m_vector; ///< Vector
 };
 
 template<const unsigned int kSize>

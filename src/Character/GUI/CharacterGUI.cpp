@@ -49,37 +49,29 @@ void CharacterGUI::prepare()
         if (m_spriteCinematicIndex >= action.size())
             m_spriteCinematicIndex = 0;
     };
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && (!m_moving || m_currentDirection == Left))
+    if (m_moving && m_currentDirection == Left)
     {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::LEFT]);
         doMove(Left);
-        m_currentDirection = Left;
-        m_moving = true;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && (!m_moving || m_currentDirection == Right))
+    else if (m_moving && m_currentDirection == Right)
     {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::RIGHT]);
         doMove(Right);
-        m_currentDirection = Right;
-        m_moving = true;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && (!m_moving || m_currentDirection == Down))
+    else if (m_moving && m_currentDirection == Down)
     {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::DOWN]);
         doMove(Down);
-        m_currentDirection = Down;
-        m_moving = true;
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && (!m_moving || m_currentDirection == Up))
+    else if (m_moving && m_currentDirection == Up)
     {
         if (m_tics == 0)
             actualiseCurrentSprite(m_actions[actions::UP]);
         doMove(Up);
-        m_currentDirection = Up;
-        m_moving = true;
     }
     // If not moving, we cycle the stopped sprites
     if (!m_moving)
@@ -106,6 +98,42 @@ void CharacterGUI::prepare()
     m_tics++;
     if (m_tics >= m_spriteChangeTics)
         m_tics = 0;
+}
+
+/**
+ * @brief Set the position of the current sprite on the screen
+ * @param position Position of the sprite
+ */
+void CharacterGUI::setPositionOnScreen(const sf::Vector2f &position)
+{
+    m_currentSprite->setPosition(position);
+}
+
+/**
+ * @brief Verify the key pressed on the keyboard and prepare the actions
+ */
+void CharacterGUI::watchKeyboard()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && (!m_moving || m_currentDirection == Left))
+    {
+        m_moving = true;
+        m_currentDirection = Left;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && (!m_moving || m_currentDirection == Right))
+    {
+        m_moving = true;
+        m_currentDirection = Right;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && (!m_moving || m_currentDirection == Down))
+    {
+        m_moving = true;
+        m_currentDirection = Down;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && (!m_moving || m_currentDirection == Up))
+    {
+        m_moving = true;
+        m_currentDirection = Up;
+    }
 }
 
 /**
@@ -259,8 +287,6 @@ void CharacterGUI::eventKeyReleased(sf::Event::KeyEvent key)
  */
 void CharacterGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    m_currentSprite->setPosition(target.getSize().x / 2, target.getSize().y / 2);
-
     target.draw(*m_currentSprite, states);
 }
 
