@@ -20,7 +20,7 @@ class GameGUI;
 }
 
 namespace character {
-
+class Character;
 namespace GUI {
 
 CREATE_EXCEPTION_CLASS(CharacterGUI)
@@ -30,22 +30,26 @@ CREATE_EXCEPTION_CLASS(CharacterGUI)
  */
 class CharacterGUI : public BaseGUIObject
 {
+    DECLARE_BASEOBJECT(CharacterGUI)
 public:
-    CharacterGUI();
+    static void connectSignals(game::GUI::GameGUI* game, CharacterGUI* character, bool player = false);
+    static void connectSignals(Character* character, CharacterGUI* characterGUI, bool player = false);
+
+    CharacterGUI(std::weak_ptr<Character> character);
     /// @brief Default destructor
     ~CharacterGUI() override = default;
 
-    void doSubscribeKeyEvents(game::GUI::GameGUI* game);
+    void prepare(const sf::Vector2u& targetSize) override;
 
-    void prepare() override;
+    void setOnScreenPosition(const sf::Vector2f& position) override;
 
-    void setPositionOnScreen(const sf::Vector2f& position);
+    bool load(const std::string& characterRessourcesDir);
 
-    void watchKeyboard();
-
+    void slotArrowPressed(sf::Keyboard::Key arrow);
+    void slotKeyReleased(sf::Event::KeyEvent key);
+    void slotPositionChanged(map::Position move);
 protected:
-    bool load(const std::string& name, const std::string& characterRessourcesDir);
-    void eventKeyReleased(sf::Event::KeyEvent key);
+
 
     /**
      * @brief Direction of the character
@@ -53,14 +57,11 @@ protected:
     enum Direction {
         Up, Down, Left, Right
     };
-    /**
-     * @brief Hook to process the instruction to move the character
-     * @param dir Direction to move the character to
-     */
-    virtual void doMove(Direction dir) = 0;
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 private:
+    std::weak_ptr<Character> m_character;
+
     std::map<unsigned int, sf::Sprite> m_sprites;               ///< Sprites of the Character, assigned by id
     std::vector<std::shared_ptr<sf::Texture>> m_textures;       ///< List of the textures to keep the ownership
     std::map<std::string, std::vector<unsigned int>> m_actions; ///< List of sprites associated with the actions

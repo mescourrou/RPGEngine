@@ -82,7 +82,7 @@ protected:
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
     std::weak_ptr<map::Map> m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
 
-    std::list<character::Character> m_characterList;        ///< List of characters, excepted the character of the player
+    std::list<std::shared_ptr<character::Character>> m_characterList;        ///< List of characters, excepted the character of the player
 #ifdef RPG_BUILD_GUI
     std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
 #endif

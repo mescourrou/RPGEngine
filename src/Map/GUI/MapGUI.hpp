@@ -34,11 +34,16 @@ public:
     ~MapGUI() override;
 
     void move(double offsetX, double offsetY);
-    void setCenterOfView(const Vector<2>& centerOfView);
+    void setCenterOfView(const Position& centralPosition);
 
-    void prepare() override;
+    void prepare(const sf::Vector2u& targetSize) override;
 
+    void setOnScreenPosition(const sf::Vector2f&) override {}
     sf::Vector2f positionOnScreenFrom(const map::Position& position);
+
+    //void draw(BaseGUIObject* obj);
+
+    void setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderStates& states = sf::RenderStates::Default);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -81,6 +86,9 @@ private:
     unsigned int m_tileWidth;               ///< Width of a tile (in pixel)
 
     float m_zoom = 1;                       ///< Zoom @todo: Use it
+
+    std::weak_ptr<sf::RenderTarget> m_target;
+    sf::RenderStates m_states;
 
 };
 

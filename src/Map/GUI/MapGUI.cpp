@@ -40,17 +40,19 @@ void MapGUI::move(double offsetX, double offsetY)
 /**
  * @brief m_centerOfView setter
  */
-void MapGUI::setCenterOfView(const Vector<2>& centerOfView)
+void MapGUI::setCenterOfView(const Position &centralPosition)
 {
-    m_centerOfView = centerOfView;
+    m_centerOfView.x() = centralPosition.x();
+    m_centerOfView.y() = centralPosition.y();
     saturateCenterOfView();
 }
 
 /**
  * @brief Prepare the drawing
  */
-void MapGUI::prepare()
+void MapGUI::prepare(const sf::Vector2u &targetSize)
 {
+
 }
 
 /**
@@ -61,6 +63,20 @@ void MapGUI::prepare()
 sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
 {
     return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x, static_cast<float>(position.y()) - m_topLeftPosition.y);
+}
+
+//void MapGUI::draw(BaseGUIObject *obj)
+//{
+//    if (obj)
+//    {
+//        obj->setOnScreenPosition(positionOnScreenFrom(obj-))
+//    }
+//}
+
+void MapGUI::setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderStates &states)
+{
+    m_target = target;
+    m_states = states;
 }
 
 /**

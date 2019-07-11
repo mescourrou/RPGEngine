@@ -16,7 +16,8 @@
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
-#include <MapGUI.hpp>
+#include <GUI/MapGUI.hpp>
+#include <GUI/CharacterGUI.hpp>
 #endif
 
 // External libs
@@ -155,7 +156,14 @@ void Game::loadMapContents(const std::string &mapName)
         auto& characterName = result.at(i).at(Model::Position::FK_CHARACTER);
         if (characterName != m_playerCharacter->name())
         {
-            m_characterList.emplace_back(characterName, m_context).loadFromDatabase(m_db);
+            auto& newOne = m_characterList.emplace_back(std::make_shared<character::Character>(characterName, m_context));
+            newOne->loadFromDatabase(m_db);
+#ifdef RPG_BUILD_GUI
+            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne);
+            guiChar.lock()->load(m_context->kCharacterPath());
+            character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
+            character::GUI::CharacterGUI::connectSignals(newOne.get(), guiChar.lock().get());
+#endif
         }
     }
 }
