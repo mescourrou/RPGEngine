@@ -11,6 +11,8 @@
 #include <Game.hpp>
 #include <Character.hpp>
 
+#include <CharacterGUI.hpp>
+
 // External lib
 #include <glog/logging.h>
 #include <SFML/Window/Event.hpp>
@@ -60,14 +62,22 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
-                                                  m_game->m_playerCharacter->position().y()});
+    m_mapGUI = std::make_shared<map::GUI::MapGUI>(m_game->m_currentMap);
 
-    m_game->m_playerCharacter->doSubscribeKeyEvents(this);
-    m_game->m_playerCharacter->signalPositionChanged.subscribeAsync([this](){
-        m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
-                                m_game->m_playerCharacter->position().y()});
+    m_mapGUI->load(m_context->kMapPath());
+
+    m_mapGUI->setCenterOfView({m_game->m_playerCharacter->position().x(),
+                               m_game->m_playerCharacter->position().y()});
+
+    m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](map::Position pos){
+        m_mapGUI->setCenterOfView({pos.x(), pos.y()});
     });
+
+    auto player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter);
+
+    player.lock()->load(m_context->kCharacterPath());
+    character::GUI::CharacterGUI::connectSignals(this, player.lock().get(), true);
+    character::GUI::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(), player.lock().get(), true);
     return true;
 }
 
@@ -97,7 +107,15 @@ void GameGUI::eventManager()
             signalKeyReleased.trigger(event.key);
         }
     }
-    m_game->m_playerCharacter->watchKeyboard();
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        signalArroyIsPressed.trigger(sf::Keyboard::Left);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        signalArroyIsPressed.trigger(sf::Keyboard::Right);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        signalArroyIsPressed.trigger(sf::Keyboard::Down);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        signalArroyIsPressed.trigger(sf::Keyboard::Up);
 
 }
 
@@ -106,24 +124,23 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
-    auto& characterList = m_game->m_characterList;
-    for (auto& character : characterList)
+    m_mapGUI->prepare(m_window->getSize());
+    for (auto& obj : m_guiObjects)
     {
-        character.prepare();
+        if (obj)
+        {
+            obj->setCurrentMap(m_mapGUI);
+            obj->prepare(m_window->getSize());
+        }
     }
-    m_game->m_playerCharacter->prepare();
-    m_game->m_playerCharacter->setPositionOnScreen(sf::Vector2f(m_window->getSize().x/2, m_window->getSize().y/2));
     m_window->clear();
-    m_window->draw(*m_game->m_currentMap.lock());
+    m_window->draw(*m_mapGUI);
 
-
-    for (auto& character : characterList)
+    for (auto& obj : m_guiObjects)
     {
-        character.setPositionOnScreen(m_game->m_currentMap.lock()->positionOnScreenFrom(character.position()));
-        m_window->draw(character);
+        if (obj)
+            m_window->draw(*obj);
     }
-
-    m_window->draw(*m_game->m_playerCharacter);
     m_window->display();
 }
 

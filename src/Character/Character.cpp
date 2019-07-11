@@ -54,14 +54,6 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 
     m_inventory->loadFromDatabase(db, m_name);
 
-#ifdef RPG_BUILD_GUI
-    if (!GUI::CharacterGUI::load(m_name, m_context->kCharacterPath()))
-    {
-        LOG(ERROR) << "Error during loading the GUI elements of " << m_name;
-        return false;
-    }
-#endif
-
     return true;
 }
 
@@ -111,30 +103,6 @@ bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
 
     return verifyDatabaseModel(db);
 }
-
-#ifdef RPG_BUILD_GUI
-/**
- * @brief Hook from the GUI to move the character
- * @param dir Direction to follow
- */
-void Character::doMove(GUI::CharacterGUI::Direction dir)
-{
-    switch (dir) {
-    case Up:
-        move({0, -5});
-        break;
-    case Down:
-        move({0, 5});
-        break;
-    case Left:
-        move({-5,0});
-        break;
-    case Right:
-        move({5,0});
-        break;
-    }
-}
-#endif
 
 /**
  * @brief Get the name of the Character
@@ -193,7 +161,7 @@ void Character::move(const map::Vector<2>& move)
         m_position.y() += move.y();
     }
 
-    signalPositionChanged.trigger();
+    signalPositionChanged.trigger(m_position);
 }
 
 }

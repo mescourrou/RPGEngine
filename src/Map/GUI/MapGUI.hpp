@@ -8,6 +8,7 @@
 #include <BaseGUIObject.hpp>
 #include <Vector.hpp>
 #include <Context.hpp>
+#include <Map.hpp>
 
 // External lib
 #include <SFML/Graphics/Shape.hpp>
@@ -25,19 +26,26 @@ namespace GUI {
 CREATE_EXCEPTION_CLASS(MapGUI)
 
 /**
- * @brief GUI part of the Map
+ * @brief GUI class related to Map
  */
 class MapGUI : public BaseGUIObject
 {
+    DECLARE_BASEOBJECT(MapGUI)
 public:
-    MapGUI() = default;
-    ~MapGUI() override;
+    MapGUI(std::weak_ptr<map::Map> map);
+    /// @brief Default destructor
+    ~MapGUI() override = default;
 
     void move(double offsetX, double offsetY);
-    void setCenterOfView(const Vector<2>& centerOfView);
+    void setCenterOfView(const Position& centralPosition);
+    bool load(const std::string& mapDirPath) override;
 
-    void prepare() override;
+    void prepare(const sf::Vector2u& targetSize) override;
 
+    /**
+     * @brief The on-screen position of the map does not move
+     */
+    void setOnScreenPosition(const sf::Vector2f&) override {}
     sf::Vector2f positionOnScreenFrom(const map::Position& position);
 
 protected:
@@ -45,23 +53,6 @@ protected:
     bool loadTiles(const json &layer);
     bool loadTilesets(const std::string &mapDirPath, const json& json);
 
-    static inline constexpr char KEY_TILE_DATA[] = "data";
-    static inline constexpr char KEY_TILESETS[] = "tilesets";
-    static inline constexpr char KEY_HEIGHT[] = "height";
-    static inline constexpr char KEY_WIDTH[] = "width";
-    static inline constexpr char KEY_TILE_HEIGHT[] = "tileheight";
-    static inline constexpr char KEY_TILE_WIDTH[] = "tilewidth";
-    static inline constexpr char KEY_TILESET_FIRST_ID[] = "firstgid";
-    static inline constexpr char KEY_TILESET_SOURCE[] = "source";
-    static inline constexpr char ELEMENT_TILESET[] = "tileset";
-    static inline constexpr char ELEMENT_IMAGE[] = "image";
-    static inline constexpr char PROPERTY_TILE_WIDTH[] = "tilewidth";
-    static inline constexpr char PROPERTY_TILE_HEIGHT[] = "tileheight";
-    static inline constexpr char PROPERTY_TILE_COUNT[] = "tilecount";
-    static inline constexpr char PROPERTY_TILE_COLUMNS[] = "columns";
-    static inline constexpr char PROPERTY_IMAGE_SOURCE[] = "source";
-    static inline constexpr char PROPERTY_IMAGE_WIDTH[] = "width";
-    static inline constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
 private:
     void saturateCenterOfView();
     bool loadTileset(const std::string& mapDirPath, const json& tileset);
@@ -70,9 +61,12 @@ private:
     std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position
 
     Vector<2> m_centerOfView;               ///< Center of the view
-    mutable sf::Vector2f m_topLeftPosition; ///< Position on the map of the top left corner of the screen (in pixels)
+    sf::Vector2f m_topLeftPosition;         ///< Position on the map of the top left corner of the screen (in pixels)
+    sf::Vector2f m_origin;                  ///< Position on the screen of the top left displayed tile
+    sf::Vector2i m_firstTileCoordinates;    ///< Coordinates of the tile of the top left corner on the map (in pixel)
+    bool m_mapMoved = true;                 ///< The location changed so we need to compute again some parameters
 
-    std::vector<sf::Texture*> m_textures;   ///< List of textures, freed in the destructor
+    std::vector<std::shared_ptr<sf::Texture>> m_textures;   ///< List of textures, freed in the destructor
 
     unsigned int m_height;                  ///< Height of the map (in tiles)
     unsigned int m_width;                   ///< Width of the map (in tiles)
@@ -81,6 +75,8 @@ private:
     unsigned int m_tileWidth;               ///< Width of a tile (in pixel)
 
     float m_zoom = 1;                       ///< Zoom @todo: Use it
+
+    std::weak_ptr<map::Map> m_map;          ///< Pointer on the backend map
 
 };
 

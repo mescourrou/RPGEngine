@@ -16,7 +16,6 @@ target_include_directories(Character PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FI
 
 if (RPG_BUILD_GUI)
     add_subdirectory(GUI)
-    target_link_libraries(Character CharacterGUI)
 endif()
 
 if (RPG_BUILD_TEST)

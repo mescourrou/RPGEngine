@@ -16,7 +16,8 @@
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
-#include <MapGUI.hpp>
+#include <GUI/MapGUI.hpp>
+#include <GUI/CharacterGUI.hpp>
 #endif
 
 // External libs
@@ -79,13 +80,13 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
         LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() << " from the database";
         return false;
     }
+    LOG(INFO) << "Load the map";
     if (!m_playerCharacter->position().map()->load())
     {
         LOG(ERROR) << "Fail to load the map " << m_playerCharacter->position().map()->name();
         return false;
     }
     m_currentMap = m_playerCharacter->position().map();
-    loadMapContents(m_currentMap.lock()->name());
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI
@@ -99,6 +100,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 #else
     LOG(INFO) << "No GUI initialization because GUI building is not activated";
 #endif
+    loadMapContents(m_currentMap.lock()->name());
     return true;
 }
 
@@ -155,7 +157,14 @@ void Game::loadMapContents(const std::string &mapName)
         auto& characterName = result.at(i).at(Model::Position::FK_CHARACTER);
         if (characterName != m_playerCharacter->name())
         {
-            m_characterList.emplace_back(characterName, m_context).loadFromDatabase(m_db);
+            auto& newOne = m_characterList.emplace_back(std::make_shared<character::Character>(characterName, m_context));
+            newOne->loadFromDatabase(m_db);
+#ifdef RPG_BUILD_GUI
+            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne);
+            guiChar.lock()->load(m_context->kCharacterPath());
+            character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
+            character::GUI::CharacterGUI::connectSignals(newOne.get(), guiChar.lock().get());
+#endif
         }
     }
 }

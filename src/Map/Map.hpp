@@ -20,13 +20,6 @@ using json = nlohmann::json;
 #include <gtest/gtest.h>
 #endif
 
-#ifdef RPG_BUILD_GUI
-#define MAP_GUI_CLASS , public GUI::MapGUI
-#include <MapGUI.hpp>
-#else
-#define MAP_GUI_CLASS
-#endif
-
 /**
  * @namespace map
  * @brief Namespace grouping all map related classes
@@ -43,7 +36,7 @@ CREATE_EXCEPTION_CLASS(Map)
 /**
  * @brief Manage the core map
  */
-class Map : public BaseObject MAP_GUI_CLASS
+class Map : public BaseObject
 {
     DECLARE_BASEOBJECT(Map)
 #ifdef RPG_BUILD_TEST
@@ -77,25 +70,10 @@ public:
 protected:
     bool loadCollisionLayer(const json &layer);
 
-    json m_json; ///< Json used
-
     std::string m_name; ///< Name of the map
 
     std::shared_ptr<config::Context> m_context; ///< Context used
 
-    static inline constexpr char KEY_LAYERS[] = "layers";
-    static inline constexpr char KEY_LAYER_NAME[] = "name";
-    static inline constexpr char KEY_LAYER_TYPE[] = "type";
-    static inline constexpr char TYPE_DATA_LAYER[] = "tilelayer";
-    static inline constexpr char NAME_COLLISIONS_LAYER[] = "collisions";
-    static inline constexpr char NAME_TELEPORTS_LAYER[] = "teleports";
-    static inline constexpr char KEY_OBJECTS[] = "objects";
-    static inline constexpr char KEY_VISIBLE[] = "visible";
-    static inline constexpr char KEY_X[] = "x";
-    static inline constexpr char KEY_Y[] = "y";
-    static inline constexpr char KEY_HEIGHT[] = "height";
-    static inline constexpr char KEY_WIDTH[] = "width";
-    static inline constexpr char KEY_POLYGON[] = "polygon";
 private:
 
     std::vector<Area> m_collisionLayer; ///< List of the collisions areas

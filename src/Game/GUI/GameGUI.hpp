@@ -7,8 +7,9 @@
 #include <BaseException.hpp>
 #include <BaseObject.hpp>
 #include <Context.hpp>
-#include <Map.hpp>
+#include <MapGUI.hpp>
 #include <Event.hpp>
+#include <Database.hpp>
 
 #include <SFML/Window/Event.hpp>
 
@@ -25,6 +26,9 @@ namespace GUI {
 
 CREATE_EXCEPTION_CLASS(GameGUI)
 
+/**
+ * @brief Game GUI manager
+ */
 class GameGUI : public BaseObject
 {
     DECLARE_BASEOBJECT(GameGUI)
@@ -39,12 +43,27 @@ public:
 
     events::Event<sf::Event::KeyEvent> signalKeyPressed;    ///< Signal when a key is pressed
     events::Event<sf::Event::KeyEvent> signalKeyReleased;   ///< Signal when a key is released
+    events::Event<sf::Keyboard::Key> signalArroyIsPressed;  ///< Signal when a arrow is pressed (no security to get only one event)
     /**
      * @brief Get the event triggered when the user close the game
      */
     void subscribeOnClose(std::function<void(void)> func) { m_signalOnClose.subscribeSync(func); }
 
+    /**
+     * @brief Add a BaseGUIObject to the list
+     * @param args Arguments needed to create the BaseGUIObject
+     * @return Weak_ptr on the created object
+     */
+    template<typename BaseGUIObject_T, typename... Args, typename = std::enable_if<std::is_base_of_v<BaseGUIObject, BaseGUIObject_T>>>
+    std::weak_ptr<BaseGUIObject_T> addGUIObject(Args... args)
+    {
+        return std::dynamic_pointer_cast<BaseGUIObject_T>(m_guiObjects.emplace_back(std::make_shared<BaseGUIObject_T>(args...)));
+    }
+
 protected:
+    std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
+
+    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Current mapGUI
 
     std::shared_ptr<config::Context> m_context;     ///< Context to use
 

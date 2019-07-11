@@ -11,13 +11,6 @@
 #include <gtest/gtest.h>
 #endif
 
-#ifdef RPG_BUILD_GUI
-#define CHARACTER_GUI_CLASS , public GUI::CharacterGUI
-#include <CharacterGUI.hpp>
-#else
-#define CHARACTER_GUI_CLASS
-#endif
-
 namespace database {
 class Database;
 }
@@ -44,7 +37,7 @@ class CharacterTest;
 /**
  * @brief Root character class
  */
-class Character : public BaseObject CHARACTER_GUI_CLASS
+class Character : public BaseObject
 {
     DECLARE_BASEOBJECT(Character)
 
@@ -89,12 +82,8 @@ public:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 
-    events::Event<void> signalPositionChanged;      ///< Signal when the player position changed
+    events::Event<map::Position> signalPositionChanged;      ///< Signal when the player position changed
 protected:
-#ifdef RPG_BUILD_GUI
-    void doMove(Direction dir) override;
-#endif
-
     std::shared_ptr<config::Context> m_context;     ///< Context used
 
     std::string m_name;         ///< Name of the Character
