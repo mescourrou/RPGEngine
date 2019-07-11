@@ -26,6 +26,8 @@ public:
     virtual void prepare(const sf::Vector2u& targetSize) = 0;
     virtual void setOnScreenPosition(const sf::Vector2f& pos) = 0;
     virtual void setCurrentMap(std::weak_ptr<map::GUI::MapGUI> map) final { m_map = map; }
+
+    virtual bool load(const std::string& path) = 0;
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
     std::weak_ptr<map::GUI::MapGUI> m_map;

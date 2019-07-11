@@ -43,7 +43,7 @@ public:
 
     void setOnScreenPosition(const sf::Vector2f& position) override;
 
-    bool load(const std::string& characterRessourcesDir);
+    bool load(const std::string& characterRessourcesDir) override;
 
     void slotArrowPressed(sf::Keyboard::Key arrow);
     void slotKeyReleased(sf::Event::KeyEvent key);

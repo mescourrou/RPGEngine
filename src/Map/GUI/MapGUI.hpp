@@ -33,11 +33,12 @@ class MapGUI : public BaseGUIObject
     DECLARE_BASEOBJECT(MapGUI)
 public:
     MapGUI(std::weak_ptr<map::Map> map);
-    ~MapGUI() override;
+    /// @brief Default destructor
+    ~MapGUI() override = default;
 
     void move(double offsetX, double offsetY);
     void setCenterOfView(const Position& centralPosition);
-    bool load(const std::string& mapDirPath);
+    bool load(const std::string& mapDirPath) override;
 
     void prepare(const sf::Vector2u& targetSize) override;
 
@@ -59,9 +60,12 @@ private:
     std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position
 
     Vector<2> m_centerOfView;               ///< Center of the view
-    mutable sf::Vector2f m_topLeftPosition; ///< Position on the map of the top left corner of the screen (in pixels)
+    sf::Vector2f m_topLeftPosition;         ///< Position on the map of the top left corner of the screen (in pixels)
+    sf::Vector2f m_origin;
+    sf::Vector2i m_firstTileCoordinates;
+    bool m_somethingChanged = true;
 
-    std::vector<sf::Texture*> m_textures;   ///< List of textures, freed in the destructor
+    std::vector<std::unique_ptr<sf::Texture>> m_textures;   ///< List of textures, freed in the destructor
 
     unsigned int m_height;                  ///< Height of the map (in tiles)
     unsigned int m_width;                   ///< Width of the map (in tiles)

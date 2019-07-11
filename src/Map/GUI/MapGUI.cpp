@@ -31,12 +31,6 @@ MapGUI::MapGUI(std::weak_ptr<Map> map) :
 
 }
 
-MapGUI::~MapGUI()
-{
-    for (auto ptr : m_textures)
-        delete ptr;
-}
-
 /**
  * @brief Move the center of the view
  * @param offsetX X move
@@ -46,6 +40,7 @@ void MapGUI::move(double offsetX, double offsetY)
 {
     m_centerOfView += Vector<2>{offsetX, offsetY};
     saturateCenterOfView();
+    m_somethingChanged = true;
 }
 
 /**
@@ -56,6 +51,7 @@ void MapGUI::setCenterOfView(const Position &centralPosition)
     m_centerOfView.x() = centralPosition.x();
     m_centerOfView.y() = centralPosition.y();
     saturateCenterOfView();
+    m_somethingChanged = true;
 }
 
 bool MapGUI::load(const std::string &mapDirPath)
@@ -89,7 +85,23 @@ bool MapGUI::load(const std::string &mapDirPath)
  */
 void MapGUI::prepare(const sf::Vector2u &targetSize)
 {
+    if (m_somethingChanged)
+    {
+        // Position on the map of the top left corner of the screen
+        // Unit : pixels
+        m_topLeftPosition.x = m_centerOfView.x() - targetSize.x / 2;
+        m_topLeftPosition.y = m_centerOfView.y() - targetSize.y / 2;
+        // Coordinates of the tile of the top left corner
+        m_firstTileCoordinates.x = std::floor(m_topLeftPosition.x / m_tileWidth);
+        m_firstTileCoordinates.y = std::floor(m_topLeftPosition.y / m_tileHeight);
 
+        // Position on the screen of the top left displayed tile
+        // It's negative to cover all the screen
+        m_origin.x = - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth);
+        m_origin.y = - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight);
+
+        m_somethingChanged = false;
+    }
 }
 
 /**
@@ -101,14 +113,6 @@ sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
 {
     return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x, static_cast<float>(position.y()) - m_topLeftPosition.y);
 }
-
-//void MapGUI::draw(BaseGUIObject *obj)
-//{
-//    if (obj)
-//    {
-//        obj->setOnScreenPosition(positionOnScreenFrom(obj-))
-//    }
-//}
 
 void MapGUI::setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderStates &states)
 {
@@ -123,22 +127,10 @@ void MapGUI::setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderS
  */
 void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    // Position on the map of the top left corner of the screen
-    // Unit : pixels
-    m_topLeftPosition.x = m_centerOfView.x() - target.getSize().x / 2;
-    m_topLeftPosition.y = m_centerOfView.y() - target.getSize().y / 2;
-    // Coordinates of the tile of the top left corner
-    int i = std::floor(m_topLeftPosition.x / m_tileWidth);
-    int j = std::floor(m_topLeftPosition.y / m_tileHeight);
-    int iOrigin = i;
-
-    sf::Vector2f origin;
-    // Position on the screen of the top left displayed tile
-    // It's negative to cover all the screen
-    origin.x = - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth);
-    origin.y = - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight);
+    int i = m_firstTileCoordinates.x;
+    int j = m_firstTileCoordinates.y;
     // Copy to iterate without modify the origin
-    sf::Vector2f tilePosition(origin);
+    sf::Vector2f tilePosition(m_origin);
 
     while (tilePosition.y < target.getSize().y)
     {
@@ -163,9 +155,9 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
             tilePosition.x += m_tileWidth;
             i++;
         }
-        tilePosition.x = origin.x;
+        tilePosition.x = m_origin.x;
         tilePosition.y += m_tileHeight;
-        i = iOrigin;
+        i = m_firstTileCoordinates.x;
         j++;
     }
 }
@@ -319,7 +311,7 @@ bool MapGUI::loadTileset(const std::string& mapDirPath, const json &tileset)
     std::string imageFilename = xmlImage->FindAttribute(tilesetFile::PROPERTY_IMAGE_SOURCE)->Value();
     imageFilename = mapDirPath + '/' + imageFilename;
 
-    m_textures.push_back(new sf::Texture);
+    m_textures.emplace_back(std::make_unique<sf::Texture>());
     if (!m_textures.back()->loadFromFile(imageFilename))
         LOG(WARNING) << "Texture from " << imageFilename << " not loaded";
 
