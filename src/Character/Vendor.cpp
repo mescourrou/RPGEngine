@@ -1,4 +1,5 @@
 #include "Vendor.hpp"
+#include <Object.hpp>
 
 namespace character {
 
@@ -27,9 +28,19 @@ const std::weak_ptr<object::Inventory> Vendor::seeInventory() const
  * @param[in] objectName Object requested
  * @param[out] buyer Reference on the buyer to put the object on its inventory
  */
-void Vendor::sell(const std::string& objectName, Character &buyer)
+bool Vendor::sell(const std::string& objectName, Character &buyer)
 {
+    if (!m_inventory->get(objectName))
+        return false;
+    if (buyer.inventory().lock()->pullMoney(m_inventory->get(objectName)->value()))
+    {
+        m_inventory->addMoney(m_inventory->get(objectName)->value());
+        auto object = m_inventory->pop(objectName);
 
+        buyer.inventory().lock()->push(object);
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -37,8 +48,19 @@ void Vendor::sell(const std::string& objectName, Character &buyer)
  * @param[in] objectInventoryId Iventory id of the object to sell
  * @param[out] buyer Reference on the buyer to put the object on its inventory
  */
-void Vendor::sell(unsigned int objectInventoryId, Character &buyer)
+bool Vendor::sell(unsigned int objectInventoryId, Character &buyer)
 {
+    if (!m_inventory->get(objectInventoryId))
+        return false;
+    if (buyer.inventory().lock()->pullMoney(m_inventory->get(objectInventoryId)->value()))
+    {
+        m_inventory->addMoney(m_inventory->get(objectInventoryId)->value());
+        auto object = m_inventory->pop(objectInventoryId);
+
+        buyer.inventory().lock()->push(object);
+        return true;
+    }
+    return false;
 
 }
 
