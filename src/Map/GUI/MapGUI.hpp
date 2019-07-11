@@ -8,6 +8,7 @@
 #include <BaseGUIObject.hpp>
 #include <Vector.hpp>
 #include <Context.hpp>
+#include <Map.hpp>
 
 // External lib
 #include <SFML/Graphics/Shape.hpp>
@@ -29,19 +30,19 @@ CREATE_EXCEPTION_CLASS(MapGUI)
  */
 class MapGUI : public BaseGUIObject
 {
+    DECLARE_BASEOBJECT(MapGUI)
 public:
-    MapGUI() = default;
+    MapGUI(std::weak_ptr<map::Map> map);
     ~MapGUI() override;
 
     void move(double offsetX, double offsetY);
     void setCenterOfView(const Position& centralPosition);
+    bool load(const std::string& mapDirPath);
 
     void prepare(const sf::Vector2u& targetSize) override;
 
     void setOnScreenPosition(const sf::Vector2f&) override {}
     sf::Vector2f positionOnScreenFrom(const map::Position& position);
-
-    //void draw(BaseGUIObject* obj);
 
     void setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderStates& states = sf::RenderStates::Default);
 
@@ -50,23 +51,6 @@ protected:
     bool loadTiles(const json &layer);
     bool loadTilesets(const std::string &mapDirPath, const json& json);
 
-    static inline constexpr char KEY_TILE_DATA[] = "data";
-    static inline constexpr char KEY_TILESETS[] = "tilesets";
-    static inline constexpr char KEY_HEIGHT[] = "height";
-    static inline constexpr char KEY_WIDTH[] = "width";
-    static inline constexpr char KEY_TILE_HEIGHT[] = "tileheight";
-    static inline constexpr char KEY_TILE_WIDTH[] = "tilewidth";
-    static inline constexpr char KEY_TILESET_FIRST_ID[] = "firstgid";
-    static inline constexpr char KEY_TILESET_SOURCE[] = "source";
-    static inline constexpr char ELEMENT_TILESET[] = "tileset";
-    static inline constexpr char ELEMENT_IMAGE[] = "image";
-    static inline constexpr char PROPERTY_TILE_WIDTH[] = "tilewidth";
-    static inline constexpr char PROPERTY_TILE_HEIGHT[] = "tileheight";
-    static inline constexpr char PROPERTY_TILE_COUNT[] = "tilecount";
-    static inline constexpr char PROPERTY_TILE_COLUMNS[] = "columns";
-    static inline constexpr char PROPERTY_IMAGE_SOURCE[] = "source";
-    static inline constexpr char PROPERTY_IMAGE_WIDTH[] = "width";
-    static inline constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
 private:
     void saturateCenterOfView();
     bool loadTileset(const std::string& mapDirPath, const json& tileset);
@@ -89,6 +73,8 @@ private:
 
     std::weak_ptr<sf::RenderTarget> m_target;
     sf::RenderStates m_states;
+
+    std::weak_ptr<map::Map> m_map;
 
 };
 

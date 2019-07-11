@@ -62,11 +62,15 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
-                                                  m_game->m_playerCharacter->position().y()});
+    m_mapGUI = std::make_shared<map::GUI::MapGUI>(m_game->m_currentMap);
+
+    m_mapGUI->load(m_context->kMapPath());
+
+    m_mapGUI->setCenterOfView({m_game->m_playerCharacter->position().x(),
+                               m_game->m_playerCharacter->position().y()});
 
     m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](map::Position pos){
-        m_game->m_currentMap.lock()->setCenterOfView({pos.x(), pos.y()});
+        m_mapGUI->setCenterOfView({pos.x(), pos.y()});
     });
 
     auto player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter);
@@ -120,18 +124,18 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
-    m_game->m_currentMap.lock()->setTarget(m_window);
-    m_game->m_currentMap.lock()->prepare(m_window->getSize());
+    m_mapGUI->setTarget(m_window);
+    m_mapGUI->prepare(m_window->getSize());
     for (auto& obj : m_guiObjects)
     {
         if (obj)
         {
-            obj->setCurrentMap(m_game->m_currentMap);
+            obj->setCurrentMap(m_mapGUI);
             obj->prepare(m_window->getSize());
         }
     }
     m_window->clear();
-    m_window->draw(*m_game->m_currentMap.lock());
+    m_window->draw(*m_mapGUI);
 
 
     for (auto& obj : m_guiObjects)

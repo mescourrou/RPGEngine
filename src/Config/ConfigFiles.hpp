@@ -49,5 +49,41 @@ namespace gameListFile {
 constexpr char DIRECTORY_KEY[] = "directory";
 } // namespace gameListFile
 
+namespace mapFile {
+constexpr char KEY_LAYERS[] = "layers";
+constexpr char KEY_LAYER_NAME[] = "name";
+constexpr char KEY_LAYER_TYPE[] = "type";
+constexpr char TYPE_DATA_LAYER[] = "tilelayer";
+constexpr char NAME_COLLISIONS_LAYER[] = "collisions";
+constexpr char NAME_TELEPORTS_LAYER[] = "teleports";
+constexpr char KEY_OBJECTS[] = "objects";
+constexpr char KEY_VISIBLE[] = "visible";
+constexpr char KEY_X[] = "x";
+constexpr char KEY_Y[] = "y";
+constexpr char KEY_HEIGHT[] = "height";
+constexpr char KEY_WIDTH[] = "width";
+constexpr char KEY_POLYGON[] = "polygon";
+
+// Tile section
+constexpr char KEY_TILE_DATA[] = "data";
+constexpr char KEY_TILESETS[] = "tilesets";
+constexpr char KEY_TILE_HEIGHT[] = "tileheight";
+constexpr char KEY_TILE_WIDTH[] = "tilewidth";
+constexpr char KEY_TILESET_FIRST_ID[] = "firstgid";
+constexpr char KEY_TILESET_SOURCE[] = "source";
+} // namespace mapFiles
+
+namespace tilesetFile {
+constexpr char ELEMENT_TILESET[] = "tileset";
+constexpr char ELEMENT_IMAGE[] = "image";
+constexpr char PROPERTY_TILE_WIDTH[] = "tilewidth";
+constexpr char PROPERTY_TILE_HEIGHT[] = "tileheight";
+constexpr char PROPERTY_TILE_COUNT[] = "tilecount";
+constexpr char PROPERTY_TILE_COLUMNS[] = "columns";
+constexpr char PROPERTY_IMAGE_SOURCE[] = "source";
+constexpr char PROPERTY_IMAGE_WIDTH[] = "width";
+constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
+} // namespace tilesetFile
+
 } // namespace structure
 } // namespace config

@@ -80,13 +80,13 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
         LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() << " from the database";
         return false;
     }
+    LOG(INFO) << "Load the map";
     if (!m_playerCharacter->position().map()->load())
     {
         LOG(ERROR) << "Fail to load the map " << m_playerCharacter->position().map()->name();
         return false;
     }
     m_currentMap = m_playerCharacter->position().map();
-    loadMapContents(m_currentMap.lock()->name());
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI
@@ -100,6 +100,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 #else
     LOG(INFO) << "No GUI initialization because GUI building is not activated";
 #endif
+    loadMapContents(m_currentMap.lock()->name());
     return true;
 }
 

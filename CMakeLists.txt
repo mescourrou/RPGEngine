@@ -32,7 +32,6 @@ if(BUILD_USE_FILESYSTEM)
     set(FILESYSTEM_LIB stdc++fs)
 endif()
 if (RPG_BUILD_TEST)
-    set(RPG_BUILD_GUI OFF)
     enable_testing()
 endif()
 

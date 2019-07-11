@@ -7,8 +7,9 @@
 #include <BaseException.hpp>
 #include <BaseObject.hpp>
 #include <Context.hpp>
-#include <Map.hpp>
+#include <MapGUI.hpp>
 #include <Event.hpp>
+#include <Database.hpp>
 
 #include <SFML/Window/Event.hpp>
 
@@ -53,6 +54,8 @@ public:
 
 protected:
     std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;
+
+    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;
 
     std::shared_ptr<config::Context> m_context;     ///< Context to use
 
