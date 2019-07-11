@@ -4,7 +4,7 @@ namespace config {
 
 /**
  * @namespace structure
- * @brief Define the keywords of the .ini configuration files
+ * @brief Define the keywords of the configuration files (ini, json, xml, ...)
  */
 namespace structure {
 
@@ -14,7 +14,7 @@ namespace structure {
  */
 namespace globalFile {
 /// Main file name
-static constexpr char FILE_NAME[] = "main.ini";
+constexpr char FILE_NAME[] = "main.ini";
 /**
  * @namespace ressources
  * @brief Ressource section
@@ -84,6 +84,24 @@ constexpr char PROPERTY_IMAGE_SOURCE[] = "source";
 constexpr char PROPERTY_IMAGE_WIDTH[] = "width";
 constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
 } // namespace tilesetFile
+
+namespace characterFile {
+constexpr char SPRITE_SETS[] = "spriteSets";
+constexpr char FIRST_ID[] = "firstId";
+constexpr char SET_FILE[] = "setFile";
+constexpr char HEIGHT[] = "height";
+constexpr char WIDTH[] = "width";
+constexpr char SPRITE_HEIGHT[] = "spriteHeight";
+constexpr char SPRITE_WIDTH[] = "spriteWidth";
+constexpr char HORIZONTAL_SHIFT[] = "horizontalShift";
+constexpr char VERTICAL_SHIFT[] = "verticalShift";
+constexpr char BACKGROUND[] = "background";
+constexpr char ORIGIN_X[] = "originX";
+constexpr char ORIGIN_Y[] = "originY";
+constexpr char SPRITE_PERIOD[] = "spritePeriod";
+constexpr char ACTIONS[] = "actions";
+
+} // namespace characterFile
 
 } // namespace structure
 } // namespace config

@@ -26,7 +26,7 @@ namespace GUI {
 CREATE_EXCEPTION_CLASS(CharacterGUI)
 
 /**
- * @brief GUI interface for Character
+ * @brief GUI class related to the Character
  */
 class CharacterGUI : public BaseGUIObject
 {
@@ -47,7 +47,6 @@ public:
 
     void slotArrowPressed(sf::Keyboard::Key arrow);
     void slotKeyReleased(sf::Event::KeyEvent key);
-    void slotPositionChanged(map::Position move);
 protected:
 
 
@@ -60,7 +59,7 @@ protected:
 
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 private:
-    std::weak_ptr<Character> m_character;
+    std::weak_ptr<Character> m_character;                       ///< Pointer on the backend character
 
     std::map<unsigned int, sf::Sprite> m_sprites;               ///< Sprites of the Character, assigned by id
     std::vector<std::shared_ptr<sf::Texture>> m_textures;       ///< List of the textures to keep the ownership
@@ -76,21 +75,6 @@ private:
     bool m_moving = false;                                      ///< Is the player moving ?
 
     std::vector<std::string> m_requiredActions;                 ///< Actions wich need to be found in the loaded file
-
-    static constexpr char SPRITE_SETS[] = "spriteSets";
-    static constexpr char FIRST_ID[] = "firstId";
-    static constexpr char SET_FILE[] = "setFile";
-    static constexpr char HEIGHT[] = "height";
-    static constexpr char WIDTH[] = "width";
-    static constexpr char SPRITE_HEIGHT[] = "spriteHeight";
-    static constexpr char SPRITE_WIDTH[] = "spriteWidth";
-    static constexpr char HORIZONTAL_SHIFT[] = "horizontalShift";
-    static constexpr char VERTICAL_SHIFT[] = "verticalShift";
-    static constexpr char BACKGROUND[] = "background";
-    static constexpr char ORIGIN_X[] = "originX";
-    static constexpr char ORIGIN_Y[] = "originY";
-    static constexpr char SPRITE_PERIOD[] = "spritePeriod";
-    static constexpr char ACTIONS[] = "actions";
 
     /**
      * @brief Differents actions names

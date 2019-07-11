@@ -40,7 +40,7 @@ void MapGUI::move(double offsetX, double offsetY)
 {
     m_centerOfView += Vector<2>{offsetX, offsetY};
     saturateCenterOfView();
-    m_somethingChanged = true;
+    m_mapMoved = true;
 }
 
 /**
@@ -51,9 +51,14 @@ void MapGUI::setCenterOfView(const Position &centralPosition)
     m_centerOfView.x() = centralPosition.x();
     m_centerOfView.y() = centralPosition.y();
     saturateCenterOfView();
-    m_somethingChanged = true;
+    m_mapMoved = true;
 }
 
+/**
+ * @brief Load the GUI elements from the given directory
+ * @param mapDirPath Directory where are the map elements
+ * @return Return true if all went well
+ */
 bool MapGUI::load(const std::string &mapDirPath)
 {
     std::ifstream file(mapDirPath + "/" + Tools::snakeCase(m_map.lock()->name()) + ".json");
@@ -85,7 +90,7 @@ bool MapGUI::load(const std::string &mapDirPath)
  */
 void MapGUI::prepare(const sf::Vector2u &targetSize)
 {
-    if (m_somethingChanged)
+    if (m_mapMoved) // We compute the parameters only if the map moved since last time
     {
         // Position on the map of the top left corner of the screen
         // Unit : pixels
@@ -100,7 +105,7 @@ void MapGUI::prepare(const sf::Vector2u &targetSize)
         m_origin.x = - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth);
         m_origin.y = - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight);
 
-        m_somethingChanged = false;
+        m_mapMoved = false;
     }
 }
 
@@ -112,12 +117,6 @@ void MapGUI::prepare(const sf::Vector2u &targetSize)
 sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
 {
     return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x, static_cast<float>(position.y()) - m_topLeftPosition.y);
-}
-
-void MapGUI::setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderStates &states)
-{
-    m_target = target;
-    m_states = states;
 }
 
 /**
@@ -198,6 +197,7 @@ bool MapGUI::loadTiles(const json &layer)
  *
  * We use Tiled to generate the json : https://www.mapeditor.org/
  * @param json Json object to use
+ * @param mapDirPath Directory where are stored the map elements
  * @return Return true if all went well
  */
 bool MapGUI::loadTilesets(const std::string& mapDirPath, const json &json)
@@ -311,7 +311,7 @@ bool MapGUI::loadTileset(const std::string& mapDirPath, const json &tileset)
     std::string imageFilename = xmlImage->FindAttribute(tilesetFile::PROPERTY_IMAGE_SOURCE)->Value();
     imageFilename = mapDirPath + '/' + imageFilename;
 
-    m_textures.emplace_back(std::make_unique<sf::Texture>());
+    m_textures.emplace_back(std::make_shared<sf::Texture>());
     if (!m_textures.back()->loadFromFile(imageFilename))
         LOG(WARNING) << "Texture from " << imageFilename << " not loaded";
 

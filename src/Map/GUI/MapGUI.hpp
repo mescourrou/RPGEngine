@@ -26,7 +26,7 @@ namespace GUI {
 CREATE_EXCEPTION_CLASS(MapGUI)
 
 /**
- * @brief GUI part of the Map
+ * @brief GUI class related to Map
  */
 class MapGUI : public BaseGUIObject
 {
@@ -42,10 +42,11 @@ public:
 
     void prepare(const sf::Vector2u& targetSize) override;
 
+    /**
+     * @brief The on-screen position of the map does not move
+     */
     void setOnScreenPosition(const sf::Vector2f&) override {}
     sf::Vector2f positionOnScreenFrom(const map::Position& position);
-
-    void setTarget(std::weak_ptr<sf::RenderTarget> target, const sf::RenderStates& states = sf::RenderStates::Default);
 
 protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -61,11 +62,11 @@ private:
 
     Vector<2> m_centerOfView;               ///< Center of the view
     sf::Vector2f m_topLeftPosition;         ///< Position on the map of the top left corner of the screen (in pixels)
-    sf::Vector2f m_origin;
-    sf::Vector2i m_firstTileCoordinates;
-    bool m_somethingChanged = true;
+    sf::Vector2f m_origin;                  ///< Position on the screen of the top left displayed tile
+    sf::Vector2i m_firstTileCoordinates;    ///< Coordinates of the tile of the top left corner on the map (in pixel)
+    bool m_mapMoved = true;                 ///< The location changed so we need to compute again some parameters
 
-    std::vector<std::unique_ptr<sf::Texture>> m_textures;   ///< List of textures, freed in the destructor
+    std::vector<std::shared_ptr<sf::Texture>> m_textures;   ///< List of textures, freed in the destructor
 
     unsigned int m_height;                  ///< Height of the map (in tiles)
     unsigned int m_width;                   ///< Width of the map (in tiles)
@@ -75,10 +76,7 @@ private:
 
     float m_zoom = 1;                       ///< Zoom @todo: Use it
 
-    std::weak_ptr<sf::RenderTarget> m_target;
-    sf::RenderStates m_states;
-
-    std::weak_ptr<map::Map> m_map;
+    std::weak_ptr<map::Map> m_map;          ///< Pointer on the backend map
 
 };
 

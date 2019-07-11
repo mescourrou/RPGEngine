@@ -124,7 +124,6 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
-    m_mapGUI->setTarget(m_window);
     m_mapGUI->prepare(m_window->getSize());
     for (auto& obj : m_guiObjects)
     {
@@ -136,7 +135,6 @@ void GameGUI::draw()
     }
     m_window->clear();
     m_window->draw(*m_mapGUI);
-
 
     for (auto& obj : m_guiObjects)
     {
