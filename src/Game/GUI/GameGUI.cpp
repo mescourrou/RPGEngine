@@ -59,9 +59,12 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
+    m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
+                                                  m_game->m_playerCharacter->position().y()});
+
     m_game->m_playerCharacter->doSubscribeKeyEvents(this);
     m_game->m_playerCharacter->signalPositionChanged.subscribeAsync([this](){
-        m_game->m_playerCharacter->position().map()->setCenterOfView({m_game->m_playerCharacter->position().x(),
+        m_game->m_currentMap.lock()->setCenterOfView({m_game->m_playerCharacter->position().x(),
                                 m_game->m_playerCharacter->position().y()});
     });
     return true;
