@@ -20,9 +20,10 @@ public:
     ~Vendor() override = default;
 
     const std::weak_ptr<object::Inventory> seeInventory() const;
-    void sell(const std::string &objectName, Character& buyer);
-    void sell(unsigned int objectInventoryId, Character& buyer);
-    void buy(const object::Object &object, Character& seller);
+    bool sell(const std::string &objectName, Character& buyer);
+    bool sell(unsigned int objectInventoryId, Character& buyer);
+    bool buy(const std::string &objectName, Character& seller);
+    bool buy(unsigned int objectInventoryId, Character &seller);
 };
 
 } // namespace character

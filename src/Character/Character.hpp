@@ -45,6 +45,8 @@ class Character : public BaseObject
     friend class character::CharacterTest;
     FRIEND_TEST(CharacterTest, VerifyDatabaseModel);
     FRIEND_TEST(CharacterTest, LoadingCharacterFromDatabase);
+    FRIEND_TEST(VendorTest, Buying);
+    FRIEND_TEST(VendorTest, Selling);
 #endif
 public:
     Character() = delete;
@@ -68,6 +70,8 @@ public:
     const std::string& name() const noexcept;
     void setPosition(const map::Position& position);
     map::Position position() const;
+
+    const std::weak_ptr<object::Inventory> inventory() const { return m_inventory; }
 
     // Setters
     /**

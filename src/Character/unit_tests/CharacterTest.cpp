@@ -87,6 +87,7 @@ void CharacterTest::SetUp()
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
+    google::InitGoogleLogging(argv[0]);
     google::SetVLOGLevel("*", VERBOSE);
     return RUN_ALL_TESTS();
 }

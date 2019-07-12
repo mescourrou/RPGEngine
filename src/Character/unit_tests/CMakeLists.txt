@@ -1,6 +1,8 @@
 find_package(gtest REQUIRED)
 
-add_executable(Character_test CharacterTest.cpp CharacterTest.hpp)
+add_executable(Character_test
+    CharacterTest.cpp CharacterTest.hpp
+    VendorTest.cpp VendorTest.hpp)
 target_link_libraries(Character_test gtest gmock Character ${FILESYSTEM_LIB})
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
