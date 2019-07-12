@@ -46,6 +46,7 @@ class Character : public BaseObject
     FRIEND_TEST(CharacterTest, VerifyDatabaseModel);
     FRIEND_TEST(CharacterTest, LoadingCharacterFromDatabase);
     FRIEND_TEST(VendorTest, Buying);
+    FRIEND_TEST(VendorTest, Selling);
 #endif
 public:
     Character() = delete;

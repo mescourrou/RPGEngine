@@ -66,13 +66,42 @@ bool Vendor::sell(unsigned int objectInventoryId, Character &buyer)
 
 /**
  * @brief The vendor buy the object from the seller
- * The signature may change
- * @param object Object to buy
+ * @param objectName Object to buy
  * @param seller Seller
  */
-void Vendor::buy(const object::Object& object, Character &seller)
+bool Vendor::buy(const std::string& objectName, Character &seller)
 {
+    if (!seller.inventory().lock()->get(objectName))
+        return false;
+    if (m_inventory->pullMoney(seller.inventory().lock()->get(objectName)->value()))
+    {
+        seller.inventory().lock()->addMoney(seller.inventory().lock()->get(objectName)->value());
+        auto object = seller.inventory().lock()->pop(objectName);
 
+        m_inventory->push(object);
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @brief The vendor buy the object from the seller
+ * @param objectInventoryId Id of the object on the seller inventory
+ * @param seller Seller
+ */
+bool Vendor::buy(unsigned int objectInventoryId, Character &seller)
+{
+    if (!seller.inventory().lock()->get(objectInventoryId))
+        return false;
+    if (m_inventory->pullMoney(seller.inventory().lock()->get(objectInventoryId)->value()))
+    {
+        seller.inventory().lock()->addMoney(seller.inventory().lock()->get(objectInventoryId)->value());
+        auto object = seller.inventory().lock()->pop(objectInventoryId);
+
+        m_inventory->push(object);
+        return true;
+    }
+    return false;
 }
 
 } // namespace character
