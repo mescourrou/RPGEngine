@@ -141,19 +141,23 @@ void Character::move(const map::Vector<2>& move)
 
     if (m_position.map()->collision({m_position.x(), m_position.y()}, move, intersection))
     {
-        if (intersection != map::Vector<2>{-1, -1})
-        {
-            if (move.x() > 0)
-                intersection.x() -= 1;
-            else if (move.x() < 0)
-                intersection.x() += 1;
-            if (move.y() > 0)
-                intersection.y() -= 1;
-            else if (move.y() < 0)
-                intersection.y() += 1;
-            m_position.x() = intersection.x();
-            m_position.y() = intersection.y();
-        }
+        map::Vector<2> newMove{intersection.x() - m_position.x(), intersection.y() - m_position.y()};
+        if (newMove.x() >= 1)
+            newMove.x() -= 1;
+        else if (newMove.x() <= -1)
+            newMove.x() += 1;
+        else
+            newMove.x() = 0;
+
+        if (newMove.y() >= 1)
+            newMove.y() -= 1;
+        else if (newMove.y() <= -1)
+            newMove.y() += 1;
+        else
+            newMove.y() = 0;
+
+        m_position.x() += newMove.x();
+        m_position.y() += newMove.y();
     }
     else
     {

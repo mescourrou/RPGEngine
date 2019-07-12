@@ -157,6 +157,13 @@ public:
             m_vector.at(i) -= vector.at(i);
         return *this;
     }
+    Vector<m_kSize> operator/(double divisor) const
+    {
+        Vector<m_kSize> ret;
+        for (unsigned int i = 0; i < m_kSize; i++)
+            ret.at(i) = m_vector.at(i) / divisor;
+        return ret;
+    }
     /**
      * @brief Compare the coordinate one to one
      * @param [in] other Other vector to compare to

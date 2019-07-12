@@ -155,42 +155,149 @@ bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1, const Vector<2>
 bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>& outIntersect) const
 {
     auto destination = origin+vector;
+    if (vector == Vector<2>{0,0})
+        return false;
+
+    // Parametrize vectors as
+    // x = alpha * a + x_0
+    // y = alpha * b + y_0
+    // alpha in [0, 1]
+
+    double a1 = vector.x();
+    double b1 = vector.y();
+
+    bool intersection = false;
 
     for (unsigned int i = 0; i < m_points.size(); i++)
     {
         //const auto& pt0 = (i == 0) ? m_points.at(m_points.size()-1) : m_points.at(i-1);
         const auto& pt1 = m_points.at(i);
         const auto& pt2 = (i == m_points.size() - 1) ? m_points.at(0) : m_points.at(i+1);
+        const auto vector2 = pt2 - pt1;
+        if (vector2 == Vector<2>{0,0})
+            continue;
+        auto vect1Normalized = vector / vector.norm();
+        auto vect2Normalized = vector2 / vector2.norm();
 
-        if (doIntersect(origin, destination, pt1, pt2))
+        bool solved = false;
+        bool isCandidate = false;
+        Vector<2> candidate;
+
+        if (vect1Normalized == vect2Normalized) // Parallelism
         {
-            // Use of https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
-            double a1 = destination.y()- origin.y();
-            double b1 = origin.x() - destination.x();
-            double c1 = a1*(origin.x()) + b1*(origin.y());
-
-            // Line CD represented as a2x + b2y = c2
-            double a2 = pt2.y() - pt1.y();
-            double b2 = pt1.x() - pt2.x();
-            double c2 = a2*(pt1.x())+ b2*(pt2.y());
-
-            double determinant = a1*b2 - a2*b1;
-
-            if (std::abs(determinant) < ZERO_EPSILON)
+            if (onSegment(pt1, origin, pt2))
             {
-                // The lines are parallel.
-                outIntersect = {-1,-1};
+                continue;
             }
-            else
+            else if (onSegment(pt1, destination, pt2))
             {
-                outIntersect.x() = (b2*c1 - b1*c2)/determinant;
-                outIntersect.y() = (a1*c2 - a2*c1)/determinant;
+                if ((pt1 - origin).norm() < (pt2 - origin).norm())
+                    candidate = pt1;
+                else
+                    candidate = pt2;
+                isCandidate = true;
+                solved = true;
             }
-            return true;
+        }
+
+        double a2 = vector2.x();
+        double b2 = vector2.y();
+
+        if (!solved && std::abs(b1) > ZERO_EPSILON)
+        {
+            double denominator = a2 - b2/b1 * a1;
+            if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
+            {
+                double alpha2 = ((pt1.y() - origin.y())/b1 * a1 + origin.x() - pt1.x()) / denominator;
+                if (alpha2 >= 0 && alpha2 <= 1)
+                {
+                    double alpha1 = (alpha2*b2 + pt1.y() - origin.y())/b1;
+                    if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
+                    {
+                        candidate = {alpha1 * a1 + origin.x(),
+                                     alpha1 * b1 + origin.y()};
+                        isCandidate = true;
+
+                    }
+                }
+                solved = true;
+            }
+        }
+
+        if (!solved && std::abs(b2) > ZERO_EPSILON)
+        {
+            double denominator = a1 - b1/b2 * a2;
+            if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
+            {
+                double alpha1 = ((origin.y() - pt1.y())/b2 * a2 + pt1.x() - origin.x()) / denominator;
+                if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
+                {
+                    double alpha2 = (alpha1*b1 + origin.y() - pt1.y()) / b2;
+                    if (alpha2 >= 0 && alpha2 <= 1)
+                    {
+                        candidate = {alpha1 * a1 + origin.x(),
+                                     alpha1 * b1 + origin.y()};
+                        isCandidate = true;
+                    }
+                }
+                solved = true;
+            }
+        }
+
+        if (!solved && std::abs(a1) > ZERO_EPSILON)
+        {
+            double denominator = b2 - a2/a1 * b1;
+            if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
+            {
+                double alpha2 = ((pt1.x() - origin.x())/a1 * b1 + origin.y() - pt1.y()) / denominator;
+                if (alpha2 >= 0 && alpha2 <= 1)
+                {
+                    double alpha1 = (alpha2*a2 + pt1.x() - origin.x())/a1;
+                    if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
+                    {
+                        candidate = {alpha1 * a1 + origin.x(),
+                                     alpha1 * b1 + origin.y()};
+                        isCandidate = true;
+                    }
+                }
+                solved = true;
+            }
+        }
+
+        if (!solved && std::abs(a2) > ZERO_EPSILON)
+        {
+            double denominator = b1 - a1/a2 * b2;
+            if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
+            {
+                double alpha1 = ((origin.x() - pt1.x())/a2 * b2 + pt1.y() - origin.y()) / denominator;
+                if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
+                {
+                    double alpha2 = (alpha1*a1 + origin.x() - pt1.x()) / a2;
+                    if (alpha2 >= 0 && alpha2 <= 1)
+                    {
+                        candidate = {alpha1 * a1 + origin.x(),
+                                     alpha1 * b1 + origin.y()};
+                        isCandidate = true;
+                    }
+                }
+                solved = true;
+            }
+        }
+        if (isCandidate)
+        {
+            if (!intersection)
+            {
+                intersection = true;
+                outIntersect = candidate;
+            }
+            else if ((origin - candidate).norm() < (origin - outIntersect).norm())
+            {
+                outIntersect = candidate;
+            }
         }
 
     }
-    return false;
+    return intersection;
 }
 
 /**

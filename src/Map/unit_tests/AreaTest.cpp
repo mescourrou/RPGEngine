@@ -134,4 +134,50 @@ TEST_F(AreaTest, IsInsideConcave)
 
 }
 
+TEST_F(AreaTest, Intersections)
+{
+    /*
+     *     x   x
+     *
+     *         x
+     */
+    Area a{{0,4},{4,4},{4,0}};
+
+    Vector<2> intersection;
+    Vector<2> expectation;
+
+    EXPECT_FALSE(a.intersect({0,2},{1.5,0}, intersection));
+
+    expectation = {2,2};
+    EXPECT_TRUE(a.intersect({0,2},{2,0}, intersection));
+    EXPECT_EQ(intersection, expectation);
+
+    EXPECT_TRUE(a.intersect({0,2},{2.5,0}, intersection));
+    EXPECT_EQ(intersection, expectation);
+
+    expectation = {1,3};
+    EXPECT_TRUE(a.intersect({0,2},{2,2}, intersection));
+    EXPECT_EQ(intersection, expectation);
+
+    expectation = {4,4};
+    EXPECT_TRUE(a.intersect({4,5}, {0,-1}, intersection));
+    EXPECT_EQ(intersection, expectation);
+
+
+    EXPECT_FALSE(a.intersect({4,5}, {0,1}, intersection));
+    EXPECT_FALSE(a.intersect({5,4}, {1,0}, intersection));
+    EXPECT_FALSE(a.intersect({2,0}, {-1,0}, intersection));
+
+    EXPECT_FALSE(a.intersect({3,-1}, {2,0}, intersection));
+    EXPECT_FALSE(a.intersect({5,4}, {0,2}, intersection));
+
+
+    Area a2{{1,0},{1,3},{2,3},{2,0}};
+
+    expectation = {1,1};
+    EXPECT_TRUE(a2.intersect({0,1},{3,0},intersection));
+    EXPECT_EQ(intersection, expectation);
+
+}
+
 }
