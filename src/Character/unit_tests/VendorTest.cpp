@@ -6,6 +6,9 @@
 
 namespace character {
 
+/*
+ * Test the normal buying scenario
+ */
 TEST_F(VendorTest, Buying)
 {
     using ::testing::Return;
@@ -27,6 +30,8 @@ TEST_F(VendorTest, Buying)
     ASSERT_TRUE(ch.loadFromDatabase(db));
 
     EXPECT_EQ(vendor.seeInventory().lock()->size(), 10);
+    EXPECT_EQ(vendor.seeInventory().lock()->money().convertToBaseMoney(), 10000);
+    EXPECT_EQ(ch.m_inventory->money().convertToBaseMoney(), 100);
 
     EXPECT_EQ(vendor.m_inventory->getNumberOf("object1"), 10);
     EXPECT_EQ(ch.m_inventory->getNumberOf("object1"), 1);
@@ -37,6 +42,8 @@ TEST_F(VendorTest, Buying)
     EXPECT_EQ(ch.m_inventory->size(), 4);
     EXPECT_EQ(vendor.m_inventory->getNumberOf("object1"), 9);
     EXPECT_EQ(ch.m_inventory->getNumberOf("object1"), 2);
+    EXPECT_EQ(vendor.seeInventory().lock()->money().convertToBaseMoney(), 10010);
+    EXPECT_EQ(ch.m_inventory->money().convertToBaseMoney(), 90);
 
     vendor.sell("object1", ch);
 
@@ -45,6 +52,9 @@ TEST_F(VendorTest, Buying)
     EXPECT_EQ(ch.m_inventory->getNumberOf("object1"), 3);
 }
 
+/*
+ * Test the normal selling scenario
+ */
 TEST_F(VendorTest, Selling)
 {
     using ::testing::Return;
@@ -66,6 +76,8 @@ TEST_F(VendorTest, Selling)
     ASSERT_TRUE(ch.loadFromDatabase(db));
 
     EXPECT_EQ(vendor.seeInventory().lock()->size(), 10);
+    EXPECT_EQ(vendor.seeInventory().lock()->money().convertToBaseMoney(), 10000);
+    EXPECT_EQ(ch.m_inventory->money().convertToBaseMoney(), 100);
 
     EXPECT_EQ(vendor.m_inventory->getNumberOf("object1"), 10);
     EXPECT_EQ(ch.m_inventory->getNumberOf("object1"), 1);
@@ -76,6 +88,8 @@ TEST_F(VendorTest, Selling)
     EXPECT_EQ(ch.m_inventory->size(), 2);
     EXPECT_EQ(vendor.m_inventory->getNumberOf("object1"), 11);
     EXPECT_EQ(ch.m_inventory->getNumberOf("object1"), 0);
+    EXPECT_EQ(vendor.seeInventory().lock()->money().convertToBaseMoney(), 9990);
+    EXPECT_EQ(ch.m_inventory->money().convertToBaseMoney(), 110);
 
 }
 
