@@ -18,6 +18,9 @@
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
+#include <imgui-SFML.h>
+#include <imgui.h>
+
 namespace game {
 
 namespace GUI {
@@ -51,6 +54,8 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
         m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine");
     else
         m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
+
+    ImGui::SFML::Init(*m_window);
 }
 
 /**
@@ -92,6 +97,7 @@ void GameGUI::eventManager()
     sf::Event event;
     while (m_window->pollEvent(event))
     {
+        ImGui::SFML::ProcessEvent(event);
         // Close window: exit
         if (event.type == sf::Event::Closed)
         {
@@ -116,6 +122,12 @@ void GameGUI::eventManager()
         signalArroyIsPressed.trigger(sf::Keyboard::Down);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
         signalArroyIsPressed.trigger(sf::Keyboard::Up);
+    static sf::Clock deltaClock;
+    ImGui::SFML::Update(*m_window, deltaClock.restart());
+
+            ImGui::Begin("Hello, world!");
+            ImGui::Button("Look at this pretty button");
+            ImGui::End();
 
 }
 
@@ -141,6 +153,8 @@ void GameGUI::draw()
         if (obj)
             m_window->draw(*obj);
     }
+
+    ImGui::SFML::Render(*m_window);
     m_window->display();
 }
 

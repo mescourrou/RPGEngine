@@ -12,7 +12,6 @@ ExternalProject_Add(
 
 endif()
 ExternalProject_Get_Property(sfml_project source_dir binary_dir)
-
 set(SFML_TARGETS)
 
 if (NOT TARGET sfml_audio)
