@@ -112,6 +112,7 @@ void CharacterGUI::prepare(const sf::Vector2u &targetSize)
  */
 void CharacterGUI::setOnScreenPosition(const sf::Vector2f &position)
 {
+    setPosition(position);
     m_currentSprite->setPosition(position);
 }
 

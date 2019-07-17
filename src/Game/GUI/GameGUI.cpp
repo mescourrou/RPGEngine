@@ -152,6 +152,10 @@ void GameGUI::eventManager()
 void GameGUI::draw()
 {
     m_mapGUI->prepare(m_window->getSize());
+    std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<BaseGUIObject> obj1, std::shared_ptr<BaseGUIObject> obj2){
+       return obj1->getPosition().y < obj2->getPosition().y;
+    });
+
     for (auto& obj : m_guiObjects)
     {
         if (obj)
