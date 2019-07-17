@@ -5,7 +5,7 @@ constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
 #cmakedefine RPG_BUILD_GUI
 constexpr unsigned char VERSION_MAJOR = 0;
 constexpr unsigned char VERSION_MINOR = 1;
-constexpr unsigned char VERSION_BUILD = 1;
+constexpr unsigned char VERSION_BUILD = 2;
 
 constexpr double ZERO_EPSILON = 0.0000001;
 

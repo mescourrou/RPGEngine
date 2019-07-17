@@ -84,6 +84,7 @@ public:
     double& at(unsigned int index) { return m_vector.at(index); }
     /// @brief Get the number at the index asked
     double at(unsigned int index) const { return m_vector.at(index); }
+    /// @brief Get the size of the vector
     unsigned int size() const noexcept { return m_kSize; }
 
     /// @brief Get and modify the x coordinate (0)

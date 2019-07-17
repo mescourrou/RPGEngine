@@ -51,7 +51,9 @@ public:
 
     bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName);
 
+    /// @brief Get the money contained in the inventory
     const Money& money() const { return m_money; }
+    /// @brief Add money to the inventory
     void addMoney(const Money& m) { m_money += m; }
     bool pullMoney(const Money& m);
 
