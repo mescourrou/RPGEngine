@@ -42,7 +42,7 @@ public:
     /// @brief Destructor
     ~GameLoader() override = default;
 
-    bool load();
+    bool load(const std::string &name);
     bool run();
 protected:
     std::shared_ptr<config::Context> m_context; ///< Context

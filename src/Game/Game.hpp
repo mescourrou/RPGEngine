@@ -62,7 +62,7 @@ class Game : public BaseObject
 #endif
 public:
 
-    Game(std::shared_ptr<config::Context> gameContext);
+    Game(std::string name, std::shared_ptr<config::Context> gameContext);
     /// @brief Destructor
     ~Game() override = default;
 
@@ -73,6 +73,8 @@ public:
     void loadMapContents(const std::string& mapName);
     void unloadCurrentMap();
 
+    const std::string& name() const { return m_name; }
+
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 protected:
@@ -81,6 +83,8 @@ protected:
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
     std::weak_ptr<map::Map> m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
+
+    std::string m_name;                                     ///< Name of the game
 
     std::list<std::shared_ptr<character::Character>> m_characterList;        ///< List of characters, excepted the character of the player
 #ifdef RPG_BUILD_GUI

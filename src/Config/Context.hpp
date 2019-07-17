@@ -38,8 +38,7 @@ public:
     ~Context() override = default;
 
     /// @brief Return the path to the runtime directory
-    virtual std::string runtimeDirectory() const { VLOG(verbosityLevel::FUNCTION_CALL) << "runtimeDirectory";
-                                           return m_runtimeDirectory; }
+    virtual std::string runtimeDirectory() const { return m_runtimeDirectory; }
     /// @brief Return the config
     virtual std::shared_ptr<Config> config() const { VLOG(verbosityLevel::FUNCTION_CALL) << "config";
                                              return  m_config; }
@@ -62,8 +61,7 @@ public:
     virtual const std::vector<std::string>& kProgramArguments() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kProgramArguments";
                                                                 return m_programArguments; }
     /// @brief Get the location of the current running game
-    virtual std::string& gameLocation() { VLOG(verbosityLevel::FUNCTION_CALL) << "gameLocation";
-                                  return m_gameLocation; }
+    virtual std::string& gameLocation() { return m_gameLocation; }
 
 protected:
     Context() = default; // For mocking

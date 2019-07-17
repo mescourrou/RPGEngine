@@ -241,14 +241,36 @@ void GameGUI::makeUI()
     {
         if (ImGui::Button("Return to the game"))
             signalPause.trigger(false);
+        if (ImGui::Button("Informations"))
+        {
+            ImGui::OpenPopup(UI::INFOS_POPUP);
+        }
         if (ImGui::Button("Exit"))
         {
             m_signalOnClose.trigger();
             exit(EXIT_SUCCESS);
         }
+        if (ImGui::BeginPopupModal(UI::INFOS_POPUP))
+        {
+            if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::Text("Name : %s", m_game->name().c_str());
+                ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
+            }
+            if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+                ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
+                ImGui::Text("Branch : %s", GIT_BRANCH);
+                ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
+                ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
+            }
+            ImGui::EndPopup();
+        }
 
         ImGui::EndPopup();
     }
+
 }
 
 } // namespace GUI

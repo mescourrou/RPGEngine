@@ -29,8 +29,8 @@ namespace game {
  * @brief Construct a game with a context
  * @param gameContext Context
  */
-Game::Game(std::shared_ptr<config::Context> gameContext) :
-    m_context(gameContext)
+Game::Game(std::string name, std::shared_ptr<config::Context> gameContext) :
+    m_context(gameContext), m_name(name)
 #ifdef RPG_BUILD_GUI
   , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
 #endif
