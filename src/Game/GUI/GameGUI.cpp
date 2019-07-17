@@ -193,12 +193,12 @@ void GameGUI::makeUI()
             m_player.lock()->uiRealtimeInformations();
             if (ImGui::Button(UI::INVENTORY_BUTTON))
             {
-                m_ui.inventoryOpen = true;
+                m_ui.inventoryOpen = !m_ui.inventoryOpen;
             }
             ImGui::SameLine();
             if (ImGui::Button(UI::CHARACTER_BUTTON))
             {
-                m_ui.characterOpen = true;
+                m_ui.characterOpen = !m_ui.characterOpen;
             }
 
             ImGui::NextColumn();
