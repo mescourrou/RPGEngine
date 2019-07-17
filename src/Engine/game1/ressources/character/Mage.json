@@ -1,0 +1,27 @@
+{
+    "spritePeriod":5,
+    "spriteSets":[
+    {
+        "firstId":1,
+        "setFile":"player_mage_sheet.png",
+        "height":8,
+        "width":10,
+        "spriteHeight":74,
+        "spriteWidth":32,
+        "horizontalShift":0,
+        "verticalShift":0,
+        "originX":16,
+        "originY":60
+    }
+    ],
+    "actions":{
+    "downStopped":[11,12,13,14,15],
+    "down":[51,52,53,54,55,56,57,58,59],
+    "upStopped":[1,2,3,4,5],
+    "up":[41,42,43,44,45,46,47,48,49],
+    "rightStopped":[31,32,33,34,35],
+    "right":[71,72,73,74,75,76,77,78,79],
+    "leftStopped":[21,22,23,24,25],
+    "left":[61,62,63,64,65,66,67,68,69]
+    }
+}

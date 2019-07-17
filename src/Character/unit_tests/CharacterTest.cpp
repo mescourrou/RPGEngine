@@ -4,6 +4,8 @@
 #include <Object.hpp>
 #include <general_config.hpp>
 
+#include <unit_tests/ContextTest.hpp>
+
 #include <Database.hpp>
 #include <Money.hpp>
 
@@ -27,7 +29,11 @@ TEST_F(CharacterTest, VerifyDatabaseModel)
  */
 TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 {
-    Character ch("Brian");
+    using ::testing::Return;
+    config::ContextMock* context = new config::ContextMock;
+    EXPECT_CALL((*context), kMapPath()).WillRepeatedly(Return("data"));
+    auto contextPtr = std::shared_ptr<config::Context>(static_cast<config::Context*>(context));
+    Character ch("Brian", contextPtr);
 
     // Load from the database
     ASSERT_TRUE(ch.loadFromDatabase(database));
@@ -81,6 +87,7 @@ void CharacterTest::SetUp()
 int main(int argc, char **argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
+    google::InitGoogleLogging(argv[0]);
     google::SetVLOGLevel("*", VERBOSE);
     return RUN_ALL_TESTS();
 }

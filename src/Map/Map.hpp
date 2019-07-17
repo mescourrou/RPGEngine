@@ -52,7 +52,7 @@ public:
     Map& operator=(const Map& copy) = default;
     Map& operator=(Map&& move) = default;
 
-    virtual bool load(const std::string& filename) final;
+    virtual bool load() final;
 
     /// @brief Get the name of the map
     virtual std::string name() const noexcept final { return m_name; }
@@ -62,40 +62,18 @@ public:
 
     virtual void addCollisionArea(const Area& area) final;
     virtual bool collision(const Vector<2>& point) const final;
+    virtual bool collision(const Vector<2>& origin, const Vector<2>& moveVector, Vector<2> &intersect) const final;
 
     virtual void addTeleportArea(const Area& area, const Position& destination) final;
     virtual bool doITeleport(const Vector<2>& point, Position& destination) const final;
 
 protected:
     bool loadCollisionLayer(const json &layer);
-    /**
-     * @brief Load the tiles from the json. To be specified in GUI Class
-     */
-    virtual bool doLoadTiles(const json&) { return true; }
-    /**
-     * @brief Load the tilesets from the json. To be specified in GUI Class
-     */
-    virtual bool doLoadTilesets(const json&) { return true; }
-
-    json m_json; ///< Json used
 
     std::string m_name; ///< Name of the map
 
     std::shared_ptr<config::Context> m_context; ///< Context used
 
-    static inline constexpr char KEY_LAYERS[] = "layers";
-    static inline constexpr char KEY_LAYER_NAME[] = "name";
-    static inline constexpr char KEY_LAYER_TYPE[] = "type";
-    static inline constexpr char TYPE_DATA_LAYER[] = "tilelayer";
-    static inline constexpr char NAME_COLLISIONS_LAYER[] = "collisions";
-    static inline constexpr char NAME_TELEPORTS_LAYER[] = "teleports";
-    static inline constexpr char KEY_OBJECTS[] = "objects";
-    static inline constexpr char KEY_VISIBLE[] = "visible";
-    static inline constexpr char KEY_X[] = "x";
-    static inline constexpr char KEY_Y[] = "y";
-    static inline constexpr char KEY_HEIGHT[] = "height";
-    static inline constexpr char KEY_WIDTH[] = "width";
-    static inline constexpr char KEY_POLYGON[] = "polygon";
 private:
 
     std::vector<Area> m_collisionLayer; ///< List of the collisions areas

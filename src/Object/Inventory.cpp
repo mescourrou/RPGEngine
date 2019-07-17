@@ -60,6 +60,22 @@ std::shared_ptr<Object> Inventory::get(const std::string &objectName) const
 }
 
 /**
+ * @brief Get object count
+ * @param objectName Name of the objects to count
+ * @return Number of the given object
+ */
+unsigned int Inventory::getNumberOf(const std::string &objectName) const
+{
+    auto count = std::count_if(m_inventory.begin(), m_inventory.end(),
+                  [objectName](std::shared_ptr<Object> object) -> bool{
+        if (object)
+            return object->name() == objectName;
+        return false;
+    });
+    return count;
+}
+
+/**
  * @brief Remove the object and return a pointer on it
  * @param index Number of the object
  * @return Pointer on the removed object
@@ -144,6 +160,21 @@ bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db, const s
     }
 
     return true;
+}
+
+/**
+ * @brief Pull money from the inventory
+ * @param m Money to pull
+ * @return Return true if the transfert was possible
+ */
+bool Inventory::pullMoney(const Money &m)
+{
+    if (m_money >= m)
+    {
+        m_money -= m;
+        return true;
+    }
+    return false;
 }
 
 /**

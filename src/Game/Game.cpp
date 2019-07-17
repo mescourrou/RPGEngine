@@ -1,6 +1,7 @@
 #include "Game.hpp"
 // Stl
 #include <thread>
+#include <memory>
 
 // Project
 #include <general_config.hpp>
@@ -11,11 +12,12 @@
 #include <Model.hpp>
 #include <Character.hpp>
 #include <VerbosityLevels.hpp>
-#include <MapGUI.hpp>
 #include <Money.hpp>
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
+#include <GUI/MapGUI.hpp>
+#include <GUI/CharacterGUI.hpp>
 #endif
 
 // External libs
@@ -28,7 +30,10 @@ namespace game {
  * @param gameContext Context
  */
 Game::Game(std::shared_ptr<config::Context> gameContext) :
-    m_context(gameContext), m_gui(std::make_shared<GUI::GameGUI>(m_context))
+    m_context(gameContext)
+#ifdef RPG_BUILD_GUI
+  , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
+#endif
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
@@ -69,7 +74,19 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 
     // Create the player character
     LOG(INFO) << "Create the player character";
-    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_db);
+    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_context);
+    if (!m_playerCharacter->loadFromDatabase(m_db))
+    {
+        LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() << " from the database";
+        return false;
+    }
+    LOG(INFO) << "Load the map";
+    if (!m_playerCharacter->position().map()->load())
+    {
+        LOG(ERROR) << "Fail to load the map " << m_playerCharacter->position().map()->name();
+        return false;
+    }
+    m_currentMap = m_playerCharacter->position().map();
 
 #ifdef RPG_BUILD_GUI
     // Initialize the GUI
@@ -83,6 +100,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 #else
     LOG(INFO) << "No GUI initialization because GUI building is not activated";
 #endif
+    loadMapContents(m_currentMap.lock()->name());
     return true;
 }
 
@@ -114,6 +132,49 @@ bool Game::run()
         clock = std::chrono::high_resolution_clock::now();
     }
     return true;
+}
+
+/**
+ * @brief Load the elements of the map
+ * @param mapName Map to load
+ */
+void Game::loadMapContents(const std::string &mapName)
+{
+    using namespace database;
+
+    // Loading the NPCs of the current map
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE, m_db)
+                              .where(Model::Position::FK_MAP, Query::EQUAL, mapName)
+                              .column(Model::Position::FK_CHARACTER));
+    if (!Database::isQuerySuccessfull(result))
+    {
+        LOG(WARNING) << "Warning : abort loading contents of map " << mapName;
+        return;
+    }
+
+    for (unsigned int i = 1; i < result.size(); i++)
+    {
+        auto& characterName = result.at(i).at(Model::Position::FK_CHARACTER);
+        if (characterName != m_playerCharacter->name())
+        {
+            auto& newOne = m_characterList.emplace_back(std::make_shared<character::Character>(characterName, m_context));
+            newOne->loadFromDatabase(m_db);
+#ifdef RPG_BUILD_GUI
+            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne);
+            guiChar.lock()->load(m_context->kCharacterPath());
+            character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
+            character::GUI::CharacterGUI::connectSignals(newOne.get(), guiChar.lock().get());
+#endif
+        }
+    }
+}
+
+/**
+ * @brief Free all the current map contents
+ */
+void Game::unloadCurrentMap()
+{
+    m_characterList.clear();
 }
 
 /**

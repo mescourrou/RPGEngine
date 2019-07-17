@@ -6,6 +6,8 @@
 #include <Database.hpp>
 #include <VerbosityLevels.hpp>
 #include <ConfigFiles.hpp>
+#include <memory>
+#include <Character.hpp>
 
 #include <glog/logging.h>
 
@@ -43,7 +45,7 @@ bool GameLoader::load()
         throw e;
     }
 
-    m_game.reset(new Game(m_context));
+    m_game = std::make_shared<Game>(m_context);
 
     return m_game->initialize(m_db);
 }

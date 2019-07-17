@@ -6,6 +6,7 @@
 #include <Model.hpp>
 #include <Inventory.hpp>
 #include <VerbosityLevels.hpp>
+#include <Map.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -18,22 +19,13 @@ namespace character {
  * If a database is given, the loading from the database is performed automatically.
  *
  * @param[in] name Name of the character, must match a name in the database
- * @param[in] db [optionnal] Database to use for loading the character.
+ * @param[in] context Context to use
  */
-Character::Character(std::string name, std::shared_ptr<database::Database> db) :
-    m_name(std::move(name)), m_inventory(new object::Inventory)
+Character::Character(std::string name, std::shared_ptr<config::Context> context) :
+    m_name(std::move(name)), m_context(context), m_inventory(std::make_unique<object::Inventory>())
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    if (db)
-        loadFromDatabase(db);
-}
-
-/**
- * @brief Destructor
- */
-Character::~Character()
-{
-    m_inventory.reset();
+    setPosition(m_position);
 }
 
 /**
@@ -57,11 +49,10 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
     if (result.size() <= 1) // No result
         return false;
 
-    if (!m_position.loadFromDatabase(db, m_name))
+    if (!m_position.loadFromDatabase(db, m_context, m_name))
         return false;
 
     m_inventory->loadFromDatabase(db, m_name);
-
 
     return true;
 }
@@ -69,7 +60,7 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 /**
  * @brief Verify if the database has the good character Model
  * @param[in] db Database to modify
- * @return
+ * @return True if the model is correct
  */
 bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
@@ -123,12 +114,12 @@ const std::string& Character::name() const noexcept
 }
 
 /**
- * @brief Get the position of the Character
- * @return Position of the Character, modifyable
+ * @brief Set the position of the Character on the map
+ * @param position
  */
-map::Position& Character::position()
+void Character::setPosition(const map::Position &position)
 {
-    return m_position;
+    m_position = position;
 }
 
 /**
@@ -138,6 +129,43 @@ map::Position& Character::position()
 map::Position Character::position() const
 {
     return m_position;
+}
+
+/**
+ * @brief Move the Character following the given vector
+ * @param move Move to execute
+ */
+void Character::move(const map::Vector<2>& move)
+{
+    map::Vector<2> intersection;
+
+    if (m_position.map()->collision({m_position.x(), m_position.y()}, move, intersection))
+    {
+        map::Vector<2> newMove{intersection.x() - m_position.x(), intersection.y() - m_position.y()};
+        if (newMove.x() >= 1)
+            newMove.x() -= 1;
+        else if (newMove.x() <= -1)
+            newMove.x() += 1;
+        else
+            newMove.x() = 0;
+
+        if (newMove.y() >= 1)
+            newMove.y() -= 1;
+        else if (newMove.y() <= -1)
+            newMove.y() += 1;
+        else
+            newMove.y() = 0;
+
+        m_position.x() += newMove.x();
+        m_position.y() += newMove.y();
+    }
+    else
+    {
+        m_position.x() += move.x();
+        m_position.y() += move.y();
+    }
+
+    signalPositionChanged.trigger(m_position);
 }
 
 }

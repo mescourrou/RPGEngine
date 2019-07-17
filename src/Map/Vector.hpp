@@ -33,7 +33,13 @@ public:
     /**
      * @brief Create a zero-full vector
      */
-    Vector() : m_vector(m_kSize, 0) {}
+    Vector()
+    {
+        for (unsigned int i = 0; i < m_kSize; i++)
+        {
+            m_vector[i] = 0;
+        }
+    }
 
     /**
      * @brief Create a vector from an initialize list.
@@ -43,10 +49,12 @@ public:
      */
     Vector(const std::initializer_list<double> list)
     {
-        assert(list.size() <= m_kSize);
+        unsigned int i = 0;
         for (auto& element : list)
         {
-            m_vector.push_back(element);
+            if (i < m_kSize)
+                m_vector[i] = element;
+            i++;
         }
 
     }
@@ -76,6 +84,7 @@ public:
     double& at(unsigned int index) { return m_vector.at(index); }
     /// @brief Get the number at the index asked
     double at(unsigned int index) const { return m_vector.at(index); }
+    /// @brief Get the size of the vector
     unsigned int size() const noexcept { return m_kSize; }
 
     /// @brief Get and modify the x coordinate (0)
@@ -149,6 +158,13 @@ public:
             m_vector.at(i) -= vector.at(i);
         return *this;
     }
+    Vector<m_kSize> operator/(double divisor) const
+    {
+        Vector<m_kSize> ret;
+        for (unsigned int i = 0; i < m_kSize; i++)
+            ret.at(i) = m_vector.at(i) / divisor;
+        return ret;
+    }
     /**
      * @brief Compare the coordinate one to one
      * @param [in] other Other vector to compare to
@@ -175,7 +191,7 @@ public:
     }
 
 protected:
-    std::vector<double> m_vector; ///< Vector
+    std::array<double,m_kSize> m_vector; ///< Vector
 };
 
 template<const unsigned int kSize>

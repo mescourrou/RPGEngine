@@ -81,9 +81,10 @@ public:
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 protected:
 
-    std::string m_name = "Unkown object"; ///< Name of the object
-    std::string m_description; ///< Description of the object
-    Money m_value; ///< Value of the object
+    std::string m_name = "Unkown object";   ///< Name of the object
+    std::string m_description;              ///< Description of the object
+    Money m_value;                          ///< Value of the object
+
 };
 
 // I/O

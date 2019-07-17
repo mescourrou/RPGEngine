@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
@@ -49,6 +52,12 @@ public:
         return std::string(m_gameLocation).append("/")
                 .append(m_kRessourcesDirPath).append("/").append(m_kMapDirPath);
     }
+    /// @brief Get the full path to the character directory
+    virtual const std::string kCharacterPath() const
+    {
+        return std::string(m_gameLocation).append("/")
+                .append(m_kRessourcesDirPath).append("/").append(m_kCharacterDirPath);
+    }
     /// @brief Program arguments
     virtual const std::vector<std::string>& kProgramArguments() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kProgramArguments";
                                                                 return m_programArguments; }
@@ -67,6 +76,7 @@ private:
 
     const std::string m_kRessourcesDirPath = "ressources";
     const std::string m_kMapDirPath = "map";
+    const std::string m_kCharacterDirPath = "character";
 
     // Global variables
     std::string m_runtimeDirectory = ""; ///< Path to the runtime directory

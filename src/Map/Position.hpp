@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
@@ -12,6 +15,9 @@
 
 namespace database {
 class Database;
+}
+namespace config {
+class Context;
 }
 
 namespace map
@@ -41,6 +47,12 @@ public:
     /// @brief Default constructor
     Position() = default;
     Position(double x, double y, double z = 0);
+
+    Position(const Position&) = default;
+    Position(Position&&) = default;
+    Position& operator=(const Position&) = default;
+    Position& operator=(Position&&) = default;
+
     /**
      * @brief Create a Position at origin of the map given
      * @param map Map to create the position with
@@ -50,10 +62,10 @@ public:
     /// @brief Destructor
     ~Position() override = default;
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string& characterName);
+    bool loadFromDatabase(std::shared_ptr<database::Database> db, std::shared_ptr<config::Context> context, const std::string& characterName);
 
-    /// @brief Get the map, but can't be modified
-    const std::shared_ptr<Map> map() const noexcept { return m_map; }
+    /// @brief Get the map
+    std::shared_ptr<Map> map() const noexcept { return m_map; }
     /// @brief Change the map
     void setMap(std::shared_ptr<Map> map) { m_map = map; }
 

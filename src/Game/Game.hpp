@@ -7,6 +7,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <Map.hpp>
 
 // External lib
 #ifdef RPG_BUILD_TEST
@@ -31,9 +32,11 @@ class Character;
  */
 namespace game
 {
+#ifdef RPG_BUILD_GUI
 namespace GUI {
 class GameGUI;
 }
+#endif
 
 /**
  * @brief Manage the exceptions of Game
@@ -54,6 +57,9 @@ class Game : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class game::GameTest;
 #endif
+#ifdef RPG_BUILD_GUI
+    friend class GUI::GameGUI;
+#endif
 public:
 
     Game(std::shared_ptr<config::Context> gameContext);
@@ -64,14 +70,20 @@ public:
 
     bool run();
 
+    void loadMapContents(const std::string& mapName);
+    void unloadCurrentMap();
+
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-private:
+protected:
 
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database> m_db;               ///< Database of the Game
     std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
-#ifdef RPG_BUILD_TEST
+    std::weak_ptr<map::Map> m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
+
+    std::list<std::shared_ptr<character::Character>> m_characterList;        ///< List of characters, excepted the character of the player
+#ifdef RPG_BUILD_GUI
     std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
 #endif
     bool m_running = true;                                  ///< Main loop condition

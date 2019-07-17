@@ -5,14 +5,13 @@ This TODO list is not complete !
 - Quest journal : managing the quests of the player
 
 ## Map module :
-- Collision : stop the player when hiting a collision area
+- Bug Collision : passing through frontiere by the angles of the areas 
 
 ## Character module:
 - NPC vendors: selling and buying object, interaction with the player inventory
 - NPC trainers
 - NPC Quest giver
 - Spells and habilities
-- Printing the character on the map
 - GUI inventory
 - Fights
 - Caracteristics

@@ -25,3 +25,9 @@
 [submodule "thirdparty/tinyxml"]
 	path = thirdparty/tinyxml
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "thirdparty/imgui-SFML"]
+	path = thirdparty/imgui-SFML
+	url = https://github.com/eliasdaler/imgui-sfml.git
+[submodule "thirdparty/imgui"]
+	path = thirdparty/imgui
+	url = https://github.com/ocornut/imgui.git

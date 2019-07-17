@@ -44,11 +44,18 @@ public:
 
     std::shared_ptr<Object> get(unsigned int index) const;
     std::shared_ptr<Object> get(const std::string& objectName) const;
+    unsigned int getNumberOf(const std::string& objectName) const;
     std::shared_ptr<Object> pop(unsigned int index);
     std::shared_ptr<Object> pop(const std::string& objectName);
     void push(const std::shared_ptr<Object> &newObject);
 
     bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName);
+
+    /// @brief Get the money contained in the inventory
+    const Money& money() const { return m_money; }
+    /// @brief Add money to the inventory
+    void addMoney(const Money& m) { m_money += m; }
+    bool pullMoney(const Money& m);
 
     /// @brief Return the size of the inventory
     unsigned int size() const { return m_inventory.size(); }

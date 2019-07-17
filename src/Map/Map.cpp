@@ -6,6 +6,8 @@
 // Project
 #include <VerbosityLevels.hpp>
 #include <Area.hpp>
+#include <Tools.hpp>
+#include <ConfigFiles.hpp>
 
 // External lib
 #include <glog/logging.h>
@@ -26,51 +28,45 @@ Map::Map(std::shared_ptr<config::Context> context, const std::string &name) :
 }
 
 /**
- * @brief Load the map from the json file given
+ * @brief Load the map from the json file named like the map
  *
  * We use Tiled to generate the files : https://www.mapeditor.org/
- * @param filename File to use
  * @return Return true if all went well
  */
-bool Map::load(const std::string& filename)
+bool Map::load()
 {
-    std::ifstream file(m_context->kMapPath() + "/" + filename + ".json");
+    std::ifstream file(m_context->kMapPath() + "/" + Tools::snakeCase(m_name) + ".json");
     if (file.is_open())
     {
-        m_json.clear();
-        file >> m_json;
-        if (!m_json.is_object())
+        json json;
+        file >> json;
+        if (!json.is_object())
             return false;
 
-        if (!doLoadTilesets(m_json))
+        namespace mapFile = config::structure::mapFile;
+
+        if (!json[mapFile::KEY_LAYERS].is_array())
             return false;
 
-        if (!m_json[KEY_LAYERS].is_array())
-            return false;
-
-        for (auto layer : m_json[KEY_LAYERS])
+        for (auto layer : json[mapFile::KEY_LAYERS])
         {
-            if (!layer[KEY_LAYER_NAME].is_string())
+            if (!layer[mapFile::KEY_LAYER_NAME].is_string())
                 return false;
-            if (layer[KEY_LAYER_NAME] == NAME_COLLISIONS_LAYER)
+            if (layer[mapFile::KEY_LAYER_NAME] == mapFile::NAME_COLLISIONS_LAYER)
             {
                 if (!loadCollisionLayer(layer))
                     return false;
+                LOG(INFO) << "Loading collision layers successfully";
             }
-            else if (layer[KEY_LAYER_NAME] == NAME_TELEPORTS_LAYER)
+            else if (layer[mapFile::KEY_LAYER_NAME] == mapFile::NAME_TELEPORTS_LAYER)
             {
                 std::cout << "Found teleports" << std::endl;
-            }
-            else if (layer[KEY_LAYER_TYPE] == TYPE_DATA_LAYER)
-            {
-                if (!doLoadTiles(layer))
-                    return false;
             }
         }
 
     }
     else {
-        LOG(ERROR) << "Impossible to open " << m_context->kMapPath() + "/" + filename + ".json";
+        LOG(ERROR) << "Impossible to open " << m_context->kMapPath() + "/" + Tools::snakeCase(m_name) + ".json";
         return false;
     }
     return true;
@@ -95,6 +91,23 @@ bool Map::collision(const Vector<2> &point) const
     for (const auto& area : m_collisionLayer)
     {
         if (area.isInside(point))
+            return true;
+    }
+    return false;
+}
+
+/**
+ * @brief Tells if there is a collision with the move vector and give the intersection (if there is)
+ * @param origin Origin of the vector
+ * @param moveVector Moving vector
+ * @param [out] intersect Intersection point if there is one
+ * @return Return true if there is an intersection and if the intersect parameter was modified
+ */
+bool Map::collision(const Vector<2>& origin, const Vector<2>& moveVector, Vector<2>& intersect) const
+{
+    for (const auto& area : m_collisionLayer)
+    {
+        if (area.intersect(origin, moveVector, intersect))
             return true;
     }
     return false;
@@ -138,48 +151,50 @@ bool Map::loadCollisionLayer(const json& layer)
 {
     if (!layer.is_object())
         return false;
-    if (!layer[KEY_OBJECTS].is_array())
+    namespace mapFile = config::structure::mapFile;
+    if (!layer[mapFile::KEY_OBJECTS].is_array())
         return false;
-    for (auto& polygon : layer[KEY_OBJECTS])
+    for (auto& polygon : layer[mapFile::KEY_OBJECTS])
     {
         if (!polygon.is_object())
             return false;
-        if (!polygon.contains(KEY_VISIBLE) || !polygon[KEY_VISIBLE].is_boolean())
+        if (!polygon.contains(mapFile::KEY_VISIBLE) || !polygon[mapFile::KEY_VISIBLE].is_boolean())
             return false;
         // If the polygon is visible
-        if (polygon[KEY_VISIBLE].get<bool>())
+        if (polygon[mapFile::KEY_VISIBLE].get<bool>())
         {
-            if (!polygon.contains(KEY_X) || !polygon.contains(KEY_Y) ||
-                    !polygon[KEY_X].is_number() || !polygon[KEY_Y].is_number())
+            if (!polygon.contains(mapFile::KEY_X) || !polygon.contains(mapFile::KEY_Y) ||
+                    !polygon[mapFile::KEY_X].is_number() || !polygon[mapFile::KEY_Y].is_number())
                 return false;
             Vector<2> polygonPosition;
-            polygonPosition.x() = polygon[KEY_X].get<double>();
-            polygonPosition.y() = polygon[KEY_Y].get<double>();
+            polygonPosition.x() = polygon[mapFile::KEY_X].get<double>();
+            polygonPosition.y() = polygon[mapFile::KEY_Y].get<double>();
 
-            if (!polygon.contains(KEY_HEIGHT) || !polygon.contains(KEY_WIDTH) || !polygon[KEY_HEIGHT].is_number() || !polygon[KEY_WIDTH].is_number())
+            if (!polygon.contains(mapFile::KEY_HEIGHT) || !polygon.contains(mapFile::KEY_WIDTH) ||
+                    !polygon[mapFile::KEY_HEIGHT].is_number() || !polygon[mapFile::KEY_WIDTH].is_number())
                 return false;
 
             // Polygon
-            if (polygon[KEY_HEIGHT].get<unsigned int>() == 0 && polygon[KEY_WIDTH].get<unsigned int>() == 0)
+            if (polygon[mapFile::KEY_HEIGHT].get<unsigned int>() == 0 && polygon[mapFile::KEY_WIDTH].get<unsigned int>() == 0)
             {
-                if (!polygon[KEY_POLYGON].is_array())
+                if (!polygon[mapFile::KEY_POLYGON].is_array())
                 {
                     return false;
                 }
                 Area a;
-                for (auto& point : polygon[KEY_POLYGON])
+                for (auto& point : polygon[mapFile::KEY_POLYGON])
                 {
-                    if (!polygon.contains(KEY_X) || !polygon.contains(KEY_Y) ||
-                            !polygon[KEY_X].is_number() || !polygon[KEY_Y].is_number())
+                    if (!polygon.contains(mapFile::KEY_X) || !polygon.contains(mapFile::KEY_Y) ||
+                            !polygon[mapFile::KEY_X].is_number() || !polygon[mapFile::KEY_Y].is_number())
                         return false;
-                    a.addPoint(polygonPosition + Vector<2>{point[KEY_X].get<double>(), point[KEY_Y].get<double>()});
+                    a.addPoint(polygonPosition + Vector<2>{point[mapFile::KEY_X].get<double>(), point[mapFile::KEY_Y].get<double>()});
                 }
                 addCollisionArea(a);
             }
             else // Rectangle
             {
-                unsigned int height = polygon[KEY_HEIGHT].get<unsigned int>();
-                unsigned int width = polygon[KEY_WIDTH].get<unsigned int>();
+                unsigned int height = polygon[mapFile::KEY_HEIGHT].get<unsigned int>();
+                unsigned int width = polygon[mapFile::KEY_WIDTH].get<unsigned int>();
                 Area a{polygonPosition,
                        {polygonPosition.x(), polygonPosition.y() + height},
                        {polygonPosition.x() + width, polygonPosition.y() + height},

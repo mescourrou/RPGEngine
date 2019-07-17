@@ -37,6 +37,7 @@ public:
 
     void addPoint(const Vector<2>& point, int index = -1);
     bool isInside(const Vector<2>& point) const;
+    bool intersect(const Vector<2>& origin, const Vector<2>& vector, Vector<2> &outIntersect) const;
 
     void move(const Vector<2>& vector);
     std::vector<Vector<2>> pointList() const;
@@ -48,11 +49,18 @@ protected:
      */
     enum Direction {
         LEFT,
-        RIGHT
+        RIGHT,
+        UP,
+        DOWN
     };
     static bool intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const Vector<2>& origin, Direction dir = RIGHT);
+    static bool intersectXHalfLine(const Vector<2> &pt1, const Vector<2> &pt2, const Vector<2> &origin, Direction dir = DOWN);
 
     std::vector<Vector<2>> m_points; ///< List of the area points
+private:
+    static bool onSegment(const Vector<2> &p, const Vector<2> &q, const Vector<2> &r);
+    static int orientation(const Vector<2> &p, const Vector<2> &q, const Vector<2> &r);
+    static bool doIntersect(const Vector<2> &p1, const Vector<2> &q1, const Vector<2> &p2, const Vector<2> &q2);
 };
 
 std::ostream& operator<<(std::ostream& stream, const Area& area);

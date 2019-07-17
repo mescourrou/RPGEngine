@@ -35,8 +35,8 @@ public:
     ~WorkerThread();
 
     template<typename ...Args>
-    static void newWork(std::function<void(Args...)> work, Args... arguments);
-    static void newWork(std::function<void()> work);
+    static void newWork(const std::function<void(Args...)>& work, Args... arguments);
+    static void newWork(const std::function<void()>& work);
 
     static void waitForJoin();
 
@@ -72,7 +72,7 @@ private:
  * @param arguments Arguments of the function
  */
 template<typename ...Args>
-void WorkerThread::newWork(std::function<void(Args...)> work, Args... arguments)
+void WorkerThread::newWork(const std::function<void(Args...)>& work, Args... arguments)
 {
     m_mutex.lock();
     if (m_activeThreads >= maxThreads)

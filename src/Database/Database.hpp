@@ -2,6 +2,9 @@
 
 // STD lib
 #include <mutex>
+#include <map>
+#include <vector>
+#include <memory>
 
 // Project
 #include "general_config.hpp"
