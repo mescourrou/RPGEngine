@@ -113,7 +113,7 @@ void GameLauncher::startGame(std::string gameName) const
         m_context->gameLocation() = gameDirectory;
 
         GameLoader loader(m_context);
-        if (!loader.load())
+        if (!loader.load(gameName))
             return;
         loader.run();
     } catch (const BaseException& e) {

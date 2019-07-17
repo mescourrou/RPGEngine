@@ -85,6 +85,7 @@ protected:
     struct UI {
         static constexpr char MAIN_UI[] = "mainUi";
         static constexpr char PAUSE_POPUP[] = "Pause";
+        static constexpr char INFOS_POPUP[] = "Infos";
         static constexpr char BOTTON_AREA[] = "##Character";
         static constexpr char CHARACTER_BUTTON[] = "Character";
         static constexpr char INVENTORY_BUTTON[] = "Inventory";
