@@ -291,6 +291,33 @@ void CharacterGUI::slotKeyReleased(sf::Event::KeyEvent key)
 }
 
 /**
+ * @brief Draw character basic informations for being presented to the player every time
+ */
+void CharacterGUI::uiRealtimeInformations()
+{
+    ImGui::Text(m_character.lock()->name().c_str());
+
+    ImGui::ProgressBar(1, ImVec2(-1,0), "Life");
+    ImGui::ProgressBar(1, ImVec2(-1,0), "Mana");
+}
+
+/**
+ * @brief Draw the Character window
+ */
+void CharacterGUI::uiFullInformations()
+{
+    ImGui::Text("Soon");
+}
+
+/**
+ * @brief Draw the inventory window
+ */
+void CharacterGUI::uiInventoryWindow()
+{
+    ImGui::Text("Soon");
+}
+
+/**
  * @brief Draw the Character on the target
  * @param target Target to draw on
  * @param states Render states to use

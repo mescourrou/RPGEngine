@@ -47,6 +47,10 @@ public:
 
     void slotArrowPressed(sf::Keyboard::Key arrow);
     void slotKeyReleased(sf::Event::KeyEvent key);
+
+    void uiRealtimeInformations();
+    void uiFullInformations();
+    void uiInventoryWindow();
 protected:
 
 

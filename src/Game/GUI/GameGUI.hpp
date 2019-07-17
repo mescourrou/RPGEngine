@@ -12,9 +12,14 @@
 #include <Database.hpp>
 
 #include <SFML/Window/Event.hpp>
+#include <imgui.h>
 
 namespace sf {
 class RenderWindow;
+}
+
+namespace character::GUI {
+class CharacterGUI;
 }
 
 
@@ -44,6 +49,7 @@ public:
     events::Event<sf::Event::KeyEvent> signalKeyPressed;    ///< Signal when a key is pressed
     events::Event<sf::Event::KeyEvent> signalKeyReleased;   ///< Signal when a key is released
     events::Event<sf::Keyboard::Key> signalArroyIsPressed;  ///< Signal when a arrow is pressed (no security to get only one event)
+    events::Event<bool> signalPause;
     /**
      * @brief Get the event triggered when the user close the game
      */
@@ -62,6 +68,7 @@ public:
 
 protected:
     std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
+    std::weak_ptr<character::GUI::CharacterGUI> m_player;
 
     std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Current mapGUI
 
@@ -74,6 +81,21 @@ protected:
     events::Event<void> m_signalOnClose;             ///< Event when the user close the game
 
     Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
+
+    struct UI {
+        static constexpr char MAIN_UI[] = "mainUi";
+        static constexpr char PAUSE_POPUP[] = "Pause";
+        static constexpr char BOTTON_AREA[] = "##Character";
+        static constexpr char CHARACTER_BUTTON[] = "Character";
+        static constexpr char INVENTORY_BUTTON[] = "Inventory";
+        static constexpr ImGuiWindowFlags FIXED = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+        bool onPause = false;
+        bool uiActivated = true;
+        bool inventoryOpen = false;
+        bool characterOpen = false;
+    } m_ui;
+    void makeUI();
+
 private:
 
 };
