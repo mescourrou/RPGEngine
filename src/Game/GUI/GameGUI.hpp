@@ -49,7 +49,7 @@ public:
     events::Event<sf::Event::KeyEvent> signalKeyPressed;    ///< Signal when a key is pressed
     events::Event<sf::Event::KeyEvent> signalKeyReleased;   ///< Signal when a key is released
     events::Event<sf::Keyboard::Key> signalArroyIsPressed;  ///< Signal when a arrow is pressed (no security to get only one event)
-    events::Event<bool> signalPause;
+    events::Event<bool> signalPause;                        ///< Signal when the pause is activated or not
     /**
      * @brief Get the event triggered when the user close the game
      */
@@ -68,7 +68,7 @@ public:
 
 protected:
     std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
-    std::weak_ptr<character::GUI::CharacterGUI> m_player;
+    std::weak_ptr<character::GUI::CharacterGUI> m_player;       ///< Pointer on the GUI object linked to the player
 
     std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Current mapGUI
 
@@ -89,11 +89,11 @@ protected:
         static constexpr char CHARACTER_BUTTON[] = "Character";
         static constexpr char INVENTORY_BUTTON[] = "Inventory";
         static constexpr ImGuiWindowFlags FIXED = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
-        bool onPause = false;
-        bool uiActivated = true;
-        bool inventoryOpen = false;
-        bool characterOpen = false;
-    } m_ui;
+        bool onPause = false;                       ///< If the system is on pause
+        bool uiActivated = true;                    ///< If the global ui is activated
+        bool inventoryOpen = false;                 ///< If the inventory window is open
+        bool characterOpen = false;                 ///< If the character window is open
+    } m_ui;                                         ///< UI structure containing the ui linked variable
     void makeUI();
 
 private:

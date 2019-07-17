@@ -96,6 +96,13 @@ bool Map::collision(const Vector<2> &point) const
     return false;
 }
 
+/**
+ * @brief Tells if there is a collision with the move vector and give the intersection (if there is)
+ * @param origin Origin of the vector
+ * @param moveVector Moving vector
+ * @param [out] intersect Intersection point if there is one
+ * @return Return true if there is an intersection and if the intersect parameter was modified
+ */
 bool Map::collision(const Vector<2>& origin, const Vector<2>& moveVector, Vector<2>& intersect) const
 {
     for (const auto& area : m_collisionLayer)
