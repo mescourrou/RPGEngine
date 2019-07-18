@@ -239,38 +239,111 @@ void GameGUI::makeUI()
         ImGui::OpenPopup(UI::PAUSE_POPUP);
     if (m_ui.onPause && ImGui::BeginPopupModal(UI::PAUSE_POPUP, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize))
     {
-        if (ImGui::Button("Return to the game"))
-            signalPause.trigger(false);
-        if (ImGui::Button("Informations"))
+        pauseMenu();
+        ImGui::EndPopup();
+    }
+
+}
+
+void GameGUI::pauseMenu()
+{
+    // Main pause menu
+    if (ImGui::Button("Return to the game"))
+        signalPause.trigger(false);
+
+    if (ImGui::Button("Settings"))
+    {
+        ImGui::OpenPopup(UI::SETTINGS_POPUP);
+        loadSettingsPopup();
+    }
+
+    if (ImGui::Button("Informations"))
+        ImGui::OpenPopup(UI::INFOS_POPUP);
+
+    if (ImGui::Button("Exit"))
+    {
+        m_signalOnClose.trigger();
+        exit(EXIT_SUCCESS);
+    }
+
+    // Information popup
+    if (ImGui::BeginPopupModal(UI::INFOS_POPUP))
+    {
+        if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::OpenPopup(UI::INFOS_POPUP);
+            ImGui::Text("Name : %s", m_game->name().c_str());
+            ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
         }
-        if (ImGui::Button("Exit"))
+        if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            m_signalOnClose.trigger();
-            exit(EXIT_SUCCESS);
+            ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+            ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
+#ifdef GIT_BRANCH
+            ImGui::Text("Branch : %s", GIT_BRANCH);
+#endif
+#ifdef GIT_COMMIT_HASH
+            ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
+#endif
+            ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
         }
-        if (ImGui::BeginPopupModal(UI::INFOS_POPUP))
+        ImGui::EndPopup();
+    }
+
+    // Settings popup
+    if (ImGui::BeginPopupModal(UI::SETTINGS_POPUP, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        if (ImGui::BeginTabBar(UI::SETTINGS_TABBAR_NAME))
         {
-            if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
+            namespace preferences = config::structure::globalFile::preferences;
+            if (ImGui::BeginTabItem(preferences::SECTION))
             {
-                ImGui::Text("Name : %s", m_game->name().c_str());
-                ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
+                ImGui::Checkbox("Fullscreen", &m_ui.settings.fullscreen);
+
+                ImGui::ListBox("Resolution", &m_ui.settings.resolutionItemSelected,
+                               (const char**)&m_ui.settings.availableResolutions[0], m_ui.settings.availableResolutions.size());
+
+                ImGui::EndTabItem();
             }
-            if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
+            if (ImGui::BeginTabItem("Key binding"))
             {
-                ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
-                ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
-                ImGui::Text("Branch : %s", GIT_BRANCH);
-                ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
-                ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
+
+                ImGui::EndTabItem();
             }
-            ImGui::EndPopup();
+
         }
+        if (ImGui::Button("Save"))
+        {
+            //m_context->config()->save
+        }
+        ImGui::EndTabBar();
+
 
         ImGui::EndPopup();
     }
 
+}
+
+void GameGUI::loadSettingsPopup()
+{
+    namespace preferences = config::structure::globalFile::preferences;
+    m_ui.settings.fullscreen = false;
+    std::string tmp = m_context->config()->getValue(preferences::SECTION, preferences::FULLSCREEN);
+    if (tmp == "true")
+        m_ui.settings.fullscreen = true;
+
+    m_ui.settings.resolution = m_context->config()->getValue(preferences::SECTION, preferences::RESOLUTION);
+    if (m_ui.settings.resolution.empty())
+        m_ui.settings.resolution = GAME_DEFAULT_RESOLUTION;
+
+    m_ui.settings.availableResolutions = {"1920x1080", "900x600"};
+
+    m_ui.settings.resolutionItemSelected = std::distance(m_ui.settings.availableResolutions.begin(),
+                                                         std::find(m_ui.settings.availableResolutions.begin(),
+                                                                   m_ui.settings.availableResolutions.end(),
+                                                                   m_ui.settings.resolution.c_str()));
+
+    if (m_ui.settings.resolutionItemSelected == m_ui.settings.availableResolutions.size())
+        m_ui.settings.availableResolutions.push_back(m_ui.settings.resolution.c_str());
 }
 
 } // namespace GUI
