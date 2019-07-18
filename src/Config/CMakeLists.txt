@@ -10,6 +10,7 @@ add_library(Config
 target_link_libraries(Config simpleini glog
     BaseObject
     Tools
+	Events
     ${FILESYSTEM_LIB})
 target_include_directories(Config PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Config PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
