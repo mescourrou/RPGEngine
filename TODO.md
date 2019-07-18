@@ -5,10 +5,9 @@ This TODO list is not complete !
 - Quest journal : managing the quests of the player
 
 ## Map module :
-- Bug Collision : passing through frontiere by the angles of the areas 
+- Tile drawing optimisation : very laggy in high resolutions 
 
 ## Character module:
-- NPC vendors: selling and buying object, interaction with the player inventory
 - NPC trainers
 - NPC Quest giver
 - Spells and habilities
