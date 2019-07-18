@@ -315,7 +315,8 @@ void GameGUI::uiPauseMenu()
                 ImGui::Checkbox("Fullscreen", &m_ui.settings.fullscreen);
 
                 ImGui::ListBox("Resolution", &m_ui.settings.resolutionItemSelected,
-                               (const char**)&m_ui.settings.availableResolutions[0], m_ui.settings.availableResolutions.size());
+                               static_cast<const char**>(&m_ui.settings.availableResolutions[0]),
+                               m_ui.settings.availableResolutions.size());
 
                 ImGui::EndTabItem();
             }
@@ -362,12 +363,13 @@ void GameGUI::uiLoadSettingsPopup()
 
     m_ui.settings.availableResolutions = {"1920x1080", "900x600"};
 
-    m_ui.settings.resolutionItemSelected = std::distance(m_ui.settings.availableResolutions.begin(),
-                                                         std::find(m_ui.settings.availableResolutions.begin(),
-                                                                   m_ui.settings.availableResolutions.end(),
-                                                                   m_ui.settings.resolution.c_str()));
+    m_ui.settings.resolutionItemSelected = static_cast<int>(
+                std::distance(m_ui.settings.availableResolutions.begin(),
+                              std::find(m_ui.settings.availableResolutions.begin(),
+                                        m_ui.settings.availableResolutions.end(),
+                                        m_ui.settings.resolution.c_str())));
 
-    if (m_ui.settings.resolutionItemSelected == m_ui.settings.availableResolutions.size())
+    if (m_ui.settings.resolutionItemSelected == static_cast<int>(m_ui.settings.availableResolutions.size()))
         m_ui.settings.availableResolutions.push_back(m_ui.settings.resolution.c_str());
 }
 
