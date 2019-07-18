@@ -34,27 +34,9 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     m_context(context), m_game(game)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    namespace structure = config::structure::globalFile;
-    bool fullscreen = false;
-    if (m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::FULLSCREEN) == "true")
-        fullscreen = true;
 
-    std::string strResolution = m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::RESOLUTION);
-
-    if (strResolution.empty())
-        strResolution = GAME_DEFAULT_RESOLUTION;
-
-    auto xIndex = strResolution.find('x');
-    int xResolution = std::atoi(strResolution.substr(0,xIndex).c_str());
-    int yResolution = std::atoi(strResolution.substr(xIndex+1,-1).c_str());
-
-    VLOG(verbosityLevel::VERIFICATION_LOG) << "Resolution = " << xResolution << " x " << yResolution;
-
-    if (!fullscreen)
-        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine");
-    else
-        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
-
+    loadFromConfig();
+    m_context->config()->signalConfigUpdated.subscribeSync(this, &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
 }
@@ -178,6 +160,36 @@ void GameGUI::draw()
 }
 
 /**
+ * @brief Load the elements from the config file. Called everytime the config is saved
+ */
+void GameGUI::loadFromConfig()
+{
+    if (m_window)
+        m_window->close();
+    namespace structure = config::structure::globalFile;
+    bool fullscreen = false;
+    if (m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::FULLSCREEN) == "true")
+        fullscreen = true;
+
+    std::string strResolution = m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::RESOLUTION);
+
+    if (strResolution.empty())
+        strResolution = GAME_DEFAULT_RESOLUTION;
+
+    auto xIndex = strResolution.find('x');
+    int xResolution = std::atoi(strResolution.substr(0,xIndex).c_str());
+    int yResolution = std::atoi(strResolution.substr(xIndex+1,-1).c_str());
+
+    VLOG(verbosityLevel::VERIFICATION_LOG) << "Resolution = " << xResolution << " x " << yResolution;
+
+    if (!fullscreen)
+        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine");
+    else
+        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
+
+}
+
+/**
  * @brief Create the User Interface using Dear ImGui
  */
 void GameGUI::makeUI()
@@ -239,13 +251,16 @@ void GameGUI::makeUI()
         ImGui::OpenPopup(UI::PAUSE_POPUP);
     if (m_ui.onPause && ImGui::BeginPopupModal(UI::PAUSE_POPUP, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize))
     {
-        pauseMenu();
+        uiPauseMenu();
         ImGui::EndPopup();
     }
 
 }
 
-void GameGUI::pauseMenu()
+/**
+ * @brief Generate the UI pause menu
+ */
+void GameGUI::uiPauseMenu()
 {
     // Main pause menu
     if (ImGui::Button("Return to the game"))
@@ -254,7 +269,7 @@ void GameGUI::pauseMenu()
     if (ImGui::Button("Settings"))
     {
         ImGui::OpenPopup(UI::SETTINGS_POPUP);
-        loadSettingsPopup();
+        uiLoadSettingsPopup();
     }
 
     if (ImGui::Button("Informations"))
@@ -309,13 +324,20 @@ void GameGUI::pauseMenu()
 
                 ImGui::EndTabItem();
             }
+            ImGui::EndTabBar();
 
         }
         if (ImGui::Button("Save"))
         {
-            //m_context->config()->save
+            namespace preferences = config::structure::globalFile::preferences;
+            auto config = m_context->config();
+            config->setValue(preferences::SECTION, preferences::FULLSCREEN,
+                             (m_ui.settings.fullscreen ? "true" : "false"));
+
+            config->setValue(preferences::SECTION, preferences::RESOLUTION,
+                             (m_ui.settings.availableResolutions.at(m_ui.settings.resolutionItemSelected)));
+            config->saveToFile();
         }
-        ImGui::EndTabBar();
 
 
         ImGui::EndPopup();
@@ -323,7 +345,10 @@ void GameGUI::pauseMenu()
 
 }
 
-void GameGUI::loadSettingsPopup()
+/**
+ * @brief Load the settings locally
+ */
+void GameGUI::uiLoadSettingsPopup()
 {
     namespace preferences = config::structure::globalFile::preferences;
     m_ui.settings.fullscreen = false;

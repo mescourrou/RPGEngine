@@ -67,6 +67,7 @@ public:
     }
 
 protected:
+    void loadFromConfig();
     std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
     std::weak_ptr<character::GUI::CharacterGUI> m_player;       ///< Pointer on the GUI object linked to the player
 
@@ -107,8 +108,8 @@ protected:
     } m_ui;                                         ///< UI structure containing the ui linked variable
 
     void makeUI();
-    void pauseMenu();
-    void loadSettingsPopup();
+    void uiPauseMenu();
+    void uiLoadSettingsPopup();
 
 private:
 
