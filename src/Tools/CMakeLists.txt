@@ -3,6 +3,7 @@ find_library(glog REQUIRED)
 add_library(Tools
         Tools.cpp Tools.hpp
         BaseException.hpp
+		Logger.cpp Logger.hpp
         )
 target_link_libraries(Tools glog BaseObject)
 target_include_directories(Tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -14,3 +15,6 @@ if (RPG_BUILD_TEST)
 	add_subdirectory(unit_tests)
 endif()
 
+if (RPG_BUILD_GUI)
+	add_subdirectory(GUI)
+endif()
