@@ -2,6 +2,7 @@ if (NOT TARGET ImGui)
 add_library(ImGui
 	${RPG_THIRDPARTY_DIR}/imgui/imconfig.h
 	${RPG_THIRDPARTY_DIR}/imgui/imgui.cpp
+	${RPG_THIRDPARTY_DIR}/imgui/imgui_demo.cpp
 	${RPG_THIRDPARTY_DIR}/imgui/imgui.h
 	${RPG_THIRDPARTY_DIR}/imgui/imgui_internal.h
 	${RPG_THIRDPARTY_DIR}/imgui/imgui_widgets.cpp

@@ -67,6 +67,7 @@ public:
     }
 
 protected:
+    void loadFromConfig();
     std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
     std::weak_ptr<character::GUI::CharacterGUI> m_player;       ///< Pointer on the GUI object linked to the player
 
@@ -86,6 +87,9 @@ protected:
         static constexpr char MAIN_UI[] = "mainUi";
         static constexpr char PAUSE_POPUP[] = "Pause";
         static constexpr char INFOS_POPUP[] = "Infos";
+
+        static constexpr char SETTINGS_POPUP[] = "Settings";
+        static constexpr char SETTINGS_TABBAR_NAME[] = "TabBar";
         static constexpr char BOTTON_AREA[] = "##Character";
         static constexpr char CHARACTER_BUTTON[] = "Character";
         static constexpr char INVENTORY_BUTTON[] = "Inventory";
@@ -94,8 +98,18 @@ protected:
         bool uiActivated = true;                    ///< If the global ui is activated
         bool inventoryOpen = false;                 ///< If the inventory window is open
         bool characterOpen = false;                 ///< If the character window is open
+
+        struct Settings {
+            bool fullscreen = false;
+            std::string resolution = "";
+            int resolutionItemSelected = 0;
+            std::vector<const char*> availableResolutions;
+        } settings;
     } m_ui;                                         ///< UI structure containing the ui linked variable
+
     void makeUI();
+    void uiPauseMenu();
+    void uiLoadSettingsPopup();
 
 private:
 

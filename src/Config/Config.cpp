@@ -14,11 +14,13 @@
 // Extern libs
 #include <glog/logging.h>
 
+namespace config {
+
 /**
  * @brief Constructor of Config
  * @param filename File to load
  */
-config::Config::Config(const std::string &filename)
+Config::Config(const std::string &filename)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     if (!loadFile(filename))
@@ -30,7 +32,7 @@ config::Config::Config(const std::string &filename)
  * @param[in] filename Path name
  * @return Return false if the file couldn't be loaded
  */
-bool config::Config::loadFile(const std::string &filename) noexcept
+bool Config::loadFile(const std::string &filename) noexcept
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Call loadFile(" << filename << ")";
     m_iniFile.SetUnicode();
@@ -40,9 +42,31 @@ bool config::Config::loadFile(const std::string &filename) noexcept
         LOG(ERROR) << "Impossible to load " << filename << " conf file";
         return false;
     }
+    m_filename = filename;
 
     LOG(INFO) << "Loading " << filename << " conf file";
 
+    return true;
+}
+
+/**
+ * @brief Save the elements to the filename given
+ *
+ * Emit the signal Config::signalConfigUpdated
+ * @param filename File to save into. If nothing given, it will save in the loaded file
+ * @return Return true if the save was successfull
+ */
+bool Config::saveToFile(std::string filename)
+{
+    if (filename.empty())
+        filename = m_filename;
+    if (m_iniFile.SaveFile(filename.c_str()) < 0)
+    {
+        LOG(ERROR) << "Impossible to save to " << filename << " conf file";
+        return false;
+    }
+    signalConfigUpdated.trigger();
+    LOG(INFO) << "Saving to " << filename << " successfull";
     return true;
 }
 
@@ -52,7 +76,7 @@ bool config::Config::loadFile(const std::string &filename) noexcept
  * @param[in] key Config key
  * @return Return the value in string, even for numbers. Empty string if not found
  */
-std::string config::Config::getValue(const std::string &section, const std::string &key) const
+std::string Config::getValue(const std::string &section, const std::string &key) const
 {
     bool multipleValues = false;
     const char* rawValue = m_iniFile.GetValue(section.c_str(), key.c_str(), nullptr, &multipleValues);
@@ -73,7 +97,7 @@ std::string config::Config::getValue(const std::string &section, const std::stri
  * @param[in] key Key to search
  * @return Value of the key. Empty string if not found
  */
-std::string config::Config::getValue(const std::string &key) const
+std::string Config::getValue(const std::string &key) const
 {
     CSimpleIniCaseA::TNamesDepend sections;
     m_iniFile.GetAllSections(sections);
@@ -97,7 +121,7 @@ std::string config::Config::getValue(const std::string &key) const
  * @param [in] key Key to look for
  * @return List of the values. Empty list if the pair section-key wasn't found
  */
-std::vector<std::string> config::Config::getAllValues(const std::string &section, const std::string &key) const
+std::vector<std::string> Config::getAllValues(const std::string &section, const std::string &key) const
 {
     std::vector<std::string> ret;
     CSimpleIniCaseA::TNamesDepend values;
@@ -117,7 +141,7 @@ std::vector<std::string> config::Config::getAllValues(const std::string &section
 /**
  * @brief Get the list of the sections of the file
  */
-std::vector<std::string> config::Config::getAllSections() const
+std::vector<std::string> Config::getAllSections() const
 {
     std::vector<std::string> sectionList;
     CSimpleIniCaseA::TNamesDepend sections;
@@ -129,3 +153,25 @@ std::vector<std::string> config::Config::getAllSections() const
     }
     return sectionList;
 }
+
+/**
+ * @brief Set the couple section:key value in the file. To don't use section, set the section field to ""
+ * @param section Section name. "" for no section
+ * @param key Key name
+ * @param value Value to set
+ * @param forceRemplace (optionnal, true by default) Force the remplacement of the value.
+ * @return Return false if the value couldn't be set
+ */
+bool Config::setValue(const std::string &section, const std::string &key, const std::string& value, bool forceRemplace)
+{
+    VLOG(verbosityLevel::FUNCTION_CALL) << "setValue (" << section << ", " << key << ", " << value << ", " << forceRemplace << ")";
+    int rc = m_iniFile.SetValue(section.c_str(), key.c_str(), value.c_str(), nullptr, forceRemplace);
+    if (rc < 0)
+    {
+        LOG(ERROR) << "Error during setting value " << section << ":" << key;
+        return false;
+    }
+    return true;
+}
+
+} // namespace config

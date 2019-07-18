@@ -34,27 +34,9 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     m_context(context), m_game(game)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    namespace structure = config::structure::globalFile;
-    bool fullscreen = false;
-    if (m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::FULLSCREEN) == "true")
-        fullscreen = true;
 
-    std::string strResolution = m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::RESOLUTION);
-
-    if (strResolution.empty())
-        strResolution = GAME_DEFAULT_RESOLUTION;
-
-    auto xIndex = strResolution.find('x');
-    int xResolution = std::atoi(strResolution.substr(0,xIndex).c_str());
-    int yResolution = std::atoi(strResolution.substr(xIndex+1,-1).c_str());
-
-    VLOG(verbosityLevel::VERIFICATION_LOG) << "Resolution = " << xResolution << " x " << yResolution;
-
-    if (!fullscreen)
-        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine");
-    else
-        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
-
+    loadFromConfig();
+    m_context->config()->signalConfigUpdated.subscribeSync(this, &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
 }
@@ -178,6 +160,36 @@ void GameGUI::draw()
 }
 
 /**
+ * @brief Load the elements from the config file. Called everytime the config is saved
+ */
+void GameGUI::loadFromConfig()
+{
+    if (m_window)
+        m_window->close();
+    namespace structure = config::structure::globalFile;
+    bool fullscreen = false;
+    if (m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::FULLSCREEN) == "true")
+        fullscreen = true;
+
+    std::string strResolution = m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::RESOLUTION);
+
+    if (strResolution.empty())
+        strResolution = GAME_DEFAULT_RESOLUTION;
+
+    auto xIndex = strResolution.find('x');
+    int xResolution = std::atoi(strResolution.substr(0,xIndex).c_str());
+    int yResolution = std::atoi(strResolution.substr(xIndex+1,-1).c_str());
+
+    VLOG(verbosityLevel::VERIFICATION_LOG) << "Resolution = " << xResolution << " x " << yResolution;
+
+    if (!fullscreen)
+        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine");
+    else
+        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
+
+}
+
+/**
  * @brief Create the User Interface using Dear ImGui
  */
 void GameGUI::makeUI()
@@ -239,38 +251,126 @@ void GameGUI::makeUI()
         ImGui::OpenPopup(UI::PAUSE_POPUP);
     if (m_ui.onPause && ImGui::BeginPopupModal(UI::PAUSE_POPUP, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize))
     {
-        if (ImGui::Button("Return to the game"))
-            signalPause.trigger(false);
-        if (ImGui::Button("Informations"))
+        uiPauseMenu();
+        ImGui::EndPopup();
+    }
+
+}
+
+/**
+ * @brief Generate the UI pause menu
+ */
+void GameGUI::uiPauseMenu()
+{
+    // Main pause menu
+    if (ImGui::Button("Return to the game"))
+        signalPause.trigger(false);
+
+    if (ImGui::Button("Settings"))
+    {
+        ImGui::OpenPopup(UI::SETTINGS_POPUP);
+        uiLoadSettingsPopup();
+    }
+
+    if (ImGui::Button("Informations"))
+        ImGui::OpenPopup(UI::INFOS_POPUP);
+
+    if (ImGui::Button("Exit"))
+    {
+        m_signalOnClose.trigger();
+        exit(EXIT_SUCCESS);
+    }
+
+    // Information popup
+    if (ImGui::BeginPopupModal(UI::INFOS_POPUP))
+    {
+        if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::OpenPopup(UI::INFOS_POPUP);
+            ImGui::Text("Name : %s", m_game->name().c_str());
+            ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
         }
-        if (ImGui::Button("Exit"))
+        if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            m_signalOnClose.trigger();
-            exit(EXIT_SUCCESS);
+            ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+            ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
+#ifdef GIT_BRANCH
+            ImGui::Text("Branch : %s", GIT_BRANCH);
+#endif
+#ifdef GIT_COMMIT_HASH
+            ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
+#endif
+            ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
         }
-        if (ImGui::BeginPopupModal(UI::INFOS_POPUP))
+        ImGui::EndPopup();
+    }
+
+    // Settings popup
+    if (ImGui::BeginPopupModal(UI::SETTINGS_POPUP, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        if (ImGui::BeginTabBar(UI::SETTINGS_TABBAR_NAME))
         {
-            if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
+            namespace preferences = config::structure::globalFile::preferences;
+            if (ImGui::BeginTabItem(preferences::SECTION))
             {
-                ImGui::Text("Name : %s", m_game->name().c_str());
-                ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
+                ImGui::Checkbox("Fullscreen", &m_ui.settings.fullscreen);
+
+                ImGui::ListBox("Resolution", &m_ui.settings.resolutionItemSelected,
+                               static_cast<const char**>(&m_ui.settings.availableResolutions[0]),
+                               m_ui.settings.availableResolutions.size());
+
+                ImGui::EndTabItem();
             }
-            if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
+            if (ImGui::BeginTabItem("Key binding"))
             {
-                ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
-                ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
-                ImGui::Text("Branch : %s", GIT_BRANCH);
-                ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
-                ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
+
+                ImGui::EndTabItem();
             }
-            ImGui::EndPopup();
+            ImGui::EndTabBar();
+
         }
+        if (ImGui::Button("Save"))
+        {
+            namespace preferences = config::structure::globalFile::preferences;
+            auto config = m_context->config();
+            config->setValue(preferences::SECTION, preferences::FULLSCREEN,
+                             (m_ui.settings.fullscreen ? "true" : "false"));
+
+            config->setValue(preferences::SECTION, preferences::RESOLUTION,
+                             (m_ui.settings.availableResolutions.at(m_ui.settings.resolutionItemSelected)));
+            config->saveToFile();
+        }
+
 
         ImGui::EndPopup();
     }
 
+}
+
+/**
+ * @brief Load the settings locally
+ */
+void GameGUI::uiLoadSettingsPopup()
+{
+    namespace preferences = config::structure::globalFile::preferences;
+    m_ui.settings.fullscreen = false;
+    std::string tmp = m_context->config()->getValue(preferences::SECTION, preferences::FULLSCREEN);
+    if (tmp == "true")
+        m_ui.settings.fullscreen = true;
+
+    m_ui.settings.resolution = m_context->config()->getValue(preferences::SECTION, preferences::RESOLUTION);
+    if (m_ui.settings.resolution.empty())
+        m_ui.settings.resolution = GAME_DEFAULT_RESOLUTION;
+
+    m_ui.settings.availableResolutions = {"1920x1080", "900x600"};
+
+    m_ui.settings.resolutionItemSelected = static_cast<int>(
+                std::distance(m_ui.settings.availableResolutions.begin(),
+                              std::find(m_ui.settings.availableResolutions.begin(),
+                                        m_ui.settings.availableResolutions.end(),
+                                        m_ui.settings.resolution.c_str())));
+
+    if (m_ui.settings.resolutionItemSelected == static_cast<int>(m_ui.settings.availableResolutions.size()))
+        m_ui.settings.availableResolutions.push_back(m_ui.settings.resolution.c_str());
 }
 
 } // namespace GUI
