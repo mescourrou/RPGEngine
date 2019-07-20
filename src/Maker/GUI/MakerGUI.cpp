@@ -105,6 +105,11 @@ void MakerGUI::draw()
     m_window->display();
 }
 
+void MakerGUI::resetUI()
+{
+    m_ui = UI();
+}
+
 void MakerGUI::doNewCharacter()
 {
     m_ui.character.newOne = true;
@@ -118,6 +123,20 @@ void MakerGUI::doDeleteCharacter()
     if (!m_ui.character.current.name.empty())
         m_maker->deleteCharacter(m_ui.character.current.name);
     doNewCharacter();
+}
+
+void MakerGUI::doSaveMoney()
+{
+    for (auto& v : m_ui.money.infos.values)
+    {
+        if (std::count(m_ui.money.infos.values.begin(), m_ui.money.infos.values.end(), v) > 1)
+        {
+            LOG(ERROR) << "Multiple money with same values (" << v << ")";
+            return;
+        }
+    }
+    m_ui.money.infos.moneyList = m_ui.money.nameList.toVectorString();
+    m_maker->saveMoney(m_ui.money.infos);
 }
 
 void MakerGUI::makeUI()
@@ -155,6 +174,7 @@ void MakerGUI::makeUI()
         {
             ImGui::Checkbox("Console", &m_ui.windows.console);
             ImGui::Checkbox("Character", &m_ui.windows.character);
+            ImGui::Checkbox("Money system", &m_ui.windows.money);
 
             ImGui::EndMenu();
         }
@@ -214,6 +234,7 @@ void MakerGUI::makeUI()
                 m_ui.newGame.state = UI::NewGame::NONE;
                 events::WorkerThread::newWork(m_maker, &Maker::doNewGame, m_ui.newGame.gameName, m_ui.newGame.directory);
                 ImGui::CloseCurrentPopup();
+                resetUI();
             }
             ImGui::SameLine();
         }
@@ -233,8 +254,8 @@ void MakerGUI::makeUI()
         {
             if (m_ui.openGame.gameList.size() == 0)
             {
-                for (auto& g : m_maker->gameList())
-                    m_ui.openGame.gameList.push_back(g);
+
+                m_ui.openGame.gameList = m_maker->gameList();
                 m_ui.openGame.selectedItem = 0;
             }
             if (m_ui.openGame.gameList.size() > 0)
@@ -245,6 +266,7 @@ void MakerGUI::makeUI()
                 if (ImGui::Button("OK"))
                 {
                     events::WorkerThread::newWork(m_maker, &Maker::doOpenGame, m_ui.openGame.gameList.getStr(m_ui.openGame.selectedItem));
+                    m_ui.money.moneyLoaded = false;
                     m_ui.openGame.window = false;
                 }
             }
@@ -318,6 +340,51 @@ void MakerGUI::makeUI()
                 if (ImGui::Button("Delete"))
                 {
                     doDeleteCharacter();
+                }
+            }
+            ImGui::End();
+        }
+        if (m_ui.windows.money)
+        {
+            if (ImGui::Begin("Money system", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+            {
+                if (!m_ui.money.moneyLoaded)
+                {
+                    if (!m_maker->getMoneyInformations(m_ui.money.infos))
+                        LOG(WARNING) << "Fail to load money information";
+                    m_ui.money.nameList = m_ui.money.infos.moneyList;
+                    m_ui.money.moneyLoaded = true;
+                }
+                ImGui::Text("Base money : %s", (m_ui.money.nameList.size() > 0 ? m_ui.money.nameList.get(m_ui.money.infos.baseMoney):"None"));
+                for (unsigned int i = 0; i < m_ui.money.nameList.size() ; i++)
+                {
+                    ImGui::PushID(i);
+                    ImGui::RadioButton("", &m_ui.money.infos.baseMoney, i);
+                    ImGui::SameLine();
+                    ImGui::InputText("Name", m_ui.money.nameList.get(i), 16, ImGuiInputTextFlags_CharsNoBlank);
+
+                    ImGui::SameLine();
+                    if (m_ui.money.infos.baseMoney != i)
+                    {
+                        if (ImGui::InputInt("Value", (int*)&m_ui.money.infos.values.at(i)) && m_ui.money.infos.values.at(i) <= 0)
+                            m_ui.money.infos.values.at(i) = 1;
+                    }
+                    else
+                    {
+                        m_ui.money.infos.values.at(i) = 1;
+                        ImGui::Text("Value = 1");
+                    }
+                    ImGui::PopID();
+                }
+                if (ImGui::Button("Save"))
+                {
+                    doSaveMoney();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("New money"))
+                {
+                    m_ui.money.nameList.push_back("");
+                    m_ui.money.infos.values.push_back(1);
                 }
             }
             ImGui::End();

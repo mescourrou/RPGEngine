@@ -24,6 +24,7 @@ public:
     std::vector<std::string> toVectorString() const;
     std::string getStr(size_t i) const;
     const char* get(size_t i) const;
+    char* get(size_t i);
     void clear();
     bool remove(const std::string& str);
     bool remove(size_t i);
@@ -139,6 +140,18 @@ char **stringlist_batch<BATCH>::data()
 }
 
 template<short BATCH>
+std::vector<std::string> stringlist_batch<BATCH>::toVectorString() const
+{
+    std::vector<std::string> ret;
+    ret.reserve(m_size);
+    for (unsigned int i = 0; i < m_size; i++)
+    {
+        ret.push_back(m_data[i]);
+    }
+    return ret;
+}
+
+template<short BATCH>
 std::string stringlist_batch<BATCH>::getStr(size_t i) const
 {
     assert(i < m_size);
@@ -148,7 +161,14 @@ std::string stringlist_batch<BATCH>::getStr(size_t i) const
 template<short BATCH>
 const char *stringlist_batch<BATCH>::get(size_t i) const
 {
-    assert(i < BATCH);
+    assert(i < m_size);
+    return m_data[i];
+}
+
+template<short BATCH>
+char *stringlist_batch<BATCH>::get(size_t i)
+{
+    assert(i < m_size);
     return m_data[i];
 }
 

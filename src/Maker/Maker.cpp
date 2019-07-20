@@ -173,6 +173,8 @@ bool Maker::doOpenGame(const std::string &gameName)
         return false;
     }
 
+    if (m_db)
+        m_db.reset();
     m_db = std::make_shared<database::Database>(m_context->gameLocation() + "/" + m_dbFile);
     if (!m_db)
     {
@@ -439,6 +441,52 @@ bool Maker::deleteCharacter(const std::string &name)
         return true;
     }
     return false;
+
+}
+
+bool Maker::saveMoney(const Maker::MoneyInformations &infos)
+{
+    using namespace database;
+    if (infos.values.at(infos.baseMoney) != 1)
+        return false;
+    // Delete all values
+    m_db->query(Query::createQuery<Query::DELETE>(Model::Money::TABLE, m_db));
+
+    for (unsigned int i = 0; i < infos.moneyList.size(); i++)
+    {
+        if (i != infos.baseMoney && infos.values.at(i) == 1)
+            return false;
+        m_db->query(Query::createQuery<Query::INSERT>(Model::Money::TABLE, m_db)
+                    .value(Model::Money::NAME, infos.moneyList.at(i))
+                    .value(Model::Money::VALUE, std::to_string(infos.values.at(i))));
+    }
+    return true;
+}
+
+bool Maker::getMoneyInformations(Maker::MoneyInformations &out)
+{
+    using namespace database;
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Money::TABLE, m_db)
+                              .sort(Model::Money::VALUE));
+    if (!Database::isQuerySuccessfull(result))
+        return false;
+    if (result.size() <= 1)
+        return false;
+
+    out.values.clear();
+    out.moneyList.clear();
+    out.baseMoney = -1;
+    for (unsigned int i = 1; i < result.size(); i++)
+    {
+        out.values.push_back(std::stoi(result.at(i).at(Model::Money::VALUE)));
+        out.moneyList.push_back(result.at(i).at(Model::Money::NAME));
+        if (out.values.back() == 1)
+            out.baseMoney = i - 1;
+
+    }
+    if (out.baseMoney == -1)
+        return false;
+    return true;
 
 }
 

@@ -78,15 +78,26 @@ protected:
             bool newOne = true;
         } character;
 
+        struct Money {
+            Maker::MoneyInformations infos;
+            stringlist nameList;
+            bool moneyLoaded = false;
+        } money;
+
         struct {
             bool console = true;
             bool character = true;
+            bool money = true;
         } windows;
 
     } m_ui;                                         ///< UI structure containing the ui linked variable
 
+    void resetUI();
+
     void doNewCharacter();
     void doDeleteCharacter();
+
+    void doSaveMoney();
 
     std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;
     void makeUI();

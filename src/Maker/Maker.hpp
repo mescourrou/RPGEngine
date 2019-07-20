@@ -85,6 +85,7 @@ public:
         } progression = NONE;
 
     };
+    const States& getStates() const { return m_states; }
 
     struct CharacterInformations {
         std::string name;
@@ -108,7 +109,14 @@ public:
     bool deleteCharacter(const std::string& name);
     events::Event<std::vector<std::string>> signalCharacterListUpdated;
 
-    const States& getStates() const { return m_states; }
+    struct MoneyInformations {
+        std::vector<std::string> moneyList;
+        std::vector<int> values;
+        int baseMoney = 0;
+    };
+    bool saveMoney(const MoneyInformations& infos);
+    bool getMoneyInformations(MoneyInformations& out);
+
 private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     void updateCharacterList();
