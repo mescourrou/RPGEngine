@@ -13,17 +13,21 @@ namespace character {
  */
 class Vendor : public NPC
 {
+    DECLARE_BASEOBJECT(Vendor)
 public:
     Vendor() = delete;
     Vendor(std::string name, std::shared_ptr<config::Context> context);
     /// @brief Default constructor
     ~Vendor() override = default;
 
+    bool loadFromDatabase(std::shared_ptr<database::Database> db) override;
+
     const std::weak_ptr<object::Inventory> seeInventory() const;
     bool sell(const std::string &objectName, Character& buyer);
     bool sell(unsigned int objectInventoryId, Character& buyer);
     bool buy(const std::string &objectName, Character& seller);
     bool buy(unsigned int objectInventoryId, Character &seller);
+
 };
 
 } // namespace character

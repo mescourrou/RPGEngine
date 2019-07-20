@@ -15,6 +15,7 @@ target_include_directories(Maker PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_D
 
 if (RPG_BUILD_GUI)
     add_subdirectory(GUI)
+	target_link_libraries(Maker MakerGUI)
 endif()
 
 if (RPG_BUILD_TEST)

@@ -30,14 +30,15 @@ endif()
 ExternalProject_Get_Property(imgui-SFML_project source_dir binary_dir)
 
 if (NOT TARGET ImGui-SFML)
-	find_library(OpenGL REQUIRED)
 	add_library(ImGui-SFML STATIC IMPORTED GLOBAL)
 	add_dependencies(ImGui-SFML imgui-SFML_project)
+
+	set(INCLUDED_DIRECTORIES ${source_dir} ${RPG_THIRDPARTY_DIR}/imgui)
 
 	set_target_properties(ImGui-SFML PROPERTIES
 	"IMPORTED_LOCATION" "${binary_dir}/libImGui-SFML.a"
 	"IMPORTED_LINK_INTERFACE_LIBRARIES" "OpenGL"
-    "INTERFACE_INCLUDE_DIRECTORIES" "${source_dir}"
+	"INTERFACE_INCLUDE_DIRECTORIES" "${INCLUDED_DIRECTORIES}"
 )
 endif()
 

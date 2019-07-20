@@ -1,0 +1,11 @@
+find_package(SFML REQUIRED)
+find_package(ImGUI-SFML REQUIRED)
+
+add_library(ToolsGUI
+	FileBrowser.cpp FileBrowser.hpp)
+target_link_libraries(ToolsGUI
+	${SFML_TARGETS} ImGui-SFML)
+
+
+target_include_directories(ToolsGUI PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(ToolsGUI PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")

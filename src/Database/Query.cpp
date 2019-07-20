@@ -396,15 +396,44 @@ std::string UpdateQuery::str() const
     ss << "UPDATE " << m_table << " SET ";
 
     unsigned int i = 0;
+    auto columnTypes = m_db->columnsType(m_table);
     for (auto value : m_set)
     {
-        ss << value.first << " = " << value.second;
+        ss << value.first << " = ";
+        DataType columnType = columnTypes.at(value.first);
+        if (columnType == DataType::BLOB || columnType == DataType::TEXT)
+            ss << "'" << value.second << "' ";
+        else
+            ss << value.second << " ";
+
 
         i++;
         if (i < m_set.size())
             ss << ", ";
 
     }
+
+    if (!m_conditions.empty())
+    {
+        ss << " WHERE ";
+        for (auto condition : m_conditions)
+        {
+            ss << condition;
+            if (condition != m_conditions.back())
+                ss << " AND ";
+        }
+    }
+
+    ss << ";";
+    return ss.str();
+}
+
+std::string DeleteQuery::str() const
+{
+    if (!isValid())
+        return {};
+    std::stringstream ss;
+    ss << "DELETE FROM " << m_table << " ";
 
     if (!m_conditions.empty())
     {

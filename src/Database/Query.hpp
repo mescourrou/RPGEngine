@@ -42,7 +42,8 @@ public:
         SELECT, ///< Select query : get values
         INSERT, ///< Insert query : add new values
         CREATE, ///< Create table query : create a new table
-        UPDATE ///< Update query : edit values
+        UPDATE, ///< Update query : edit values
+        DELETE  ///< Delete query : delete values from a table
     };
 
     /**
@@ -224,10 +225,34 @@ public:
     UpdateQuery& set(const std::string& columnName, const std::string& value);
     /// @brief Add filter condition
     UpdateQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
+    UpdateQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this; }
 
     std::string str() const override;
 protected:
     std::map<std::string, std::string> m_set; ///< Couples column name / new value
+    std::vector<std::string> m_conditions; ///< Filter for update
+
+};
+
+
+/**
+ * @brief Create an DELETE query
+ * @warning If no "where" is given, this query delete all the row from the table
+ */
+class DeleteQuery : public Query
+{
+    DECLARE_BASEOBJECT(DeleteQuery)
+public:
+    /// @brief Construct a UPDATE Query
+    DeleteQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) { m_valid = true; }
+    ~DeleteQuery() override = default;
+
+    /// @brief Add filter condition
+    DeleteQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
+    DeleteQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this; }
+
+    std::string str() const override;
+protected:
     std::vector<std::string> m_conditions; ///< Filter for update
 
 };
@@ -240,6 +265,8 @@ template<> struct Query::FindQueryType<Query::INSERT> { typedef InsertQuery type
 template<> struct Query::FindQueryType<Query::CREATE> { typedef CreateQuery type; /**< Type matching QueryTypes::CREATE */ };
 /// QueryTypes::UPDATE into UpdateQuery
 template<> struct Query::FindQueryType<Query::UPDATE> { typedef UpdateQuery type; /**< Type matching QueryTypes::UPDATE */ };
+/// QueryTypes::DELETE into DeleteQuery
+template<> struct Query::FindQueryType<Query::DELETE> { typedef DeleteQuery type; /**< Type matching QueryTypes::UPDATE */ };
 
 /**
  * @fn Query::FindQueryType<T>::type Query::createQuery(const std::string& table)

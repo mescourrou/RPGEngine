@@ -15,10 +15,11 @@ void Logger::send(google::LogSeverity severity, const char *full_filename,
     m_newLogs = true;
 }
 
-const std::string Logger::getLog()
+const std::string Logger::getLog(size_t size)
 {
     getInstance().m_newLogs = false;
-    return getInstance().m_logs.str();
+    std::string ret = getInstance().m_logs.str();
+    return ret;
 }
 
 bool Logger::newLogs()

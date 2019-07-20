@@ -3,80 +3,8 @@
 
 #include <Database.hpp>
 
-#include <filesystem>
-
 namespace maker {
-#ifdef BUILD_USE_FILESYSTEM
-/*
- * Test the loading of a non existant database : create the database
- */
-TEST_F(MakerTest, LoadingDatabaseOpenning)
-{
-    if (std::filesystem::exists("not_existing_directory"))
-        std::filesystem::remove_all("not_existing_directory");
 
-    std::string dbFilename = "not_existing_directory/sample0.db";
-    Maker maker;
-
-    Maker::DatabaseStatus expectedStatus = Maker::EMPTY;
-    Maker::DatabaseStatus actualStatus;
-
-    auto cb = [&](Maker::DatabaseStatus status){ actualStatus = status;};
-
-    maker.subscribeDatabaseLoaded(cb);
-
-    maker.loadDatabase(dbFilename);
-    usleep(100);
-
-    EXPECT_EQ(actualStatus, expectedStatus);
-}
-
-/*
- * Test the loading of an empty database
- */
-TEST_F(MakerTest, LoadingDatabaseEmpty)
-{
-    std::filesystem::path usedFile = "data/sample0.db";
-
-    std::filesystem::remove(usedFile);
-    Maker maker;
-
-    Maker::DatabaseStatus expectedStatus = Maker::EMPTY;
-    Maker::DatabaseStatus actualStatus;
-
-    auto cb = [&](Maker::DatabaseStatus status){ actualStatus = status;};
-
-    maker.subscribeDatabaseLoaded(cb);
-
-    maker.loadDatabase(usedFile);
-    usleep(100);
-
-    EXPECT_EQ(actualStatus, expectedStatus);
-}
-
-/*
- * Test the creation of the database
- */
-TEST_F(MakerTest, CreatingDatabaseModel)
-{
-    std::filesystem::path usedFile = "data/sample0.db";
-
-    std::filesystem::remove(usedFile);
-    Maker maker;
-
-    Maker::DatabaseStatus actualStatus = Maker::NOT_LOADED;
-
-    auto cb = [&](Maker::DatabaseStatus status){ actualStatus = status;};
-
-    maker.subscribeDatabaseLoaded(cb);
-    maker.loadDatabase(usedFile);
-    usleep(100);
-
-    ASSERT_NE(actualStatus, Maker::NOT_LOADED);
-
-    EXPECT_TRUE(maker.createDatabaseModel());
-}
-#endif
 }
 
 int main(int argc, char **argv)

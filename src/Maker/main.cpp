@@ -6,8 +6,11 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    maker::Maker maker;
-    maker.loadDatabase("game1.db");
+#ifndef BUILD_USE_FILESYSTEM
+    throw std::string("Can't use Maker without filesystem");
+#endif
+    maker::Maker maker(argc, argv);
+    maker.initialize();
 
-    return maker.createDatabaseModel();
+    return maker.run();
 }
