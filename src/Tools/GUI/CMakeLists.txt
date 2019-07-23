@@ -2,7 +2,8 @@ find_package(SFML REQUIRED)
 find_package(ImGUI-SFML REQUIRED)
 
 add_library(ToolsGUI
-	FileBrowser.cpp FileBrowser.hpp)
+	FileBrowser.cpp FileBrowser.hpp
+	Popups.cpp Popups.hpp)
 target_link_libraries(ToolsGUI
 	${SFML_TARGETS} ImGui-SFML)
 

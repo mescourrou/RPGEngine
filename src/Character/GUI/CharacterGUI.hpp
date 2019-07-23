@@ -39,7 +39,7 @@ public:
     /// @brief Default destructor
     ~CharacterGUI() override = default;
 
-    void prepare(const sf::Vector2u& targetSize) override;
+    void prepare(const sf::Vector2f& targetSize) override;
 
     void setOnScreenPosition(const sf::Vector2f& position) override;
 

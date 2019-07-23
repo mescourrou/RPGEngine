@@ -4,6 +4,9 @@
 #include <WorkerThread.hpp>
 #include <Maker.hpp>
 #include <Logger.hpp>
+#include <Popups.hpp>
+
+#include <MapGUI.hpp>
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <imgui-SFML.h>
@@ -30,6 +33,11 @@ bool MakerGUI::initialize()
         ImGui::SFML::Shutdown();}
     );
 
+    m_maker->signalMapUdated.subscribeSync([this](std::weak_ptr<map::Map> mapPtr) {
+       m_mapGUI = std::make_shared<map::GUI::MapGUI>(mapPtr);
+       m_mapGUI->load(m_context->kMapPath());
+    });
+
     m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(900, 600), "RPGEngine", sf::Style::Resize | sf::Style::Close);
     ImGui::SFML::Init(*m_window);
     return true;
@@ -49,6 +57,10 @@ void MakerGUI::eventManager()
         {
             signalClose.trigger();
             exit(EXIT_SUCCESS);
+        }
+        if (event.type == sf::Event::Resized)
+        {
+            if (m_mapGUI) m_mapGUI->forcePrepare(m_window->getView().getSize());
         }
         if (event.type == sf::Event::KeyPressed)
         {
@@ -84,6 +96,18 @@ void MakerGUI::eventManager()
                     exit(EXIT_SUCCESS);
                 }
                 break;
+            case sf::Keyboard::Left:
+                if (m_mapGUI) m_mapGUI->move(-5,0);
+                break;
+            case sf::Keyboard::Right:
+                if (m_mapGUI) m_mapGUI->move(5,0);
+                break;
+            case sf::Keyboard::Up:
+                if (m_mapGUI) m_mapGUI->move(0,-5);
+                break;
+            case sf::Keyboard::Down:
+                if (m_mapGUI) m_mapGUI->move(0,5);
+                break;
             }
         }
         if (event.type == sf::Event::KeyReleased)
@@ -100,7 +124,14 @@ void MakerGUI::eventManager()
 
 void MakerGUI::draw()
 {
-    m_window->clear(sf::Color::White);
+    if (m_mapGUI)
+        m_mapGUI->prepare(m_window->getView().getSize());
+    m_window->clear();//sf::Color::White);
+    if (m_mapGUI)
+    {
+        m_window->draw(*m_mapGUI);
+    }
+    ImGui::Popups::Draw();
     ImGui::SFML::Render(*m_window);
     m_window->display();
 }
@@ -131,7 +162,7 @@ void MakerGUI::doSaveMoney()
     {
         if (std::count(m_ui.money.infos.values.begin(), m_ui.money.infos.values.end(), v) > 1)
         {
-            LOG(ERROR) << "Multiple money with same values (" << v << ")";
+            ImGui::Popups::Error("Multiple money with same values (" + std::to_string(v) + ")");
             return;
         }
     }
@@ -175,6 +206,8 @@ void MakerGUI::makeUI()
             ImGui::Checkbox("Console", &m_ui.windows.console);
             ImGui::Checkbox("Character", &m_ui.windows.character);
             ImGui::Checkbox("Money system", &m_ui.windows.money);
+            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
+            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
 
             ImGui::EndMenu();
         }
@@ -208,6 +241,7 @@ void MakerGUI::makeUI()
         if (m_fileBrowser->HasSelected())
         {
             m_ui.newGame.directory = m_fileBrowser->GetSelected().string();
+            m_ui.newGame.directory.erase(m_ui.newGame.directory.end()-1);
             m_fileBrowser->ClearSelected();
             m_fileBrowser->Close();
             ImGui::OpenPopup("New game");
@@ -232,7 +266,7 @@ void MakerGUI::makeUI()
             if (ImGui::Button("Validate"))
             {
                 m_ui.newGame.state = UI::NewGame::NONE;
-                events::WorkerThread::newWork(m_maker, &Maker::doNewGame, m_ui.newGame.gameName, m_ui.newGame.directory);
+                events::WorkerThread::newWork(m_maker, &Maker::doNewGame, std::string(m_ui.newGame.gameName), m_ui.newGame.directory);
                 ImGui::CloseCurrentPopup();
                 resetUI();
             }
@@ -290,7 +324,7 @@ void MakerGUI::makeUI()
 
     if (m_maker->getStates().progression >= Maker::States::READY)
     {
-        if (m_ui.windows.character)
+        if (m_ui.windows.currentMap && m_ui.map.list.size() > 0 && m_ui.windows.character)
         {
             if (ImGui::Begin("Character", nullptr))
             {
@@ -299,7 +333,7 @@ void MakerGUI::makeUI()
                 {
                     if (!m_maker->getCharacterInformations(m_ui.character.list.getStr(m_ui.character.currentCharacter), m_ui.character.current))
                     {
-                        LOG(ERROR) << "Error while loading " << m_ui.character.list.getStr(m_ui.character.currentCharacter) << " character informations";
+                        ImGui::Popups::Error(std::string("Error while loading " + m_ui.character.list.getStr(m_ui.character.currentCharacter) + " character informations").c_str());
                         doDeleteCharacter();
                         doNewCharacter();
                     }
@@ -320,15 +354,21 @@ void MakerGUI::makeUI()
                 {
                     if (ImGui::Button("Save"))
                     {
-                        m_ui.character.edit.name = m_ui.character.name;
-                        if (m_ui.character.newOne)
-                        {
-                            m_maker->saveCharacter(m_ui.character.edit);
-                            m_ui.character.newOne = false;
-                        }
+                        if (m_ui.map.list.size() == 0)
+                            ImGui::Popups::Error("Create a map before creating a character:\n=> The character list here corresponds to the characters on the current map");
                         else
-                            m_maker->saveCharacter(m_ui.character.edit, m_ui.character.current);
-                        m_ui.character.current = m_ui.character.edit;
+                        {
+                            m_ui.character.edit.name = m_ui.character.name;
+                            if (m_ui.character.newOne)
+                            {
+                                m_maker->saveCharacter(m_ui.character.edit);
+                                m_ui.character.newOne = false;
+                            }
+                            else
+                                m_maker->saveCharacter(m_ui.character.edit, m_ui.character.current);
+                            m_ui.character.current = m_ui.character.edit;
+                        }
+
                     }
                 }
                 ImGui::Columns();
@@ -385,6 +425,54 @@ void MakerGUI::makeUI()
                 {
                     m_ui.money.nameList.push_back("");
                     m_ui.money.infos.values.push_back(1);
+                }
+            }
+            ImGui::End();
+        }
+        if (m_ui.windows.maps)
+        {
+            if (ImGui::Begin("Map selector"))
+            {
+                if (!m_ui.map.loaded)
+                {
+                    m_ui.map.list = m_maker->getMapList();
+                    if (m_ui.map.list.size() > 0)
+                        m_maker->setCurrentMap(m_ui.map.list.getStr(0));
+                    m_ui.map.loaded = true;
+                }
+                for (unsigned int i = 0; i < m_ui.map.list.size(); i++)
+                {
+                    ImGui::PushID(i);
+                    if (ImGui::RadioButton("##push", (int*)&m_ui.map.selected, i))
+                        m_maker->setCurrentMap(m_ui.map.list.getStr(i));
+                    ImGui::SameLine();
+                    ImGui::InputText("##input", m_ui.map.list.get(i), 16);
+                    ImGui::PopID();
+                }
+                if (ImGui::Button("New map"))
+                {
+                    m_ui.map.list.push_back("");
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Delete map"))
+                {
+                    m_ui.map.list.remove(m_ui.map.selected);
+                    if (m_ui.map.selected > 0)
+                        m_ui.map.selected--;
+
+                }
+            }
+            ImGui::End();
+        }
+        if (m_ui.windows.currentMap && m_ui.map.list.size() > 0)
+        {
+            if (ImGui::Begin("Current map"))
+            {
+                ImGui::InputText("Name", m_ui.map.list.get(m_ui.map.selected), 16);
+
+                if (ImGui::Button("Save"))
+                {
+
                 }
             }
             ImGui::End();

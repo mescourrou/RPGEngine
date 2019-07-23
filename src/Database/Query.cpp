@@ -11,18 +11,20 @@ namespace database
  * @param [in] column Column to look for
  * @return database::DataType matching
  */
-DataType Query::dataType(const std::string &column)
+DataType Query::dataType(Column column)
 {
     if (!m_db)
         throw QueryException("No database given", DatabaseException::MISSING_DATABASE);
-    auto types = m_db->columnsType(m_table);
-    if (types.find(column) == types.end())
+    if (column.tableName.empty())
+        column.tableName = m_table;
+    auto types = m_db->columnsType(column.tableName);
+    if (types.find(column.columnName) == types.end())
     {
-        LOG(WARNING) << "Requested column (" << column << ") not found in the database";
+        LOG(WARNING) << "Requested column (" << column.columnName << ") not found in the table " << column.tableName;
         return BLOB;
     }
 
-    return m_db->columnsType(m_table).at(column);
+    return types.at(column.columnName);
 }
 
 /**
@@ -53,12 +55,12 @@ std::string Query::operatorAsString(Query::Operator op)
  * @brief Check if the column name is valid and if the column exists
  * @param [in] name Name of the column to check
  */
-void Query::checkColumnName(const std::string &name)
+void Query::checkColumnName(const Column &column)
 {
-    if (!checkColumnNameValidity(name))
-        throw QueryException(std::string("Column name not valid : ").append(name), QueryException::INVALID_COLUMN_NAME);
-    if (!checkColumnExistance(name))
-        throw QueryException(std::string("Column name not existent in the database : ").append(name), QueryException::INEXISTANT_COLUMN_NAME);
+    if (!checkColumnNameValidity(column))
+        throw QueryException(std::string("Column name not valid : ").append(column.tableName), QueryException::INVALID_COLUMN_NAME);
+    if (!checkColumnExistance(column))
+        throw QueryException(std::string("Column name not existent in the database : ").append(column.tableName), QueryException::INEXISTANT_COLUMN_NAME);
 
 }
 
@@ -70,12 +72,12 @@ void Query::checkColumnName(const std::string &name)
  * @param [in] name Name to check
  * @return Return true if the name is valid
  */
-bool Query::checkColumnNameValidity(const std::string &name)
+bool Query::checkColumnNameValidity(const Column &column)
 {
-    if (name.find(' ') != std::string::npos)
+    if (column.columnName.find(' ') != std::string::npos)
     {
         m_valid = false;
-        LOG(ERROR) << "Not valid column name : '" << name << "'";
+        LOG(ERROR) << "Not valid column name : '" << column.columnName << "'";
         return false;
     }
     return true;
@@ -88,15 +90,15 @@ bool Query::checkColumnNameValidity(const std::string &name)
  * @param [in] name Name of the column to check
  * @return Return true if the column exists
  */
-bool Query::checkColumnExistance(const std::string &name, std::string table)
+bool Query::checkColumnExistance(Column column)
 {
-    if (table.empty())
-        table = m_table;
-    auto columnList = m_db->columnList(table);
-    if (std::find(columnList.begin(), columnList.end(), name) == columnList.end())
+    if (column.tableName.empty())
+        column.tableName = m_table;
+    auto columnList = m_db->columnList(column.tableName);
+    if (std::find(columnList.begin(), columnList.end(), column.columnName) == columnList.end())
     {
         m_valid = false;
-        LOG(ERROR) << "'" << name << "' column doesn't exists in the table '" << table << "'";
+        LOG(ERROR) << "'" << column.columnName << "' column doesn't exists in the table '" << column.tableName << "'";
         return false;
     }
     return true;
@@ -109,13 +111,12 @@ bool Query::checkColumnExistance(const std::string &name, std::string table)
  * @param [in] op Operator of comparison
  * @param [in] value Value to compare to
  */
-void Query::doWhere(std::vector<std::string> &conditions, const std::string &column, Query::Operator op, std::string value)
+void Query::doWhere(std::vector<std::string> &conditions, Column column, Query::Operator op, std::string value)
 {
-
     auto type = dataType(column);
     if (type == BLOB || type == TEXT)
         value = std::string("'").append(value).append("'");
-    conditions.push_back(std::string().append(column).append(" ")
+    conditions.push_back(std::string().append(column.str()).append(" ")
                          .append(operatorAsString(op)).append(" ").append(value));
 }
 
@@ -124,10 +125,10 @@ void Query::doWhere(std::vector<std::string> &conditions, const std::string &col
  * @param [in,out] columns Column list to modify
  * @param [in] column Column to add
  */
-void Query::doColumn(std::vector<std::string> &columns, const std::string &column)
+void Query::doColumn(std::vector<std::string> &columns, const Column &column)
 {
     checkColumnName(column);
-    columns.push_back(column);
+    columns.push_back(column.str());
 }
 
 /**
@@ -136,25 +137,25 @@ void Query::doColumn(std::vector<std::string> &columns, const std::string &colum
  * @param [in] value Value to insert
  * @return New query
  */
-void Query::doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value)
+void Query::doValue(std::vector<std::pair<std::string, std::string> > &values, const Column &column, std::string value)
 {
     checkColumnName(column);
     auto type = dataType(column);
     if (type == BLOB || type == TEXT)
         value = std::string("'").append(value).append("'");
     m_valid = true;
-    values.push_back(std::pair<std::string, std::string>(column, value));
+    values.push_back(std::pair<std::string, std::string>(column.str(), value));
 }
 
-void Query::doSort(std::vector<std::string>& sortColumns, const std::string &column)
+void Query::doSort(std::vector<std::string>& sortColumns, const Column &column)
 {
     checkColumnName(column);
-    sortColumns.push_back(column);
+    sortColumns.push_back(column.str());
 }
 
 void Query::doJoin(const std::string &table, const std::string &localColumn, const std::string &distantColumn, JoinType type)
 {
-    if (!m_db->isTable(table) || !checkColumnExistance(localColumn) || !checkColumnExistance(distantColumn, table))
+    if (!m_db->isTable(table) || !checkColumnExistance(localColumn) || !checkColumnExistance({table, distantColumn}))
         m_valid = false;
 
     for (const auto& j : m_joins)

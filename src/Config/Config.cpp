@@ -20,6 +20,11 @@ namespace config {
  * @brief Constructor of Config
  * @param filename File to load
  */
+Config::Config()
+{
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+}
+
 Config::Config(const std::string &filename)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;

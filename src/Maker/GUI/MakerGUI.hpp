@@ -24,6 +24,10 @@ namespace maker {
 class Maker;
 }
 
+namespace map::GUI {
+class MapGUI;
+}
+
 
 namespace maker::GUI {
 
@@ -50,6 +54,7 @@ protected:
     std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
     std::shared_ptr<config::Context> m_context;
+    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;
 
     struct UI {
         struct NewGame {
@@ -84,11 +89,28 @@ protected:
             bool moneyLoaded = false;
         } money;
 
+        struct Map {
+            stringlist list;
+            unsigned int selected = 0;
+            bool loaded = false;
+        } map;
+
         struct {
             bool console = true;
             bool character = true;
             bool money = true;
+            bool maps = true;
+            bool currentMap = true;
         } windows;
+
+        struct Popups {
+            struct pair{
+                std::string message = "";
+                bool open = false;
+            };
+
+            pair error;
+        } popups;
 
     } m_ui;                                         ///< UI structure containing the ui linked variable
 
@@ -103,8 +125,6 @@ protected:
     void makeUI();
 
     Maker* m_maker;
-
-private:
 
 };
 

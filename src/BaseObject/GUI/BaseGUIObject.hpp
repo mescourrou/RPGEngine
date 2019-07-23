@@ -23,7 +23,7 @@ public:
     /**
      * @brief Prepare the drawing
      */
-    virtual void prepare(const sf::Vector2u& targetSize) = 0;
+    virtual void prepare(const sf::Vector2f& targetSize) = 0;
 
     /**
      * @brief Set the position of the GUIObject on the screen

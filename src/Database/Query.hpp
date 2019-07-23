@@ -73,6 +73,19 @@ public:
         LEFT_JOIN
     };
 
+    struct Column {
+        Column(const char* columnName) : columnName(columnName) {}
+        Column(const std::string& columnName) : columnName(columnName) {}
+        Column(const char* tableName, const char* columnName) : tableName(tableName),columnName(columnName) {}
+        Column(const std::string& tableName, const std::string& columnName) : tableName(tableName), columnName(columnName) {}
+        std::string tableName = "";
+        std::string columnName;
+
+        std::string str() const {
+            return (!tableName.empty() ? tableName + "." : "") + columnName;
+        }
+    };
+
 private:
     /**
      * @struct FindQueryType
@@ -101,11 +114,11 @@ public:
      */
     virtual bool isValid() const { return m_valid; }
 protected:
-    DataType dataType(const std::string& column);
+    DataType dataType(Column column);
     std::string operatorAsString(Operator op);
-    void checkColumnName(const std::string& name);
-    bool checkColumnNameValidity(const std::string& name);
-    bool checkColumnExistance(const std::string& name, std::string table = "");
+    void checkColumnName(const Column &column);
+    bool checkColumnNameValidity(const Column& column);
+    bool checkColumnExistance(Column column);
 
     /**
      * @brief Add condition to the condition list
@@ -115,10 +128,10 @@ protected:
      * @param [in] condition Condition to add
      */
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& condition) final { conditions.push_back(condition);}
-    virtual void doWhere(std::vector<std::string>& conditions, const std::string& column, Operator op, std::string value) final;
-    virtual void doColumn(std::vector<std::string>& columns, const std::string& column) final;
-    virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value) final;
-    virtual void doSort(std::vector<std::string>& sortColumns, const std::string& column) final;
+    virtual void doWhere(std::vector<std::string>& conditions, Column column, Operator op, std::string value) final;
+    virtual void doColumn(std::vector<std::string>& columns, const Column& column) final;
+    virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const Column &column, std::string value) final;
+    virtual void doSort(std::vector<std::string>& sortColumns, const Column& column) final;
     virtual void doJoin(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN) final;
 
     virtual std::stringstream joinStatement() const final;
@@ -149,13 +162,13 @@ public:
     ~SelectQuery() override = default;
 
     /// @brief Add a selected column
-    SelectQuery& column(const std::string& field) { doColumn(m_columns, field); return *this;}
+    SelectQuery& column(const Column& column) { doColumn(m_columns, column); return *this;}
     /// @brief Add a filter condition
     SelectQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this;}
     /// @brief Add a filter condition
-    SelectQuery& where(const std::string& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
+    SelectQuery& where(const Column& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
     /// @brief Add a sort column
-    SelectQuery& sort(const std::string& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
+    SelectQuery& sort(const Column& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
 
     SelectQuery& join(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN)
     {
@@ -184,7 +197,7 @@ public:
     ~InsertQuery() override = default;
 
     /// @brief Add a value to the adding list
-    InsertQuery& value(const std::string& column, const std::string& value) { doValue(m_values, column, value); return *this; }
+    InsertQuery& value(const Column& column, const std::string& value) { doValue(m_values, column, value); return *this; }
 
     std::string str() const override;
 protected:
@@ -247,7 +260,7 @@ public:
     UpdateQuery& set(const std::string& columnName, const std::string& value);
     /// @brief Add filter condition
     UpdateQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
-    UpdateQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this; }
+    UpdateQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, {column}, op, value); return *this; }
 
     std::string str() const override;
 protected:
@@ -271,7 +284,7 @@ public:
 
     /// @brief Add filter condition
     DeleteQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
-    DeleteQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this; }
+    DeleteQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, {column}, op, value); return *this; }
 
     std::string str() const override;
 protected:

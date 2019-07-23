@@ -117,6 +117,10 @@ public:
     bool saveMoney(const MoneyInformations& infos);
     bool getMoneyInformations(MoneyInformations& out);
 
+    std::set<std::string> getMapList();
+    void setCurrentMap(const std::string& mapName);
+    events::Event<std::weak_ptr<map::Map>> signalMapUdated;
+
 private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     void updateCharacterList();
@@ -133,6 +137,8 @@ private:
     bool m_running = true;
 
     std::vector<std::string> m_characterList;
+
+    std::shared_ptr<map::Map> m_currentMap;
 
 #ifdef RPG_BUILD_GUI
     std::shared_ptr<GUI::MakerGUI> m_gui;

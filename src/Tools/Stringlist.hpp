@@ -4,6 +4,7 @@
 #include <vector>
 #include <string.h>
 #include <cassert>
+#include <set>
 
 template <short BATCH>
 class stringlist_batch
@@ -17,6 +18,7 @@ public:
     ~stringlist_batch();
 
     stringlist_batch& operator=(const std::vector<std::string>& copy);
+    stringlist_batch& operator=(const std::set<std::string>& copy);
 
     size_t size() const;
     const char* const* data() const;
@@ -119,6 +121,24 @@ stringlist_batch<BATCH> &stringlist_batch<BATCH>::operator=(const std::vector<st
     m_size = copy.size();
     return *this;
 
+}
+
+template<short BATCH>
+stringlist_batch<BATCH> &stringlist_batch<BATCH>::operator=(const std::set<std::string> &copy)
+{
+    clear();
+    m_allocated = (copy.size()/BATCH + 1)*BATCH;
+    m_data = new char*[m_allocated];
+    size_t i = 0;
+    for (auto& s : copy)
+    {
+        size_t slen = s.size();
+        m_data[i] = new char[slen];
+        strcpy(m_data[i], s.c_str());
+        i++;
+    }
+    m_size = copy.size();
+    return *this;
 }
 
 template <short BATCH>

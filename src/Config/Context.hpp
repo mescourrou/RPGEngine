@@ -40,8 +40,7 @@ public:
     /// @brief Return the path to the runtime directory
     virtual std::string runtimeDirectory() const { return m_runtimeDirectory; }
     /// @brief Return the config
-    virtual std::shared_ptr<Config> config() const { VLOG(verbosityLevel::FUNCTION_CALL) << "config";
-                                             return  m_config; }
+    virtual std::shared_ptr<Config> config() const { return  m_config; }
     /// @brief Access the config directory (from runtime directory)
     virtual const std::string kConfigPath() const { return m_kConfigPath; }
     virtual const std::string kGlobalConfigFilename() const { return m_kGlobalConfigFilename; }

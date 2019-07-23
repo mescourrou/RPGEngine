@@ -124,7 +124,6 @@ bool Maker::doNewGame(const std::string &gameName, const std::string &directory)
     namespace gameGlobalFile = config::structure::globalFile;
     std::ofstream file(directory + "/" + gameGlobalFile::FILE_NAME);
     file.close();
-
     if (!m_context->config()->loadFile(directory + "/" + gameGlobalFile::FILE_NAME))
     {
         LOG(ERROR) << "Impossible to create the main game file";
@@ -166,6 +165,8 @@ bool Maker::doOpenGame(const std::string &gameName)
     m_states.progression = States::CONFIG_LOADED;
 
     namespace globalFile = config::structure::globalFile;
+    if (!m_context->config())
+        m_context->config() = std::make_shared<config::Config>();
     m_dbFile = m_context->config()->getValue(globalFile::ressources::SECTION, globalFile::ressources::DATABASE);
     if (m_dbFile.empty())
     {
@@ -217,12 +218,16 @@ bool Maker::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 
 void Maker::updateCharacterList()
 {
+    if (!m_currentMap)
+        return;
     m_characterList.clear();
     using namespace database;
     auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Character::TABLE, m_db)
                               .column(Model::Character::NAME)
+                              .join(Model::Position::TABLE, Model::Character::NAME, Model::Position::FK_CHARACTER)
+                              .where({Model::Position::TABLE, Model::Position::FK_MAP}, Query::EQUAL, m_currentMap->name())
                               .sort(Model::Character::NAME));
-    if (!Database::isQuerySuccessfull(result) || result.size() <= 1)
+    if (!Database::isQuerySuccessfull(result))
         return;
 
     for (unsigned int i = 1; i < result.size(); i++)
@@ -286,8 +291,6 @@ bool Maker::saveCharacter(const Maker::CharacterInformations &infos)
     using namespace database;
     m_db->query(Query::createQuery<Query::INSERT>(Model::Character::TABLE, m_db)
                 .value(Model::Character::NAME, infos.name));
-
-    events::WorkerThread::newWork(this, &Maker::updateCharacterList);
     if (infos.type == CharacterInformations::NPC || infos.type == CharacterInformations::VENDOR)
     {
         Model::NPC::Type npcType;
@@ -311,9 +314,11 @@ bool Maker::saveCharacter(const Maker::CharacterInformations &infos)
                 .value(Model::Position::FK_CHARACTER, infos.name)
                 .value(Model::Position::X, std::to_string(infos.position.x()))
                 .value(Model::Position::Y, std::to_string(infos.position.y()))
-                .value(Model::Position::Z, std::to_string(infos.position.z())));
+                .value(Model::Position::Z, std::to_string(infos.position.z()))
+                .value(Model::Position::FK_MAP, (m_currentMap ? m_currentMap->name() : "NULL")));
 
 
+    events::WorkerThread::newWork(this, &Maker::updateCharacterList);
 
     return true;
 }
@@ -332,7 +337,9 @@ bool Maker::saveCharacter(const Maker::CharacterInformations &current, const Mak
                         .where(Model::NPC::NAME, Query::EQUAL, previous.name)
                         .set(Model::NPC::NAME, current.name));
         }
-        events::WorkerThread::newWork(this, &Maker::updateCharacterList);
+        m_db->query(Query::createQuery<Query::UPDATE>(Model::Position::TABLE, m_db)
+                    .where(Model::Position::FK_CHARACTER, Query::EQUAL, previous.name)
+                    .set(Model::Position::FK_CHARACTER, current.name));
     }
     if (current.type != previous.type)
     {
@@ -373,9 +380,11 @@ bool Maker::saveCharacter(const Maker::CharacterInformations &current, const Mak
                     .where(Model::Position::FK_CHARACTER, Query::EQUAL, current.name)
                     .set(Model::Position::X, std::to_string(current.position.x()))
                     .set(Model::Position::Y, std::to_string(current.position.y()))
-                    .set(Model::Position::Z, std::to_string(current.position.z())));
+                    .set(Model::Position::Z, std::to_string(current.position.z()))
+                    .set(Model::Position::FK_MAP, (m_currentMap ? m_currentMap->name() : "NULL")));
     }
 
+    events::WorkerThread::newWork(this, &Maker::updateCharacterList);
     return true;
 }
 
@@ -488,6 +497,33 @@ bool Maker::getMoneyInformations(Maker::MoneyInformations &out)
         return false;
     return true;
 
+}
+
+std::set<std::string> Maker::getMapList()
+{
+    using namespace database;
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE, m_db)
+                              .column(Model::Position::FK_MAP).sort(Model::Position::FK_MAP));
+    if (!Database::isQuerySuccessfull(result))
+        return {};
+    if (result.size() <= 1)
+        return {};
+    std::set<std::string> ret;
+    for (unsigned int i = 1; i < result.size(); i++)
+    {
+        ret.insert(result.at(i).at(Model::Position::FK_MAP));
+    }
+
+    return ret;
+
+}
+
+void Maker::setCurrentMap(const std::string &mapName)
+{
+    m_currentMap = std::make_shared<map::Map>(m_context, mapName);
+    if (m_currentMap->load())
+        signalMapUdated.trigger(m_currentMap);
+    updateCharacterList();
 }
 
 }
