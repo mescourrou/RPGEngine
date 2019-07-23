@@ -68,6 +68,10 @@ public:
         NOT_NULL ///< Not null
     };
 
+    enum JoinType {
+        INNER_JOIN,
+        LEFT_JOIN
+    };
 
 private:
     /**
@@ -77,6 +81,7 @@ private:
     template<QueryTypes T>
     struct FindQueryType{};
 public:
+
     template<QueryTypes T> static typename FindQueryType<T>::type createQuery(const std::string& table, std::shared_ptr<Database> db);
     /// @brief Construct a Query
     Query(const std::string& table, std::shared_ptr<Database> db) : m_table(table), m_db(db) {}
@@ -100,7 +105,7 @@ protected:
     std::string operatorAsString(Operator op);
     void checkColumnName(const std::string& name);
     bool checkColumnNameValidity(const std::string& name);
-    bool checkColumnExistance(const std::string& name);
+    bool checkColumnExistance(const std::string& name, std::string table = "");
 
     /**
      * @brief Add condition to the condition list
@@ -114,8 +119,19 @@ protected:
     virtual void doColumn(std::vector<std::string>& columns, const std::string& column) final;
     virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value) final;
     virtual void doSort(std::vector<std::string>& sortColumns, const std::string& column) final;
+    virtual void doJoin(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN) final;
+
+    virtual std::stringstream joinStatement() const final;
 
     std::string m_table; ///< Name of the table targeted by the Query
+    struct Join {
+        std::string table;
+        std::string localColumn;
+        std::string distantColumn;
+        JoinType type;
+    };
+
+    std::vector<Join> m_joins;
     std::shared_ptr<Database> m_db; ///< Database where the Query will apply (used for verifications)
     bool m_valid = false; ///< Validity of the Query
 
@@ -140,6 +156,12 @@ public:
     SelectQuery& where(const std::string& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
     /// @brief Add a sort column
     SelectQuery& sort(const std::string& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
+
+    SelectQuery& join(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN)
+    {
+        doJoin(table, localColumn, distantColumn, type);
+        return *this;
+    }
 
     std::string str() const override;
 

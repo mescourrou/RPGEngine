@@ -88,13 +88,15 @@ bool Query::checkColumnNameValidity(const std::string &name)
  * @param [in] name Name of the column to check
  * @return Return true if the column exists
  */
-bool Query::checkColumnExistance(const std::string &name)
+bool Query::checkColumnExistance(const std::string &name, std::string table)
 {
-    auto columnList = m_db->columnList(m_table);
+    if (table.empty())
+        table = m_table;
+    auto columnList = m_db->columnList(table);
     if (std::find(columnList.begin(), columnList.end(), name) == columnList.end())
     {
         m_valid = false;
-        LOG(ERROR) << "'" << name << "' column doesn't exists in the table '" << m_table << "'";
+        LOG(ERROR) << "'" << name << "' column doesn't exists in the table '" << table << "'";
         return false;
     }
     return true;
@@ -150,6 +152,46 @@ void Query::doSort(std::vector<std::string>& sortColumns, const std::string &col
     sortColumns.push_back(column);
 }
 
+void Query::doJoin(const std::string &table, const std::string &localColumn, const std::string &distantColumn, JoinType type)
+{
+    if (!m_db->isTable(table) || !checkColumnExistance(localColumn) || !checkColumnExistance(distantColumn, table))
+        m_valid = false;
+
+    for (const auto& j : m_joins)
+    {
+        if (j.table == table)
+        {
+            m_valid = false;
+            return;
+        }
+    }
+
+    m_joins.push_back(Join{table, localColumn, distantColumn, type});
+}
+
+std::stringstream Query::joinStatement() const
+{
+    std::stringstream ss;
+    for (auto& j : m_joins)
+    {
+        ss << " ";
+        switch (j.type) {
+        case INNER_JOIN:
+            ss << "INNER JOIN ";
+            break;
+        case LEFT_JOIN:
+            ss << "LEFT JOIN ";
+            break;
+        default:
+            ss << "INNER JOIN ";
+            break;
+        }
+        ss << j.table << " ON " << m_table << "." << j.localColumn << " = " << j.table << "." << j.distantColumn;
+    }
+    return ss;
+
+}
+
 /**
  * @brief Generate the string corresponding of the Query
  * @return std::string corresponding to the Query
@@ -170,6 +212,7 @@ std::string SelectQuery::str() const
         }
     }
     ss << " FROM " << m_table;
+    ss << joinStatement().str();
     if (m_conditions.size() != 0)
     {
         ss << " WHERE ";
@@ -402,9 +445,9 @@ std::string UpdateQuery::str() const
         ss << value.first << " = ";
         DataType columnType = columnTypes.at(value.first);
         if (columnType == DataType::BLOB || columnType == DataType::TEXT)
-            ss << "'" << value.second << "' ";
+            ss << "'" << value.second << "'";
         else
-            ss << value.second << " ";
+            ss << value.second;
 
 
         i++;
@@ -433,7 +476,7 @@ std::string DeleteQuery::str() const
     if (!isValid())
         return {};
     std::stringstream ss;
-    ss << "DELETE FROM " << m_table << " ";
+    ss << "DELETE FROM " << m_table;
 
     if (!m_conditions.empty())
     {
