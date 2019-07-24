@@ -10,6 +10,7 @@
 #include <BaseException.hpp>
 #include <Config.hpp>
 #include <Position.hpp>
+#include <StateMachine.hpp>
 
 #ifdef RPG_BUILD_GUI
 namespace maker::GUI {
@@ -52,14 +53,9 @@ class Maker : public BaseObject
 	friend class maker::MakerTest;
 #endif
 public:
-    /**
-     * @brief Database status
-     */
-    enum DatabaseStatus {
-        NOT_LOADED, ///< Database not loaded
-        EMPTY, ///< Database empty
-        NOT_VALID, ///< Database not valid
-        VALID ///< Valid database model
+    enum States {
+        PROJECT_LOADING,
+        WORKBENCH
     };
     Maker(int argc, char **argv);
     /// @brief Destructor
@@ -74,18 +70,6 @@ public:
     void loadDatabase(const std::string& filename);
 
     bool createDatabaseModel();
-
-    struct States {
-        bool unsaved = false;
-        enum {
-            NONE,
-            DIRECTORY_SELECTED,
-            CONFIG_LOADED,
-            READY
-        } progression = NONE;
-
-    };
-    const States& getStates() const { return m_states; }
 
     struct CharacterInformations {
         std::string name;
@@ -117,9 +101,19 @@ public:
     bool saveMoney(const MoneyInformations& infos);
     bool getMoneyInformations(MoneyInformations& out);
 
+    struct MapInformations {
+        std::string name;
+    };
+
+    MapInformations getMapInformations(const std::string& name);
     std::set<std::string> getMapList();
     void setCurrentMap(const std::string& mapName);
+    void saveMap(const MapInformations& current);
+    void saveMap(const MapInformations& current, const MapInformations& previous);
     events::Event<std::weak_ptr<map::Map>> signalMapUdated;
+
+
+    StateMachine<States> stateMachine{PROJECT_LOADING, WORKBENCH};
 
 private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
@@ -129,8 +123,6 @@ private:
     std::shared_ptr<database::Database> m_db; ///< Database to use
     std::shared_ptr<config::Context> m_context;
     config::Config m_generalConfig;
-
-    States m_states;
 
     std::string m_name;
     std::string m_dbFile;

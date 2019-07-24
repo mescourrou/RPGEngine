@@ -109,8 +109,6 @@ bool Maker::run()
 
 bool Maker::doNewGame(const std::string &gameName, const std::string &directory)
 {
-    m_states.progression = States::DIRECTORY_SELECTED;
-    m_states.unsaved = false;
     m_context->gameLocation() = directory;
     m_name = gameName;
 
@@ -131,14 +129,13 @@ bool Maker::doNewGame(const std::string &gameName, const std::string &directory)
     }
     m_context->config()->setValue(gameGlobalFile::ressources::SECTION, gameGlobalFile::ressources::DATABASE, m_dbFile);
     m_context->config()->saveToFile();
-    m_states.progression = States::CONFIG_LOADED;
 
 
     updateCharacterList();
 
 
     LOG(INFO) << "Game created";
-    m_states.progression = States::READY;
+    stateMachine.changeState(WORKBENCH);
 
 
     return true;
@@ -151,18 +148,15 @@ std::vector<std::string> Maker::gameList() const
 
 bool Maker::doOpenGame(const std::string &gameName)
 {
-    m_states.unsaved = false;
     LOG(INFO) << "Open " << gameName;
     m_name = gameName;
     m_context->gameLocation() = m_generalConfig.getValue(gameName, config::structure::gameListFile::DIRECTORY_KEY);
 
-    m_states.progression = States::DIRECTORY_SELECTED;
     if (!m_context->config()->loadFile(m_context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME))
     {
         LOG(ERROR) << "Impossible to load the game config file : " << m_context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME;
         return false;
     }
-    m_states.progression = States::CONFIG_LOADED;
 
     namespace globalFile = config::structure::globalFile;
     if (!m_context->config())
@@ -184,7 +178,7 @@ bool Maker::doOpenGame(const std::string &gameName)
     }
 
     updateCharacterList();
-    m_states.progression = States::READY;
+    stateMachine.changeState(WORKBENCH);
 
 
     return true;
@@ -239,9 +233,6 @@ void Maker::updateCharacterList()
 
 bool Maker::populateDirectory()
 {
-    if (m_states.progression < States::DIRECTORY_SELECTED)
-        return false;
-
     if (!std::filesystem::exists(m_context->kCharacterPath()))
         std::filesystem::create_directories(m_context->kCharacterPath());
     if (!std::filesystem::exists(m_context->kMapPath()))
@@ -499,6 +490,11 @@ bool Maker::getMoneyInformations(Maker::MoneyInformations &out)
 
 }
 
+Maker::MapInformations Maker::getMapInformations(const std::string &name)
+{
+    return MapInformations{name};
+}
+
 std::set<std::string> Maker::getMapList()
 {
     using namespace database;
@@ -524,6 +520,23 @@ void Maker::setCurrentMap(const std::string &mapName)
     if (m_currentMap->load())
         signalMapUdated.trigger(m_currentMap);
     updateCharacterList();
+}
+
+void Maker::saveMap(const Maker::MapInformations &current)
+{
+
+}
+
+void Maker::saveMap(const Maker::MapInformations &current, const Maker::MapInformations &previous)
+{
+    using namespace database;
+    if (current.name != previous.name)
+    {
+        m_db->query(Query::createQuery<Query::UPDATE>(Model::Position::TABLE, m_db)
+                    .set(Model::Position::FK_MAP, current.name)
+                    .where(Model::Position::FK_MAP, Query::EQUAL, previous.name));
+        updateCharacterList();
+    }
 }
 
 }

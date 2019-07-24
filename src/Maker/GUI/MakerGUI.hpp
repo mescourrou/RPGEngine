@@ -6,8 +6,14 @@
 #include <Maker.hpp>
 #include <Stringlist.hpp>
 
+#include <CharacterWindow.hpp>
+#include <ConsoleWindow.hpp>
+#include <MoneyWindow.hpp>
+#include <MapWindow.hpp>
+
 #include <SFML/Window/Event.hpp>
 #include <imgui.h>
+#include <WindowsManager.hpp>
 #ifdef BUILD_USE_FILESYSTEM
 #include <FileBrowser.hpp>
 #endif
@@ -74,26 +80,9 @@ protected:
             int selectedItem = 0;
         } openGame;
 
-        struct Character {
-            stringlist list;
-            int currentCharacter = -1;
-            Maker::CharacterInformations current;
-            Maker::CharacterInformations edit;
-            char name[16];
-            bool newOne = true;
-        } character;
-
         struct Money {
-            Maker::MoneyInformations infos;
-            stringlist nameList;
-            bool moneyLoaded = false;
-        } money;
 
-        struct Map {
-            stringlist list;
-            unsigned int selected = 0;
-            bool loaded = false;
-        } map;
+        } money;
 
         struct {
             bool console = true;
@@ -116,10 +105,13 @@ protected:
 
     void resetUI();
 
-    void doNewCharacter();
-    void doDeleteCharacter();
+    ImGui::WindowsManager m_windowManager;
+    std::shared_ptr<CharacterWindow> m_characterWindow;
+    std::shared_ptr<ConsoleWindow> m_consoleWindow;
+    std::shared_ptr<MoneyWindow> m_moneyWindow;
+    std::shared_ptr<MapWindow> m_mapWindow;
 
-    void doSaveMoney();
+
 
     std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;
     void makeUI();

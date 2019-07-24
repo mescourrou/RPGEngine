@@ -2,7 +2,11 @@ find_package(SFML REQUIRED)
 find_package(ImGUI-SFML REQUIRED)
 
 add_library(MakerGUI
-	MakerGUI.cpp MakerGUI.hpp)
+	MakerGUI.cpp MakerGUI.hpp
+	CharacterWindow.cpp CharacterWindow.hpp
+	ConsoleWindow.cpp ConsoleWindow.hpp
+	MoneyWindow.cpp MoneyWindow.hpp
+	MapWindow.cpp MapWindow.hpp)
 target_link_libraries(MakerGUI Maker ToolsGUI
 	${SFML_TARGETS} ImGui-SFML)
 
