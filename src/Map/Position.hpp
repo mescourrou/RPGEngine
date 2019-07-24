@@ -53,6 +53,9 @@ public:
     Position& operator=(const Position&) = default;
     Position& operator=(Position&&) = default;
 
+    bool operator==(const Position& cmp) const;
+    bool operator!=(const Position& cmp) const;
+
     /**
      * @brief Create a Position at origin of the map given
      * @param map Map to create the position with

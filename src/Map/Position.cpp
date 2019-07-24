@@ -68,6 +68,18 @@ Position::Position(double x, double y, double z) :
 {
 }
 
+bool Position::operator==(const Position &cmp) const
+{
+    return (m_map && cmp.m_map && *m_map == *cmp.m_map) &&
+            m_position == cmp.m_position;
+}
+
+bool Position::operator!=(const Position &cmp) const
+{
+    return (m_map && cmp.m_map && *m_map != *cmp.m_map) ||
+            m_position != cmp.m_position;
+}
+
 /**
  * @brief Move the position
  * @param move Vector to follow

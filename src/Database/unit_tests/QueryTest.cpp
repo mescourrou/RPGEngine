@@ -142,6 +142,24 @@ TEST_F(QueryTest, Update)
     EXPECT_TRUE(query.isValid());
 }
 
+TEST_F(QueryTest, Delete)
+{
+    std::string expected = "DELETE FROM table1 WHERE field1 = 'Bob';";
+    auto query = Query::createQuery<Query::DELETE>("table1", database).where("field1", Query::EQUAL, "Bob");
+    EXPECT_EQ(query.str(), expected);
+}
+
+TEST_F(QueryTest, InnerJoin)
+{
+    std::string expected = "SELECT * FROM table1 INNER JOIN table2 ON table1.field1 = table2.field2;";
+    auto query = Query::createQuery<Query::SELECT>("table1", database).join("table2", "field1", "field2");
+    EXPECT_EQ(query.str(), expected);
+
+    expected = "SELECT * FROM table1 INNER JOIN table2 ON table1.field1 = table2.field2 WHERE field1 = 'Bob';";
+    query = Query::createQuery<Query::SELECT>("table1", database).join("table2", "field1", "field2").where("field1", Query::EQUAL, "Bob");
+    EXPECT_EQ(query.str(), expected);
+}
+
 void QueryTest::SetUp()
 {
     database.reset(new Database("data/db_sample2.db"));

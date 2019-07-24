@@ -40,11 +40,10 @@ public:
     /// @brief Return the path to the runtime directory
     virtual std::string runtimeDirectory() const { return m_runtimeDirectory; }
     /// @brief Return the config
-    virtual std::shared_ptr<Config> config() const { VLOG(verbosityLevel::FUNCTION_CALL) << "config";
-                                             return  m_config; }
+    virtual std::shared_ptr<Config> config() const { return  m_config; }
     /// @brief Access the config directory (from runtime directory)
-    virtual const std::string kConfigPath() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kConfigPath";
-                                            return m_kConfigPath; }
+    virtual const std::string kConfigPath() const { return m_kConfigPath; }
+    virtual const std::string kGlobalConfigFilename() const { return m_kGlobalConfigFilename; }
     /// @brief Get the full path to the map directory
     virtual const std::string kMapPath() const
     {
@@ -57,6 +56,7 @@ public:
         return std::string(m_gameLocation).append("/")
                 .append(m_kRessourcesDirPath).append("/").append(m_kCharacterDirPath);
     }
+
     /// @brief Program arguments
     virtual const std::vector<std::string>& kProgramArguments() const { VLOG(verbosityLevel::FUNCTION_CALL) << "kProgramArguments";
                                                                 return m_programArguments; }

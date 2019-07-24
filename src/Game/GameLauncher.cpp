@@ -37,7 +37,8 @@ GameLauncher::GameLauncher(int argc, char **argv)
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
-    LOG(INFO) << "Starting GameLauncher v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_BUILD;
+    LOG(INFO) << "Starting GameLauncher v" << static_cast<short>(VERSION_MAJOR) << "." <<
+                 static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     m_context = std::make_shared<config::Context>(argc, argv);
 

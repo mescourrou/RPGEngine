@@ -62,7 +62,7 @@ CharacterGUI::CharacterGUI(std::weak_ptr<Character> character) :
 /**
  * @brief Implementation of BaseGUIObject::prepare : change the sprite according to the current state (moving and direction)
  */
-void CharacterGUI::prepare(const sf::Vector2u &targetSize)
+void CharacterGUI::prepare(const sf::Vector2f &targetSize)
 {
     if (m_tics == 0)
     {

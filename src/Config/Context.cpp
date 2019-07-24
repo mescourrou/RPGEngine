@@ -39,14 +39,11 @@ config::Context::Context(int argc, char **argv)
             m_programArguments.push_back(argv[i]);
         }
     }
-    try {
-        m_config.reset(new Config(std::string().append(m_runtimeDirectory).append("/")
-                                  .append(m_kConfigPath).append("/")
-                                  .append(m_kGlobalConfigFilename)));
-    } catch (const ConfigException& e) {
-        LOG(WARNING) << "Error during loading the configuration : " << e.what();
-        m_config.reset();
-    }
+    m_config = std::make_shared<Config>();
+    if (m_config->loadFile(std::string().append(m_runtimeDirectory).append("/")
+                           .append(m_kConfigPath).append("/")
+                           .append(m_kGlobalConfigFilename)))
+        LOG(WARNING) << "Error during loading the configuration";
 
 }
 

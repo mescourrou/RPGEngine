@@ -133,7 +133,7 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
-    m_mapGUI->prepare(m_window->getSize());
+    m_mapGUI->prepare(m_window->getView().getSize());
     std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<BaseGUIObject> obj1, std::shared_ptr<BaseGUIObject> obj2){
        return obj1->getPosition().y < obj2->getPosition().y;
     });
@@ -143,7 +143,7 @@ void GameGUI::draw()
         if (obj)
         {
             obj->setCurrentMap(m_mapGUI);
-            obj->prepare(m_window->getSize());
+            obj->prepare(m_window->getView().getSize());
         }
     }
     m_window->clear();

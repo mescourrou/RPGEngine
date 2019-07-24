@@ -1,5 +1,8 @@
 #pragma once
 
+// Stl
+#include <cmath>
+
 // Project
 #include "general_config.hpp"
 
@@ -30,9 +33,17 @@ public:
     static T convertTo(const U& a);
 
     static std::string snakeCase(std::string str);
+    template<typename T>
+    static T linearModulo(T number, T div);
 
 
 };
+
+template<typename T>
+T Tools::linearModulo(T number, T div)
+{
+    return (number/ div - std::floor(number / div)) * div;
+}
 
 /**
  * @brief Convert some type into an other.

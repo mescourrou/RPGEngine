@@ -38,7 +38,8 @@ MapGUI::MapGUI(std::weak_ptr<Map> map) :
  */
 void MapGUI::move(double offsetX, double offsetY)
 {
-    m_centerOfView += Vector<2>{offsetX, offsetY};
+    m_centerOfView.x() += offsetX;
+    m_centerOfView.y() += offsetY;
     saturateCenterOfView();
     m_mapMoved = true;
 }
@@ -79,6 +80,8 @@ bool MapGUI::load(const std::string &mapDirPath)
                     return false;
             }
         }
+//        m_centerOfView.x() = (m_width * m_tileWidth) / 2.0;
+//        m_centerOfView.y() = (m_height * m_tileHeight) / 2.0;
         return true;
     }
 
@@ -88,25 +91,37 @@ bool MapGUI::load(const std::string &mapDirPath)
 /**
  * @brief Prepare the drawing
  */
-void MapGUI::prepare(const sf::Vector2u &targetSize)
+void MapGUI::prepare(const sf::Vector2f &targetSize)
 {
     if (m_mapMoved) // We compute the parameters only if the map moved since last time
     {
         // Position on the map of the top left corner of the screen
         // Unit : pixels
-        m_topLeftPosition.x = m_centerOfView.x() - targetSize.x / 2;
-        m_topLeftPosition.y = m_centerOfView.y() - targetSize.y / 2;
+        m_topLeftPosition.x = m_centerOfView.x() - targetSize.x / 2.0;
+        m_topLeftPosition.y = m_centerOfView.y() - targetSize.y / 2.0;
         // Coordinates of the tile of the top left corner
         m_firstTileCoordinates.x = std::floor(m_topLeftPosition.x / m_tileWidth);
         m_firstTileCoordinates.y = std::floor(m_topLeftPosition.y / m_tileHeight);
 
         // Position on the screen of the top left displayed tile
         // It's negative to cover all the screen
-        m_origin.x = - static_cast<int>(m_centerOfView.x()) % static_cast<int>(m_tileWidth);
-        m_origin.y = - static_cast<int>(m_centerOfView.y()) % static_cast<int>(m_tileHeight);
+        int sign = -1;
+        if (m_topLeftPosition.x > 0)
+            sign = 1;
+        m_origin.x = - Tools::linearModulo(m_topLeftPosition.x, static_cast<float>(m_tileWidth));
+        sign = -1;
+        if (m_topLeftPosition.y > 0)
+            sign = 1;
+        m_origin.y = - Tools::linearModulo(m_topLeftPosition.y, static_cast<float>(m_tileHeight));
 
         m_mapMoved = false;
     }
+}
+
+void MapGUI::forcePrepare(const sf::Vector2f &targetSize)
+{
+    m_mapMoved = true;
+    prepare(targetSize);
 }
 
 /**

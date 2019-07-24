@@ -40,7 +40,7 @@ class Config : public BaseObject
 #endif
 public:
     /// @brief Constructor
-    Config() = default;
+    Config();
     Config(const std::string& filename);
     ~Config() override = default;
 

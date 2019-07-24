@@ -40,7 +40,8 @@ public:
     void setCenterOfView(const Position& centralPosition);
     bool load(const std::string& mapDirPath) override;
 
-    void prepare(const sf::Vector2u& targetSize) override;
+    void prepare(const sf::Vector2f& targetSize) override;
+    void forcePrepare(const sf::Vector2f &targetSize);
 
     /**
      * @brief The on-screen position of the map does not move

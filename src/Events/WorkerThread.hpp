@@ -38,6 +38,11 @@ public:
     static void newWork(const std::function<void(Args...)>& work, Args... arguments);
     static void newWork(const std::function<void()>& work);
 
+    template<typename I, typename M, typename ...Args>
+    static void newWork(I* instance, M func, Args... arguments);
+    template<typename I, typename M>
+    static void newWork(I* instance, M func);
+
     static void waitForJoin();
 
 
@@ -85,6 +90,17 @@ void WorkerThread::newWork(const std::function<void(Args...)>& work, Args... arg
     m_mutex.unlock();
 }
 
+template<typename I, typename M, typename... Args>
+void WorkerThread::newWork(I *instance, M func, Args ...arguments)
+{
+    newWork([=](){std::bind(func, instance, arguments...)();});
+}
+
+template<typename I, typename M>
+void WorkerThread::newWork(I *instance, M func)
+{
+    newWork([=](){std::bind(func, instance)();});
+}
 
 
 

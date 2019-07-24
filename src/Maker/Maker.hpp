@@ -1,10 +1,22 @@
 #pragma once
 
+// Stl
+#include <memory>
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <Event.hpp>
 #include <BaseException.hpp>
+#include <Config.hpp>
+#include <Position.hpp>
+#include <StateMachine.hpp>
+
+#ifdef RPG_BUILD_GUI
+namespace maker::GUI {
+class MakerGUI;
+}
+#endif
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -12,6 +24,11 @@
 
 namespace database {
 class Database;
+}
+
+namespace config {
+class Context;
+class Config;
 }
 
 namespace maker
@@ -36,36 +53,88 @@ class Maker : public BaseObject
 	friend class maker::MakerTest;
 #endif
 public:
-    /**
-     * @brief Database status
-     */
-    enum DatabaseStatus {
-        NOT_LOADED, ///< Database not loaded
-        EMPTY, ///< Database empty
-        NOT_VALID, ///< Database not valid
-        VALID ///< Valid database model
+    enum States {
+        PROJECT_LOADING,
+        WORKBENCH
     };
-    /// @brief Constructor
-    Maker() = default;
+    Maker(int argc, char **argv);
     /// @brief Destructor
     ~Maker() override = default;
 
+    bool initialize();
+    bool run();
+
+    bool doNewGame(const std::string& gameName, const std::string& directory);
+    std::vector<std::string> gameList() const;
+    bool doOpenGame(const std::string& gameName);
     void loadDatabase(const std::string& filename);
 
-    /**
-     * @brief Subscribe to the signal about the status of the database load
-     * @param func Function to subscribe
-     */
-    void subscribeDatabaseLoaded(std::function<void(DatabaseStatus)> func)
-    { m_signalDatabaseLoaded.subscribeAsync(func);}
-
     bool createDatabaseModel();
+
+    struct CharacterInformations {
+        std::string name;
+        enum Type : int {
+            NPC,
+            VENDOR,
+            NPC_END
+        } type;
+
+        map::Position position;
+
+        bool isNPC() const {
+            return type >= NPC && type < NPC_END;
+        }
+
+    };
+    bool saveCharacter(const CharacterInformations& infos);
+    bool saveCharacter(const CharacterInformations& current, const CharacterInformations& previous);
+    std::vector<std::string> characterList() const;
+    bool getCharacterInformations(const std::string& name, CharacterInformations &out);
+    bool deleteCharacter(const std::string& name);
+    events::Event<std::vector<std::string>> signalCharacterListUpdated;
+
+    struct MoneyInformations {
+        std::vector<std::string> moneyList;
+        std::vector<int> values;
+        int baseMoney = 0;
+    };
+    bool saveMoney(const MoneyInformations& infos);
+    bool getMoneyInformations(MoneyInformations& out);
+
+    struct MapInformations {
+        std::string name;
+    };
+
+    MapInformations getMapInformations(const std::string& name);
+    std::set<std::string> getMapList();
+    void setCurrentMap(const std::string& mapName);
+    void saveMap(const MapInformations& current);
+    void saveMap(const MapInformations& current, const MapInformations& previous);
+    events::Event<std::weak_ptr<map::Map>> signalMapUdated;
+
+
+    StateMachine<States> stateMachine{PROJECT_LOADING, WORKBENCH};
+
 private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    void updateCharacterList();
+    bool populateDirectory();
 
     std::shared_ptr<database::Database> m_db; ///< Database to use
+    std::shared_ptr<config::Context> m_context;
+    config::Config m_generalConfig;
 
-    events::Event<DatabaseStatus> m_signalDatabaseLoaded; ///< Signal once the database is loaded
+    std::string m_name;
+    std::string m_dbFile;
+    bool m_running = true;
+
+    std::vector<std::string> m_characterList;
+
+    std::shared_ptr<map::Map> m_currentMap;
+
+#ifdef RPG_BUILD_GUI
+    std::shared_ptr<GUI::MakerGUI> m_gui;
+#endif
 };
 
 } // namespace maker
