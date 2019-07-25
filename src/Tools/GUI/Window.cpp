@@ -18,6 +18,8 @@ bool Window::prepare()
         ImGui::End();
         return true;
     }
+    else
+        doCollapsedState();
     ImGui::End();
     return false;
 }

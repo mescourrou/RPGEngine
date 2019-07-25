@@ -4,7 +4,8 @@ add_executable(Events_test
     EventTest.cpp EventTest.hpp
     EventLoopTest.cpp EventLoopTest.hpp
     WorkerThreadTest.cpp WorkerThreadTest.hpp
-    WorkTest.cpp WorkTest.hpp)
+	WorkTest.cpp WorkTest.hpp
+	ActionTest.cpp ActionTest.hpp)
 target_link_libraries(Events_test gtest Events)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")

@@ -10,6 +10,8 @@
 #include <general_config.hpp>
 #include <Game.hpp>
 #include <Character.hpp>
+#include <ActionHandler.hpp>
+#include <WindowsManager.hpp>
 
 #include <CharacterGUI.hpp>
 
@@ -41,6 +43,12 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
 
 }
 
+GameGUI::~GameGUI()
+{
+    m_window->close();
+    ImGui::SFML::Shutdown();
+}
+
 /**
  * @brief Initialize the GUI part of Game
  * @param db Database to use
@@ -67,15 +75,28 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     character::GUI::CharacterGUI::connectSignals(this, m_player.lock().get(), true);
     character::GUI::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(), m_player.lock().get(), true);
 
-    m_signalOnClose.subscribeSync([this](){
-        m_window->close();
-        ImGui::SFML::Shutdown();}
-    );
-
     signalPause.subscribeSync([this](bool pause){
         m_ui.onPause = pause;
     });
 
+    events::ActionHandler::addAction(CHARACTER_WINDOW_ACTION, [this](){
+        m_characterWindow->setActive(!m_characterWindow->active());
+    });
+
+    events::ActionHandler::addAction(INVENTORY_WINDOW_ACTION, [this](){
+        m_inventoryWindow->setActive(!m_inventoryWindow->active());
+    });
+
+    m_characterWindow = std::make_unique<CharacterWindow>();
+    m_characterWindow->setName(m_game->m_playerCharacter->name());
+    m_characterWindow->open();
+    m_characterWindow->setActive(false);
+    m_windowsManager.addWindow(m_characterWindow.get());
+
+    m_inventoryWindow = std::make_unique<InventoryWindow>();
+    m_inventoryWindow->open();
+    m_inventoryWindow->setActive(false);
+    m_windowsManager.addWindow(m_inventoryWindow.get());
     return true;
 }
 
@@ -95,7 +116,6 @@ void GameGUI::eventManager()
         if (event.type == sf::Event::Closed)
         {
             m_signalOnClose.trigger();
-            exit(EXIT_SUCCESS);
         }
         if (event.type == sf::Event::KeyPressed)
         {
@@ -133,6 +153,7 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
+    m_windowsManager.prepareWindows();
     m_mapGUI->prepare(m_window->getView().getSize());
     std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<BaseGUIObject> obj1, std::shared_ptr<BaseGUIObject> obj2){
        return obj1->getPosition().y < obj2->getPosition().y;
@@ -205,12 +226,12 @@ void GameGUI::makeUI()
             m_player.lock()->uiRealtimeInformations();
             if (ImGui::Button(UI::INVENTORY_BUTTON))
             {
-                m_ui.inventoryOpen = !m_ui.inventoryOpen;
+                events::ActionHandler::execute(INVENTORY_WINDOW_ACTION);
             }
             ImGui::SameLine();
             if (ImGui::Button(UI::CHARACTER_BUTTON))
             {
-                m_ui.characterOpen = !m_ui.characterOpen;
+                events::ActionHandler::execute(CHARACTER_WINDOW_ACTION);
             }
 
             ImGui::NextColumn();
@@ -219,33 +240,6 @@ void GameGUI::makeUI()
             ImGui::SetWindowPos(ImVec2(0,m_window->getSize().y - ImGui::GetWindowHeight()));
         }
         ImGui::End(); // Bottom Area
-
-        if (m_ui.inventoryOpen)
-        {
-            if (ImGui::Begin(UI::INVENTORY_BUTTON, nullptr, ImGuiWindowFlags_NoSavedSettings))
-            {
-                m_player.lock()->uiInventoryWindow();
-            }
-            else // Window collapsed
-            {
-                ImGui::SetWindowCollapsed(false);
-                m_ui.inventoryOpen = false;
-            }
-            ImGui::End();
-        }
-        if (m_ui.characterOpen)
-        {
-            if (ImGui::Begin(m_game->m_playerCharacter->name().c_str(), nullptr, ImGuiWindowFlags_NoSavedSettings))
-            {
-                m_player.lock()->uiFullInformations();
-            }
-            else // Window collapsed
-            {
-                ImGui::SetWindowCollapsed(false);
-                m_ui.characterOpen = false;
-            }
-            ImGui::End();
-        }
     }
     if (m_ui.onPause)
         ImGui::OpenPopup(UI::PAUSE_POPUP);

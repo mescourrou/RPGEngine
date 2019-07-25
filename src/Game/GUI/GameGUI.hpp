@@ -10,6 +10,9 @@
 #include <MapGUI.hpp>
 #include <Event.hpp>
 #include <Database.hpp>
+#include <WindowsManager.hpp>
+#include <CharacterWindow.hpp>
+#include <InventoryWindow.hpp>
 
 #include <SFML/Window/Event.hpp>
 #include <imgui.h>
@@ -39,7 +42,7 @@ class GameGUI : public BaseObject
     DECLARE_BASEOBJECT(GameGUI)
 public:
     GameGUI(std::shared_ptr<config::Context> context, Game *game);
-    ~GameGUI() override = default;
+    ~GameGUI() override;
 
     bool initialize(std::shared_ptr<database::Database> db);
     void eventManager();
@@ -80,6 +83,13 @@ protected:
     std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
     events::Event<void> m_signalOnClose;             ///< Event when the user close the game
+
+    ImGui::WindowsManager m_windowsManager;
+    std::unique_ptr<CharacterWindow> m_characterWindow;
+    static constexpr char CHARACTER_WINDOW_ACTION[] = "Toggle character window";
+    std::unique_ptr<InventoryWindow> m_inventoryWindow;
+    static constexpr char INVENTORY_WINDOW_ACTION[] = "Toggle inventory window";
+
 
     Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
 

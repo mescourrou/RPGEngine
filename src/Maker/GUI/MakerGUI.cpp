@@ -5,6 +5,7 @@
 #include <Maker.hpp>
 #include <Logger.hpp>
 #include <Popups.hpp>
+#include <ActionHandler.hpp>
 
 #include <MapGUI.hpp>
 
@@ -22,22 +23,24 @@ MakerGUI::MakerGUI(std::shared_ptr<config::Context> context, Maker *maker) :
 
 }
 
+MakerGUI::~MakerGUI()
+{
+    m_window.close();
+    ImGui::SFML::Shutdown();
+}
+
 bool MakerGUI::initialize()
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    signalClose.subscribeSync([this](){
-        m_window->close();
-        ImGui::SFML::Shutdown();}
-    );
-
     m_maker->signalMapUdated.subscribeSync([this](std::weak_ptr<map::Map> mapPtr) {
+       m_mapGUI.reset();
        m_mapGUI = std::make_shared<map::GUI::MapGUI>(mapPtr);
        m_mapGUI->load(m_context->kMapPath());
     });
 
-    m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(900, 600), "RPGEngine", sf::Style::Resize | sf::Style::Close);
-    ImGui::SFML::Init(*m_window);
+    m_window.create(sf::VideoMode(900, 600), "RPGEngine", sf::Style::Resize | sf::Style::Close);
+    ImGui::SFML::Init(m_window);
 
     m_characterWindow = std::make_shared<CharacterWindow>(m_maker);
     m_windowManager.addWindow(m_characterWindow.get());
@@ -63,62 +66,47 @@ bool MakerGUI::initialize()
         m_moneyWindow->close();
         m_mapWindow->close();
     });
+
+    events::ActionHandler::addAction("Open", [this](){
+        if (!m_ui.openGame.window)
+        {
+            m_ui.openGame.window = true;
+        }}, events::KeyBinding(events::KeyBinding::O, events::KeyBinding::CTRL));
+
+    events::ActionHandler::addAction("New", [this](){
+        m_ui.newGame.state = UI::NewGame::DIRECTORY;
+    }, events::KeyBinding(events::KeyBinding::N, events::KeyBinding::CTRL));
+
+    events::ActionHandler::addAction("Quit", [this](){
+        signalClose.trigger();
+    }, events::KeyBinding(events::KeyBinding::Q, events::KeyBinding::CTRL));
+
     return true;
 }
 
 void MakerGUI::eventManager()
 {
     static sf::Clock deltaClock;
-    ImGui::SFML::Update(*m_window, deltaClock.restart());
+    ImGui::SFML::Update(m_window, deltaClock.restart());
     // Process events
     sf::Event event;
-    while (m_window->pollEvent(event))
+    while (m_window.pollEvent(event))
     {
         ImGui::SFML::ProcessEvent(event);
         // Close window: exit
         if (event.type == sf::Event::Closed)
         {
-            signalClose.trigger();
-            exit(EXIT_SUCCESS);
+            events::ActionHandler::execute("Quit");
         }
         if (event.type == sf::Event::Resized)
         {
-            if (m_mapGUI) m_mapGUI->forcePrepare(m_window->getView().getSize());
+            if (m_mapGUI) m_mapGUI->forcePrepare(m_window.getView().getSize());
         }
         if (event.type == sf::Event::KeyPressed)
         {
+            events::ActionHandler::processSFMLEvent(event);
             switch (event.key.code)
             {
-            case sf::Keyboard::N:
-                if (event.key.control)
-                {
-                    m_ui.newGame.state = UI::NewGame::DIRECTORY;
-                }
-                else
-                {
-
-                }
-                break;
-            case sf::Keyboard::O:
-                if (event.key.control)
-                {
-                    if (!m_ui.openGame.window)
-                    {
-                        m_ui.openGame.window = true;
-                    }
-                }
-                else
-                {
-
-                }
-                break;
-            case sf::Keyboard::Q:
-                if (event.key.control)
-                {
-                    signalClose.trigger();
-                    exit(EXIT_SUCCESS);
-                }
-                break;
             case sf::Keyboard::Left:
                 if (m_mapGUI) m_mapGUI->move(-5,0);
                 break;
@@ -148,15 +136,15 @@ void MakerGUI::eventManager()
 void MakerGUI::draw()
 {
     if (m_mapGUI)
-        m_mapGUI->prepare(m_window->getView().getSize());
-    m_window->clear(sf::Color::White);
+        m_mapGUI->prepare(m_window.getView().getSize());
+    m_window.clear(sf::Color::White);
     if (m_mapGUI)
     {
-        m_window->draw(*m_mapGUI);
+        m_window.draw(*m_mapGUI);
     }
     ImGui::Popups::Draw();
-    ImGui::SFML::Render(*m_window);
-    m_window->display();
+    ImGui::SFML::Render(m_window);
+    m_window.display();
 }
 
 void MakerGUI::resetUI()
@@ -170,14 +158,13 @@ void MakerGUI::makeUI()
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("New", "Ctrl+N"))
+            if (ImGui::MenuItem("New", events::ActionHandler::getKeyBinding("New").toString().c_str()))
             {
-                m_ui.newGame.state = UI::NewGame::DIRECTORY;
-
+                events::ActionHandler::execute("New");
             }
-            if (ImGui::MenuItem("Open", "Ctrl+O"))
+            if (ImGui::MenuItem("Open", events::ActionHandler::getKeyBinding("Open").toString().c_str()))
             {
-                m_ui.openGame.window = true;
+                events::ActionHandler::execute("Open");
             }
             if (ImGui::MenuItem("Save", "Ctrl+S"))
             {
@@ -188,10 +175,9 @@ void MakerGUI::makeUI()
 
             }
             ImGui::Separator();
-            if (ImGui::MenuItem("Quit", "Ctrl+Q"))
+            if (ImGui::MenuItem("Quit", events::ActionHandler::getKeyBinding("Quit").toString().c_str()))
             {
-                signalClose.trigger();
-                exit(EXIT_SUCCESS);
+                events::ActionHandler::execute("Quit");
             }
             ImGui::EndMenu();
         }

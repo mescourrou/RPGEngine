@@ -80,6 +80,7 @@ bool Maker::initialize()
         LOG(ERROR) << "Failed to initialize Maker GUI";
         return false;
     }
+    m_gui->signalClose.subscribeAsync([this](){ m_running = false; });
 #endif
     return true;
 }
