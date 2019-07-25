@@ -12,6 +12,7 @@
 #include <MapWindow.hpp>
 
 #include <SFML/Window/Event.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <imgui.h>
 #include <WindowsManager.hpp>
 #ifdef BUILD_USE_FILESYSTEM
@@ -47,7 +48,7 @@ class MakerGUI : public BaseObject
     DECLARE_BASEOBJECT(MakerGUI)
 public:
     MakerGUI(std::shared_ptr<config::Context> context, Maker* maker);
-    ~MakerGUI() override = default;
+    ~MakerGUI() override;
 
     bool initialize();
     void eventManager();
@@ -57,7 +58,7 @@ public:
     events::Event<void> signalClose;
 
 protected:
-    std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
+    sf::RenderWindow m_window;     ///< SFML render window
 
     std::shared_ptr<config::Context> m_context;
     std::shared_ptr<map::GUI::MapGUI> m_mapGUI;
