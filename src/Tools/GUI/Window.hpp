@@ -9,6 +9,7 @@ class Window
 {
 public:
     Window(const std::string& name);
+    virtual ~Window() = default;
 
     virtual bool prepare() final;
 
@@ -18,13 +19,15 @@ public:
     virtual bool active() const final { return m_active; }
     virtual bool& active() final { return m_active; }
     virtual const std::string& name() const final { return m_name; }
+    virtual void setName(const std::string& name) final { m_name = name; }
 
 protected:
     virtual bool doPrepare() = 0;
+    virtual bool doCollapsedState() { return true; }
     bool m_open = false;
 private:
-    std::string m_name;
     bool m_active = true;
+    std::string m_name;
 };
 
 } // namespace ImGui

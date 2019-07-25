@@ -6,10 +6,10 @@
 #include <Maker.hpp>
 #include <Stringlist.hpp>
 
-#include <CharacterWindow.hpp>
-#include <ConsoleWindow.hpp>
-#include <MoneyWindow.hpp>
-#include <MapWindow.hpp>
+#include "CharacterWindow.hpp"
+#include "ConsoleWindow.hpp"
+#include "MoneyWindow.hpp"
+#include "MapWindow.hpp"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -107,10 +107,10 @@ protected:
     void resetUI();
 
     ImGui::WindowsManager m_windowManager;
-    std::shared_ptr<CharacterWindow> m_characterWindow;
-    std::shared_ptr<ConsoleWindow> m_consoleWindow;
-    std::shared_ptr<MoneyWindow> m_moneyWindow;
-    std::shared_ptr<MapWindow> m_mapWindow;
+    std::shared_ptr<maker::GUI::CharacterWindow> m_characterWindow;
+    std::shared_ptr<maker::GUI::ConsoleWindow> m_consoleWindow;
+    std::shared_ptr<maker::GUI::MoneyWindow> m_moneyWindow;
+    std::shared_ptr<maker::GUI::MapWindow> m_mapWindow;
 
 
 
