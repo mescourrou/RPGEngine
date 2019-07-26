@@ -7,6 +7,9 @@ This TODO list is not complete !
 ## Map module :
 - Tile drawing optimisation : very laggy in high resolutions 
 
+## Event module:
+- Save keybindings
+
 ## Character module:
 - NPC trainers
 - NPC Quest giver
@@ -16,5 +19,4 @@ This TODO list is not complete !
 - Caracteristics
 
 ## Maker:
-- Create the empty database
-- Propose an interface to populate the database as wished
+- Move the npc on the map to set their position
