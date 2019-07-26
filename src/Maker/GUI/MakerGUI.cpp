@@ -104,7 +104,7 @@ void MakerGUI::eventManager()
         }
         if (event.type == sf::Event::KeyPressed)
         {
-            events::ActionHandler::processSFMLEvent(event);
+            events::ActionHandler::processSFMLEvent(event.key);
             switch (event.key.code)
             {
             case sf::Keyboard::Left:

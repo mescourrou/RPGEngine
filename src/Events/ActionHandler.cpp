@@ -12,6 +12,14 @@ KeyBinding ActionHandler::getKeyBinding(const std::string &name)
     return {};
 }
 
+void ActionHandler::setKeyBinding(const std::string &actionName, const KeyBinding &key)
+{
+    auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
+                           [&actionName](const Action& a){return a.name == actionName;});
+    if (it != instance.m_actions.end())
+        it->keyBinding = key;
+}
+
 void ActionHandler::execute(const std::string &actionName)
 {
     const auto& it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
@@ -25,8 +33,19 @@ void ActionHandler::execute(const std::string &actionName)
     }
 }
 
+std::list<std::string> ActionHandler::actionList()
+{
+    std::list<std::string> ret;
+    for (const auto& a : instance.m_actions)
+    {
+        ret.push_back(a.name);
+    }
+
+    return ret;
+}
+
 #ifdef RPG_BUILD_GUI
-void ActionHandler::addAction(const std::string &name, std::function<void ()> func, const KeyBinding &keyBinding)
+void ActionHandler::addAction(std::string name, std::function<void ()> func, const KeyBinding &keyBinding)
 {
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
                            [&name](const Action& a){return a.name == name;});
@@ -40,10 +59,10 @@ void ActionHandler::addAction(const std::string &name, std::function<void ()> fu
     }
 }
 
-void ActionHandler::processSFMLEvent(const sf::Event &event)
+void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent &event)
 {
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(), [&event](const Action& a){
-        return a.keyBinding.isKey(event.key);
+        return a.keyBinding.isKey(event);
     });
     if (it != instance.m_actions.end())
         execute(*it);

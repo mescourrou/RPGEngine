@@ -119,19 +119,35 @@ void GameGUI::eventManager()
         }
         if (event.type == sf::Event::KeyPressed)
         {
-            signalKeyPressed.trigger(event.key);
+            if (m_actionWaitingForKeybinding.empty())
+            {
+                signalKeyPressed.trigger(event.key);
+                events::ActionHandler::processSFMLEvent(event.key);
+            }
         }
         if (event.type == sf::Event::KeyReleased)
         {
-            switch (event.key.code) {
-            case sf::Keyboard::Escape:
-                signalPause.trigger(!m_ui.onPause);
-                break;
-            case sf::Keyboard::U:
-                m_ui.uiActivated = !m_ui.uiActivated;
-                break;
+            if (m_actionWaitingForKeybinding.empty())
+            {
+                switch (event.key.code) {
+                case sf::Keyboard::Escape:
+                    signalPause.trigger(!m_ui.onPause);
+                    break;
+                case sf::Keyboard::U:
+                    m_ui.uiActivated = !m_ui.uiActivated;
+                    break;
+                }
+                signalKeyReleased.trigger(event.key);
             }
-            signalKeyReleased.trigger(event.key);
+            else
+            {
+                auto keyBinding = events::KeyBinding::fromSFML(event.key);
+                if (!keyBinding.isKey(events::KeyBinding::NOT_BINDED, events::KeyBinding::NONE))
+                {
+                    events::ActionHandler::setKeyBinding(m_actionWaitingForKeybinding, keyBinding);
+                    m_actionWaitingForKeybinding = "";
+                }
+            }
         }
     }
 
@@ -316,7 +332,20 @@ void GameGUI::uiPauseMenu()
             }
             if (ImGui::BeginTabItem("Key binding"))
             {
-
+                auto actionList = events::ActionHandler::actionList();
+                for (const std::string& actionName : actionList)
+                {
+                    ImGui::PushID(actionName.c_str());
+                    ImGui::Text(actionName.c_str());
+                    ImGui::SameLine();
+                    ImGui::Text(" -- ");
+                    ImGui::SameLine();
+                    if (ImGui::Button(events::ActionHandler::getKeyBinding(actionName).toString().c_str()))
+                    {
+                        m_actionWaitingForKeybinding = actionName;
+                    }
+                    ImGui::PopID();
+                }
                 ImGui::EndTabItem();
             }
             ImGui::EndTabBar();

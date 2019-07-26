@@ -90,6 +90,8 @@ protected:
     std::unique_ptr<InventoryWindow> m_inventoryWindow;
     static constexpr char INVENTORY_WINDOW_ACTION[] = "Toggle inventory window";
 
+    std::string m_actionWaitingForKeybinding = "";
+
 
     Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
 

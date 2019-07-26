@@ -75,6 +75,7 @@ std::string KeyBinding::toString() const
         map[Right] = "Right";
         map[Up] = "Up";
         map[Down] = "Down";
+        map[NOT_BINDED] = "None";
     }
 
     std::string ret;
@@ -90,14 +91,37 @@ std::string KeyBinding::toString() const
 
 bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
 {
-    if ((m_layer & CTRL) == keyboard.control &&
-            (m_layer & ALT) == keyboard.alt &&
-            (m_layer & SHIFT) == keyboard.shift)
+    if (m_key == NOT_BINDED)
+        return false;
+    KeyBinding::LayerKey layer = 0;
+    if (keyboard.alt)
+        layer |= KeyBinding::ALT;
+    if (keyboard.shift)
+        layer |= KeyBinding::SHIFT;
+    if (keyboard.control)
+        layer |= KeyBinding::CTRL;
+    if (m_layer == layer)
     {
         if (m_key == keyFromSFML(keyboard.code))
             return true;
     }
     return false;
+}
+
+KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent &event)
+{
+    short layer = 0;
+    if (event.alt)
+        layer |= ALT;
+    if (event.shift)
+        layer |= SHIFT;
+    if (event.control)
+        layer |= CTRL;
+    Key key = keyFromSFML(event.code);
+    if (key == NOT_BINDED && layer != 0)
+        return {};
+    return KeyBinding(key, layer);
+
 }
 
 KeyBinding::Key KeyBinding::keyFromSFML(sf::Keyboard::Key key)

@@ -28,14 +28,16 @@ class ActionHandler
     };
 
 public:
-    static void addAction(const std::string& name, std::function<void(void)> func, const KeyBinding& keyBinding = {});
+    static void addAction(std::string name, std::function<void(void)> func, const KeyBinding& keyBinding = {});
 
     static KeyBinding getKeyBinding(const std::string& name);
+    static void setKeyBinding(const std::string& actionName, const KeyBinding& key);
 
     static void execute(const std::string& actionName);
+    static std::list<std::string> actionList();
 
 #ifdef RPG_BUILD_GUI
-    static void processSFMLEvent(const sf::Event& event);
+    static void processSFMLEvent(const sf::Event::KeyEvent &event);
 #endif
 
 protected:
