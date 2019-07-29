@@ -2,6 +2,7 @@
 
 // Stl
 #include <memory>
+#include <chrono>
 
 // Project
 #include "general_config.hpp"
@@ -62,6 +63,8 @@ public:
                                                                 return m_programArguments; }
     /// @brief Get the location of the current running game
     virtual std::string& gameLocation() { return m_gameLocation; }
+
+    std::time_t framePeriod;
 
 protected:
     Context() = default; // For mocking

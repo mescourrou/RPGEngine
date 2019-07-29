@@ -69,7 +69,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
         m_mapGUI->setCenterOfView({pos.x(), pos.y()});
     });
 
-    m_player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter);
+    m_player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter, m_context);
 
     m_player.lock()->load(m_context->kCharacterPath());
     character::GUI::CharacterGUI::connectSignals(this, m_player.lock().get(), true);

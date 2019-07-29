@@ -114,9 +114,7 @@ bool Game::run()
 
     using namespace std::chrono_literals;
 
-    // Framerate control
     auto clock = std::chrono::high_resolution_clock::now();
-    auto period = std::chrono::duration(20ms);
 
     while(m_running)
     {
@@ -126,10 +124,11 @@ bool Game::run()
 #endif
 
 #ifdef RPG_BUILD_GUI
-        m_gui->draw();
-#endif
-        std::this_thread::sleep_until(clock+period);
+        m_context->framePeriod = (std::chrono::high_resolution_clock::now() - clock).count();
         clock = std::chrono::high_resolution_clock::now();
+        m_gui->draw();
+        std::cout << "Period : " << m_context->framePeriod/1000000.0 << "\n";
+#endif
     }
     return true;
 }
@@ -160,7 +159,7 @@ void Game::loadMapContents(const std::string &mapName)
             auto& newOne = m_characterList.emplace_back(std::make_shared<character::Character>(characterName, m_context));
             newOne->loadFromDatabase(m_db);
 #ifdef RPG_BUILD_GUI
-            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne);
+            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne, m_context);
             guiChar.lock()->load(m_context->kCharacterPath());
             character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
             character::GUI::CharacterGUI::connectSignals(newOne.get(), guiChar.lock().get());

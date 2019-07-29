@@ -12,6 +12,7 @@
 #include <tinyxml2.h>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 
 #include <glog/logging.h>
@@ -80,8 +81,6 @@ bool MapGUI::load(const std::string &mapDirPath)
                     return false;
             }
         }
-//        m_centerOfView.x() = (m_width * m_tileWidth) / 2.0;
-//        m_centerOfView.y() = (m_height * m_tileHeight) / 2.0;
         return true;
     }
 
@@ -100,19 +99,19 @@ void MapGUI::prepare(const sf::Vector2f &targetSize)
         m_topLeftPosition.x = m_centerOfView.x() - targetSize.x / 2.0;
         m_topLeftPosition.y = m_centerOfView.y() - targetSize.y / 2.0;
         // Coordinates of the tile of the top left corner
-        m_firstTileCoordinates.x = std::floor(m_topLeftPosition.x / m_tileWidth);
-        m_firstTileCoordinates.y = std::floor(m_topLeftPosition.y / m_tileHeight);
+        m_firstTileCoordinates.x = std::floor(m_topLeftPosition.x / (CHUNK_WIDTH*m_tileWidth));
+        m_firstTileCoordinates.y = std::floor(m_topLeftPosition.y / (CHUNK_HEIGHT * m_tileHeight));
 
         // Position on the screen of the top left displayed tile
         // It's negative to cover all the screen
         int sign = -1;
         if (m_topLeftPosition.x > 0)
             sign = 1;
-        m_origin.x = - Tools::linearModulo(m_topLeftPosition.x, static_cast<float>(m_tileWidth));
+        m_origin.x = - Tools::linearModulo(m_topLeftPosition.x, static_cast<float>(CHUNK_WIDTH*m_tileWidth));
         sign = -1;
         if (m_topLeftPosition.y > 0)
             sign = 1;
-        m_origin.y = - Tools::linearModulo(m_topLeftPosition.y, static_cast<float>(m_tileHeight));
+        m_origin.y = - Tools::linearModulo(m_topLeftPosition.y, static_cast<float>(CHUNK_HEIGHT*m_tileHeight));
 
         m_mapMoved = false;
     }
@@ -150,27 +149,19 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
     {
         while(tilePosition.x < target.getSize().x)
         {
-            if (i >= 0 && j >= 0 && i < m_width && j < m_height)
+            if (i >= 0 && j >= 0 && i < m_width/CHUNK_WIDTH && j < m_height/CHUNK_HEIGHT)
             {
-                unsigned int id = m_idMap.at(i).at(j);
-                if (m_tiles.find(id) != m_tiles.end())
-                {
-                    sf::Sprite tile(m_tiles.at(id));
-                    tile.setPosition(tilePosition);
-                    target.draw(tile, states);
-                }
-                else {
-                    sf::RectangleShape emptyTile(sf::Vector2f(m_tileWidth, m_tileHeight));
-                    emptyTile.setPosition(tilePosition);
-                    target.draw(emptyTile, states);
-                }
+                sf::Sprite tile(m_chunks.at(j).at(i));
+                //sf::Sprite tile(m_chunks.at(0).at(0));
+                tile.setPosition(tilePosition);
+                target.draw(tile, states);
             }
 
-            tilePosition.x += m_tileWidth;
+            tilePosition.x += m_tileWidth*CHUNK_WIDTH;
             i++;
         }
         tilePosition.x = m_origin.x;
-        tilePosition.y += m_tileHeight;
+        tilePosition.y += m_tileHeight * CHUNK_HEIGHT;
         i = m_firstTileCoordinates.x;
         j++;
     }
@@ -193,9 +184,11 @@ bool MapGUI::loadTiles(const json &layer)
 
     unsigned int i = 0;
     unsigned int j = 0;
+    sf::Vector2f currentDrawingPosition;
+    std::map<unsigned int, std::map<unsigned int, unsigned int>> map;
     for (auto& id : layer[mapFile::KEY_TILE_DATA])
     {
-        m_idMap[j][i] = id;
+        map[j][i] = id;
 
         j++;
         if (j >= m_height)
@@ -204,6 +197,32 @@ bool MapGUI::loadTiles(const json &layer)
             i++;
         }
     }
+    for (unsigned int bigI = 0; bigI < std::ceil(m_width / CHUNK_WIDTH); bigI++)
+    {
+        for (unsigned int bigJ = 0; bigJ < std::ceil(m_height / CHUNK_HEIGHT); bigJ++)
+        {
+            sf::RenderTexture *bigSprite = new sf::RenderTexture;
+            unsigned int currentWidth = std::min(CHUNK_WIDTH, (m_width - bigI*CHUNK_WIDTH));
+            unsigned int currentHeight = std::min(CHUNK_HEIGHT, (m_height - bigJ*CHUNK_HEIGHT));
+            bigSprite->create(currentWidth*m_tileWidth, currentHeight*m_tileHeight);
+
+            for (i = 0; i < currentWidth; i++)
+            {
+                for (j = 0; j < currentHeight; j++)
+                {
+                    sf::Sprite sprite(m_tiles.at(map[bigI*CHUNK_WIDTH + i][bigJ*CHUNK_HEIGHT + j]));
+                    sprite.setPosition(i*m_tileWidth, j*m_tileHeight);
+                    bigSprite->draw(sprite);
+                }
+            }
+            sf::Sprite sprite(bigSprite->getTexture());
+            sprite.setOrigin(0, sprite.getGlobalBounds().height);
+            sprite.setScale(1,-1);
+            m_chunks[bigJ][bigI] = sprite;
+            //m_chunks[bigJ][bigI].rotate(180);
+        }
+    }
+
     return true;
 }
 

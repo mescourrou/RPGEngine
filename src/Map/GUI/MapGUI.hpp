@@ -59,7 +59,10 @@ private:
     bool loadTileset(const std::string& mapDirPath, const json& tileset);
 
     std::map<unsigned int, sf::Sprite> m_tiles;         ///< List of tiles and their id
-    std::map<unsigned int, std::map<unsigned int, unsigned int>> m_idMap; ///< Id of tiles according to the position
+    std::map<unsigned int, std::map<unsigned int, sf::Sprite>> m_chunks; ///< Id of tiles according to the position
+
+    static constexpr unsigned int CHUNK_WIDTH = 50;
+    static constexpr unsigned int CHUNK_HEIGHT = 50;
 
     Vector<2> m_centerOfView;               ///< Center of the view
     sf::Vector2f m_topLeftPosition;         ///< Position on the map of the top left corner of the screen (in pixels)
