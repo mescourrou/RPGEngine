@@ -12,6 +12,7 @@
 #include <Character.hpp>
 #include <ActionHandler.hpp>
 #include <WindowsManager.hpp>
+#include <PerformanceTimer.hpp>
 
 #include <CharacterGUI.hpp>
 
@@ -38,7 +39,7 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 
     loadFromConfig();
-    m_context->config()->signalConfigUpdated.subscribeSync(this, &GameGUI::loadFromConfig);
+    m_context->config()->signalConfigUpdated.subscribeAsync(this, &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
 }
@@ -75,7 +76,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     character::GUI::CharacterGUI::connectSignals(this, m_player.lock().get(), true);
     character::GUI::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(), m_player.lock().get(), true);
 
-    signalPause.subscribeSync([this](bool pause){
+    signalPause.subscribeAsync([this](bool pause){
         m_ui.onPause = pause;
     });
 
@@ -108,28 +109,27 @@ void GameGUI::eventManager()
     static sf::Clock deltaClock;
     ImGui::SFML::Update(*m_window, deltaClock.restart());
     // Process events
-    sf::Event event;
-    while (m_window->pollEvent(event))
+    while (m_window->pollEvent(m_event))
     {
-        ImGui::SFML::ProcessEvent(event);
+        ImGui::SFML::ProcessEvent(m_event);
         // Close window: exit
-        if (event.type == sf::Event::Closed)
+        if (m_event.type == sf::Event::Closed)
         {
             m_signalOnClose.trigger();
         }
-        if (event.type == sf::Event::KeyPressed)
+        if (m_event.type == sf::Event::KeyPressed)
         {
             if (m_actionWaitingForKeybinding.empty())
             {
-                signalKeyPressed.trigger(event.key);
-                events::ActionHandler::processSFMLEvent(event.key);
+                signalKeyPressed.trigger(m_event.key);
+                events::ActionHandler::processSFMLEvent(m_event.key);
             }
         }
-        if (event.type == sf::Event::KeyReleased)
+        if (m_event.type == sf::Event::KeyReleased)
         {
             if (m_actionWaitingForKeybinding.empty())
             {
-                switch (event.key.code) {
+                switch (m_event.key.code) {
                 case sf::Keyboard::Escape:
                     signalPause.trigger(!m_ui.onPause);
                     break;
@@ -137,11 +137,11 @@ void GameGUI::eventManager()
                     m_ui.uiActivated = !m_ui.uiActivated;
                     break;
                 }
-                signalKeyReleased.trigger(event.key);
+                signalKeyReleased.trigger(m_event.key);
             }
             else
             {
-                auto keyBinding = events::KeyBinding::fromSFML(event.key);
+                auto keyBinding = events::KeyBinding::fromSFML(m_event.key);
                 if (!keyBinding.isKey(events::KeyBinding::NOT_BINDED, events::KeyBinding::NONE))
                 {
                     events::ActionHandler::setKeyBinding(m_actionWaitingForKeybinding, keyBinding);
@@ -174,7 +174,6 @@ void GameGUI::draw()
     std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<BaseGUIObject> obj1, std::shared_ptr<BaseGUIObject> obj2){
        return obj1->getPosition().y < obj2->getPosition().y;
     });
-
     for (auto& obj : m_guiObjects)
     {
         if (obj)

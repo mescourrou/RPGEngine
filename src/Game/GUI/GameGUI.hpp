@@ -56,7 +56,7 @@ public:
     /**
      * @brief Get the event triggered when the user close the game
      */
-    void subscribeOnClose(std::function<void(void)> func) { m_signalOnClose.subscribeSync(func); }
+    void subscribeOnClose(std::function<void(void)> func) { m_signalOnClose.subscribeAsync(func); }
 
     /**
      * @brief Add a BaseGUIObject to the list
@@ -92,6 +92,7 @@ protected:
 
     std::string m_actionWaitingForKeybinding = "";
 
+    sf::Event m_event;
 
     Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
 

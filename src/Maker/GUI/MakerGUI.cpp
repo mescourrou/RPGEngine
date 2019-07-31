@@ -33,7 +33,7 @@ bool MakerGUI::initialize()
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_maker->signalMapUdated.subscribeSync([this](std::weak_ptr<map::Map> mapPtr) {
+    m_maker->signalMapUdated.subscribeAsync([this](std::weak_ptr<map::Map> mapPtr) {
        m_mapGUI.reset();
        m_mapGUI = std::make_shared<map::GUI::MapGUI>(mapPtr);
        m_mapGUI->load(m_context->kMapPath());

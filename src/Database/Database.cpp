@@ -101,7 +101,8 @@ bool Database::query(const std::string &query)
         m_queryMutex.unlock();
         throw DatabaseException("Lock the mutex before the Query", BaseException::MUTEX);
     }
-
+    if (m_result)
+        delete m_result.release();
     m_result = std::make_unique<std::vector<std::map<std::string, std::string>>>();
 
     std::map<std::string, std::string> resultRow;

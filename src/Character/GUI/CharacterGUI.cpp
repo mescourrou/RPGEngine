@@ -31,8 +31,8 @@ void CharacterGUI::connectSignals(game::GUI::GameGUI *game, CharacterGUI *charac
 {
     if (player)
     {
-        game->signalArroyIsPressed.subscribeSync(character, &CharacterGUI::slotArrowPressed);
-        game->signalKeyReleased.subscribeSync(character, &CharacterGUI::slotKeyReleased);
+        game->signalArroyIsPressed.subscribeAsync(character, &CharacterGUI::slotArrowPressed);
+        game->signalKeyReleased.subscribeAsync(character, &CharacterGUI::slotKeyReleased);
     }
 }
 

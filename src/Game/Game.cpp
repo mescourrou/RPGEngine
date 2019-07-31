@@ -13,6 +13,7 @@
 #include <Character.hpp>
 #include <VerbosityLevels.hpp>
 #include <Money.hpp>
+#include <PerformanceTimer.hpp>
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
@@ -118,16 +119,16 @@ bool Game::run()
 
     while(m_running)
     {
+        //PerformanceTimer loop("Main loop");
 #ifdef RPG_BUILD_GUI
         // Treat GUI events
         m_gui->eventManager();
 #endif
-
 #ifdef RPG_BUILD_GUI
         m_context->framePeriod = (std::chrono::high_resolution_clock::now() - clock).count();
         clock = std::chrono::high_resolution_clock::now();
         m_gui->draw();
-        std::cout << "Period : " << m_context->framePeriod/1000000.0 << "\n";
+        printf("%10ld\n", m_context->framePeriod);
 #endif
     }
     return true;

@@ -4,9 +4,6 @@ This TODO list is not complete !
 - Diaglog system : interactive dialog base on player choices. Possibility of associating actions with each lines
 - Quest journal : managing the quests of the player
 
-## Map module :
-- Tile drawing optimisation : very laggy in high resolutions 
-
 ## Event module:
 - Save keybindings
 
