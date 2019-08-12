@@ -53,8 +53,6 @@ int GameLauncher::start()
     if (!initialize())
         return -2;
     int choice = -1;
-    events::Event<std::string> eventStartingGame;
-    eventStartingGame.subscribeSync(this, &GameLauncher::startGame);
 
     do
     {
@@ -74,7 +72,7 @@ int GameLauncher::start()
 #endif
         if (choice > 0 && choice - 1 < static_cast<int>(m_gameList.size()))
         {
-            eventStartingGame.trigger(m_gameList.at(static_cast<size_t>(choice-1)));
+            startGame(m_gameList.at(static_cast<size_t>(choice-1)));
             choice = 0;
         }
         else if (choice != 0)

@@ -3,9 +3,15 @@
 #include <Window.hpp>
 namespace game::GUI {
 
+/**
+ * @brief Character windown
+ */
 class CharacterWindow : public ImGui::Window
 {
 public:
+    /**
+     * @brief Constructor
+     */
     CharacterWindow() : Window("Character") {}
 
 protected:

@@ -71,6 +71,9 @@ public:
     void setPosition(const map::Position& position);
     map::Position position() const;
 
+    /**
+     * @brief Get the inventory of the character
+     */
     const std::weak_ptr<object::Inventory> inventory() const { return m_inventory; }
 
     // Setters

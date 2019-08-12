@@ -4,21 +4,36 @@ namespace ImGui {
 
 Popups Popups::instance;
 
+/**
+ * @brief Add an error message to be printed
+ * @param message Message to add
+ */
 void Popups::Error(const std::string& message)
 {
     instance.m_errorList.push_back(message);
 }
 
+/**
+ * @brief Add a warning message to be printed
+ * @param message Message to add
+ */
 void Popups::Warning(const std::string& message)
 {
     instance.m_warningList.push_back(message);
 }
 
+/**
+ * @brief Add an information message
+ * @param message Message to add
+ */
 void Popups::Info(const std::string &message)
 {
     instance.m_infoList.push_back(message);
 }
 
+/**
+ * @brief Draws the current popup or open the one with the higher level
+ */
 void Popups::Draw()
 {
     if (!instance.m_popupOpen)
@@ -81,8 +96,4 @@ void Popups::Draw()
     }
 }
 
-Popups::Popups()
-{
-
-}
 } // namespace ImGui

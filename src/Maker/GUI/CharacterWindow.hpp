@@ -7,6 +7,9 @@
 
 namespace maker::GUI {
 
+/**
+ * @brief Character window
+ */
 class CharacterWindow : public ImGui::Window
 {
 public:
@@ -18,13 +21,13 @@ protected:
     void doNewCharacter();
     void doDeleteCharacter();
 
-    Maker* m_maker;
-    stringlist m_list;
-    int m_currentCharacter = -1;
-    Maker::CharacterInformations m_current;
-    Maker::CharacterInformations m_edit;
-    char m_name[16] = "";
-    bool m_newOne = true;
+    Maker* m_maker;                             ///< Pointer on the maker backend
+    stringlist m_list;                          ///< Character list
+    int m_currentCharacter = -1;                ///< Current character
+    Maker::CharacterInformations m_current;     ///< Saved charater informations
+    Maker::CharacterInformations m_edit;        ///< Edited character informations
+    char m_title[16] = "";                      ///< Title of the window
+    bool m_newOne = true;                       ///< Is there a new character showed
 };
 
 } // namespace maker::GUI

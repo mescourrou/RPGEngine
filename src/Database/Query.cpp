@@ -147,12 +147,24 @@ void Query::doValue(std::vector<std::pair<std::string, std::string> > &values, c
     values.push_back(std::pair<std::string, std::string>(column.str(), value));
 }
 
+/**
+ * @brief Add a column to sort
+ * @param sortColumns Vector of columns to sort
+ * @param column Column to sort
+ */
 void Query::doSort(std::vector<std::string>& sortColumns, const Column &column)
 {
     checkColumnName(column);
     sortColumns.push_back(column.str());
 }
 
+/**
+ * @brief Add a table to join
+ * @param table Table to join
+ * @param localColumn Column on the local table
+ * @param distantColumn Column on the new table
+ * @param type Type of join type
+ */
 void Query::doJoin(const std::string &table, const std::string &localColumn, const std::string &distantColumn, JoinType type)
 {
     if (!m_db->isTable(table) || !checkColumnExistance(localColumn) || !checkColumnExistance({table, distantColumn}))
@@ -170,6 +182,9 @@ void Query::doJoin(const std::string &table, const std::string &localColumn, con
     m_joins.push_back(Join{table, localColumn, distantColumn, type});
 }
 
+/**
+ * @brief Create the join statement
+ */
 std::stringstream Query::joinStatement() const
 {
     std::stringstream ss;
@@ -472,6 +487,10 @@ std::string UpdateQuery::str() const
     return ss.str();
 }
 
+/**
+ * @brief Generate the string corresponding of the Query
+ * @return std::string corresponding to the Query
+ */
 std::string DeleteQuery::str() const
 {
     if (!isValid())

@@ -3,14 +3,27 @@
 
 namespace maker::GUI {
 
+/**
+ * @brief Create a MapWindow
+ * @param maker Pointer on the maker backend
+ */
 MapWindow::MapWindow(Maker *maker) :
     Window("Map"), m_maker(maker)
 {
 
 }
 
+/**
+ * @brief Prepare the window to be drawn
+ * @return Return true if all went well
+ */
 bool MapWindow::doPrepare()
 {
+    if (m_maker->stateMachine.state() != Maker::States::WORKBENCH)
+    {
+        setActive(false);
+        return false;
+    }
     if (!m_loaded)
     {
         m_list = m_maker->getMapList();

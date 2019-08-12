@@ -35,7 +35,7 @@ public:
     static void connectSignals(game::GUI::GameGUI* game, CharacterGUI* character, bool player = false);
     static void connectSignals(Character* character, CharacterGUI* characterGUI, bool player = false);
 
-    CharacterGUI(std::weak_ptr<Character> character);
+    CharacterGUI(std::weak_ptr<Character> character, std::shared_ptr<config::Context> context);
     /// @brief Default destructor
     ~CharacterGUI() override = default;
 
@@ -64,6 +64,7 @@ protected:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 private:
     std::weak_ptr<Character> m_character;                       ///< Pointer on the backend character
+    std::shared_ptr<config::Context> m_context;
 
     std::map<unsigned int, sf::Sprite> m_sprites;               ///< Sprites of the Character, assigned by id
     std::vector<std::shared_ptr<sf::Texture>> m_textures;       ///< List of the textures to keep the ownership

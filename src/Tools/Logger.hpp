@@ -3,6 +3,9 @@
 #include <glog/logging.h>
 #include <mutex>
 
+/**
+ * @brief Google log's sink to store and access logs
+ */
 class Logger : public google::LogSink
 {
 public:
@@ -17,8 +20,8 @@ public:
     static bool newLogs();
 private:
     Logger();
-    std::stringbuf m_logs;
-    size_t m_size;
-    bool m_newLogs = false;
-    std::mutex m_mutex;
+
+    std::stringbuf m_logs;      ///< Log buffer
+    std::mutex m_mutex;         ///< Mutex to access the log buffer
+    bool m_newLogs = false;     ///< Is there new logs sing the last "getLog"
 };

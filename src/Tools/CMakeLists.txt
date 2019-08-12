@@ -6,6 +6,7 @@ add_library(Tools
 		Logger.cpp Logger.hpp
 		Stringlist.cpp Stringlist.hpp
 		StateMachine.cpp StateMachine.hpp
+		PerformanceTimer.cpp PerformanceTimer.hpp
         )
 target_link_libraries(Tools glog BaseObject)
 target_include_directories(Tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -4,6 +4,9 @@
 
 namespace maker::GUI {
 
+/**
+ * @brief Console window
+ */
 class ConsoleWindow : public ImGui::Window
 {
 public:

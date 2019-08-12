@@ -56,7 +56,7 @@ public:
     /**
      * @brief Get the event triggered when the user close the game
      */
-    void subscribeOnClose(std::function<void(void)> func) { m_signalOnClose.subscribeSync(func); }
+    void subscribeOnClose(std::function<void(void)> func) { m_signalOnClose.subscribeAsync(func); }
 
     /**
      * @brief Add a BaseGUIObject to the list
@@ -82,19 +82,23 @@ protected:
 
     std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
-    events::Event<void> m_signalOnClose;             ///< Event when the user close the game
+    events::Event<void> m_signalOnClose;            ///< Event when the user close the game
 
-    ImGui::WindowsManager m_windowsManager;
-    std::unique_ptr<CharacterWindow> m_characterWindow;
+    ImGui::WindowsManager m_windowsManager;         ///< Window manager
+    std::unique_ptr<CharacterWindow> m_characterWindow; ///< Character window
     static constexpr char CHARACTER_WINDOW_ACTION[] = "Toggle character window";
-    std::unique_ptr<InventoryWindow> m_inventoryWindow;
+    std::unique_ptr<InventoryWindow> m_inventoryWindow; ///< Inventory window
     static constexpr char INVENTORY_WINDOW_ACTION[] = "Toggle inventory window";
 
-    std::string m_actionWaitingForKeybinding = "";
+    std::string m_actionWaitingForKeybinding = "";  ///< Contains the action name waiting to associate a keybinding
 
+    sf::Event m_event;                              ///< Event, created once
 
     Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
 
+    /**
+     * @brief Informations necessary for the UI
+     */
     struct UI {
         static constexpr char MAIN_UI[] = "mainUi";
         static constexpr char PAUSE_POPUP[] = "Pause";
@@ -111,19 +115,20 @@ protected:
         bool inventoryOpen = false;                 ///< If the inventory window is open
         bool characterOpen = false;                 ///< If the character window is open
 
+        /**
+         * @brief Settings selected
+         */
         struct Settings {
-            bool fullscreen = false;
-            std::string resolution = "";
-            int resolutionItemSelected = 0;
-            std::vector<const char*> availableResolutions;
-        } settings;
+            bool fullscreen = false;                        ///< Is fullscreen on ?
+            std::string resolution = "";                    ///< Currrent resolution
+            int resolutionItemSelected = 0;                 ///< Selected resolution index
+            std::vector<const char*> availableResolutions;  ///< Available resolutions
+        } settings;                                         ///< Seleted settings
     } m_ui;                                         ///< UI structure containing the ui linked variable
 
     void makeUI();
     void uiPauseMenu();
     void uiLoadSettingsPopup();
-
-private:
 
 };
 
