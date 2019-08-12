@@ -39,6 +39,12 @@ public:
 
 };
 
+/**
+ * @brief Calculate a linear modulo for floats and linear at zero
+ *
+ * @param number Number to divise
+ * @param div Divisor
+ */
 template<typename T>
 T Tools::linearModulo(T number, T div)
 {

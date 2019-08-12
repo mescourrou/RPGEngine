@@ -4,14 +4,27 @@
 
 namespace maker::GUI {
 
+/**
+ * @brief Create a money window
+ * @param maker Pointer on the maker backend
+ */
 MoneyWindow::MoneyWindow(Maker *maker) :
     Window("Money system"), m_maker(maker)
 {
 
 }
 
+/**
+ * @brief Prepare the window to be drawn
+ * @return Return true if all went well
+ */
 bool MoneyWindow::doPrepare()
 {
+    if (m_maker->stateMachine.state() != Maker::States::WORKBENCH)
+    {
+        setActive(false);
+        return false;
+    }
     if (!m_moneyLoaded)
     {
         if (!m_maker->getMoneyInformations(m_infos))
@@ -53,7 +66,9 @@ bool MoneyWindow::doPrepare()
     return true;
 }
 
-
+/**
+ * @brief Prepare and call the backend method Maker::saveMoney
+ */
 void MoneyWindow::doSaveMoney()
 {
     for (auto& v : m_infos.values)

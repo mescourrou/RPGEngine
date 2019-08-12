@@ -68,22 +68,53 @@ public:
         NOT_NULL ///< Not null
     };
 
+    /**
+     * @brief Join types
+     */
     enum JoinType {
-        INNER_JOIN,
-        LEFT_JOIN
+        INNER_JOIN, ///< 1 for 1 join
+        LEFT_JOIN ///< Get all the left table result even if there is no match on the right table
     };
 
+    /**
+     * @brief Store column with the table related
+     */
     struct Column {
+        /**
+         * @brief Create a column without table
+         * @param columnName Name of the column
+         */
         Column(const char* columnName) : columnName(columnName) {}
-        Column(const std::string& columnName) : columnName(columnName) {}
-        Column(const char* tableName, const char* columnName) : tableName(tableName),columnName(columnName) {}
-        Column(const std::string& tableName, const std::string& columnName) : tableName(tableName), columnName(columnName) {}
-        std::string tableName = "";
-        std::string columnName;
 
+        /**
+         * @brief Create a column without table
+         * @param columnName Name of the column
+         */
+        Column(const std::string& columnName) : columnName(columnName) {}
+
+        /**
+         * @brief Create a column linked to a table
+         * @param tableName Name of the table
+         * @param columnName Name of the column
+         */
+        Column(const char* tableName, const char* columnName) : tableName(tableName),columnName(columnName) {}
+
+        /**
+         * @brief Create a column linked to a table
+         * @param tableName Name of the table
+         * @param columnName Name of the column
+         */
+        Column(const std::string& tableName, const std::string& columnName) : tableName(tableName), columnName(columnName) {}
+
+        /**
+         * @brief Convert the couple table+column in SQL format with '.' notation
+         */
         std::string str() const {
             return (!tableName.empty() ? tableName + "." : "") + columnName;
         }
+
+        std::string tableName = "";     ///< Name of the table, optionnal
+        std::string columnName;         ///< Name of the column
     };
 
 private:
@@ -136,17 +167,20 @@ protected:
 
     virtual std::stringstream joinStatement() const final;
 
-    std::string m_table; ///< Name of the table targeted by the Query
+    std::string m_table;                ///< Name of the table targeted by the Query
+    /**
+     * @brief Join informations
+     */
     struct Join {
-        std::string table;
-        std::string localColumn;
-        std::string distantColumn;
-        JoinType type;
+        std::string table;              ///< Table to join
+        std::string localColumn;        ///< Local column
+        std::string distantColumn;      ///< Distant column to join with the local column
+        JoinType type;                  ///< Type of join
     };
 
-    std::vector<Join> m_joins;
-    std::shared_ptr<Database> m_db; ///< Database where the Query will apply (used for verifications)
-    bool m_valid = false; ///< Validity of the Query
+    std::vector<Join> m_joins;          ///< List of table joins
+    std::shared_ptr<Database> m_db;     ///< Database where the Query will apply (used for verifications)
+    bool m_valid = false;               ///< Validity of the Query
 
 };
 
@@ -170,6 +204,7 @@ public:
     /// @brief Add a sort column
     SelectQuery& sort(const Column& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
 
+    /// @brief Join a table
     SelectQuery& join(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN)
     {
         doJoin(table, localColumn, distantColumn, type);
@@ -284,6 +319,7 @@ public:
 
     /// @brief Add filter condition
     DeleteQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
+    /// @brief Add filter condition
     DeleteQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, {column}, op, value); return *this; }
 
     std::string str() const override;

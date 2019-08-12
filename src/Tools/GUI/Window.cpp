@@ -2,17 +2,25 @@
 
 namespace ImGui {
 
-Window::Window(const std::string &name) :
-    m_name(name)
+/**
+ * @brief Constructor
+ * @param title Title of the window
+ */
+Window::Window(const std::string &title) :
+    m_title(title)
 {
 
 }
 
+/**
+ * @brief Prepare the window
+ * @return Return true if all went well
+ */
 bool Window::prepare()
 {
-    if (!m_active || !m_open)
+    if (!m_active)
         return false;
-    if (ImGui::Begin(m_name.c_str()))
+    if (ImGui::Begin(m_title.c_str()))
     {
         doPrepare();
         ImGui::End();

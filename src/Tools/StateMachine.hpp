@@ -4,6 +4,9 @@
 #include <functional>
 #include <map>
 
+/**
+ * @brief List of states with in and out actions
+ */
 template <typename T>
 class StateMachine
 {
@@ -14,14 +17,21 @@ public:
     void addExitStateAction(const T& state, const std::function<void(void)>& func);
 
     void changeState(const T& newState);
+    /**
+     * @brief Get the current state
+     */
     const T& state() const { return m_currentState; }
 
 private:
-    T m_currentState;
+    T m_currentState;                       ///< Current state
     using actionPair = std::pair<std::vector<std::function<void(void)>>, std::vector<std::function<void(void)>>>;
-    std::map<T, actionPair> m_states;
+    std::map<T, actionPair> m_states;       ///< States
 };
 
+/**
+ * @brief Initialize the states with a state list
+ * @param list List of states
+ */
 template<typename T>
 StateMachine<T>::StateMachine(std::initializer_list<T> list)
 {
@@ -37,6 +47,11 @@ StateMachine<T>::StateMachine(std::initializer_list<T> list)
     }
 }
 
+/**
+ * @brief Add an in action for the state
+ * @param state State where to add an entry action
+ * @param func Action
+ */
 template<typename T>
 void StateMachine<T>::addEntryStateAction(const T &state, const std::function<void ()> &func)
 {
@@ -46,6 +61,11 @@ void StateMachine<T>::addEntryStateAction(const T &state, const std::function<vo
     }
 }
 
+/**
+ * @brief Add an out action for the state
+ * @param state State where to add an exit action
+ * @param func Action
+ */
 template<typename T>
 void StateMachine<T>::addExitStateAction(const T &state, const std::function<void ()> &func)
 {
@@ -55,6 +75,10 @@ void StateMachine<T>::addExitStateAction(const T &state, const std::function<voi
     }
 }
 
+/**
+ * @brief Change the state and execute the needed actions
+ * @param newState State to set
+ */
 template<typename T>
 void StateMachine<T>::changeState(const T &newState)
 {

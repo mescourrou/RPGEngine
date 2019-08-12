@@ -118,6 +118,10 @@ void MapGUI::prepare(const sf::Vector2f &targetSize)
     }
 }
 
+/**
+ * @brief Force the preparation of the map even if it didn't moved
+ * @param targetSize Size of the target
+ */
 void MapGUI::forcePrepare(const sf::Vector2f &targetSize)
 {
     m_mapMoved = true;

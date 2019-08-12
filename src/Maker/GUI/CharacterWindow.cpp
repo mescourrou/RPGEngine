@@ -3,15 +3,23 @@
 
 namespace maker::GUI {
 
+/**
+ * @brief Create the window
+ * @param maker Pointer on the maker backend
+ */
 CharacterWindow::CharacterWindow(Maker *maker) :
     Window("Character"), m_maker(maker)
 {
     m_maker->signalCharacterListUpdated.subscribeAsync([this](std::vector<std::string> list){
         m_list = list;
-        open();
+        Window::setActive(true);
     });
 }
 
+/**
+ * @brief Prepare the window to be drawn
+ * @return Return true if all went well
+ */
 bool CharacterWindow::doPrepare()
 {
     ImGui::Columns(2);
@@ -26,21 +34,21 @@ bool CharacterWindow::doPrepare()
         else
         {
             m_edit = m_current;
-            strcpy(m_name, m_edit.name.c_str());
+            strcpy(m_title, m_edit.name.c_str());
             m_newOne = false;
         }
     }
 
     ImGui::NextColumn();
-    ImGui::InputText("Name", m_name, 16);
+    ImGui::InputText("Name", m_title, 16);
     ImGui::RadioButton("NPC", (int*)&m_edit.type, Maker::CharacterInformations::NPC);
     ImGui::RadioButton("Vendor", (int*)&m_edit.type, Maker::CharacterInformations::VENDOR);
 
-    if (strlen(m_name) > 0)
+    if (strlen(m_title) > 0)
     {
         if (ImGui::Button("Save"))
         {
-            m_edit.name = m_name;
+            m_edit.name = m_title;
             if (m_newOne)
             {
                 m_maker->saveCharacter(m_edit);
@@ -65,15 +73,20 @@ bool CharacterWindow::doPrepare()
     return true;
 }
 
-
+/**
+ * @brief Create a new character
+ */
 void CharacterWindow::doNewCharacter()
 {
     m_newOne = true;
     m_edit = m_current = Maker::CharacterInformations();
-    strcpy(m_name, "");
+    strcpy(m_title, "");
     m_currentCharacter = -1;
 }
 
+/**
+ * @brief Delete the current character
+ */
 void CharacterWindow::doDeleteCharacter()
 {
     if (!m_current.name.empty())

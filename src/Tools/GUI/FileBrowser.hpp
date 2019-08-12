@@ -23,6 +23,9 @@ enum ImGuiFileBrowserFlags_
 
 namespace ImGui
 {
+    /**
+     * @brief File browsing modal popup
+     */
     class FileBrowser
     {
     public:

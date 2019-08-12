@@ -89,13 +89,11 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     });
 
     m_characterWindow = std::make_unique<CharacterWindow>();
-    m_characterWindow->setName(m_game->m_playerCharacter->name());
-    m_characterWindow->open();
+    m_characterWindow->setTitle(m_game->m_playerCharacter->name());
     m_characterWindow->setActive(false);
     m_windowsManager.addWindow(m_characterWindow.get());
 
     m_inventoryWindow = std::make_unique<InventoryWindow>();
-    m_inventoryWindow->open();
     m_inventoryWindow->setActive(false);
     m_windowsManager.addWindow(m_inventoryWindow.get());
     return true;

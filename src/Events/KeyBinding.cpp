@@ -4,12 +4,20 @@
 namespace events {
 
 #ifdef RPG_BUILD_GUI
+/**
+ * @brief Create a keybinding
+ * @param key Keyboard key
+ * @param layer Layer key (ctrl, shift, alt)
+ */
 KeyBinding::KeyBinding(KeyBinding::Key key, KeyBinding::LayerKey layer):
     m_key(key), m_layer(layer)
 {
 
 }
 
+/**
+ * @brief Get the string description of the keybinding
+ */
 std::string KeyBinding::toString() const
 {
     static std::map<Key, std::string> map;
@@ -89,6 +97,10 @@ std::string KeyBinding::toString() const
     return ret;
 }
 
+/**
+ * @brief Tells if the SFML KeyEvent match the keybinding
+ * @param keyboard SFML KeyEvent
+ */
 bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
 {
     if (m_key == NOT_BINDED)
@@ -108,6 +120,10 @@ bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
     return false;
 }
 
+/**
+ * @brief Get the keybinding from the SFML KeyEvent
+ * @param event SFML KeyEvent to load from
+ */
 KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent &event)
 {
     short layer = 0;
@@ -124,6 +140,9 @@ KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent &event)
 
 }
 
+/**
+ * @brief Map of the match between SFML and KeyBinding::Key
+ */
 KeyBinding::Key KeyBinding::keyFromSFML(sf::Keyboard::Key key)
 {
     static std::map<sf::Keyboard::Key, KeyBinding::Key> map;

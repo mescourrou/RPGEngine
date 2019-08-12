@@ -17,14 +17,17 @@
 namespace config {
 
 /**
- * @brief Constructor of Config
- * @param filename File to load
+ * @brief Default constructor
  */
 Config::Config()
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
 }
 
+/**
+ * @brief Constructor of Config
+ * @param filename File to load
+ */
 Config::Config(const std::string &filename)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;

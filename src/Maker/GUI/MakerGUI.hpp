@@ -55,69 +55,61 @@ public:
 
     void draw();
 
-    events::Event<void> signalClose;
+    events::Event<void> signalClose;    ///< Signal on closing the app
 
 protected:
+    void makeUI();
+
     sf::RenderWindow m_window;     ///< SFML render window
 
-    std::shared_ptr<config::Context> m_context;
-    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;
+    std::shared_ptr<config::Context> m_context;     ///< Used context
+    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Pointer on the GUI map
 
+    /**
+     * @brief UI informations
+     */
     struct UI {
+        /**
+         * @brief UI informations for the creation of a new game
+         */
         struct NewGame {
+            /**
+             * @brief State of the creation of a new Game
+             */
             enum State {
-                NONE,
-                DIRECTORY,
-                INFORMATIONS
+                NONE,           ///< Nothing
+                DIRECTORY,      ///< Selection of the directory
+                INFORMATIONS    ///< Getting informations
             };
-            State state;
+            State state;                            ///< Current state
 
-            std::string directory = "";
-            char gameName[100];
-        } newGame;
+            std::string directory = "";             ///< Directory used for the new game
+            char gameName[100];                     ///< New game name
+        } newGame;                                  ///< UI informations for new game
+
+        /**
+         * @brief UI Informations for the openning of the game
+         */
         struct OpenGame {
-            bool window = false;
-            stringlist gameList;
-            int selectedItem = 0;
-        } openGame;
+            bool window = false;                    ///< Window openned
+            stringlist gameList;                    ///< Game list
+            int selectedItem = 0;                   ///< Current game selected
+        } openGame;                                 ///< UI informations for openning game window
 
-        struct Money {
-
-        } money;
-
-        struct {
-            bool console = true;
-            bool character = true;
-            bool money = true;
-            bool maps = true;
-            bool currentMap = true;
-        } windows;
-
-        struct Popups {
-            struct pair{
-                std::string message = "";
-                bool open = false;
-            };
-
-            pair error;
-        } popups;
 
     } m_ui;                                         ///< UI structure containing the ui linked variable
 
     void resetUI();
 
-    ImGui::WindowsManager m_windowManager;
-    std::shared_ptr<maker::GUI::CharacterWindow> m_characterWindow;
-    std::shared_ptr<maker::GUI::ConsoleWindow> m_consoleWindow;
-    std::shared_ptr<maker::GUI::MoneyWindow> m_moneyWindow;
-    std::shared_ptr<maker::GUI::MapWindow> m_mapWindow;
+    ImGui::WindowsManager m_windowManager;                              ///< Window manager
+    std::unique_ptr<maker::GUI::CharacterWindow> m_characterWindow;     ///< Pointer on the character window
+    std::unique_ptr<maker::GUI::ConsoleWindow> m_consoleWindow;         ///< Pointer on the console window
+    std::unique_ptr<maker::GUI::MoneyWindow> m_moneyWindow;             ///< Pointer on the money window
+    std::unique_ptr<maker::GUI::MapWindow> m_mapWindow;                 ///< Pointer on the map windows
 
+    std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;                  ///< File browser
 
-
-    std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;
-    void makeUI();
-
-    Maker* m_maker;
+    Maker* m_maker;                                                     ///< Pointer on the maker backend
 
 };
 

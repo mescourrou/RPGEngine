@@ -17,18 +17,30 @@
 
 namespace maker::GUI {
 
+/**
+ * @brief Construct a MakerGUI
+ * @param context Context to use
+ * @param maker Pointer on the maker backend
+ */
 MakerGUI::MakerGUI(std::shared_ptr<config::Context> context, Maker *maker) :
     m_context(context), m_maker(maker)
 {
 
 }
 
+/**
+ * @brief Close the GUI parts
+ */
 MakerGUI::~MakerGUI()
 {
     m_window.close();
     ImGui::SFML::Shutdown();
 }
 
+/**
+ * @brief Initialize the maker
+ * @return Return true if all went well
+ */
 bool MakerGUI::initialize()
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
@@ -42,29 +54,33 @@ bool MakerGUI::initialize()
     m_window.create(sf::VideoMode(900, 600), "RPGEngine", sf::Style::Resize | sf::Style::Close);
     ImGui::SFML::Init(m_window);
 
-    m_characterWindow = std::make_shared<CharacterWindow>(m_maker);
+    m_characterWindow = std::make_unique<CharacterWindow>(m_maker);
+    m_characterWindow->setActive(false);
     m_windowManager.addWindow(m_characterWindow.get());
 
-    m_consoleWindow = std::make_shared<ConsoleWindow>();
-    m_consoleWindow->open();
+    m_consoleWindow = std::make_unique<ConsoleWindow>();
+    m_consoleWindow->setActive(true);
     m_windowManager.addWindow(m_consoleWindow.get());
 
-    m_moneyWindow = std::make_shared<MoneyWindow>(m_maker);
+    m_moneyWindow = std::make_unique<MoneyWindow>(m_maker);
+    m_moneyWindow->setActive(false);
     m_windowManager.addWindow(m_moneyWindow.get());
 
-    m_mapWindow = std::make_shared<MapWindow>(m_maker);
+    m_mapWindow = std::make_unique<MapWindow>(m_maker);
+    m_mapWindow->setActive(false);
     m_windowManager.addWindow(m_mapWindow.get());
 
     m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, [this](){
 
     });
     m_maker->stateMachine.addEntryStateAction(Maker::WORKBENCH, [this](){
-        m_moneyWindow->open();
-        m_mapWindow->open();
+        m_moneyWindow->setActive(true);
+        m_mapWindow->setActive(true);
     });
     m_maker->stateMachine.addExitStateAction(Maker::WORKBENCH, [this](){
-        m_moneyWindow->close();
-        m_mapWindow->close();
+        m_moneyWindow->setActive(false);
+        m_mapWindow->setActive(false);
+        m_characterWindow->setActive(false);
     });
 
     events::ActionHandler::addAction("Open", [this](){
@@ -84,6 +100,9 @@ bool MakerGUI::initialize()
     return true;
 }
 
+/**
+ * @brief Maker event management
+ */
 void MakerGUI::eventManager()
 {
     static sf::Clock deltaClock;
@@ -133,6 +152,9 @@ void MakerGUI::eventManager()
     makeUI();
 }
 
+/**
+ * @brief Draw the maker on the window
+ */
 void MakerGUI::draw()
 {
     if (m_mapGUI)
@@ -147,11 +169,17 @@ void MakerGUI::draw()
     m_window.display();
 }
 
+/**
+ * @brief Reset UI
+ */
 void MakerGUI::resetUI()
 {
     m_ui = UI();
 }
 
+/**
+ * @brief Prepare the UI elements
+ */
 void MakerGUI::makeUI()
 {
     if (ImGui::BeginMainMenuBar())
@@ -185,10 +213,10 @@ void MakerGUI::makeUI()
         {
             for (auto* w : m_windowManager.windowsList())
             {
-                ImGui::Checkbox(w->name().c_str(), &w->active());
+                ImGui::Checkbox(w->title().c_str(), &w->active());
             }
-            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
-            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
+//            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
+//            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
 
             ImGui::EndMenu();
         }

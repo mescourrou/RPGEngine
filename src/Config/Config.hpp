@@ -39,7 +39,6 @@ class Config : public BaseObject
     friend class config::ConfigTest;
 #endif
 public:
-    /// @brief Constructor
     Config();
     Config(const std::string& filename);
     ~Config() override = default;

@@ -4,9 +4,13 @@
 
 namespace game::GUI {
 
+/**
+ * @brief Inventory window
+ */
 class InventoryWindow : public ImGui::Window
 {
 public:
+    /// @brief Constructor
     InventoryWindow() : Window("Inventory") {}
 
 protected:
