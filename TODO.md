@@ -4,11 +4,10 @@ This TODO list is not complete !
 - Diaglog system : interactive dialog base on player choices. Possibility of associating actions with each lines
 - Quest journal : managing the quests of the player
 
-## Map module :
-- Bug Collision : passing through frontiere by the angles of the areas 
+## Event module:
+- Save keybindings
 
 ## Character module:
-- NPC vendors: selling and buying object, interaction with the player inventory
 - NPC trainers
 - NPC Quest giver
 - Spells and habilities
@@ -17,5 +16,4 @@ This TODO list is not complete !
 - Caracteristics
 
 ## Maker:
-- Create the empty database
-- Propose an interface to populate the database as wished
+- Move the npc on the map to set their position

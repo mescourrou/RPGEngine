@@ -1,5 +1,8 @@
 #include "Vendor.hpp"
 #include <Object.hpp>
+#include <Database.hpp>
+#include <Query.hpp>
+#include <Model.hpp>
 
 namespace character {
 
@@ -12,6 +15,22 @@ Vendor::Vendor(std::string name, std::shared_ptr<config::Context> context) :
     NPC(std::move(name), context)
 {
 
+}
+
+
+bool Vendor::loadFromDatabase(std::shared_ptr<database::Database> db)
+{
+    if (!NPC::loadFromDatabase(db))
+        return false;
+    using namespace database;
+    namespace Model = Model::NPC;
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
+                            .where(Model::NAME, Query::EQUAL, m_name)
+                            .column(Model::TYPE));
+    if (std::stoi(result.at(1).at(Model::TYPE)) != Model::VENDOR)
+        return false;
+
+    return true;
 }
 
 /**

@@ -28,8 +28,12 @@ Database::Database(const std::string &path)
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     sqlite3_initialize();
 #ifdef  BUILD_USE_FILESYSTEM
-    if (!std::filesystem::exists(std::filesystem::path(path).parent_path()))
-        std::filesystem::create_directories(std::filesystem::path(path).parent_path());
+    std::filesystem::path parentPath = std::filesystem::path(path).parent_path();
+    if (!parentPath.string().empty())
+    {
+        if (!std::filesystem::exists(parentPath))
+            std::filesystem::create_directories(parentPath);
+    }
 #endif
     if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
@@ -61,8 +65,9 @@ Database::~Database()
  */
 std::vector<std::map<std::string, std::string> > Database::query(const Query &dbQuery)
 {
+    std::string strQuery = dbQuery.str();
     std::lock_guard<std::mutex> lock(m_queryMutex);
-    query(dbQuery.str());
+    query(strQuery);
     return std::move(*m_result.release());
 }
 
@@ -96,7 +101,8 @@ bool Database::query(const std::string &query)
         m_queryMutex.unlock();
         throw DatabaseException("Lock the mutex before the Query", BaseException::MUTEX);
     }
-
+    if (m_result)
+        delete m_result.release();
     m_result = std::make_unique<std::vector<std::map<std::string, std::string>>>();
 
     std::map<std::string, std::string> resultRow;

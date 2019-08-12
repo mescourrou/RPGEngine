@@ -34,6 +34,11 @@ namespace Model {
     namespace NPC {
     constexpr char TABLE[] = "NPC";
     constexpr char NAME[] = "name";
+    constexpr char TYPE[] = "type";
+    enum Type {
+        NPC,
+        VENDOR
+    };
 
     } // namespace NPC
 

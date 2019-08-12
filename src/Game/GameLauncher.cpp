@@ -37,7 +37,8 @@ GameLauncher::GameLauncher(int argc, char **argv)
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
-    LOG(INFO) << "Starting GameLauncher v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_BUILD;
+    LOG(INFO) << "Starting GameLauncher v" << static_cast<short>(VERSION_MAJOR) << "." <<
+                 static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
     m_context = std::make_shared<config::Context>(argc, argv);
 
@@ -52,8 +53,6 @@ int GameLauncher::start()
     if (!initialize())
         return -2;
     int choice = -1;
-    events::Event<std::string> eventStartingGame;
-    eventStartingGame.subscribeSync(this, &GameLauncher::startGame);
 
     do
     {
@@ -73,7 +72,7 @@ int GameLauncher::start()
 #endif
         if (choice > 0 && choice - 1 < static_cast<int>(m_gameList.size()))
         {
-            eventStartingGame.trigger(m_gameList.at(static_cast<size_t>(choice-1)));
+            startGame(m_gameList.at(static_cast<size_t>(choice-1)));
             choice = 0;
         }
         else if (choice != 0)
@@ -113,7 +112,7 @@ void GameLauncher::startGame(std::string gameName) const
         m_context->gameLocation() = gameDirectory;
 
         GameLoader loader(m_context);
-        if (!loader.load())
+        if (!loader.load(gameName))
             return;
         loader.run();
     } catch (const BaseException& e) {

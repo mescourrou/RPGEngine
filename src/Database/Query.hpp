@@ -42,7 +42,8 @@ public:
         SELECT, ///< Select query : get values
         INSERT, ///< Insert query : add new values
         CREATE, ///< Create table query : create a new table
-        UPDATE ///< Update query : edit values
+        UPDATE, ///< Update query : edit values
+        DELETE  ///< Delete query : delete values from a table
     };
 
     /**
@@ -67,6 +68,54 @@ public:
         NOT_NULL ///< Not null
     };
 
+    /**
+     * @brief Join types
+     */
+    enum JoinType {
+        INNER_JOIN, ///< 1 for 1 join
+        LEFT_JOIN ///< Get all the left table result even if there is no match on the right table
+    };
+
+    /**
+     * @brief Store column with the table related
+     */
+    struct Column {
+        /**
+         * @brief Create a column without table
+         * @param columnName Name of the column
+         */
+        Column(const char* columnName) : columnName(columnName) {}
+
+        /**
+         * @brief Create a column without table
+         * @param columnName Name of the column
+         */
+        Column(const std::string& columnName) : columnName(columnName) {}
+
+        /**
+         * @brief Create a column linked to a table
+         * @param tableName Name of the table
+         * @param columnName Name of the column
+         */
+        Column(const char* tableName, const char* columnName) : tableName(tableName),columnName(columnName) {}
+
+        /**
+         * @brief Create a column linked to a table
+         * @param tableName Name of the table
+         * @param columnName Name of the column
+         */
+        Column(const std::string& tableName, const std::string& columnName) : tableName(tableName), columnName(columnName) {}
+
+        /**
+         * @brief Convert the couple table+column in SQL format with '.' notation
+         */
+        std::string str() const {
+            return (!tableName.empty() ? tableName + "." : "") + columnName;
+        }
+
+        std::string tableName = "";     ///< Name of the table, optionnal
+        std::string columnName;         ///< Name of the column
+    };
 
 private:
     /**
@@ -76,6 +125,7 @@ private:
     template<QueryTypes T>
     struct FindQueryType{};
 public:
+
     template<QueryTypes T> static typename FindQueryType<T>::type createQuery(const std::string& table, std::shared_ptr<Database> db);
     /// @brief Construct a Query
     Query(const std::string& table, std::shared_ptr<Database> db) : m_table(table), m_db(db) {}
@@ -95,11 +145,11 @@ public:
      */
     virtual bool isValid() const { return m_valid; }
 protected:
-    DataType dataType(const std::string& column);
+    DataType dataType(Column column);
     std::string operatorAsString(Operator op);
-    void checkColumnName(const std::string& name);
-    bool checkColumnNameValidity(const std::string& name);
-    bool checkColumnExistance(const std::string& name);
+    void checkColumnName(const Column &column);
+    bool checkColumnNameValidity(const Column& column);
+    bool checkColumnExistance(Column column);
 
     /**
      * @brief Add condition to the condition list
@@ -109,14 +159,28 @@ protected:
      * @param [in] condition Condition to add
      */
     virtual void doWhere(std::vector<std::string>& conditions, const std::string& condition) final { conditions.push_back(condition);}
-    virtual void doWhere(std::vector<std::string>& conditions, const std::string& column, Operator op, std::string value) final;
-    virtual void doColumn(std::vector<std::string>& columns, const std::string& column) final;
-    virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const std::string &column, std::string value) final;
-    virtual void doSort(std::vector<std::string>& sortColumns, const std::string& column) final;
+    virtual void doWhere(std::vector<std::string>& conditions, Column column, Operator op, std::string value) final;
+    virtual void doColumn(std::vector<std::string>& columns, const Column& column) final;
+    virtual void doValue(std::vector<std::pair<std::string, std::string>> &values, const Column &column, std::string value) final;
+    virtual void doSort(std::vector<std::string>& sortColumns, const Column& column) final;
+    virtual void doJoin(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN) final;
 
-    std::string m_table; ///< Name of the table targeted by the Query
-    std::shared_ptr<Database> m_db; ///< Database where the Query will apply (used for verifications)
-    bool m_valid = false; ///< Validity of the Query
+    virtual std::stringstream joinStatement() const final;
+
+    std::string m_table;                ///< Name of the table targeted by the Query
+    /**
+     * @brief Join informations
+     */
+    struct Join {
+        std::string table;              ///< Table to join
+        std::string localColumn;        ///< Local column
+        std::string distantColumn;      ///< Distant column to join with the local column
+        JoinType type;                  ///< Type of join
+    };
+
+    std::vector<Join> m_joins;          ///< List of table joins
+    std::shared_ptr<Database> m_db;     ///< Database where the Query will apply (used for verifications)
+    bool m_valid = false;               ///< Validity of the Query
 
 };
 
@@ -132,13 +196,20 @@ public:
     ~SelectQuery() override = default;
 
     /// @brief Add a selected column
-    SelectQuery& column(const std::string& field) { doColumn(m_columns, field); return *this;}
+    SelectQuery& column(const Column& column) { doColumn(m_columns, column); return *this;}
     /// @brief Add a filter condition
     SelectQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this;}
     /// @brief Add a filter condition
-    SelectQuery& where(const std::string& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
+    SelectQuery& where(const Column& column, Operator op, const std::string& value) { doWhere(m_conditions, column, op, value); return *this;}
     /// @brief Add a sort column
-    SelectQuery& sort(const std::string& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
+    SelectQuery& sort(const Column& column, bool ascending = true) { doSort(m_sortColumns, column); m_sortAscending = ascending; return *this; }
+
+    /// @brief Join a table
+    SelectQuery& join(const std::string& table, const std::string& localColumn, const std::string& distantColumn, JoinType type = JoinType::INNER_JOIN)
+    {
+        doJoin(table, localColumn, distantColumn, type);
+        return *this;
+    }
 
     std::string str() const override;
 
@@ -161,7 +232,7 @@ public:
     ~InsertQuery() override = default;
 
     /// @brief Add a value to the adding list
-    InsertQuery& value(const std::string& column, const std::string& value) { doValue(m_values, column, value); return *this; }
+    InsertQuery& value(const Column& column, const std::string& value) { doValue(m_values, column, value); return *this; }
 
     std::string str() const override;
 protected:
@@ -224,10 +295,35 @@ public:
     UpdateQuery& set(const std::string& columnName, const std::string& value);
     /// @brief Add filter condition
     UpdateQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
+    UpdateQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, {column}, op, value); return *this; }
 
     std::string str() const override;
 protected:
     std::map<std::string, std::string> m_set; ///< Couples column name / new value
+    std::vector<std::string> m_conditions; ///< Filter for update
+
+};
+
+
+/**
+ * @brief Create an DELETE query
+ * @warning If no "where" is given, this query delete all the row from the table
+ */
+class DeleteQuery : public Query
+{
+    DECLARE_BASEOBJECT(DeleteQuery)
+public:
+    /// @brief Construct a UPDATE Query
+    DeleteQuery(const std::string& table, std::shared_ptr<Database> db) : Query(table, db) { m_valid = true; }
+    ~DeleteQuery() override = default;
+
+    /// @brief Add filter condition
+    DeleteQuery& where(const std::string& condition) { doWhere(m_conditions, condition); return *this; }
+    /// @brief Add filter condition
+    DeleteQuery& where(const std::string& column, Query::Operator op, const std::string& value) { doWhere(m_conditions, {column}, op, value); return *this; }
+
+    std::string str() const override;
+protected:
     std::vector<std::string> m_conditions; ///< Filter for update
 
 };
@@ -240,6 +336,8 @@ template<> struct Query::FindQueryType<Query::INSERT> { typedef InsertQuery type
 template<> struct Query::FindQueryType<Query::CREATE> { typedef CreateQuery type; /**< Type matching QueryTypes::CREATE */ };
 /// QueryTypes::UPDATE into UpdateQuery
 template<> struct Query::FindQueryType<Query::UPDATE> { typedef UpdateQuery type; /**< Type matching QueryTypes::UPDATE */ };
+/// QueryTypes::DELETE into DeleteQuery
+template<> struct Query::FindQueryType<Query::DELETE> { typedef DeleteQuery type; /**< Type matching QueryTypes::UPDATE */ };
 
 /**
  * @fn Query::FindQueryType<T>::type Query::createQuery(const std::string& table)

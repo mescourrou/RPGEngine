@@ -31,8 +31,8 @@ void CharacterGUI::connectSignals(game::GUI::GameGUI *game, CharacterGUI *charac
 {
     if (player)
     {
-        game->signalArroyIsPressed.subscribeSync(character, &CharacterGUI::slotArrowPressed);
-        game->signalKeyReleased.subscribeSync(character, &CharacterGUI::slotKeyReleased);
+        game->signalArroyIsPressed.subscribeAsync(character, &CharacterGUI::slotArrowPressed);
+        game->signalKeyReleased.subscribeAsync(character, &CharacterGUI::slotKeyReleased);
     }
 }
 
@@ -51,9 +51,10 @@ void CharacterGUI::connectSignals(Character *character, CharacterGUI *characterG
 /**
  * @brief Constructor
  */
-CharacterGUI::CharacterGUI(std::weak_ptr<Character> character) :
-    m_character(character), m_requiredActions({actions::UP, actions::DOWN, actions::LEFT, actions::RIGHT,
-                             actions::UP_STOPPED, actions::DOWN_STOPPED, actions::LEFT_STOPPED, actions::RIGHT_STOPPED})
+CharacterGUI::CharacterGUI(std::weak_ptr<Character> character, std::shared_ptr<config::Context> context) :
+    m_character(character), m_context(context),
+    m_requiredActions({actions::UP, actions::DOWN, actions::LEFT, actions::RIGHT,
+                      actions::UP_STOPPED, actions::DOWN_STOPPED, actions::LEFT_STOPPED, actions::RIGHT_STOPPED})
 {
 
 }
@@ -62,7 +63,7 @@ CharacterGUI::CharacterGUI(std::weak_ptr<Character> character) :
 /**
  * @brief Implementation of BaseGUIObject::prepare : change the sprite according to the current state (moving and direction)
  */
-void CharacterGUI::prepare(const sf::Vector2u &targetSize)
+void CharacterGUI::prepare(const sf::Vector2f &targetSize)
 {
     if (m_tics == 0)
     {
@@ -248,29 +249,30 @@ bool CharacterGUI::load(const std::string &characterRessourcesDir)
  */
 void CharacterGUI::slotArrowPressed(sf::Keyboard::Key arrow)
 {
+    double speed = 50 * m_context->framePeriod * 0.00000001;
     if (arrow == sf::Keyboard::Left && (!m_moving || m_currentDirection == Left))
     {
         m_moving = true;
         m_currentDirection = Left;
-        m_character.lock()->move({-5, 0});
+        m_character.lock()->move({-speed, 0});
     }
     else if (arrow == sf::Keyboard::Right && (!m_moving || m_currentDirection == Right))
     {
         m_moving = true;
         m_currentDirection = Right;
-        m_character.lock()->move({5, 0});
+        m_character.lock()->move({speed, 0});
     }
     else if (arrow == sf::Keyboard::Down && (!m_moving || m_currentDirection == Down))
     {
         m_moving = true;
         m_currentDirection = Down;
-        m_character.lock()->move({0, 5});
+        m_character.lock()->move({0, speed});
     }
     else if (arrow == sf::Keyboard::Up && (!m_moving || m_currentDirection == Up))
     {
         m_moving = true;
         m_currentDirection = Up;
-        m_character.lock()->move({0, -5});
+        m_character.lock()->move({0, -speed});
     }
 }
 

@@ -13,6 +13,7 @@
 #include <Character.hpp>
 #include <VerbosityLevels.hpp>
 #include <Money.hpp>
+#include <PerformanceTimer.hpp>
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
@@ -29,8 +30,8 @@ namespace game {
  * @brief Construct a game with a context
  * @param gameContext Context
  */
-Game::Game(std::shared_ptr<config::Context> gameContext) :
-    m_context(gameContext)
+Game::Game(std::string name, std::shared_ptr<config::Context> gameContext) :
+    m_context(gameContext), m_name(name)
 #ifdef RPG_BUILD_GUI
   , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
 #endif
@@ -114,22 +115,21 @@ bool Game::run()
 
     using namespace std::chrono_literals;
 
-    // Framerate control
     auto clock = std::chrono::high_resolution_clock::now();
-    auto period = std::chrono::duration(20ms);
 
     while(m_running)
     {
+        //PerformanceTimer loop("Main loop");
 #ifdef RPG_BUILD_GUI
         // Treat GUI events
         m_gui->eventManager();
 #endif
-
 #ifdef RPG_BUILD_GUI
-        m_gui->draw();
-#endif
-        std::this_thread::sleep_until(clock+period);
+        m_context->framePeriod = (std::chrono::high_resolution_clock::now() - clock).count();
         clock = std::chrono::high_resolution_clock::now();
+        m_gui->draw();
+        printf("%10ld\n", m_context->framePeriod);
+#endif
     }
     return true;
 }
@@ -160,7 +160,7 @@ void Game::loadMapContents(const std::string &mapName)
             auto& newOne = m_characterList.emplace_back(std::make_shared<character::Character>(characterName, m_context));
             newOne->loadFromDatabase(m_db);
 #ifdef RPG_BUILD_GUI
-            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne);
+            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne, m_context);
             guiChar.lock()->load(m_context->kCharacterPath());
             character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
             character::GUI::CharacterGUI::connectSignals(newOne.get(), guiChar.lock().get());

@@ -63,9 +63,11 @@ bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
         {
             if (column == Model::NAME)
                 goodColumns++;
+            else if (column == Model::TYPE)
+                goodColumns++;
         }
 
-        if (goodColumns != 1)
+        if (goodColumns != 2)
             return false;
     }
     {
@@ -107,7 +109,8 @@ bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
     {
         namespace Model = database::Model::NPC;
         db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
-                  .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY));
+                  .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)
+                  .column(Model::TYPE, DataType::INTEGER));
     }
     {
         namespace Model = database::Model::NPCPath;

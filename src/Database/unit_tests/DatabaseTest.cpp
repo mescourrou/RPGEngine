@@ -138,6 +138,16 @@ TEST_F(DatabaseTest, TableTypeList)
     EXPECT_FALSE(list.count("notAColumn"));
 }
 
+TEST_F(DatabaseTest, InnerJoin)
+{
+    auto result = m_database->query(Query::createQuery<Query::SELECT>("table2", m_database)
+                                    .join("table1", "uniqueID", "id")
+                                    .where("name", Query::EQUAL, "Hello World")
+                                    .column("City"));
+    EXPECT_EQ(result.size(), 2);
+    EXPECT_EQ(result.at(1).at("City"), "Chicago");
+}
+
 /**
  * @brief Set up the tests
  */

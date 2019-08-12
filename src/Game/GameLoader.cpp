@@ -26,9 +26,10 @@ GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
 
 /**
  * @brief Load the game : prepare the game initialization
+ * @param name Name of the game
  * @return Return false in case of an error
  */
-bool GameLoader::load()
+bool GameLoader::load(const std::string& name)
 {
     namespace structure = config::structure::globalFile;
     std::string databasePath = m_config->getValue(structure::ressources::SECTION,
@@ -45,7 +46,7 @@ bool GameLoader::load()
         throw e;
     }
 
-    m_game = std::make_shared<Game>(m_context);
+    m_game = std::make_shared<Game>(name, m_context);
 
     return m_game->initialize(m_db);
 }
