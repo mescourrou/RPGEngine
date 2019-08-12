@@ -4,8 +4,8 @@ constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
 #cmakedefine RPG_BUILD_TEST
 #cmakedefine RPG_BUILD_GUI
 constexpr unsigned char VERSION_MAJOR = 0;
-constexpr unsigned char VERSION_MINOR = 1;
-constexpr unsigned char VERSION_BUILD = 2;
+constexpr unsigned char VERSION_MINOR = 2;
+constexpr unsigned char VERSION_BUILD = 0;
 
 #cmakedefine GIT_BRANCH "@GIT_BRANCH@"
 #cmakedefine GIT_COMMIT_HASH "@GIT_COMMIT_HASH@"
