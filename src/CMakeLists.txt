@@ -10,6 +10,7 @@ list(APPEND MODULES Map)
 list(APPEND MODULES Tools)
 list(APPEND MODULES Events)
 list(APPEND MODULES Quest)
+list(APPEND MODULES epstl)
 
 foreach(module ${MODULES})
 	add_subdirectory(${module})
