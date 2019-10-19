@@ -6,7 +6,8 @@
 
 #include <Context.hpp>
 
-namespace config {
+namespace config
+{
 
 char** ContextTest::m_argv = nullptr;
 

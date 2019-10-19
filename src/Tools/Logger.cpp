@@ -3,7 +3,7 @@
 /**
  * @brief Get the singleton instance
  */
-Logger &Logger::getInstance()
+Logger& Logger::getInstance()
 {
     static Logger instance;
     return instance;
@@ -19,8 +19,9 @@ Logger &Logger::getInstance()
  * @param message
  * @param message_len
  */
-void Logger::send(google::LogSeverity severity, const char *full_filename,
-                  const char *base_filename, int line, const tm *tm_time, const char *message, size_t message_len)
+void Logger::send(google::LogSeverity severity, const char* full_filename,
+                  const char* base_filename, int line, const tm* tm_time, const char* message,
+                  size_t message_len)
 {
     m_logs.sputn((std::stringbuf::char_type*)message, message_len);
     m_logs.sputc('\n');

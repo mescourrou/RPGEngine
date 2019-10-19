@@ -6,7 +6,7 @@
 
 class ToolsTest : public testing::Test
 {
-public:
+  public:
 };
 
 

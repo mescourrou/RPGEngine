@@ -21,9 +21,9 @@ class WorkTest;
 class AbstractWork
 {
 #ifdef RPG_BUILD_TEST
-	friend class events::WorkTest;
+    friend class events::WorkTest;
 #endif
-public:
+  public:
     /// @brief Constructor
     AbstractWork() = default;
     /// @brief Destructor
@@ -58,13 +58,14 @@ public:
 template<typename ...Args>
 class Work : public AbstractWork
 {
-public:
+  public:
     /**
      * @brief Construct a work with the given function
      * @param func Function to do
      * @param arguments Arguments of the function
      */
-    Work(std::function<void(Args...)> func, Args... arguments) : m_func(func), m_arguments(arguments...) {}
+    Work(std::function<void(Args...)> func, Args... arguments) : m_func(func),
+        m_arguments(arguments...) {}
     ~Work() override = default;
 
     /**
@@ -75,7 +76,7 @@ public:
         std::apply(m_func, m_arguments);
     }
 
-private:
+  private:
     std::function<void(Args...)> m_func; ///< Function to activate in run method
     std::tuple<Args...> m_arguments; ///< Arguments of the function
 
@@ -88,7 +89,7 @@ private:
 template<>
 class Work<void> : public AbstractWork
 {
-public:
+  public:
     /**
      * @brief Construct a work with the given function
      * @param func Function to do
@@ -103,7 +104,7 @@ public:
         m_func();
     }
 
-private:
+  private:
     std::function<void(void)> m_func; ///< Function to activate in run method.
 };
 

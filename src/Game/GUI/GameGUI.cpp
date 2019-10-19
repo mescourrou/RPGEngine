@@ -24,9 +24,11 @@
 #include <imgui-SFML.h>
 #include <imgui.h>
 
-namespace game {
+namespace game
+{
 
-namespace GUI {
+namespace GUI
+{
 
 /**
  * @brief Construct the GameGUI
@@ -36,10 +38,12 @@ namespace GUI {
 GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     m_context(context), m_game(game)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
 
     loadFromConfig();
-    m_context->config()->signalConfigUpdated.subscribeAsync(this, &GameGUI::loadFromConfig);
+    m_context->config()->signalConfigUpdated.subscribeAsync(this,
+            &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
 }
@@ -66,25 +70,32 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
     m_mapGUI->setCenterOfView({m_game->m_playerCharacter->position().x(),
                                m_game->m_playerCharacter->position().y()});
 
-    m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](map::Position pos){
+    m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](
+                map::Position pos)
+    {
         m_mapGUI->setCenterOfView({pos.x(), pos.y()});
     });
 
-    m_player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter, m_context);
+    m_player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter,
+               m_context);
 
     m_player.lock()->load(m_context->kCharacterPath());
     character::GUI::CharacterGUI::connectSignals(this, m_player.lock().get(), true);
-    character::GUI::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(), m_player.lock().get(), true);
+    character::GUI::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(),
+            m_player.lock().get(), true);
 
-    signalPause.subscribeAsync([this](bool pause){
+    signalPause.subscribeAsync([this](bool pause)
+    {
         m_ui.onPause = pause;
     });
 
-    events::ActionHandler::addAction(CHARACTER_WINDOW_ACTION, [this](){
+    events::ActionHandler::addAction(CHARACTER_WINDOW_ACTION, [this]()
+    {
         m_characterWindow->setActive(!m_characterWindow->active());
     });
 
-    events::ActionHandler::addAction(INVENTORY_WINDOW_ACTION, [this](){
+    events::ActionHandler::addAction(INVENTORY_WINDOW_ACTION, [this]()
+    {
         m_inventoryWindow->setActive(!m_inventoryWindow->active());
     });
 
@@ -127,7 +138,8 @@ void GameGUI::eventManager()
         {
             if (m_actionWaitingForKeybinding.empty())
             {
-                switch (m_event.key.code) {
+                switch (m_event.key.code)
+                {
                 case sf::Keyboard::Escape:
                     signalPause.trigger(!m_ui.onPause);
                     break;
@@ -169,8 +181,11 @@ void GameGUI::draw()
 {
     m_windowsManager.prepareWindows();
     m_mapGUI->prepare(m_window->getView().getSize());
-    std::sort(m_guiObjects.begin(), m_guiObjects.end(), [](std::shared_ptr<BaseGUIObject> obj1, std::shared_ptr<BaseGUIObject> obj2){
-       return obj1->getPosition().y < obj2->getPosition().y;
+    std::sort(m_guiObjects.begin(),
+              m_guiObjects.end(), [](std::shared_ptr<BaseGUIObject> obj1,
+                                     std::shared_ptr<BaseGUIObject> obj2)
+    {
+        return obj1->getPosition().y < obj2->getPosition().y;
     });
     for (auto& obj : m_guiObjects)
     {
@@ -202,24 +217,29 @@ void GameGUI::loadFromConfig()
         m_window->close();
     namespace structure = config::structure::globalFile;
     bool fullscreen = false;
-    if (m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::FULLSCREEN) == "true")
+    if (m_context->config()->getValue(structure::preferences::SECTION,
+                                      structure::preferences::FULLSCREEN) == "true")
         fullscreen = true;
 
-    std::string strResolution = m_context->config()->getValue(structure::preferences::SECTION, structure::preferences::RESOLUTION);
+    std::string strResolution = m_context->config()->getValue(
+                                    structure::preferences::SECTION, structure::preferences::RESOLUTION);
 
     if (strResolution.empty())
         strResolution = GAME_DEFAULT_RESOLUTION;
 
     auto xIndex = strResolution.find('x');
-    int xResolution = std::atoi(strResolution.substr(0,xIndex).c_str());
-    int yResolution = std::atoi(strResolution.substr(xIndex+1,-1).c_str());
+    int xResolution = std::atoi(strResolution.substr(0, xIndex).c_str());
+    int yResolution = std::atoi(strResolution.substr(xIndex + 1, -1).c_str());
 
-    VLOG(verbosityLevel::VERIFICATION_LOG) << "Resolution = " << xResolution << " x " << yResolution;
+    VLOG(verbosityLevel::VERIFICATION_LOG) << "Resolution = " << xResolution <<
+                                           " x " << yResolution;
 
     if (!fullscreen)
-        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine");
+        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution,
+                   yResolution), "RPGEngine");
     else
-        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution, yResolution), "RPGEngine", sf::Style::Fullscreen);
+        m_window = std::make_shared<sf::RenderWindow>(sf::VideoMode(xResolution,
+                   yResolution), "RPGEngine", sf::Style::Fullscreen);
 
 }
 
@@ -250,13 +270,16 @@ void GameGUI::makeUI()
             ImGui::NextColumn();
             // Complete with abilities
 
-            ImGui::SetWindowPos(ImVec2(0,m_window->getSize().y - ImGui::GetWindowHeight()));
+            ImGui::SetWindowPos(ImVec2(0,
+                                       m_window->getSize().y - ImGui::GetWindowHeight()));
         }
         ImGui::End(); // Bottom Area
     }
     if (m_ui.onPause)
         ImGui::OpenPopup(UI::PAUSE_POPUP);
-    if (m_ui.onPause && ImGui::BeginPopupModal(UI::PAUSE_POPUP, nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize))
+    if (m_ui.onPause
+            && ImGui::BeginPopupModal(UI::PAUSE_POPUP, nullptr,
+                                      ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize))
     {
         uiPauseMenu();
         ImGui::EndPopup();
@@ -312,7 +335,8 @@ void GameGUI::uiPauseMenu()
     }
 
     // Settings popup
-    if (ImGui::BeginPopupModal(UI::SETTINGS_POPUP, nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    if (ImGui::BeginPopupModal(UI::SETTINGS_POPUP, nullptr,
+                               ImGuiWindowFlags_AlwaysAutoResize))
     {
         if (ImGui::BeginTabBar(UI::SETTINGS_TABBAR_NAME))
         {
@@ -337,7 +361,8 @@ void GameGUI::uiPauseMenu()
                     ImGui::SameLine();
                     ImGui::Text(" -- ");
                     ImGui::SameLine();
-                    if (ImGui::Button(events::ActionHandler::getKeyBinding(actionName).toString().c_str()))
+                    if (ImGui::Button(events::ActionHandler::getKeyBinding(
+                                          actionName).toString().c_str()))
                     {
                         m_actionWaitingForKeybinding = actionName;
                     }
@@ -373,23 +398,26 @@ void GameGUI::uiLoadSettingsPopup()
 {
     namespace preferences = config::structure::globalFile::preferences;
     m_ui.settings.fullscreen = false;
-    std::string tmp = m_context->config()->getValue(preferences::SECTION, preferences::FULLSCREEN);
+    std::string tmp = m_context->config()->getValue(preferences::SECTION,
+                      preferences::FULLSCREEN);
     if (tmp == "true")
         m_ui.settings.fullscreen = true;
 
-    m_ui.settings.resolution = m_context->config()->getValue(preferences::SECTION, preferences::RESOLUTION);
+    m_ui.settings.resolution = m_context->config()->getValue(preferences::SECTION,
+                               preferences::RESOLUTION);
     if (m_ui.settings.resolution.empty())
         m_ui.settings.resolution = GAME_DEFAULT_RESOLUTION;
 
     m_ui.settings.availableResolutions = {"1920x1080", "900x600"};
 
     m_ui.settings.resolutionItemSelected = static_cast<int>(
-                std::distance(m_ui.settings.availableResolutions.begin(),
-                              std::find(m_ui.settings.availableResolutions.begin(),
-                                        m_ui.settings.availableResolutions.end(),
-                                        m_ui.settings.resolution.c_str())));
+            std::distance(m_ui.settings.availableResolutions.begin(),
+                          std::find(m_ui.settings.availableResolutions.begin(),
+                                    m_ui.settings.availableResolutions.end(),
+                                    m_ui.settings.resolution.c_str())));
 
-    if (m_ui.settings.resolutionItemSelected == static_cast<int>(m_ui.settings.availableResolutions.size()))
+    if (m_ui.settings.resolutionItemSelected == static_cast<int>
+            (m_ui.settings.availableResolutions.size()))
         m_ui.settings.availableResolutions.push_back(m_ui.settings.resolution.c_str());
 }
 

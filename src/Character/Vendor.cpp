@@ -4,7 +4,8 @@
 #include <Query.hpp>
 #include <Model.hpp>
 
-namespace character {
+namespace character
+{
 
 /**
  * @brief Constructor
@@ -47,7 +48,7 @@ const std::weak_ptr<object::Inventory> Vendor::seeInventory() const
  * @param[in] objectName Object requested
  * @param[out] buyer Reference on the buyer to put the object on its inventory
  */
-bool Vendor::sell(const std::string& objectName, Character &buyer)
+bool Vendor::sell(const std::string& objectName, Character& buyer)
 {
     if (!m_inventory->get(objectName))
         return false;
@@ -67,11 +68,12 @@ bool Vendor::sell(const std::string& objectName, Character &buyer)
  * @param[in] objectInventoryId Iventory id of the object to sell
  * @param[out] buyer Reference on the buyer to put the object on its inventory
  */
-bool Vendor::sell(unsigned int objectInventoryId, Character &buyer)
+bool Vendor::sell(unsigned int objectInventoryId, Character& buyer)
 {
     if (!m_inventory->get(objectInventoryId))
         return false;
-    if (buyer.inventory().lock()->pullMoney(m_inventory->get(objectInventoryId)->value()))
+    if (buyer.inventory().lock()->pullMoney(m_inventory->get(
+            objectInventoryId)->value()))
     {
         m_inventory->addMoney(m_inventory->get(objectInventoryId)->value());
         auto object = m_inventory->pop(objectInventoryId);
@@ -88,13 +90,14 @@ bool Vendor::sell(unsigned int objectInventoryId, Character &buyer)
  * @param objectName Object to buy
  * @param seller Seller
  */
-bool Vendor::buy(const std::string& objectName, Character &seller)
+bool Vendor::buy(const std::string& objectName, Character& seller)
 {
     if (!seller.inventory().lock()->get(objectName))
         return false;
     if (m_inventory->pullMoney(seller.inventory().lock()->get(objectName)->value()))
     {
-        seller.inventory().lock()->addMoney(seller.inventory().lock()->get(objectName)->value());
+        seller.inventory().lock()->addMoney(seller.inventory().lock()->get(
+                                                objectName)->value());
         auto object = seller.inventory().lock()->pop(objectName);
 
         m_inventory->push(object);
@@ -108,13 +111,15 @@ bool Vendor::buy(const std::string& objectName, Character &seller)
  * @param objectInventoryId Id of the object on the seller inventory
  * @param seller Seller
  */
-bool Vendor::buy(unsigned int objectInventoryId, Character &seller)
+bool Vendor::buy(unsigned int objectInventoryId, Character& seller)
 {
     if (!seller.inventory().lock()->get(objectInventoryId))
         return false;
-    if (m_inventory->pullMoney(seller.inventory().lock()->get(objectInventoryId)->value()))
+    if (m_inventory->pullMoney(seller.inventory().lock()->get(
+                                   objectInventoryId)->value()))
     {
-        seller.inventory().lock()->addMoney(seller.inventory().lock()->get(objectInventoryId)->value());
+        seller.inventory().lock()->addMoney(seller.inventory().lock()->get(
+                                                objectInventoryId)->value());
         auto object = seller.inventory().lock()->pop(objectInventoryId);
 
         m_inventory->push(object);

@@ -4,12 +4,13 @@
 #include <gmock/gmock.h>
 #include <Context.hpp>
 
-namespace config {
+namespace config
+{
 class Context;
 
 class ContextTest : public testing::Test
 {
-public:
+  public:
     void SetUp() override;
 
     static char** m_argv;
@@ -18,7 +19,7 @@ public:
 
 class ContextMock : public Context
 {
-public:
+  public:
     ContextMock() {}
     MOCK_CONST_METHOD0(kMapPath, const std::string());
 };

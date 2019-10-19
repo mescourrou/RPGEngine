@@ -1,7 +1,8 @@
 #include "ConsoleWindow.hpp"
 #include <Logger.hpp>
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 /**
  * @brief Prepare the window to be drawn

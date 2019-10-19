@@ -5,7 +5,8 @@
 #ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
 #endif
-namespace database {
+namespace database
+{
 
 /*
  * Test SELECT Query generation
@@ -14,7 +15,8 @@ TEST_F(QueryTest, Select)
 {
     std::string expected = "SELECT id, name FROM table1 WHERE id = 3;";
 
-    auto query = Query::createQuery<Query::SELECT>("table1", database).column("id").column("name").where("id = 3");
+    auto query = Query::createQuery<Query::SELECT>("table1",
+                 database).column("id").column("name").where("id = 3");
 
     EXPECT_EQ(query.className(), "SelectQuery");
     EXPECT_EQ(query.str(), expected);
@@ -22,17 +24,21 @@ TEST_F(QueryTest, Select)
     EXPECT_EQ(database->columnsType("table1").size(), 2);
 
     expected = "SELECT id, name FROM table1 WHERE id = 2;";
-    query = Query::createQuery<Query::SELECT>("table1", database).column("id").column("name").where("id", Query::EQUAL, "2");
+    query = Query::createQuery<Query::SELECT>("table1",
+            database).column("id").column("name").where("id", Query::EQUAL, "2");
 
     EXPECT_EQ(query.str(), expected);
 
     expected = "SELECT id, name FROM table1 WHERE name = 'Jack';";
-    query = Query::createQuery<Query::SELECT>("table1", database).column("id").column("name").where("name", Query::EQUAL, "Jack");
+    query = Query::createQuery<Query::SELECT>("table1",
+            database).column("id").column("name").where("name", Query::EQUAL, "Jack");
 
     EXPECT_EQ(query.str(), expected);
 
-    expected = "SELECT id, name FROM table1 WHERE name = 'Jack' ORDER BY name DESC;";
-    query = Query::createQuery<Query::SELECT>("table1", database).column("id").column("name").where("name", Query::EQUAL, "Jack")
+    expected =
+        "SELECT id, name FROM table1 WHERE name = 'Jack' ORDER BY name DESC;";
+    query = Query::createQuery<Query::SELECT>("table1",
+            database).column("id").column("name").where("name", Query::EQUAL, "Jack")
             .sort("name", false);
     EXPECT_EQ(query.str(), expected);
 }
@@ -48,7 +54,8 @@ TEST_F(QueryTest, Insert)
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    expected = "INSERT INTO table2 (first_name, last_name) VALUES ('Solomon', 'Lane');";
+    expected =
+        "INSERT INTO table2 (first_name, last_name) VALUES ('Solomon', 'Lane');";
     EXPECT_EQ(Query::createQuery<Query::INSERT>("table2", database)
               .value("first_name", "Solomon")
               .value("last_name", "Lane").str(), expected);
@@ -65,12 +72,14 @@ TEST_F(QueryTest, Create)
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    query = Query::createQuery<Query::CREATE>("newTable", database).constraint("first_name", Query::PRIMARY_KEY)
-                                                                   .constraint("last_name", Query::PRIMARY_KEY);
+    query = Query::createQuery<Query::CREATE>("newTable",
+            database).constraint("first_name", Query::PRIMARY_KEY)
+            .constraint("last_name", Query::PRIMARY_KEY);
     EXPECT_EQ(query.str(), expected);
     EXPECT_FALSE(query.isValid());
 
-    expected = "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER, PRIMARY KEY(`first_name`, `last_name`));";
+    expected =
+        "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER, PRIMARY KEY(`first_name`, `last_name`));";
     query = Query::createQuery<Query::CREATE>("newTable", database)
             .column("first_name").column("last_name").column("age", INTEGER)
             .constraint("first_name", Query::PRIMARY_KEY)
@@ -79,7 +88,8 @@ TEST_F(QueryTest, Create)
     EXPECT_EQ(query.str(), expected);
     EXPECT_TRUE(query.isValid());
 
-    expected = "CREATE TABLE newTable (first_name BLOB UNIQUE, last_name BLOB NOT NULL, age INTEGER AUTOINCREMENT);";
+    expected =
+        "CREATE TABLE newTable (first_name BLOB UNIQUE, last_name BLOB NOT NULL, age INTEGER AUTOINCREMENT);";
     query = Query::createQuery<Query::CREATE>("newTable", database)
             .column("first_name").column("last_name").column("age", INTEGER)
             .constraint("first_name", Query::UNIQUE)
@@ -89,7 +99,8 @@ TEST_F(QueryTest, Create)
     EXPECT_EQ(query.str(), expected);
     EXPECT_TRUE(query.isValid());
 
-    expected = "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER);";
+    expected =
+        "CREATE TABLE newTable (first_name BLOB, last_name BLOB, age INTEGER);";
     query = Query::createQuery<Query::CREATE>("newTable", database)
             .column("first_name").column("last_name").column("age", INTEGER)
             .constraint("not_a_column", Query::UNIQUE);
@@ -109,9 +120,10 @@ TEST_F(QueryTest, CreateWithForeignKey)
     db->query(Query::createQuery<Query::CREATE>("table1", db)
               .column("column1", DataType::BLOB));
 
-    std::string expected = "CREATE TABLE newTable (first_name BLOB REFERENCES table1(`column1`));";
+    std::string expected =
+        "CREATE TABLE newTable (first_name BLOB REFERENCES table1(`column1`));";
     auto query = Query::createQuery<Query::CREATE>("newTable", db)
-                        .column("first_name", DataType::BLOB, "table1", "column1");
+                 .column("first_name", DataType::BLOB, "table1", "column1");
 
     EXPECT_EQ(query.str(), expected);
     EXPECT_TRUE(query.isValid());
@@ -145,18 +157,23 @@ TEST_F(QueryTest, Update)
 TEST_F(QueryTest, Delete)
 {
     std::string expected = "DELETE FROM table1 WHERE field1 = 'Bob';";
-    auto query = Query::createQuery<Query::DELETE>("table1", database).where("field1", Query::EQUAL, "Bob");
+    auto query = Query::createQuery<Query::DELETE>("table1",
+                 database).where("field1", Query::EQUAL, "Bob");
     EXPECT_EQ(query.str(), expected);
 }
 
 TEST_F(QueryTest, InnerJoin)
 {
-    std::string expected = "SELECT * FROM table1 INNER JOIN table2 ON table1.field1 = table2.field2;";
-    auto query = Query::createQuery<Query::SELECT>("table1", database).join("table2", "field1", "field2");
+    std::string expected =
+        "SELECT * FROM table1 INNER JOIN table2 ON table1.field1 = table2.field2;";
+    auto query = Query::createQuery<Query::SELECT>("table1",
+                 database).join("table2", "field1", "field2");
     EXPECT_EQ(query.str(), expected);
 
-    expected = "SELECT * FROM table1 INNER JOIN table2 ON table1.field1 = table2.field2 WHERE field1 = 'Bob';";
-    query = Query::createQuery<Query::SELECT>("table1", database).join("table2", "field1", "field2").where("field1", Query::EQUAL, "Bob");
+    expected =
+        "SELECT * FROM table1 INNER JOIN table2 ON table1.field1 = table2.field2 WHERE field1 = 'Bob';";
+    query = Query::createQuery<Query::SELECT>("table1", database).join("table2",
+            "field1", "field2").where("field1", Query::EQUAL, "Bob");
     EXPECT_EQ(query.str(), expected);
 }
 

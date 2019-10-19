@@ -9,7 +9,8 @@
 // External lib
 #include <glog/logging.h>
 
-namespace object {
+namespace object
+{
 
 /**
  * @brief Construct an object
@@ -17,7 +18,8 @@ namespace object {
  */
 Object::Object(std::string name) : m_name(std::move(name))
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
 }
 
 /**
@@ -30,9 +32,11 @@ bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Object;
     using namespace database;
     if (!db)
-        throw ObjectException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw ObjectException("No database given.",
+                              DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw ObjectException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw ObjectException("The database model is not correct",
+                              DatabaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .where(Model::NAME, Query::EQUAL, m_name));
@@ -48,18 +52,21 @@ bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
  * @param [in] db Database to use
  * @return Return a object, or a derived type
  */
-std::shared_ptr<Object> Object::createFromDatabase(const std::string &name, std::shared_ptr<database::Database> db)
+std::shared_ptr<Object> Object::createFromDatabase(const std::string& name,
+        std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::Object;
     using namespace database;
     if (!db)
-        throw ObjectException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw ObjectException("No database given.",
+                              DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw ObjectException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw ObjectException("The database model is not correct",
+                              DatabaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                                      .column(Model::TYPE)
-                                      .where(Model::NAME, Query::EQUAL, name));
+                            .column(Model::TYPE)
+                            .where(Model::NAME, Query::EQUAL, name));
     if (result.size() <= 1)
         return {};
     std::string objectType = result.at(1).at(Model::TYPE);
@@ -70,7 +77,8 @@ std::shared_ptr<Object> Object::createFromDatabase(const std::string &name, std:
         ret->loadFromDatabase(db);
     }
     else
-        throw ObjectException(std::string("Object type '").append(objectType).append("' unknown"), ObjectException::UNKNOWN_OBJECT_TYPE);
+        throw ObjectException(std::string("Object type '").append(
+                                  objectType).append("' unknown"), ObjectException::UNKNOWN_OBJECT_TYPE);
 
     return ret;
 }
@@ -93,9 +101,9 @@ bool Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
         if (column == Model::NAME)
             goodColumns++;
         else if (column == Model::TYPE)
-                goodColumns++;
+            goodColumns++;
         else if (column == Model::VALUE)
-                goodColumns++;
+            goodColumns++;
         else
             return false;
     }
@@ -116,7 +124,8 @@ bool Object::createDatabaseModel(std::shared_ptr<database::Database> db)
     using namespace database;
 
     if (!db)
-        throw ObjectException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw ObjectException("No database given.",
+                              DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME, DataType::BLOB).constraint(Model::NAME, Query::PRIMARY_KEY)
@@ -134,7 +143,7 @@ bool Object::createDatabaseModel(std::shared_ptr<database::Database> db)
  * @param object Object to print
  * @return Modified stream
  */
-std::ostream &object::operator<<(std::ostream &stream, const Object& object)
+std::ostream& object::operator<<(std::ostream& stream, const Object& object)
 {
     stream << "Object : " << object.name() << std::endl;
     stream << object.description() << std::endl;

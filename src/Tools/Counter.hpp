@@ -20,16 +20,17 @@ class Counter
 #ifdef RPG_BUILD_TEST
     friend class CounterTest;
 #endif
-public:
+  public:
     constexpr Counter(unsigned int start = 0) noexcept : m_count(start) {}
     ~Counter() noexcept = default;
 
-    constexpr unsigned int number() noexcept {
+    constexpr unsigned int number() noexcept
+    {
         unsigned int current = m_count;
         m_count++;
         return current;
     }
-private:
+  private:
     unsigned int m_count;
 };
 

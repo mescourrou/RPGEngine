@@ -16,26 +16,30 @@ class PerformanceTimer
     /**
      * @brief Informations stored in the timer list
      */
-    struct infos {
+    struct infos
+    {
         double average;     ///< Current average
         unsigned int count; ///< Sample count, used to calculate the average
         double min;         ///< Minimum
         double max;         ///< Maximum
     };
 
-public:
+  public:
     /**
      * @brief Create athe PerformanceTimer and start the timer
      * @param name Name of the PerformanceTimer, used to create the PerformanceTimer::infos
      */
-    PerformanceTimer(const char* name, bool printInfos = true) : m_name(name), m_printInfos(printInfos) {
+    PerformanceTimer(const char* name, bool printInfos = true) : m_name(name),
+        m_printInfos(printInfos)
+    {
         m_clock = std::chrono::high_resolution_clock::now();
     }
 
     /**
      * @brief Destruct the PerformanceTimer : stops the timer, calculates the informations and print them.
      */
-    ~PerformanceTimer() {
+    ~PerformanceTimer()
+    {
         auto diff = std::chrono::high_resolution_clock::now() - m_clock;
         double value = diff.count() * 0.001;
         if (m_printInfos)
@@ -57,22 +61,27 @@ public:
                 //   avg = ----------------------
                 //                   4
                 //
-                m_informations[m_name].average = (m_informations[m_name].average * m_informations[m_name].count + diff.count()*0.001)/++m_informations[m_name].count;
+                m_informations[m_name].average = (m_informations[m_name].average *
+                                                  m_informations[m_name].count + diff.count() * 0.001) /
+                                                 ++m_informations[m_name].count;
                 if (value > m_informations[m_name].max) m_informations[m_name].max = value;
                 if (value < m_informations[m_name].min) m_informations[m_name].min = value;
             }
             // Print the informations
             printf("PERF %15s : %10.3f us | avg : %10.3f us | min : %10.3f us | max : %10.3f us\n",
-                   m_name, value, m_informations[m_name].average, m_informations[m_name].min, m_informations[m_name].max);
+                   m_name, value, m_informations[m_name].average, m_informations[m_name].min,
+                   m_informations[m_name].max);
         }
         else
             printf("PERF %15s : %10.3f us\n", m_name, value);
     }
 
-protected:
+  protected:
     const char* m_name;         ///< Name of the timer
     bool m_printInfos = true; ///< Calculate and print the additionnal informations
-    static inline std::map<const char*, infos> m_informations;              ///< Informations
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_clock;    ///< Chrono
+    static inline std::map<const char*, infos>
+    m_informations;              ///< Informations
+    std::chrono::time_point<std::chrono::high_resolution_clock>
+    m_clock;    ///< Chrono
 };
 

@@ -1,5 +1,6 @@
 #include "Work.hpp"
-namespace events {
+namespace events
+{
 
 
 }

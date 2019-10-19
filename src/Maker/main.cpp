@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 #ifndef BUILD_USE_FILESYSTEM
     throw std::string("Can't use Maker without filesystem");

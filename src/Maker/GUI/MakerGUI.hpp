@@ -19,24 +19,29 @@
 #include <FileBrowser.hpp>
 #endif
 
-namespace sf {
+namespace sf
+{
 class RenderWindow;
 }
 
-namespace config {
+namespace config
+{
 class Context;
 }
 
-namespace maker {
+namespace maker
+{
 class Maker;
 }
 
-namespace map::GUI {
+namespace map::GUI
+{
 class MapGUI;
 }
 
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 CREATE_EXCEPTION_CLASS(MakerGUI)
 
@@ -46,7 +51,7 @@ CREATE_EXCEPTION_CLASS(MakerGUI)
 class MakerGUI : public BaseObject
 {
     DECLARE_BASEOBJECT(MakerGUI)
-public:
+  public:
     MakerGUI(std::shared_ptr<config::Context> context, Maker* maker);
     ~MakerGUI() override;
 
@@ -57,7 +62,7 @@ public:
 
     events::Event<void> signalClose;    ///< Signal on closing the app
 
-protected:
+  protected:
     void makeUI();
 
     sf::RenderWindow m_window;     ///< SFML render window
@@ -68,15 +73,18 @@ protected:
     /**
      * @brief UI informations
      */
-    struct UI {
+    struct UI
+    {
         /**
          * @brief UI informations for the creation of a new game
          */
-        struct NewGame {
+        struct NewGame
+        {
             /**
              * @brief State of the creation of a new Game
              */
-            enum State {
+            enum State
+            {
                 NONE,           ///< Nothing
                 DIRECTORY,      ///< Selection of the directory
                 INFORMATIONS    ///< Getting informations
@@ -90,7 +98,8 @@ protected:
         /**
          * @brief UI Informations for the openning of the game
          */
-        struct OpenGame {
+        struct OpenGame
+        {
             bool window = false;                    ///< Window openned
             stringlist gameList;                    ///< Game list
             int selectedItem = 0;                   ///< Current game selected
@@ -101,13 +110,19 @@ protected:
 
     void resetUI();
 
-    ImGui::WindowsManager m_windowManager;                              ///< Window manager
-    std::unique_ptr<maker::GUI::CharacterWindow> m_characterWindow;     ///< Pointer on the character window
-    std::unique_ptr<maker::GUI::ConsoleWindow> m_consoleWindow;         ///< Pointer on the console window
-    std::unique_ptr<maker::GUI::MoneyWindow> m_moneyWindow;             ///< Pointer on the money window
-    std::unique_ptr<maker::GUI::MapWindow> m_mapWindow;                 ///< Pointer on the map windows
+    ImGui::WindowsManager
+    m_windowManager;                              ///< Window manager
+    std::unique_ptr<maker::GUI::CharacterWindow>
+    m_characterWindow;     ///< Pointer on the character window
+    std::unique_ptr<maker::GUI::ConsoleWindow>
+    m_consoleWindow;         ///< Pointer on the console window
+    std::unique_ptr<maker::GUI::MoneyWindow>
+    m_moneyWindow;             ///< Pointer on the money window
+    std::unique_ptr<maker::GUI::MapWindow>
+    m_mapWindow;                 ///< Pointer on the map windows
 
-    std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;                  ///< File browser
+    std::unique_ptr<ImGui::FileBrowser>
+    m_fileBrowser;                  ///< File browser
 
     Maker* m_maker;                                                     ///< Pointer on the maker backend
 

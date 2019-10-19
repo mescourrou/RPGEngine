@@ -10,7 +10,8 @@
 #include <filesystem>
 #endif
 
-namespace config {
+namespace config
+{
 
 /*
  * Classname test
@@ -170,7 +171,7 @@ TEST_F(ConfigTest, Save)
 
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     config::ContextTest::m_argv = argv;
     std::cout << argv[0] << std::endl;

@@ -4,7 +4,8 @@
 #include <Object.hpp>
 #include <unit_tests/ContextTest.hpp>
 
-namespace character {
+namespace character
+{
 
 /*
  * Test the normal buying scenario
@@ -119,11 +120,12 @@ VendorTest::VendorTest()
     using ::testing::Return;
     config::ContextMock* mockContext = new config::ContextMock;
     EXPECT_CALL((*mockContext), kMapPath()).WillRepeatedly(Return("data"));
-    context = std::shared_ptr<config::Context>(static_cast<config::Context*>(mockContext));
+    context = std::shared_ptr<config::Context>(static_cast<config::Context*>
+              (mockContext));
 
     object::Money::initialize("bronze",
-                      std::pair<std::string, unsigned int>("argent", 100),
-                      std::pair<std::string, unsigned int>("or", 50000));
+                              std::pair<std::string, unsigned int>("argent", 100),
+                              std::pair<std::string, unsigned int>("or", 50000));
     db = std::make_shared<database::Database>("data/sample1.sqlite");
 }
 

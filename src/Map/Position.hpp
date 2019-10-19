@@ -13,10 +13,12 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database {
+namespace database
+{
 class Database;
 }
-namespace config {
+namespace config
+{
 class Context;
 }
 
@@ -43,7 +45,7 @@ class Position : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class map::PositionTest;
 #endif
-public:
+  public:
     /// @brief Default constructor
     Position() = default;
     Position(double x, double y, double z = 0);
@@ -65,40 +67,72 @@ public:
     /// @brief Destructor
     ~Position() override = default;
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db, std::shared_ptr<config::Context> context, const std::string& characterName);
+    bool loadFromDatabase(std::shared_ptr<database::Database> db,
+                          std::shared_ptr<config::Context> context, const std::string& characterName);
 
     /// @brief Get the map
-    std::shared_ptr<Map> map() const noexcept { return m_map; }
+    std::shared_ptr<Map> map() const noexcept
+    {
+        return m_map;
+    }
     /// @brief Change the map
-    void setMap(std::shared_ptr<Map> map) { m_map = map; }
+    void setMap(std::shared_ptr<Map> map)
+    {
+        m_map = map;
+    }
 
     ///@ brief Get and modify the x coordinate of the position
-    double& x() noexcept { return m_position.x(); }
+    double& x() noexcept
+    {
+        return m_position.x();
+    }
     ///@ brief Get and modify the y coordinate of the position
-    double& y() noexcept { return m_position.y(); }
+    double& y() noexcept
+    {
+        return m_position.y();
+    }
     ///@ brief Get and modify the z coordinate of the position
-    double& z() noexcept { return m_position.z(); }
+    double& z() noexcept
+    {
+        return m_position.z();
+    }
     ///@ brief Get the x coordinate of the position
-    double x() const noexcept { return m_position.x(); }
+    double x() const noexcept
+    {
+        return m_position.x();
+    }
     ///@ brief Get the x coordinate of the position
-    double y() const noexcept { return m_position.y(); }
+    double y() const noexcept
+    {
+        return m_position.y();
+    }
     ///@ brief Get the x coordinate of the position
-    double z()  const noexcept{ return m_position.z(); }
+    double z()  const noexcept
+    {
+        return m_position.z();
+    }
 
     void move(const Vector<3>& move);
 
     double distanceTo(const Position& other) const;
     /// @brief Compare the distance of the two positions
-    double operator-(const Position& other) { return distanceTo(other); }
+    double operator-(const Position& other)
+    {
+        return distanceTo(other);
+    }
 
     /// @brief Move the position of the vector
-    Position& operator+=(const Vector<3>& m) { move(m); return *this; }
+    Position& operator+=(const Vector<3>& m)
+    {
+        move(m);
+        return *this;
+    }
     bool operator==(const Position& other);
     bool operator!=(const Position& other);
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-private:
+  private:
 
     std::shared_ptr<Map> m_map; ///< Map where we are on
     Vector<3> m_position; ///< Position vector

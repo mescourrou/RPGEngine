@@ -4,17 +4,18 @@
 #include <Stringlist.hpp>
 #include <Maker.hpp>
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 /**
  * @brief Map window
  */
 class MapWindow : public ImGui::Window
 {
-public:
+  public:
     MapWindow(Maker* maker);
 
-protected:
+  protected:
     bool doPrepare() override;
 
     Maker* m_maker;                     ///< Pointer on the maker

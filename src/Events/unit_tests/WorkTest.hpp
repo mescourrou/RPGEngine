@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <Work.hpp>
 
-namespace events {
+namespace events
+{
 
 class WorkTest : public testing::Test
 {
-public:
+  public:
 
     static inline bool callEffectuated1 = false;
     static inline bool callEffectuated2 = false;

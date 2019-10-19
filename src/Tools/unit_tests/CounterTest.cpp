@@ -1,5 +1,6 @@
 #include "CounterTest.hpp"
-namespace tools {
+namespace tools
+{
 
 }
 

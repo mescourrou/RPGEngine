@@ -2,11 +2,12 @@
 
 #include <gtest/gtest.h>
 
-namespace object {
+namespace object
+{
 
 class ObjectTest : public testing::Test
 {
-public:
+  public:
     void SetUp() override;
 };
 

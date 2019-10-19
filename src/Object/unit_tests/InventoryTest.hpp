@@ -2,12 +2,13 @@
 
 #include <gtest/gtest.h>
 
-namespace object {
+namespace object
+{
 class Inventory;
 
 class InventoryTest : public testing::Test
 {
-public:
+  public:
     void SetUp() override;
 
     std::shared_ptr<Inventory> inventory; ///< Inventory to use

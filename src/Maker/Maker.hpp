@@ -13,7 +13,8 @@
 #include <StateMachine.hpp>
 
 #ifdef RPG_BUILD_GUI
-namespace maker::GUI {
+namespace maker::GUI
+{
 class MakerGUI;
 }
 #endif
@@ -22,11 +23,13 @@ class MakerGUI;
 #include <gtest/gtest.h>
 #endif
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
-namespace config {
+namespace config
+{
 class Context;
 class Config;
 }
@@ -50,14 +53,15 @@ class Maker : public BaseObject
 {
     DECLARE_BASEOBJECT(Maker)
 #ifdef RPG_BUILD_TEST
-	friend class maker::MakerTest;
+    friend class maker::MakerTest;
 #endif
-public:
-    enum States {
+  public:
+    enum States
+    {
         PROJECT_LOADING,
         WORKBENCH
     };
-    Maker(int argc, char **argv);
+    Maker(int argc, char** argv);
     /// @brief Destructor
     ~Maker() override = default;
 
@@ -71,9 +75,11 @@ public:
 
     bool createDatabaseModel();
 
-    struct CharacterInformations {
+    struct CharacterInformations
+    {
         std::string name;
-        enum Type : int {
+        enum Type : int
+        {
             NPC,
             VENDOR,
             NPC_END
@@ -81,19 +87,23 @@ public:
 
         map::Position position;
 
-        bool isNPC() const {
+        bool isNPC() const
+        {
             return type >= NPC && type < NPC_END;
         }
 
     };
     bool saveCharacter(const CharacterInformations& infos);
-    bool saveCharacter(const CharacterInformations& current, const CharacterInformations& previous);
+    bool saveCharacter(const CharacterInformations& current,
+                       const CharacterInformations& previous);
     std::vector<std::string> characterList() const;
-    bool getCharacterInformations(const std::string& name, CharacterInformations &out);
+    bool getCharacterInformations(const std::string& name,
+                                  CharacterInformations& out);
     bool deleteCharacter(const std::string& name);
     events::Event<std::vector<std::string>> signalCharacterListUpdated;
 
-    struct MoneyInformations {
+    struct MoneyInformations
+    {
         std::vector<std::string> moneyList;
         std::vector<int> values;
         int baseMoney = 0;
@@ -101,7 +111,8 @@ public:
     bool saveMoney(const MoneyInformations& infos);
     bool getMoneyInformations(MoneyInformations& out);
 
-    struct MapInformations {
+    struct MapInformations
+    {
         std::string name;
     };
 
@@ -115,7 +126,7 @@ public:
 
     StateMachine<States> stateMachine{PROJECT_LOADING, WORKBENCH};
 
-private:
+  private:
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     void updateCharacterList();
     bool populateDirectory();

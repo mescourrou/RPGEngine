@@ -8,7 +8,8 @@
 #endif
 #include <Database.hpp>
 
-namespace object {
+namespace object
+{
 #ifdef BUILD_USE_FILESYSTEM
 /*
  * Test the good initialization of the inventory : empty
@@ -81,7 +82,8 @@ TEST_F(InventoryTest, LoadFromDatabase)
 {
     std::filesystem::path modelFile = "data/sample3.sqlite";
     std::filesystem::path useFile = "data/sample3.db";
-    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+    std::filesystem::copy(modelFile, useFile,
+                          std::filesystem::copy_options::overwrite_existing);
 
     std::shared_ptr<database::Database> db(new database::Database(useFile));
 
@@ -123,14 +125,16 @@ void InventoryTest::SetUp()
                       std::pair<std::string, unsigned int>("argent", 100),
                       std::pair<std::string, unsigned int>("or", 50000));
 
-    const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info();
+    const ::testing::TestInfo* const test_info
+        = ::testing::UnitTest::GetInstance()->current_test_info();
     auto testName = std::string(test_info->name());
 
     if (testName != "Empty")
     {
         inventory.reset(new Inventory);
         inventory->m_inventory.push_back(std::make_shared<Object>(Object("Something")));
-        inventory->m_inventory.push_back(std::make_shared<Object>(Object("Something very cool")));
+        inventory->m_inventory.push_back(std::make_shared<Object>
+                                         (Object("Something very cool")));
         inventory->m_inventory.push_back(std::make_shared<Object>(Object("Trash")));
     }
 }

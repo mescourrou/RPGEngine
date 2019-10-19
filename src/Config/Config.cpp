@@ -14,23 +14,26 @@
 // Extern libs
 #include <glog/logging.h>
 
-namespace config {
+namespace config
+{
 
 /**
  * @brief Default constructor
  */
 Config::Config()
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
 }
 
 /**
  * @brief Constructor of Config
  * @param filename File to load
  */
-Config::Config(const std::string &filename)
+Config::Config(const std::string& filename)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
     if (!loadFile(filename))
         throw ConfigException("Impossible to load the config file");
 }
@@ -40,7 +43,7 @@ Config::Config(const std::string &filename)
  * @param[in] filename Path name
  * @return Return false if the file couldn't be loaded
  */
-bool Config::loadFile(const std::string &filename) noexcept
+bool Config::loadFile(const std::string& filename) noexcept
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Call loadFile(" << filename << ")";
     m_iniFile.SetUnicode();
@@ -84,15 +87,18 @@ bool Config::saveToFile(std::string filename)
  * @param[in] key Config key
  * @return Return the value in string, even for numbers. Empty string if not found
  */
-std::string Config::getValue(const std::string &section, const std::string &key) const
+std::string Config::getValue(const std::string& section,
+                             const std::string& key) const
 {
     bool multipleValues = false;
-    const char* rawValue = m_iniFile.GetValue(section.c_str(), key.c_str(), nullptr, &multipleValues);
+    const char* rawValue = m_iniFile.GetValue(section.c_str(), key.c_str(), nullptr,
+                           &multipleValues);
 
     if (!rawValue)
         return {};
     if (multipleValues)
-        LOG(WARNING) << "Key '" << key << "' in section '" << section << "' may have multiple values";
+        LOG(WARNING) << "Key '" << key << "' in section '" << section <<
+                     "' may have multiple values";
     return std::string(rawValue);
 
 }
@@ -105,7 +111,7 @@ std::string Config::getValue(const std::string &section, const std::string &key)
  * @param[in] key Key to search
  * @return Value of the key. Empty string if not found
  */
-std::string Config::getValue(const std::string &key) const
+std::string Config::getValue(const std::string& key) const
 {
     CSimpleIniCaseA::TNamesDepend sections;
     m_iniFile.GetAllSections(sections);
@@ -129,7 +135,8 @@ std::string Config::getValue(const std::string &key) const
  * @param [in] key Key to look for
  * @return List of the values. Empty list if the pair section-key wasn't found
  */
-std::vector<std::string> Config::getAllValues(const std::string &section, const std::string &key) const
+std::vector<std::string> Config::getAllValues(const std::string& section,
+        const std::string& key) const
 {
     std::vector<std::string> ret;
     CSimpleIniCaseA::TNamesDepend values;
@@ -140,7 +147,8 @@ std::vector<std::string> Config::getAllValues(const std::string &section, const 
 
     // output all of the items
     CSimpleIniCaseA::TNamesDepend::const_iterator i;
-    for (i = values.begin(); i != values.end(); ++i) {
+    for (i = values.begin(); i != values.end(); ++i)
+    {
         ret.push_back(i->pItem);
     }
     return ret;
@@ -170,10 +178,13 @@ std::vector<std::string> Config::getAllSections() const
  * @param forceRemplace (optionnal, true by default) Force the remplacement of the value.
  * @return Return false if the value couldn't be set
  */
-bool Config::setValue(const std::string &section, const std::string &key, const std::string& value, bool forceRemplace)
+bool Config::setValue(const std::string& section, const std::string& key,
+                      const std::string& value, bool forceRemplace)
 {
-    VLOG(verbosityLevel::FUNCTION_CALL) << "setValue (" << section << ", " << key << ", " << value << ", " << forceRemplace << ")";
-    int rc = m_iniFile.SetValue(section.c_str(), key.c_str(), value.c_str(), nullptr, forceRemplace);
+    VLOG(verbosityLevel::FUNCTION_CALL) << "setValue (" << section << ", " << key <<
+                                        ", " << value << ", " << forceRemplace << ")";
+    int rc = m_iniFile.SetValue(section.c_str(), key.c_str(), value.c_str(),
+                                nullptr, forceRemplace);
     if (rc < 0)
     {
         LOG(ERROR) << "Error during setting value " << section << ":" << key;

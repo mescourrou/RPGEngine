@@ -23,9 +23,10 @@ namespace database
  * @brief Create and open the given database file
  * @param [in] path Path to the database
  */
-Database::Database(const std::string &path)
+Database::Database(const std::string& path)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
     sqlite3_initialize();
 #ifdef  BUILD_USE_FILESYSTEM
     std::filesystem::path parentPath = std::filesystem::path(path).parent_path();
@@ -35,13 +36,15 @@ Database::Database(const std::string &path)
             std::filesystem::create_directories(parentPath);
     }
 #endif
-    if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
+    if (sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
-        LOG(ERROR) << "Can't open database " << path << ": " << sqlite3_errmsg(m_sqlite3Handler);
+        LOG(ERROR) << "Can't open database " << path << ": " << sqlite3_errmsg(
+                       m_sqlite3Handler);
         sqlite3_close(m_sqlite3Handler);
         throw DatabaseException("Can't open database", DatabaseException::OPENING);
     }
-    else {
+    else
+    {
         LOG(INFO) << "Open database '" << path << "'";
     }
 
@@ -63,7 +66,8 @@ Database::~Database()
  * @param [in] dbQuery Query to execute
  * @return Return the list (std::vector) of row (std::map<column, value>)
  */
-std::vector<std::map<std::string, std::string> > Database::query(const Query &dbQuery)
+std::vector<std::map<std::string, std::string>> Database::query(
+            const Query& dbQuery)
 {
     std::string strQuery = dbQuery.str();
     std::lock_guard<std::mutex> lock(m_queryMutex);
@@ -78,12 +82,13 @@ std::vector<std::map<std::string, std::string> > Database::query(const Query &db
  * @param [in] colName Columns name
  * @return 0
  */
-int Database::callback(int argc, char **argv, char **colName)
+int Database::callback(int argc, char** argv, char** colName)
 {
     std::map<std::string, std::string> row;
-    for(int i = 0; i < argc ; i++)
+    for (int i = 0; i < argc ; i++)
     {
-        row.insert(std::pair<std::string, std::string>(std::string(colName[i]),argv[i] ? argv[i] : "NULL"));
+        row.insert(std::pair<std::string, std::string>(std::string(colName[i]),
+                   argv[i] ? argv[i] : "NULL"));
     }
     m_result->emplace_back(std::move(row));
     return 0;
@@ -94,12 +99,13 @@ int Database::callback(int argc, char **argv, char **colName)
  * @param [in] query String query
  * @return True if the query successed and false if it failed
  */
-bool Database::query(const std::string &query)
+bool Database::query(const std::string& query)
 {
     if (m_queryMutex.try_lock())
     {
         m_queryMutex.unlock();
-        throw DatabaseException("Lock the mutex before the Query", BaseException::MUTEX);
+        throw DatabaseException("Lock the mutex before the Query",
+                                BaseException::MUTEX);
     }
     if (m_result)
         delete m_result.release();
@@ -111,15 +117,17 @@ bool Database::query(const std::string &query)
     m_result->emplace_back(std::move(resultRow));
 
     // Error buffer
-    char *zErrMsg;
-    auto cb = [](void *currentDatabase, int argc, char **argv, char **colName) -> int
+    char* zErrMsg;
+    auto cb = [](void* currentDatabase, int argc, char** argv,
+                 char** colName) -> int
     {
         return static_cast<Database*>(currentDatabase)->callback(argc, argv, colName);
     };
 
     VLOG(verbosityLevel::DATABASE_QUERY) << "Execute query : " << query;
     int rc = sqlite3_exec(m_sqlite3Handler, query.c_str(), cb, this, &zErrMsg);
-    if( rc!=SQLITE_OK ){
+    if ( rc != SQLITE_OK )
+    {
         LOG(ERROR) << "SQL error: " << zErrMsg;
         sqlite3_free(zErrMsg);
         return false;
@@ -133,7 +141,8 @@ bool Database::query(const std::string &query)
  * @param [in] result Result of the query to verify
  * @return
  */
-bool Database::isQuerySuccessfull(const std::vector<std::map<std::string, std::string> > &result)
+bool Database::isQuerySuccessfull(const
+                                  std::vector<std::map<std::string, std::string>>& result)
 {
     if (result.front().at("status") != "success")
         return false;
@@ -168,7 +177,7 @@ std::vector<std::string> Database::tableList()
  * @param [in] table Table to look for
  * @return Return true if the table is in the database
  */
-bool Database::isTable(const std::string &table)
+bool Database::isTable(const std::string& table)
 {
     auto tables = tableList();
     return std::find(tables.begin(), tables.end(), table) != tables.end();
@@ -182,7 +191,7 @@ bool Database::isTable(const std::string &table)
 std::vector<std::string> Database::columnList(const std::string& table)
 {
     auto lock = lockGuard();
-    if (query("PRAGMA table_info('"+table+"');"))
+    if (query("PRAGMA table_info('" + table + "');"))
     {
         std::vector<std::string> columnList;
         for (auto& result : *m_result)
@@ -216,7 +225,7 @@ std::vector<std::string> Database::columnList(const std::string& table)
 std::map<std::string, DataType> Database::columnsType(const std::string& table)
 {
     auto lock = lockGuard();
-    if (query("PRAGMA table_info('"+table+"');"))
+    if (query("PRAGMA table_info('" + table + "');"))
     {
         std::map<std::string, DataType> ret;
         for (auto& result : *m_result)
@@ -237,9 +246,10 @@ std::map<std::string, DataType> Database::columnsType(const std::string& table)
  * @param [in] data DataType to convert
  * @return std::string of the DataType
  */
-std::string Database::dataTypeAsString(const DataType &data)
+std::string Database::dataTypeAsString(const DataType& data)
 {
-    switch (data) {
+    switch (data)
+    {
     case INTEGER:
         return "INTEGER";
     case TEXT:
@@ -261,7 +271,7 @@ std::string Database::dataTypeAsString(const DataType &data)
  * @param [in] data Data to convert
  * @return DataType corresponding the data given
  */
-DataType Database::dataTypeFromString(const std::string &data)
+DataType Database::dataTypeFromString(const std::string& data)
 {
     if (data == "INTEGER")
         return INTEGER;

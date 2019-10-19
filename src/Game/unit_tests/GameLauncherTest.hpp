@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <GameLauncher.hpp>
 
-namespace game {
+namespace game
+{
 
 class GameLauncherTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

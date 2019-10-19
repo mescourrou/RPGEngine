@@ -22,10 +22,10 @@ class Dialogue : public BaseObject
 {
     DECLARE_BASEOBJECT(Dialogue)
 #ifdef RPG_BUILD_TEST
-	friend class quest::DialogueTest;
+    friend class quest::DialogueTest;
 #endif
-public:
-	Dialogue();
+  public:
+    Dialogue();
     ~Dialogue() override = default;
 };
 

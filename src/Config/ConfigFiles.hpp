@@ -1,25 +1,29 @@
 #pragma once
 
-namespace config {
+namespace config
+{
 
 /**
  * @namespace structure
  * @brief Define the keywords of the configuration files (ini, json, xml, ...)
  */
-namespace structure {
+namespace structure
+{
 
 /**
  * @namespace globalFile
  * @brief Keyword of the main file
  */
-namespace globalFile {
+namespace globalFile
+{
 /// Main file name
 constexpr char FILE_NAME[] = "main.ini";
 /**
  * @namespace ressources
  * @brief Ressource section
  */
-namespace ressources {
+namespace ressources
+{
 /// Section name
 constexpr char SECTION[] = "Ressources";
 /// Keyword for the database location
@@ -30,7 +34,8 @@ constexpr char DATABASE[] = "database";
  * @namespace preferences
  * @brief User reference section for saving
  */
-namespace preferences {
+namespace preferences
+{
 /// Section name
 constexpr char SECTION[] = "Preferences";
 /// Fullscreen : true/false
@@ -44,12 +49,14 @@ constexpr char RESOLUTION[] = "resolution";
 } // namespace globalFile
 
 
-namespace gameListFile {
+namespace gameListFile
+{
 /// Key to find the directory in .ini file
 constexpr char DIRECTORY_KEY[] = "directory";
 } // namespace gameListFile
 
-namespace mapFile {
+namespace mapFile
+{
 constexpr char KEY_LAYERS[] = "layers";
 constexpr char KEY_LAYER_NAME[] = "name";
 constexpr char KEY_LAYER_TYPE[] = "type";
@@ -73,7 +80,8 @@ constexpr char KEY_TILESET_FIRST_ID[] = "firstgid";
 constexpr char KEY_TILESET_SOURCE[] = "source";
 } // namespace mapFiles
 
-namespace tilesetFile {
+namespace tilesetFile
+{
 constexpr char ELEMENT_TILESET[] = "tileset";
 constexpr char ELEMENT_IMAGE[] = "image";
 constexpr char PROPERTY_TILE_WIDTH[] = "tilewidth";
@@ -85,7 +93,8 @@ constexpr char PROPERTY_IMAGE_WIDTH[] = "width";
 constexpr char PROPERTY_IMAGE_HEIGHT[] = "height";
 } // namespace tilesetFile
 
-namespace characterFile {
+namespace characterFile
+{
 constexpr char SPRITE_SETS[] = "spriteSets";
 constexpr char FIRST_ID[] = "firstId";
 constexpr char SET_FILE[] = "setFile";

@@ -1,7 +1,8 @@
 #include "KeyBinding.hpp"
 #include <map>
 
-namespace events {
+namespace events
+{
 
 #ifdef RPG_BUILD_GUI
 /**
@@ -124,7 +125,7 @@ bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
  * @brief Get the keybinding from the SFML KeyEvent
  * @param event SFML KeyEvent to load from
  */
-KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent &event)
+KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent& event)
 {
     short layer = 0;
     if (event.alt)

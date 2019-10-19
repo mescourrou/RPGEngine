@@ -1,5 +1,6 @@
 #include "WorkTest.hpp"
-namespace events {
+namespace events
+{
 
 /*
  * Callback with no arguments

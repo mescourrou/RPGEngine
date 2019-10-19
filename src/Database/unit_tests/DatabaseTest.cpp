@@ -5,7 +5,8 @@
 #ifdef BUILD_USE_FILESYSTEM
 #include <filesystem>
 #endif
-namespace database {
+namespace database
+{
 
 #ifdef BUILD_USE_FILESYSTEM
 /*
@@ -32,7 +33,8 @@ TEST_F(DatabaseTest, QueryText)
  */
 TEST_F(DatabaseTest, QuerySelect)
 {
-    auto result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
+    auto result = m_database->query(Query::createQuery<Query::SELECT>("table1",
+                                    m_database)
                                     .where("id = 2"));
 
     ASSERT_EQ(result.size(), 2);
@@ -41,8 +43,9 @@ TEST_F(DatabaseTest, QuerySelect)
     EXPECT_EQ(result.at(1).at("id"), "2");
     EXPECT_EQ(result.at(1).at("name"), "Hello World");
 
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
-                                        .where("id = 1").where("name = 'Good morning'"));
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1",
+                               m_database)
+                               .where("id = 1").where("name = 'Good morning'"));
 
     ASSERT_EQ(result.size(), 2);
     EXPECT_EQ(result.at(0).at("status"), "success");
@@ -51,8 +54,9 @@ TEST_F(DatabaseTest, QuerySelect)
     EXPECT_EQ(result.at(1).at("name"), "Good morning");
 
     // No result
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
-                                        .where("id = 1").where("name = 'I dont exist'"));
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1",
+                               m_database)
+                               .where("id = 1").where("name = 'I dont exist'"));
 
     ASSERT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
@@ -64,13 +68,15 @@ TEST_F(DatabaseTest, QuerySelect)
 TEST_F(DatabaseTest, Insert)
 {
     // Execute INSERT Query
-    auto result = m_database->query(Query::createQuery<Query::INSERT>("table1", m_database)
+    auto result = m_database->query(Query::createQuery<Query::INSERT>("table1",
+                                    m_database)
                                     .value("id", "3").value("name", "Hello guys"));
     EXPECT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
 
     // Verify with a select Query
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1",
+                               m_database)
                                .where("id = 3"));
     ASSERT_EQ(result.size(), 2);
     EXPECT_EQ(result.at(0).at("status"), "success");
@@ -84,13 +90,15 @@ TEST_F(DatabaseTest, Insert)
 TEST_F(DatabaseTest, Update)
 {
     // Execute UPDATE Query
-    auto result = m_database->query(Query::createQuery<Query::UPDATE>("table1", m_database)
+    auto result = m_database->query(Query::createQuery<Query::UPDATE>("table1",
+                                    m_database)
                                     .set("id", "4").where("name = 'Good evening'"));
     EXPECT_EQ(result.size(), 1);
     EXPECT_EQ(result.at(0).at("status"), "success");
 
     // Verify with a select Query
-    result = m_database->query(Query::createQuery<Query::SELECT>("table1", m_database)
+    result = m_database->query(Query::createQuery<Query::SELECT>("table1",
+                               m_database)
                                .where("id = 4"));
     ASSERT_EQ(result.size(), 2);
     EXPECT_EQ(result.at(0).at("status"), "success");
@@ -105,9 +113,12 @@ TEST_F(DatabaseTest, TableList)
 {
     auto tableList = m_database->tableList();
     EXPECT_EQ(tableList.size(), 2);
-    EXPECT_TRUE(std::find(tableList.begin(), tableList.end(), "table1") != tableList.end());
-    EXPECT_TRUE(std::find(tableList.begin(), tableList.end(), "table2") != tableList.end());
-    EXPECT_FALSE(std::find(tableList.begin(), tableList.end(), "noExistente") != tableList.end());
+    EXPECT_TRUE(std::find(tableList.begin(), tableList.end(),
+                          "table1") != tableList.end());
+    EXPECT_TRUE(std::find(tableList.begin(), tableList.end(),
+                          "table2") != tableList.end());
+    EXPECT_FALSE(std::find(tableList.begin(), tableList.end(),
+                           "noExistente") != tableList.end());
 }
 
 /*
@@ -117,9 +128,12 @@ TEST_F(DatabaseTest, TableColumnList)
 {
     auto columnList = m_database->columnList("table1");
     EXPECT_EQ(columnList.size(), 2);
-    EXPECT_TRUE(std::find(columnList.begin(), columnList.end(), "id") != columnList.end());
-    EXPECT_TRUE(std::find(columnList.begin(), columnList.end(), "name") != columnList.end());
-    EXPECT_FALSE(std::find(columnList.begin(), columnList.end(), "notAColumn") != columnList.end());
+    EXPECT_TRUE(std::find(columnList.begin(), columnList.end(),
+                          "id") != columnList.end());
+    EXPECT_TRUE(std::find(columnList.begin(), columnList.end(),
+                          "name") != columnList.end());
+    EXPECT_FALSE(std::find(columnList.begin(), columnList.end(),
+                           "notAColumn") != columnList.end());
 }
 
 /*
@@ -140,7 +154,8 @@ TEST_F(DatabaseTest, TableTypeList)
 
 TEST_F(DatabaseTest, InnerJoin)
 {
-    auto result = m_database->query(Query::createQuery<Query::SELECT>("table2", m_database)
+    auto result = m_database->query(Query::createQuery<Query::SELECT>("table2",
+                                    m_database)
                                     .join("table1", "uniqueID", "id")
                                     .where("name", Query::EQUAL, "Hello World")
                                     .column("City"));
@@ -169,7 +184,7 @@ void DatabaseTest::SetUp()
 }
 
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     google::InitGoogleLogging(argv[0]);
     google::LogToStderr();

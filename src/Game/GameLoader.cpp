@@ -11,7 +11,8 @@
 
 #include <glog/logging.h>
 
-namespace game {
+namespace game
+{
 
 /**
  * @brief Create a GameLoader
@@ -20,8 +21,10 @@ namespace game {
 GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
     m_context(context)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    m_config.reset(new config::Config(context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME));
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
+    m_config.reset(new config::Config(context->gameLocation() + "/" +
+                                      config::structure::globalFile::FILE_NAME));
 }
 
 /**
@@ -33,16 +36,20 @@ bool GameLoader::load(const std::string& name)
 {
     namespace structure = config::structure::globalFile;
     std::string databasePath = m_config->getValue(structure::ressources::SECTION,
-                                                  structure::ressources::DATABASE);
+                               structure::ressources::DATABASE);
     if (databasePath.empty())
     {
-        LOG(ERROR) << "'" << structure::ressources::SECTION << ":" << structure::ressources::DATABASE << "' field in configuration file not found";
+        LOG(ERROR) << "'" << structure::ressources::SECTION << ":" <<
+                   structure::ressources::DATABASE << "' field in configuration file not found";
         return false;
     }
     databasePath = m_context->gameLocation() + "/" + databasePath;
-    try {
+    try
+    {
         m_db.reset(new database::Database(databasePath));
-    } catch (const database::DatabaseException& e) {
+    }
+    catch (const database::DatabaseException& e)
+    {
         throw e;
     }
 

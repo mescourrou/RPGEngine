@@ -22,10 +22,10 @@ class QuestJournal : public BaseObject
 {
     DECLARE_BASEOBJECT(QuestJournal)
 #ifdef RPG_BUILD_TEST
-	friend class quest::QuestJournalTest;
+    friend class quest::QuestJournalTest;
 #endif
-public:
-	QuestJournal();
+  public:
+    QuestJournal();
     ~QuestJournal() override = default;
 };
 

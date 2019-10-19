@@ -1,5 +1,6 @@
 #include "InventoryWindow.hpp"
-namespace game::GUI {
+namespace game::GUI
+{
 
 /**
  * @brief Prepare the window to be drawn

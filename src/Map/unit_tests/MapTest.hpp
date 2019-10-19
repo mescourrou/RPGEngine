@@ -6,11 +6,12 @@
 #include <Context.hpp>
 #include <Map.hpp>
 
-namespace map {
+namespace map
+{
 
 class MapTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

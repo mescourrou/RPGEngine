@@ -1,12 +1,16 @@
 #include "ActionTest.hpp"
 #include <ActionHandler.hpp>
 
-namespace events {
+namespace events
+{
 
 TEST_F(ActionTest, AddAction)
 {
     bool executed = false;
-    ActionHandler::addAction("Test action", [&executed](){ executed = true; });
+    ActionHandler::addAction("Test action", [&executed]()
+    {
+        executed = true;
+    });
 
     ActionHandler::execute("Test action");
     WorkerThread::waitForJoin();

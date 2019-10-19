@@ -12,7 +12,8 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace config {
+namespace config
+{
 class Config;
 class Context;
 }
@@ -39,15 +40,15 @@ class GameLauncher : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class game::GameLauncherTest;
 #endif
-public:
+  public:
 
-    GameLauncher(int argc, char **argv);
+    GameLauncher(int argc, char** argv);
     /// @brief Destructor
     ~GameLauncher() override = default;
 
     int start();
 
-protected:
+  protected:
     bool initialize();
     void startGame(std::string gameName) const;
     std::shared_ptr<config::Context> m_context;     ///< Context

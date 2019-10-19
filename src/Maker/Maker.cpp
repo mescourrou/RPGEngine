@@ -32,16 +32,18 @@
 
 DEFINE_int32(verbose, VERBOSE, "Verbosity level");
 
-namespace maker {
+namespace maker
+{
 
 /**
  * @brief Constructor
  */
-Maker::Maker(int argc, char **argv)
+Maker::Maker(int argc, char** argv)
 {
     google::InitGoogleLogging(argv[0]);
     google::AddLogSink(&Logger::getInstance());
-    gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(VERSION_MINOR) + "."
+    gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(
+                                 VERSION_MINOR) + "."
                              + std::to_string(VERSION_BUILD));
     gflags::ParseCommandLineFlags(&argc, &argv, true);
     if (FLAGS_verbose > 0)
@@ -49,11 +51,13 @@ Maker::Maker(int argc, char **argv)
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
-    LOG(INFO) << "Starting RPGMaker v" << static_cast<short>(VERSION_MAJOR) << "." <<
-                 static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
+    LOG(INFO) << "Starting RPGMaker v" << static_cast<short>
+              (VERSION_MAJOR) << "." <<
+              static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
 
     m_context = std::make_shared<config::Context>(argc, argv);
-    std::string configPath = m_context->kConfigPath() + "/" + m_context->kGlobalConfigFilename();
+    std::string configPath = m_context->kConfigPath() + "/" +
+                             m_context->kGlobalConfigFilename();
     if (!m_generalConfig.loadFile(configPath))
     {
         if (!std::filesystem::exists(m_context->kConfigPath()))
@@ -80,7 +84,10 @@ bool Maker::initialize()
         LOG(ERROR) << "Failed to initialize Maker GUI";
         return false;
     }
-    m_gui->signalClose.subscribeAsync([this](){ m_running = false; });
+    m_gui->signalClose.subscribeAsync([this]()
+    {
+        m_running = false;
+    });
 #endif
     return true;
 }
@@ -93,7 +100,7 @@ bool Maker::run()
     auto clock = std::chrono::high_resolution_clock::now();
     auto period = std::chrono::duration(40ms);
 
-    while(m_running)
+    while (m_running)
     {
 #ifdef RPG_BUILD_GUI
         m_gui->eventManager();
@@ -102,13 +109,13 @@ bool Maker::run()
 #ifdef RPG_BUILD_GUI
         m_gui->draw();
 #endif
-        std::this_thread::sleep_until(clock+period);
+        std::this_thread::sleep_until(clock + period);
         clock = std::chrono::high_resolution_clock::now();
     }
     return false;
 }
 
-bool Maker::doNewGame(const std::string &gameName, const std::string &directory)
+bool Maker::doNewGame(const std::string& gameName, const std::string& directory)
 {
     m_context->gameLocation() = directory;
     m_name = gameName;
@@ -128,7 +135,8 @@ bool Maker::doNewGame(const std::string &gameName, const std::string &directory)
         LOG(ERROR) << "Impossible to create the main game file";
         return false;
     }
-    m_context->config()->setValue(gameGlobalFile::ressources::SECTION, gameGlobalFile::ressources::DATABASE, m_dbFile);
+    m_context->config()->setValue(gameGlobalFile::ressources::SECTION,
+                                  gameGlobalFile::ressources::DATABASE, m_dbFile);
     m_context->config()->saveToFile();
 
 
@@ -147,22 +155,26 @@ std::vector<std::string> Maker::gameList() const
     return m_generalConfig.getAllSections();
 }
 
-bool Maker::doOpenGame(const std::string &gameName)
+bool Maker::doOpenGame(const std::string& gameName)
 {
     LOG(INFO) << "Open " << gameName;
     m_name = gameName;
-    m_context->gameLocation() = m_generalConfig.getValue(gameName, config::structure::gameListFile::DIRECTORY_KEY);
+    m_context->gameLocation() = m_generalConfig.getValue(gameName,
+                                config::structure::gameListFile::DIRECTORY_KEY);
 
-    if (!m_context->config()->loadFile(m_context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME))
+    if (!m_context->config()->loadFile(m_context->gameLocation() + "/" +
+                                       config::structure::globalFile::FILE_NAME))
     {
-        LOG(ERROR) << "Impossible to load the game config file : " << m_context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME;
+        LOG(ERROR) << "Impossible to load the game config file : " <<
+                   m_context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME;
         return false;
     }
 
     namespace globalFile = config::structure::globalFile;
     if (!m_context->config())
         m_context->config() = std::make_shared<config::Config>();
-    m_dbFile = m_context->config()->getValue(globalFile::ressources::SECTION, globalFile::ressources::DATABASE);
+    m_dbFile = m_context->config()->getValue(globalFile::ressources::SECTION,
+               globalFile::ressources::DATABASE);
     if (m_dbFile.empty())
     {
         LOG(ERROR) << "No database file specified in the game config file";
@@ -171,7 +183,8 @@ bool Maker::doOpenGame(const std::string &gameName)
 
     if (m_db)
         m_db.reset();
-    m_db = std::make_shared<database::Database>(m_context->gameLocation() + "/" + m_dbFile);
+    m_db = std::make_shared<database::Database>(m_context->gameLocation() + "/" +
+            m_dbFile);
     if (!m_db)
     {
         LOG(ERROR) << "Impossible to load the database";
@@ -189,7 +202,7 @@ bool Maker::doOpenGame(const std::string &gameName)
  * @brief Load the Maker from the database
  * @param filename Name of the database
  */
-void Maker::loadDatabase(const std::string &filename)
+void Maker::loadDatabase(const std::string& filename)
 {
     m_db = std::make_shared<database::Database>(filename);
 }
@@ -202,13 +215,13 @@ void Maker::loadDatabase(const std::string &filename)
 bool Maker::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
     return
-            character::Character::verifyDatabaseModel(db) &&
-            character::NPC::verifyDatabaseModel(db) &&
-            object::Object::verifyDatabaseModel(db) &&
-            object::Money::verifyDatabaseModel(db) &&
-            object::Inventory::verifyDatabaseModel(db) &&
-            map::Position::verifyDatabaseModel(db) &&
-            game::Game::verifyDatabaseModel(db);
+        character::Character::verifyDatabaseModel(db) &&
+        character::NPC::verifyDatabaseModel(db) &&
+        object::Object::verifyDatabaseModel(db) &&
+        object::Money::verifyDatabaseModel(db) &&
+        object::Inventory::verifyDatabaseModel(db) &&
+        map::Position::verifyDatabaseModel(db) &&
+        game::Game::verifyDatabaseModel(db);
 }
 
 void Maker::updateCharacterList()
@@ -217,10 +230,13 @@ void Maker::updateCharacterList()
         return;
     m_characterList.clear();
     using namespace database;
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Character::TABLE, m_db)
+    auto result = m_db->query(Query::createQuery<Query::SELECT>
+                              (Model::Character::TABLE, m_db)
                               .column(Model::Character::NAME)
-                              .join(Model::Position::TABLE, Model::Character::NAME, Model::Position::FK_CHARACTER)
-                              .where({Model::Position::TABLE, Model::Position::FK_MAP}, Query::EQUAL, m_currentMap->name())
+                              .join(Model::Position::TABLE, Model::Character::NAME,
+                                    Model::Position::FK_CHARACTER)
+                              .where({Model::Position::TABLE, Model::Position::FK_MAP}, Query::EQUAL,
+                                     m_currentMap->name())
                               .sort(Model::Character::NAME));
     if (!Database::isQuerySuccessfull(result))
         return;
@@ -267,23 +283,25 @@ bool Maker::populateDirectory()
 bool Maker::createDatabaseModel()
 {
     if (!m_db)
-        throw MakerException("No database loaded.", database::DatabaseException::MISSING_DATABASE);
+        throw MakerException("No database loaded.",
+                             database::DatabaseException::MISSING_DATABASE);
     return
-            character::Character::createDatabaseModel(m_db) &&
-            character::NPC::createDatabaseModel(m_db) &&
-            map::Position::createDatabaseModel(m_db) &&
-            object::Object::createDatabaseModel(m_db) &&
-            object::Money::createDatabaseModel(m_db) &&
-            object::Inventory::createDatabaseModel(m_db) &&
-            game::Game::createDatabaseModel(m_db);
+        character::Character::createDatabaseModel(m_db) &&
+        character::NPC::createDatabaseModel(m_db) &&
+        map::Position::createDatabaseModel(m_db) &&
+        object::Object::createDatabaseModel(m_db) &&
+        object::Money::createDatabaseModel(m_db) &&
+        object::Inventory::createDatabaseModel(m_db) &&
+        game::Game::createDatabaseModel(m_db);
 }
 
-bool Maker::saveCharacter(const Maker::CharacterInformations &infos)
+bool Maker::saveCharacter(const Maker::CharacterInformations& infos)
 {
     using namespace database;
     m_db->query(Query::createQuery<Query::INSERT>(Model::Character::TABLE, m_db)
                 .value(Model::Character::NAME, infos.name));
-    if (infos.type == CharacterInformations::NPC || infos.type == CharacterInformations::VENDOR)
+    if (infos.type == CharacterInformations::NPC
+            || infos.type == CharacterInformations::VENDOR)
     {
         Model::NPC::Type npcType;
         switch (infos.type)
@@ -307,7 +325,8 @@ bool Maker::saveCharacter(const Maker::CharacterInformations &infos)
                 .value(Model::Position::X, std::to_string(infos.position.x()))
                 .value(Model::Position::Y, std::to_string(infos.position.y()))
                 .value(Model::Position::Z, std::to_string(infos.position.z()))
-                .value(Model::Position::FK_MAP, (m_currentMap ? m_currentMap->name() : "NULL")));
+                .value(Model::Position::FK_MAP,
+                       (m_currentMap ? m_currentMap->name() : "NULL")));
 
 
     events::WorkerThread::newWork(this, &Maker::updateCharacterList);
@@ -315,7 +334,8 @@ bool Maker::saveCharacter(const Maker::CharacterInformations &infos)
     return true;
 }
 
-bool Maker::saveCharacter(const Maker::CharacterInformations &current, const Maker::CharacterInformations &previous)
+bool Maker::saveCharacter(const Maker::CharacterInformations& current,
+                          const Maker::CharacterInformations& previous)
 {
     using namespace database;
     if (current.name != previous.name)
@@ -385,11 +405,13 @@ std::vector<std::string> Maker::characterList() const
     return m_characterList;
 }
 
-bool Maker::getCharacterInformations(const std::string &name, Maker::CharacterInformations& out)
+bool Maker::getCharacterInformations(const std::string& name,
+                                     Maker::CharacterInformations& out)
 {
     CharacterInformations ret;
     using namespace database;
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Character::TABLE, m_db)
+    auto result = m_db->query(Query::createQuery<Query::SELECT>
+                              (Model::Character::TABLE, m_db)
                               .where(Model::Character::NAME, Query::EQUAL, name));
     if (!Database::isQuerySuccessfull(result))
         return false;
@@ -403,8 +425,10 @@ bool Maker::getCharacterInformations(const std::string &name, Maker::CharacterIn
                          .column(Model::NPC::TYPE));
     if (result.size() > 1)
     {
-        Model::NPC::Type type = (Model::NPC::Type)std::stoi(result.at(1).at(Model::NPC::TYPE));
-        switch (type) {
+        Model::NPC::Type type = (Model::NPC::Type)std::stoi(result.at(1).at(
+                                    Model::NPC::TYPE));
+        switch (type)
+        {
         case Model::NPC::VENDOR:
             out.type = CharacterInformations::VENDOR;
             break;
@@ -414,13 +438,15 @@ bool Maker::getCharacterInformations(const std::string &name, Maker::CharacterIn
         }
     }
 
-    result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE, m_db)
+    result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE,
+                         m_db)
                          .where(Model::Position::FK_CHARACTER, Query::EQUAL, name));
     if (!Database::isQuerySuccessfull(result))
         return false;
     if (result.size() <= 1)
         return false;
-    out.position = map::Position(std::atof(result.at(1).at(Model::Position::X).c_str()),
+    out.position = map::Position(std::atof(result.at(1).at(
+            Model::Position::X).c_str()),
                                  std::atof(result.at(1).at(Model::Position::Y).c_str()),
                                  std::atof(result.at(1).at(Model::Position::Z).c_str()));
     LOG(INFO) << "Get information about " << name << " : OK";
@@ -428,15 +454,16 @@ bool Maker::getCharacterInformations(const std::string &name, Maker::CharacterIn
     return true;
 }
 
-bool Maker::deleteCharacter(const std::string &name)
+bool Maker::deleteCharacter(const std::string& name)
 {
     using namespace database;
     m_db->query(Query::createQuery<Query::DELETE>(Model::NPC::TABLE, m_db)
                 .where(Model::NPC::NAME, Query::EQUAL, name));
     m_db->query(Query::createQuery<Query::DELETE>(Model::Position::TABLE, m_db)
                 .where(Model::Position::FK_CHARACTER, Query::EQUAL, name));
-    if (Database::isQuerySuccessfull(m_db->query(Query::createQuery<Query::DELETE>(Model::Character::TABLE, m_db)
-                                                 .where(Model::Character::NAME, Query::EQUAL, name))))
+    if (Database::isQuerySuccessfull(m_db->query(Query::createQuery<Query::DELETE>
+                                     (Model::Character::TABLE, m_db)
+                                     .where(Model::Character::NAME, Query::EQUAL, name))))
     {
         events::WorkerThread::newWork(this, &Maker::updateCharacterList);
         return true;
@@ -445,7 +472,7 @@ bool Maker::deleteCharacter(const std::string &name)
 
 }
 
-bool Maker::saveMoney(const Maker::MoneyInformations &infos)
+bool Maker::saveMoney(const Maker::MoneyInformations& infos)
 {
     using namespace database;
     if (infos.values.at(infos.baseMoney) != 1)
@@ -464,10 +491,11 @@ bool Maker::saveMoney(const Maker::MoneyInformations &infos)
     return true;
 }
 
-bool Maker::getMoneyInformations(Maker::MoneyInformations &out)
+bool Maker::getMoneyInformations(Maker::MoneyInformations& out)
 {
     using namespace database;
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Money::TABLE, m_db)
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Money::TABLE,
+                              m_db)
                               .sort(Model::Money::VALUE));
     if (!Database::isQuerySuccessfull(result))
         return false;
@@ -491,7 +519,7 @@ bool Maker::getMoneyInformations(Maker::MoneyInformations &out)
 
 }
 
-Maker::MapInformations Maker::getMapInformations(const std::string &name)
+Maker::MapInformations Maker::getMapInformations(const std::string& name)
 {
     return MapInformations{name};
 }
@@ -499,7 +527,8 @@ Maker::MapInformations Maker::getMapInformations(const std::string &name)
 std::set<std::string> Maker::getMapList()
 {
     using namespace database;
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE, m_db)
+    auto result = m_db->query(Query::createQuery<Query::SELECT>
+                              (Model::Position::TABLE, m_db)
                               .column(Model::Position::FK_MAP).sort(Model::Position::FK_MAP));
     if (!Database::isQuerySuccessfull(result))
         return {};
@@ -515,7 +544,7 @@ std::set<std::string> Maker::getMapList()
 
 }
 
-void Maker::setCurrentMap(const std::string &mapName)
+void Maker::setCurrentMap(const std::string& mapName)
 {
     m_currentMap = std::make_shared<map::Map>(m_context, mapName);
     if (m_currentMap->load())
@@ -523,12 +552,13 @@ void Maker::setCurrentMap(const std::string &mapName)
     updateCharacterList();
 }
 
-void Maker::saveMap(const Maker::MapInformations &current)
+void Maker::saveMap(const Maker::MapInformations& current)
 {
 
 }
 
-void Maker::saveMap(const Maker::MapInformations &current, const Maker::MapInformations &previous)
+void Maker::saveMap(const Maker::MapInformations& current,
+                    const Maker::MapInformations& previous)
 {
     using namespace database;
     if (current.name != previous.name)

@@ -8,17 +8,17 @@
  */
 class Logger : public google::LogSink
 {
-public:
+  public:
     static Logger& getInstance();
 
     void send(google::LogSeverity severity,
-              const char *full_filename,
-              const char *base_filename,
-              int line, const tm *tm_time,
-              const char *message, size_t message_len) override;
+              const char* full_filename,
+              const char* base_filename,
+              int line, const tm* tm_time,
+              const char* message, size_t message_len) override;
     static const std::string getLog(size_t size = 0);
     static bool newLogs();
-private:
+  private:
     Logger();
 
     std::stringbuf m_logs;      ///< Log buffer

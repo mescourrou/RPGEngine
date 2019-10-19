@@ -42,7 +42,7 @@ class Map : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class map::MapTest;
 #endif
-public:
+  public:
     Map(std::shared_ptr<config::Context> context, const std::string& name);
     /// @brief Destructor
     ~Map() override = default;
@@ -55,26 +55,38 @@ public:
     virtual bool load() final;
 
     /// @brief Get the name of the map
-    virtual std::string name() const noexcept final { return m_name; }
+    virtual std::string name() const noexcept final
+    {
+        return m_name;
+    }
 
-    bool operator==(const Map& other) const noexcept { return m_name == other.m_name; }
-    bool operator!=(const Map& other) const noexcept { return m_name != other.m_name; }
+    bool operator==(const Map& other) const noexcept
+    {
+        return m_name == other.m_name;
+    }
+    bool operator!=(const Map& other) const noexcept
+    {
+        return m_name != other.m_name;
+    }
 
     virtual void addCollisionArea(const Area& area) final;
     virtual bool collision(const Vector<2>& point) const final;
-    virtual bool collision(const Vector<2>& origin, const Vector<2>& moveVector, Vector<2> &intersect) const final;
+    virtual bool collision(const Vector<2>& origin, const Vector<2>& moveVector,
+                           Vector<2>& intersect) const final;
 
-    virtual void addTeleportArea(const Area& area, const Position& destination) final;
-    virtual bool doITeleport(const Vector<2>& point, Position& destination) const final;
+    virtual void addTeleportArea(const Area& area,
+                                 const Position& destination) final;
+    virtual bool doITeleport(const Vector<2>& point,
+                             Position& destination) const final;
 
-protected:
-    bool loadCollisionLayer(const json &layer);
+  protected:
+    bool loadCollisionLayer(const json& layer);
 
     std::string m_name; ///< Name of the map
 
     std::shared_ptr<config::Context> m_context; ///< Context used
 
-private:
+  private:
 
     std::vector<Area> m_collisionLayer; ///< List of the collisions areas
     // std::vector<NPC> m_npcLayer; ///< TODO: Add this when NPC created

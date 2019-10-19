@@ -7,7 +7,8 @@
 #include <Database.hpp>
 #include <Character.hpp>
 
-namespace game {
+namespace game
+{
 /*
  * Testing if the creation of the database model is correct
  */
@@ -25,7 +26,7 @@ TEST_F(GameTest, CreatingDatabaseModel)
 }
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
