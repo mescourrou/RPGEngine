@@ -15,14 +15,15 @@
 
 #include <glog/logging.h>
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 /**
  * @brief Construct a MakerGUI
  * @param context Context to use
  * @param maker Pointer on the maker backend
  */
-MakerGUI::MakerGUI(std::shared_ptr<config::Context> context, Maker *maker) :
+MakerGUI::MakerGUI(std::shared_ptr<config::Context> context, Maker* maker) :
     m_context(context), m_maker(maker)
 {
 
@@ -45,13 +46,15 @@ bool MakerGUI::initialize()
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_maker->signalMapUdated.subscribeAsync([this](std::weak_ptr<map::Map> mapPtr) {
-       m_mapGUI.reset();
-       m_mapGUI = std::make_shared<map::GUI::MapGUI>(mapPtr);
-       m_mapGUI->load(m_context->kMapPath());
+    m_maker->signalMapUdated.subscribeAsync([this](std::weak_ptr<map::Map> mapPtr)
+    {
+        m_mapGUI.reset();
+        m_mapGUI = std::make_shared<map::GUI::MapGUI>(mapPtr);
+        m_mapGUI->load(m_context->kMapPath());
     });
 
-    m_window.create(sf::VideoMode(900, 600), "RPGEngine", sf::Style::Resize | sf::Style::Close);
+    m_window.create(sf::VideoMode(900, 600), "RPGEngine",
+                    sf::Style::Resize | sf::Style::Close);
     ImGui::SFML::Init(m_window);
 
     m_characterWindow = std::make_unique<CharacterWindow>(m_maker);
@@ -70,30 +73,37 @@ bool MakerGUI::initialize()
     m_mapWindow->setActive(false);
     m_windowManager.addWindow(m_mapWindow.get());
 
-    m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, [this](){
+    m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, [this]()
+    {
 
     });
-    m_maker->stateMachine.addEntryStateAction(Maker::WORKBENCH, [this](){
+    m_maker->stateMachine.addEntryStateAction(Maker::WORKBENCH, [this]()
+    {
         m_moneyWindow->setActive(true);
         m_mapWindow->setActive(true);
     });
-    m_maker->stateMachine.addExitStateAction(Maker::WORKBENCH, [this](){
+    m_maker->stateMachine.addExitStateAction(Maker::WORKBENCH, [this]()
+    {
         m_moneyWindow->setActive(false);
         m_mapWindow->setActive(false);
         m_characterWindow->setActive(false);
     });
 
-    events::ActionHandler::addAction("Open", [this](){
+    events::ActionHandler::addAction("Open", [this]()
+    {
         if (!m_ui.openGame.window)
         {
             m_ui.openGame.window = true;
-        }}, events::KeyBinding(events::KeyBinding::O, events::KeyBinding::CTRL));
+        }
+    }, events::KeyBinding(events::KeyBinding::O, events::KeyBinding::CTRL));
 
-    events::ActionHandler::addAction("New", [this](){
+    events::ActionHandler::addAction("New", [this]()
+    {
         m_ui.newGame.state = UI::NewGame::DIRECTORY;
     }, events::KeyBinding(events::KeyBinding::N, events::KeyBinding::CTRL));
 
-    events::ActionHandler::addAction("Quit", [this](){
+    events::ActionHandler::addAction("Quit", [this]()
+    {
         signalClose.trigger();
     }, events::KeyBinding(events::KeyBinding::Q, events::KeyBinding::CTRL));
 
@@ -127,22 +137,23 @@ void MakerGUI::eventManager()
             switch (event.key.code)
             {
             case sf::Keyboard::Left:
-                if (m_mapGUI) m_mapGUI->move(-5,0);
+                if (m_mapGUI) m_mapGUI->move(-5, 0);
                 break;
             case sf::Keyboard::Right:
-                if (m_mapGUI) m_mapGUI->move(5,0);
+                if (m_mapGUI) m_mapGUI->move(5, 0);
                 break;
             case sf::Keyboard::Up:
-                if (m_mapGUI) m_mapGUI->move(0,-5);
+                if (m_mapGUI) m_mapGUI->move(0, -5);
                 break;
             case sf::Keyboard::Down:
-                if (m_mapGUI) m_mapGUI->move(0,5);
+                if (m_mapGUI) m_mapGUI->move(0, 5);
                 break;
             }
         }
         if (event.type == sf::Event::KeyReleased)
         {
-            switch (event.key.code) {
+            switch (event.key.code)
+            {
             case sf::Keyboard::Escape:
                 break;
             }
@@ -186,11 +197,13 @@ void MakerGUI::makeUI()
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("New", events::ActionHandler::getKeyBinding("New").toString().c_str()))
+            if (ImGui::MenuItem("New",
+                                events::ActionHandler::getKeyBinding("New").toString().c_str()))
             {
                 events::ActionHandler::execute("New");
             }
-            if (ImGui::MenuItem("Open", events::ActionHandler::getKeyBinding("Open").toString().c_str()))
+            if (ImGui::MenuItem("Open",
+                                events::ActionHandler::getKeyBinding("Open").toString().c_str()))
             {
                 events::ActionHandler::execute("Open");
             }
@@ -203,7 +216,8 @@ void MakerGUI::makeUI()
 
             }
             ImGui::Separator();
-            if (ImGui::MenuItem("Quit", events::ActionHandler::getKeyBinding("Quit").toString().c_str()))
+            if (ImGui::MenuItem("Quit",
+                                events::ActionHandler::getKeyBinding("Quit").toString().c_str()))
             {
                 events::ActionHandler::execute("Quit");
             }
@@ -215,8 +229,8 @@ void MakerGUI::makeUI()
             {
                 ImGui::Checkbox(w->title().c_str(), &w->active());
             }
-//            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
-//            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
+            //            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
+            //            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
 
             ImGui::EndMenu();
         }
@@ -226,9 +240,10 @@ void MakerGUI::makeUI()
     {
         if (!m_fileBrowser)
         {
-            m_fileBrowser = std::make_unique<ImGui::FileBrowser>(ImGuiFileBrowserFlags_CreateNewDir |
-                                                                 ImGuiFileBrowserFlags_SelectDirectory |
-                                                                 ImGuiFileBrowserFlags_CloseOnEsc);
+            m_fileBrowser = std::make_unique<ImGui::FileBrowser>
+                            (ImGuiFileBrowserFlags_CreateNewDir |
+                             ImGuiFileBrowserFlags_SelectDirectory |
+                             ImGuiFileBrowserFlags_CloseOnEsc);
             m_fileBrowser->SetTitle("New game : select the directory");
             m_fileBrowser->Open();
         }
@@ -237,7 +252,7 @@ void MakerGUI::makeUI()
         if (m_fileBrowser->HasSelected())
         {
             m_ui.newGame.directory = m_fileBrowser->GetSelected().string();
-            m_ui.newGame.directory.erase(m_ui.newGame.directory.end()-1);
+            m_ui.newGame.directory.erase(m_ui.newGame.directory.end() - 1);
             m_fileBrowser->ClearSelected();
             m_fileBrowser->Close();
             ImGui::OpenPopup("New game");
@@ -250,7 +265,8 @@ void MakerGUI::makeUI()
         }
     }
 
-    if (ImGui::BeginPopupModal("New game", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    if (ImGui::BeginPopupModal("New game", nullptr,
+                               ImGuiWindowFlags_AlwaysAutoResize))
     {
         bool valid = true;
         ImGui::InputText("Name", (char*)&m_ui.newGame.gameName, 100);
@@ -262,7 +278,8 @@ void MakerGUI::makeUI()
             if (ImGui::Button("Validate"))
             {
                 m_ui.newGame.state = UI::NewGame::NONE;
-                events::WorkerThread::newWork(m_maker, &Maker::doNewGame, std::string(m_ui.newGame.gameName), m_ui.newGame.directory);
+                events::WorkerThread::newWork(m_maker, &Maker::doNewGame,
+                                              std::string(m_ui.newGame.gameName), m_ui.newGame.directory);
                 ImGui::CloseCurrentPopup();
                 resetUI();
             }
@@ -273,8 +290,9 @@ void MakerGUI::makeUI()
             m_ui.newGame.state = UI::NewGame::NONE;
             ImGui::CloseCurrentPopup();
         }
-        if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
-           ImGui::SetKeyboardFocusHere(0);
+        if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive()
+                && !ImGui::IsMouseClicked(0))
+            ImGui::SetKeyboardFocusHere(0);
         ImGui::EndPopup();
     }
 
@@ -290,12 +308,14 @@ void MakerGUI::makeUI()
             }
             if (m_ui.openGame.gameList.size() > 0)
             {
-                ImGui::ListBox("Select the game", &m_ui.openGame.selectedItem, m_ui.openGame.gameList.data(),
-                        m_ui.openGame.gameList.size());
+                ImGui::ListBox("Select the game", &m_ui.openGame.selectedItem,
+                               m_ui.openGame.gameList.data(),
+                               m_ui.openGame.gameList.size());
 
                 if (ImGui::Button("OK"))
                 {
-                    events::WorkerThread::newWork(m_maker, &Maker::doOpenGame, m_ui.openGame.gameList.getStr(m_ui.openGame.selectedItem));
+                    events::WorkerThread::newWork(m_maker, &Maker::doOpenGame,
+                                                  m_ui.openGame.gameList.getStr(m_ui.openGame.selectedItem));
                     m_ui.openGame.window = false;
                 }
             }

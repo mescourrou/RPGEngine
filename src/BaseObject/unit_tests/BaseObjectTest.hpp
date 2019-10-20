@@ -9,5 +9,5 @@
  */
 class BaseObjectTest : public testing::Test
 {
-public:
+  public:
 };

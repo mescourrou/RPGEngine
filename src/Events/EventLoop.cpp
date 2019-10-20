@@ -1,5 +1,6 @@
 #include "EventLoop.hpp"
-namespace events {
+namespace events
+{
 
 EventLoop::EventLoop()
 {

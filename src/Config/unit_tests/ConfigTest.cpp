@@ -10,7 +10,8 @@
 #include <filesystem>
 #endif
 
-namespace config {
+namespace config
+{
 
 /*
  * Classname test
@@ -154,7 +155,7 @@ TEST_F(ConfigTest, SetValueWithoutSection)
  */
 TEST_F(ConfigTest, Save)
 {
-    std::filesystem::copy_file("data/sample1.ini", "data/sampleModifyable.ini");
+    std::filesystem::copy_file("data/sample1.ini", "data/sampleModifyable.ini", std::filesystem::copy_options::overwrite_existing);
     Config conf1("data/sampleModifyable.ini");
 
     ASSERT_EQ(conf1.getValue("Section 1", "a_lovely_number"), "8");
@@ -170,7 +171,7 @@ TEST_F(ConfigTest, Save)
 
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     config::ContextTest::m_argv = argv;
     std::cout << argv[0] << std::endl;

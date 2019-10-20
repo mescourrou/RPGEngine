@@ -24,7 +24,8 @@
 // External libs
 #include <glog/logging.h>
 
-namespace game {
+namespace game
+{
 
 /**
  * @brief Construct a game with a context
@@ -33,10 +34,11 @@ namespace game {
 Game::Game(std::string name, std::shared_ptr<config::Context> gameContext) :
     m_context(gameContext), m_name(name)
 #ifdef RPG_BUILD_GUI
-  , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
+    , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
 #endif
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
 }
 
 /**
@@ -53,21 +55,26 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     if (!db)
         throw GameException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw GameException("The Game database model is not correct", DatabaseException::BAD_MODEL);
+        throw GameException("The Game database model is not correct",
+                            DatabaseException::BAD_MODEL);
     m_db = db;
 
     // Get game information
     LOG(INFO) << "Get Game informations";
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::TABLE, m_db));
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::TABLE,
+                              m_db));
     if (result.size() <= 1)
         throw GameException("There is no Game informations");
 
     auto gameInfo = result.at(1);
 
     // Version verification
-    if (VERSION < static_cast<unsigned int>(std::atoi(gameInfo.at(Model::ENGINE_VERSION).c_str())))
-        throw GameException("Engine version too old for the game", GameException::VERSION);
-    LOG(INFO) << "Game version : " << std::atoi(gameInfo.at(Model::ENGINE_VERSION).c_str());
+    if (VERSION < static_cast<unsigned int>(std::atoi(gameInfo.at(
+            Model::ENGINE_VERSION).c_str())))
+        throw GameException("Engine version too old for the game",
+                            GameException::VERSION);
+    LOG(INFO) << "Game version : " << std::atoi(gameInfo.at(
+                  Model::ENGINE_VERSION).c_str());
 
     // Money initialization
     LOG(INFO) << "Initialize Money system";
@@ -75,16 +82,19 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
 
     // Create the player character
     LOG(INFO) << "Create the player character";
-    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(Model::FK_USER_CHARACTER), m_context);
+    m_playerCharacter = std::make_shared<character::Character>(gameInfo.at(
+                            Model::FK_USER_CHARACTER), m_context);
     if (!m_playerCharacter->loadFromDatabase(m_db))
     {
-        LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() << " from the database";
+        LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() <<
+                   " from the database";
         return false;
     }
     LOG(INFO) << "Load the map";
     if (!m_playerCharacter->position().map()->load())
     {
-        LOG(ERROR) << "Fail to load the map " << m_playerCharacter->position().map()->name();
+        LOG(ERROR) << "Fail to load the map " <<
+                   m_playerCharacter->position().map()->name();
         return false;
     }
     m_currentMap = m_playerCharacter->position().map();
@@ -97,7 +107,10 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
         LOG(ERROR) << "Fail to initialize GUI";
         return false;
     }
-    m_gui->subscribeOnClose([this](){ m_running = false; });
+    m_gui->subscribeOnClose([this]()
+    {
+        m_running = false;
+    });
 #else
     LOG(INFO) << "No GUI initialization because GUI building is not activated";
 #endif
@@ -117,7 +130,7 @@ bool Game::run()
 
     auto clock = std::chrono::high_resolution_clock::now();
 
-    while(m_running)
+    while (m_running)
     {
         //PerformanceTimer loop("Main loop");
 #ifdef RPG_BUILD_GUI
@@ -125,7 +138,8 @@ bool Game::run()
         m_gui->eventManager();
 #endif
 #ifdef RPG_BUILD_GUI
-        m_context->framePeriod = (std::chrono::high_resolution_clock::now() - clock).count();
+        m_context->framePeriod = (std::chrono::high_resolution_clock::now() -
+                                  clock).count();
         clock = std::chrono::high_resolution_clock::now();
         m_gui->draw();
         printf("%10ld\n", m_context->framePeriod);
@@ -138,12 +152,13 @@ bool Game::run()
  * @brief Load the elements of the map
  * @param mapName Map to load
  */
-void Game::loadMapContents(const std::string &mapName)
+void Game::loadMapContents(const std::string& mapName)
 {
     using namespace database;
 
     // Loading the NPCs of the current map
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE, m_db)
+    auto result = m_db->query(Query::createQuery<Query::SELECT>
+                              (Model::Position::TABLE, m_db)
                               .where(Model::Position::FK_MAP, Query::EQUAL, mapName)
                               .column(Model::Position::FK_CHARACTER));
     if (!Database::isQuerySuccessfull(result))
@@ -157,13 +172,16 @@ void Game::loadMapContents(const std::string &mapName)
         auto& characterName = result.at(i).at(Model::Position::FK_CHARACTER);
         if (characterName != m_playerCharacter->name())
         {
-            auto& newOne = m_characterList.emplace_back(std::make_shared<character::Character>(characterName, m_context));
+            auto& newOne = m_characterList.emplace_back(
+                               std::make_shared<character::Character>(characterName, m_context));
             newOne->loadFromDatabase(m_db);
 #ifdef RPG_BUILD_GUI
-            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne, m_context);
+            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne,
+                           m_context);
             guiChar.lock()->load(m_context->kCharacterPath());
             character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
-            character::GUI::CharacterGUI::connectSignals(newOne.get(), guiChar.lock().get());
+            character::GUI::CharacterGUI::connectSignals(newOne.get(),
+                    guiChar.lock().get());
 #endif
         }
     }

@@ -5,17 +5,18 @@
 #include <memory>
 #include <Maker.hpp>
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 /**
  * @brief Character window
  */
 class CharacterWindow : public ImGui::Window
 {
-public:
+  public:
     CharacterWindow(Maker* maker);
 
-protected:
+  protected:
     bool doPrepare() override;
 
     void doNewCharacter();

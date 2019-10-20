@@ -1,5 +1,6 @@
 #include "QuestJournalTest.hpp"
-namespace quest {
+namespace quest
+{
 
 }
 

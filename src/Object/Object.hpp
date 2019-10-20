@@ -10,7 +10,8 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
@@ -35,7 +36,7 @@ class Object : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class object::ObjectTest;
 #endif
-public:
+  public:
     /// @brief Default constructor
     Object() = default;
     Object(std::string name);
@@ -48,15 +49,25 @@ public:
     virtual Object& operator=(Object&& moved) = default;
 
     virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
-    static std::shared_ptr<Object> createFromDatabase(const std::string& name, std::shared_ptr<database::Database> db);
+    static std::shared_ptr<Object> createFromDatabase(const std::string& name,
+            std::shared_ptr<database::Database> db);
 
     // Getters
     /// @brief Get the object name
-    virtual std::string name() const noexcept final { return m_name; }
+    virtual std::string name() const noexcept final
+    {
+        return m_name;
+    }
     /// @brief Get the object description
-    virtual std::string description() const noexcept  final { return m_description; }
+    virtual std::string description() const noexcept  final
+    {
+        return m_description;
+    }
     /// @brief get the value of the object
-    virtual Money value() const noexcept final { return m_value; }
+    virtual Money value() const noexcept final
+    {
+        return m_value;
+    }
 
 
     // Setters
@@ -64,22 +75,31 @@ public:
      * @brief Set the object name
      * @param name New name of the object
      */
-    virtual void setName(const std::string& name) noexcept final { m_name = name; }
+    virtual void setName(const std::string& name) noexcept final
+    {
+        m_name = name;
+    }
     /**
      * @brief Modify the object description
      * @param description New description of the object
      */
-    virtual void setDescription(const std::string& description) noexcept final { m_description = description; }
+    virtual void setDescription(const std::string& description) noexcept final
+    {
+        m_description = description;
+    }
     /**
      * @brief Set the new value of the object
      * @param value New value
      */
-    virtual void setValue(const Money& value) final { m_value = value; }
+    virtual void setValue(const Money& value) final
+    {
+        m_value = value;
+    }
 
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-protected:
+  protected:
 
     std::string m_name = "Unkown object";   ///< Name of the object
     std::string m_description;              ///< Description of the object

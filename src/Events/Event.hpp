@@ -61,7 +61,7 @@ class Event
 #ifdef RPG_BUILD_TEST
     friend class events::EventTest;
 #endif
-public:
+  public:
     /**
      * @fn Event()
      * @brief Default constructor
@@ -99,7 +99,8 @@ public:
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
-        m_asyncCallList.push_back([=](Args... args){
+        m_asyncCallList.push_back([ = ](Args... args)
+        {
             std::bind(func, instance, args...)();
         });
     }
@@ -111,14 +112,17 @@ public:
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
-        m_syncCallList.push_back([=](Args... args){
+        m_syncCallList.push_back([ = ](Args... args)
+        {
             std::bind(func, instance, args...)();
         });
     }
 
-private:
-    std::vector<std::function<void(Args...)>> m_asyncCallList; ///< List of functions to call
-    std::vector<std::function<void(Args...)>> m_syncCallList; ///< List of functions to call
+  private:
+    std::vector<std::function<void(Args...)>>
+                                           m_asyncCallList; ///< List of functions to call
+    std::vector<std::function<void(Args...)>>
+                                           m_syncCallList; ///< List of functions to call
 };
 
 /**
@@ -159,7 +163,7 @@ class Event<void>
 #ifdef RPG_BUILD_TEST
     friend class events::EventTest;
 #endif
-public:
+  public:
     Event() = default;
     ~Event() = default;
 
@@ -202,7 +206,8 @@ public:
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
-        m_asyncCallList.push_back([=](){
+        m_asyncCallList.push_back([ = ]()
+        {
             std::bind(func, instance)();
         });
     }
@@ -214,14 +219,17 @@ public:
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
-        m_syncCallList.push_back([=](){
+        m_syncCallList.push_back([ = ]()
+        {
             std::bind(func, instance)();
         });
     }
 
-private:
-    std::vector<std::function<void(void)>> m_asyncCallList; ///< List of functions to call
-    std::vector<std::function<void(void)>> m_syncCallList; ///< List of functions to call
+  private:
+    std::vector<std::function<void(void)>>
+                                        m_asyncCallList; ///< List of functions to call
+    std::vector<std::function<void(void)>>
+                                        m_syncCallList; ///< List of functions to call
 };
 
 

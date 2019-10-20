@@ -19,11 +19,11 @@ class EventLoop : public BaseObject
 {
     DECLARE_BASEOBJECT(EventLoop)
 #ifdef RPG_BUILD_TEST
-	friend class events::EventLoopTest;
+    friend class events::EventLoopTest;
 #endif
-public:
-	EventLoop();
-	~EventLoop() override = default;
+  public:
+    EventLoop();
+    ~EventLoop() override = default;
 };
 
 } // namespace events

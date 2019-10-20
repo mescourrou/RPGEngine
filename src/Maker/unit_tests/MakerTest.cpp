@@ -3,11 +3,12 @@
 
 #include <Database.hpp>
 
-namespace maker {
+namespace maker
+{
 
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     ::google::InitGoogleLogging(argv[0]);
     ::google::LogToStderr();

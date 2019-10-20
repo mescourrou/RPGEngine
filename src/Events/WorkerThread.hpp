@@ -29,13 +29,14 @@ class WorkerThreadTest;
 class WorkerThread
 {
 #ifdef RPG_BUILD_TEST
-	friend class events::WorkerThreadTest;
+    friend class events::WorkerThreadTest;
 #endif
-public:
+  public:
     ~WorkerThread();
 
     template<typename ...Args>
-    static void newWork(const std::function<void(Args...)>& work, Args... arguments);
+    static void newWork(const std::function<void(Args...)>& work,
+                        Args... arguments);
     static void newWork(const std::function<void()>& work);
 
     template<typename I, typename M, typename ...Args>
@@ -46,7 +47,7 @@ public:
     static void waitForJoin();
 
 
-private:
+  private:
     /// @brief Constructor
     WorkerThread() = default;
 
@@ -62,9 +63,11 @@ private:
 
     std::vector<std::thread> m_workers; ///< Thread list
     static inline unsigned int m_activeThreads = 0; ///< Number of active threads
-    static const inline unsigned int maxThreads = std::thread::hardware_concurrency(); ///< Maximum number of threads
+    static const inline unsigned int maxThreads =
+        std::thread::hardware_concurrency(); ///< Maximum number of threads
 
-    static const inline unsigned int m_expirationTimeMS = 1000; ///< Time to wait before closing a inactive thread
+    static const inline unsigned int m_expirationTimeMS =
+        1000; ///< Time to wait before closing a inactive thread
 
     static inline std::mutex m_mutex; ///< Mutex
 };
@@ -77,29 +80,38 @@ private:
  * @param arguments Arguments of the function
  */
 template<typename ...Args>
-void WorkerThread::newWork(const std::function<void(Args...)>& work, Args... arguments)
+void WorkerThread::newWork(const std::function<void(Args...)>& work,
+                           Args... arguments)
 {
     m_mutex.lock();
     if (m_activeThreads >= maxThreads)
-        m_waitingList.push_back(std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...)));
+        m_waitingList.push_back(std::make_shared<Work<Args...>>(Work<Args...>(work,
+                                arguments...)));
     else
     {
         m_activeThreads++;
-        instance.m_workers.push_back(std::thread(worker, std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
+        instance.m_workers.push_back(std::thread(worker,
+                                     std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
     }
     m_mutex.unlock();
 }
 
 template<typename I, typename M, typename... Args>
-void WorkerThread::newWork(I *instance, M func, Args ...arguments)
+void WorkerThread::newWork(I* instance, M func, Args ...arguments)
 {
-    newWork([=](){std::bind(func, instance, arguments...)();});
+    newWork([ = ]()
+    {
+        std::bind(func, instance, arguments...)();
+    });
 }
 
 template<typename I, typename M>
-void WorkerThread::newWork(I *instance, M func)
+void WorkerThread::newWork(I* instance, M func)
 {
-    newWork([=](){std::bind(func, instance)();});
+    newWork([ = ]()
+    {
+        std::bind(func, instance)();
+    });
 }
 
 

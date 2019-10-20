@@ -1,13 +1,14 @@
 #include "MapWindow.hpp"
 #include <Tools.hpp>
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 /**
  * @brief Create a MapWindow
  * @param maker Pointer on the maker backend
  */
-MapWindow::MapWindow(Maker *maker) :
+MapWindow::MapWindow(Maker* maker) :
     Window("Map"), m_maker(maker)
 {
 
@@ -62,7 +63,8 @@ bool MapWindow::doPrepare()
     }
     ImGui::NextColumn();
     ImGui::InputText("Name", m_list.get(m_selected), 16);
-    ImGui::Text("Create a file named '%s.json'\nwith Tiled in the map directory", Tools::snakeCase(m_list.getStr(m_selected)).c_str());
+    ImGui::Text("Create a file named '%s.json'\nwith Tiled in the map directory",
+                Tools::snakeCase(m_list.getStr(m_selected)).c_str());
     if (ImGui::Button("Save"))
     {
         m_maker->setCurrentMap(m_list.getStr(m_selected));

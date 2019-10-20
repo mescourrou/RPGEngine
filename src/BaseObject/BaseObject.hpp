@@ -32,7 +32,7 @@ class BaseObjectTest;
  */
 #define DECLARE_BASEOBJECT(name)                                                                    \
     public:                                                                                         \
-        std::string className() const noexcept override { return #name; }                           \
+    std::string className() const noexcept override { return #name; }                           \
     private:                                                                                        \
 
 
@@ -47,19 +47,19 @@ class BaseObject
     FRIEND_TEST(BaseObjectTest, SetParentAfter);
 #endif
 
-public:
+  public:
     BaseObject(BaseObject* parent = nullptr) noexcept ;
     virtual ~BaseObject() noexcept ;
 
-    virtual BaseObject *parent() const noexcept final;
+    virtual BaseObject* parent() const noexcept final;
     /**
      * @brief Get the class name
      */
     virtual std::string className() const noexcept = 0;
-protected:
+  protected:
     virtual void setParent(BaseObject* parent) noexcept final;
 
-private:
+  private:
     void addChild(BaseObject* child) noexcept ;
     void removeChild(BaseObject* child) noexcept ;
     BaseObject* m_parent; ///< Parent of the object

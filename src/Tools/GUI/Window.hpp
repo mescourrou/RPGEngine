@@ -3,14 +3,15 @@
 #include <imgui.h>
 #include <string>
 
-namespace ImGui {
+namespace ImGui
+{
 
 /**
  * @brief Handle all the elements around windows : activation, name, ...
  */
 class Window
 {
-public:
+  public:
     Window(const std::string& title);
     /// @brief Destructor
     virtual ~Window() = default;
@@ -21,25 +22,40 @@ public:
      * @brief Set the window active or not
      * @param active Active state
      */
-    virtual void setActive(bool active = true) final { m_active = active; }
+    virtual void setActive(bool active = true) final
+    {
+        m_active = active;
+    }
     /**
      * @brief Get the current active status
      */
-    virtual bool active() const final { return m_active; }
+    virtual bool active() const final
+    {
+        return m_active;
+    }
     /**
      * @brief Get the current active status, modifyable
      */
-    virtual bool& active() final { return m_active; }
+    virtual bool& active() final
+    {
+        return m_active;
+    }
     /**
      * @brief Get the title of the window
      */
-    virtual const std::string& title() const final { return m_title; }
+    virtual const std::string& title() const final
+    {
+        return m_title;
+    }
     /**
      * @brief Set the title of the window
      */
-    virtual void setTitle(const std::string& name) final { m_title = name; }
+    virtual void setTitle(const std::string& name) final
+    {
+        m_title = name;
+    }
 
-protected:
+  protected:
     /**
      * @brief Hook for the inside of the window
      */
@@ -47,8 +63,11 @@ protected:
     /**
      * @brief Hook when the window is collapsed
      */
-    virtual bool doCollapsedState() { return true; }
-private:
+    virtual bool doCollapsedState()
+    {
+        return true;
+    }
+  private:
     bool m_active = true;       ///< Window printed
     std::string m_title;         ///< Title of the window
 };

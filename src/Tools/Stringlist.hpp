@@ -14,7 +14,7 @@
 template <short BATCH>
 class stringlist_batch
 {
-public:
+  public:
     stringlist_batch();
     stringlist_batch(const char* const* list, size_t len);
     stringlist_batch(const char** list, size_t len);
@@ -37,7 +37,7 @@ public:
     bool remove(size_t i);
     void push_back(const std::string& str);
     void push_back(const char* str);
-private:
+  private:
     static void copy(char** dest, size_t lenDest, char** origin, size_t lenOrigin);
     char** m_data = nullptr;    ///< String array
     size_t m_size = 0;          ///< Number of strings
@@ -65,10 +65,11 @@ stringlist_batch<BATCH>::stringlist_batch() : m_size(0), m_allocated(0)
  * @param len Length of the list (number of c-strings)
  */
 template <short BATCH>
-stringlist_batch<BATCH>::stringlist_batch(const char * const *list, size_t len) : m_size(len)
+stringlist_batch<BATCH>::stringlist_batch(const char* const* list,
+        size_t len) : m_size(len)
 {
-    m_allocated = (len/BATCH + 1)*BATCH;
-    m_data = new char*[m_allocated];
+    m_allocated = (len / BATCH + 1) * BATCH;
+    m_data = new char* [m_allocated];
     for (size_t i = 0; i < len; i++)
     {
         size_t slen = strlen(list[i]);
@@ -85,10 +86,11 @@ stringlist_batch<BATCH>::stringlist_batch(const char * const *list, size_t len) 
  * @param len Number of strings on the list
  */
 template <short BATCH>
-stringlist_batch<BATCH>::stringlist_batch(const char** list, size_t len) : m_size(len)
+stringlist_batch<BATCH>::stringlist_batch(const char** list,
+        size_t len) : m_size(len)
 {
-    m_allocated = (len/BATCH + 1)*BATCH;
-    m_data = new char*[m_allocated];
+    m_allocated = (len / BATCH + 1) * BATCH;
+    m_data = new char* [m_allocated];
     for (size_t i = 0; i < len; i++)
     {
         size_t slen = strlen(list[i]);
@@ -105,10 +107,11 @@ stringlist_batch<BATCH>::stringlist_batch(const char** list, size_t len) : m_siz
  * @param list List to copy
  */
 template <short BATCH>
-stringlist_batch<BATCH>::stringlist_batch(std::vector<std::string> list) : m_size(list.size())
+stringlist_batch<BATCH>::stringlist_batch(std::vector<std::string> list) :
+    m_size(list.size())
 {
-    m_allocated = (list.size()/BATCH + 1)*BATCH;
-    m_data = new char*[m_allocated];
+    m_allocated = (list.size() / BATCH + 1) * BATCH;
+    m_data = new char* [m_allocated];
     for (size_t i = 0; i < list.size(); i++)
     {
         size_t slen = list[i].size();
@@ -124,10 +127,11 @@ stringlist_batch<BATCH>::stringlist_batch(std::vector<std::string> list) : m_siz
  * @param list List to copy
  */
 template <short BATCH>
-stringlist_batch<BATCH>::stringlist_batch(std::vector<const char*> list) : m_size(list.size())
+stringlist_batch<BATCH>::stringlist_batch(std::vector<const char*> list) :
+    m_size(list.size())
 {
-    m_allocated = (list.size()/BATCH + 1)*BATCH;
-    m_data = new char*[m_allocated];
+    m_allocated = (list.size() / BATCH + 1) * BATCH;
+    m_data = new char* [m_allocated];
     for (size_t i = 0; i < list.size(); i++)
     {
         size_t slen = strlen(list[i]);
@@ -150,11 +154,12 @@ stringlist_batch<BATCH>::~stringlist_batch()
  * @brief copy List to copy
  */
 template<short BATCH>
-stringlist_batch<BATCH> &stringlist_batch<BATCH>::operator=(const std::vector<std::string> &copy)
+stringlist_batch<BATCH>& stringlist_batch<BATCH>::operator=
+(const std::vector<std::string>& copy)
 {
     clear();
-    m_allocated = (copy.size()/BATCH + 1)*BATCH;
-    m_data = new char*[m_allocated];
+    m_allocated = (copy.size() / BATCH + 1) * BATCH;
+    m_data = new char* [m_allocated];
     for (size_t i = 0; i < copy.size(); i++)
     {
         size_t slen = copy[i].size();
@@ -171,11 +176,12 @@ stringlist_batch<BATCH> &stringlist_batch<BATCH>::operator=(const std::vector<st
  * @param copy List to copy
  */
 template<short BATCH>
-stringlist_batch<BATCH> &stringlist_batch<BATCH>::operator=(const std::set<std::string> &copy)
+stringlist_batch<BATCH>& stringlist_batch<BATCH>::operator=
+(const std::set<std::string>& copy)
 {
     clear();
-    m_allocated = (copy.size()/BATCH + 1)*BATCH;
-    m_data = new char*[m_allocated];
+    m_allocated = (copy.size() / BATCH + 1) * BATCH;
+    m_data = new char* [m_allocated];
     size_t i = 0;
     for (auto& s : copy)
     {
@@ -210,7 +216,7 @@ const char* const* stringlist_batch<BATCH>::data() const
  * @brief Get the data pointer
  */
 template <short BATCH>
-char **stringlist_batch<BATCH>::data()
+char** stringlist_batch<BATCH>::data()
 {
     return m_data;
 }
@@ -247,7 +253,7 @@ std::string stringlist_batch<BATCH>::getStr(size_t i) const
  * @param i Index to get
  */
 template<short BATCH>
-const char *stringlist_batch<BATCH>::get(size_t i) const
+const char* stringlist_batch<BATCH>::get(size_t i) const
 {
     assert(i < m_size);
     return m_data[i];
@@ -258,7 +264,7 @@ const char *stringlist_batch<BATCH>::get(size_t i) const
  * @param i Index to get
  */
 template<short BATCH>
-char *stringlist_batch<BATCH>::get(size_t i)
+char* stringlist_batch<BATCH>::get(size_t i)
 {
     assert(i < m_size);
     return m_data[i];
@@ -270,7 +276,8 @@ char *stringlist_batch<BATCH>::get(size_t i)
 template <short BATCH>
 void stringlist_batch<BATCH>::clear()
 {
-    for (size_t i = 0; i < m_size; i++) {
+    for (size_t i = 0; i < m_size; i++)
+    {
         delete m_data[i];
     }
     delete[] m_data;
@@ -286,7 +293,7 @@ void stringlist_batch<BATCH>::clear()
  * @param str String to search for and remove
  */
 template<short BATCH>
-bool stringlist_batch<BATCH>::remove(const std::string &str)
+bool stringlist_batch<BATCH>::remove(const std::string& str)
 {
     bool shiftPhase = false;
     for (size_t i = 0; i < m_size; i++)
@@ -297,7 +304,7 @@ bool stringlist_batch<BATCH>::remove(const std::string &str)
             delete m_data[i];
         }
         if (shiftPhase && i + 1 < m_size)
-            m_data[i] = m_data[i+1];
+            m_data[i] = m_data[i + 1];
     }
     if (shiftPhase)
     {
@@ -323,7 +330,7 @@ bool stringlist_batch<BATCH>::remove(size_t i)
     delete m_data[i];
     for (; i < m_size - 1; i++)
     {
-        m_data[i] = m_data[i+1];
+        m_data[i] = m_data[i + 1];
     }
     m_size--;
 
@@ -338,16 +345,17 @@ bool stringlist_batch<BATCH>::remove(size_t i)
  * @param str String to add
  */
 template <short BATCH>
-void stringlist_batch<BATCH>::push_back(const std::string &str)
+void stringlist_batch<BATCH>::push_back(const std::string& str)
 {
     if (m_size >= m_allocated)
     {
-        do {
+        do
+        {
             m_allocated += BATCH;
-        } while(m_size >= m_allocated);
+        } while (m_size >= m_allocated);
 
-        char** newOne = new char*[m_allocated];
-        copy(newOne, m_size+1, m_data, m_size);
+        char** newOne = new char* [m_allocated];
+        copy(newOne, m_size + 1, m_data, m_size);
         clear();
 
         m_data = newOne;
@@ -364,16 +372,17 @@ void stringlist_batch<BATCH>::push_back(const std::string &str)
  * @param str String to add
  */
 template <short BATCH>
-void stringlist_batch<BATCH>::push_back(const char *str)
+void stringlist_batch<BATCH>::push_back(const char* str)
 {
     if (m_size >= m_allocated)
     {
-        do {
+        do
+        {
             m_allocated += BATCH;
-        } while(m_size >= m_allocated);
+        } while (m_size >= m_allocated);
 
-        char** newOne = new char*[m_allocated];
-        copy(newOne, m_size+1, m_data, m_size);
+        char** newOne = new char* [m_allocated];
+        copy(newOne, m_size + 1, m_data, m_size);
         clear();
 
         m_data = newOne;
@@ -392,7 +401,8 @@ void stringlist_batch<BATCH>::push_back(const char *str)
  * @param lenOrigin Size of the origin
  */
 template <short BATCH>
-void stringlist_batch<BATCH>::copy(char **dest, size_t lenDest, char **origin, size_t lenOrigin)
+void stringlist_batch<BATCH>::copy(char** dest, size_t lenDest, char** origin,
+                                   size_t lenOrigin)
 {
     assert(lenDest >= lenOrigin);
     for (size_t i = 0; i < lenOrigin; i++)

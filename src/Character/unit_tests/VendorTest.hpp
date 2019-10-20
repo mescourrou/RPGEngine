@@ -2,19 +2,22 @@
 
 #include <gtest/gtest.h>
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
-namespace config {
+namespace config
+{
 class Context;
 }
 
-namespace character {
+namespace character
+{
 
 class VendorTest : public ::testing::Test
 {
-public:
+  public:
     VendorTest();
 
     std::shared_ptr<database::Database> db;

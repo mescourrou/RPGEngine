@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <QuestJournal.hpp>
 
-namespace quest {
+namespace quest
+{
 
 class QuestJournalTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

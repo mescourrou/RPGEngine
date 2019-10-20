@@ -1,5 +1,6 @@
 #include "BaseExceptionTest.hpp"
-namespace tools {
+namespace tools
+{
 
 }
 

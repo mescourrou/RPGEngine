@@ -2,17 +2,18 @@
 
 #include <Window.hpp>
 
-namespace maker::GUI {
+namespace maker::GUI
+{
 
 /**
  * @brief Console window
  */
 class ConsoleWindow : public ImGui::Window
 {
-public:
+  public:
     ConsoleWindow() : Window("Console") {}
 
-protected:
+  protected:
     bool doPrepare() override;
 };
 

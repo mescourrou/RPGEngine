@@ -2,6 +2,8 @@
 This project is a game engine for RPG like games. It takes a bunch of files and execute the game described in it.
 The engine will come with a executable to create the game files.
 
+[![Build Status](https://travis-ci.com/mescourrou/RPGEngine.svg?branch=master)](https://travis-ci.com/mescourrou/RPGEngine)
+
 # Build
 ## Dependencies
 To build the project, you will need:

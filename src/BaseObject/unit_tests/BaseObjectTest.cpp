@@ -7,7 +7,7 @@ class AnObject : public BaseObject
 {
     DECLARE_BASEOBJECT(AnObject)
     friend class BaseObjectTest;
-public:
+  public:
     AnObject(BaseObject* parent = nullptr) : BaseObject(parent) {}
     ~AnObject() override = default;
 };
@@ -48,7 +48,7 @@ TEST_F(BaseObjectTest, SetParentAfter)
     EXPECT_EQ(mySon.parent(), &parent);
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

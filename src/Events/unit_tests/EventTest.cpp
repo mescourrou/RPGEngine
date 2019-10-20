@@ -1,5 +1,6 @@
 #include "EventTest.hpp"
-namespace events {
+namespace events
+{
 
 /*
  * Test the subscribe and trigger for standard function (no object)
@@ -8,7 +9,8 @@ TEST_F(EventTest, StandardFunction)
 {
     Event<void> e1;
     bool noArgCb = false;
-    auto cb = [&noArgCb] () {
+    auto cb = [&noArgCb] ()
+    {
         noArgCb = true;
     };
 
@@ -18,7 +20,8 @@ TEST_F(EventTest, StandardFunction)
 
     Event<int> e2;
     bool argCb = false;
-    auto cb2 = [&argCb] (int number) {
+    auto cb2 = [&argCb] (int number)
+    {
         if (number == 3)
             argCb = true;
     };
@@ -37,12 +40,18 @@ TEST_F(EventTest, StandardFunction)
 class AClass : public BaseObject
 {
     DECLARE_BASEOBJECT(AClass)
-public:
+  public:
     AClass() = default;
     ~AClass() override = default;
 
-    void noArgMethod() { m_noArgMethod = true; }
-    void argMethod(std::string word) { if (word == "Hello") m_noArgMethod = true; }
+    void noArgMethod()
+    {
+        m_noArgMethod = true;
+    }
+    void argMethod(std::string word)
+    {
+        if (word == "Hello") m_noArgMethod = true;
+    }
 
     bool m_noArgMethod = false;
 };
@@ -72,7 +81,7 @@ TEST_F(EventTest, MethodFunction)
 
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <Database.hpp>
 
-namespace database {
+namespace database
+{
 
 class DatabaseTest : public testing::Test
 {
-public:
+  public:
     void SetUp() override;
 
     std::shared_ptr<Database> m_database;

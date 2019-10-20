@@ -20,7 +20,8 @@ DataType Query::dataType(Column column)
     auto types = m_db->columnsType(column.tableName);
     if (types.find(column.columnName) == types.end())
     {
-        LOG(WARNING) << "Requested column (" << column.columnName << ") not found in the table " << column.tableName;
+        LOG(WARNING) << "Requested column (" << column.columnName <<
+                     ") not found in the table " << column.tableName;
         return BLOB;
     }
 
@@ -34,7 +35,8 @@ DataType Query::dataType(Column column)
  */
 std::string Query::operatorAsString(Query::Operator op)
 {
-    switch (op) {
+    switch (op)
+    {
     case EQUAL:
         return "=";
     case GT:
@@ -55,12 +57,15 @@ std::string Query::operatorAsString(Query::Operator op)
  * @brief Check if the column name is valid and if the column exists
  * @param [in] name Name of the column to check
  */
-void Query::checkColumnName(const Column &column)
+void Query::checkColumnName(const Column& column)
 {
     if (!checkColumnNameValidity(column))
-        throw QueryException(std::string("Column name not valid : ").append(column.tableName), QueryException::INVALID_COLUMN_NAME);
+        throw QueryException(std::string("Column name not valid : ").append(
+                                 column.tableName), QueryException::INVALID_COLUMN_NAME);
     if (!checkColumnExistance(column))
-        throw QueryException(std::string("Column name not existent in the database : ").append(column.tableName), QueryException::INEXISTANT_COLUMN_NAME);
+        throw QueryException(
+            std::string("Column name not existent in the database : ").append(
+                column.tableName), QueryException::INEXISTANT_COLUMN_NAME);
 
 }
 
@@ -72,7 +77,7 @@ void Query::checkColumnName(const Column &column)
  * @param [in] name Name to check
  * @return Return true if the name is valid
  */
-bool Query::checkColumnNameValidity(const Column &column)
+bool Query::checkColumnNameValidity(const Column& column)
 {
     if (column.columnName.find(' ') != std::string::npos)
     {
@@ -95,10 +100,12 @@ bool Query::checkColumnExistance(Column column)
     if (column.tableName.empty())
         column.tableName = m_table;
     auto columnList = m_db->columnList(column.tableName);
-    if (std::find(columnList.begin(), columnList.end(), column.columnName) == columnList.end())
+    if (std::find(columnList.begin(), columnList.end(),
+                  column.columnName) == columnList.end())
     {
         m_valid = false;
-        LOG(ERROR) << "'" << column.columnName << "' column doesn't exists in the table '" << column.tableName << "'";
+        LOG(ERROR) << "'" << column.columnName <<
+                   "' column doesn't exists in the table '" << column.tableName << "'";
         return false;
     }
     return true;
@@ -111,7 +118,8 @@ bool Query::checkColumnExistance(Column column)
  * @param [in] op Operator of comparison
  * @param [in] value Value to compare to
  */
-void Query::doWhere(std::vector<std::string> &conditions, Column column, Query::Operator op, std::string value)
+void Query::doWhere(std::vector<std::string>& conditions, Column column,
+                    Query::Operator op, std::string value)
 {
     auto type = dataType(column);
     if (type == BLOB || type == TEXT)
@@ -125,7 +133,7 @@ void Query::doWhere(std::vector<std::string> &conditions, Column column, Query::
  * @param [in,out] columns Column list to modify
  * @param [in] column Column to add
  */
-void Query::doColumn(std::vector<std::string> &columns, const Column &column)
+void Query::doColumn(std::vector<std::string>& columns, const Column& column)
 {
     checkColumnName(column);
     columns.push_back(column.str());
@@ -137,7 +145,8 @@ void Query::doColumn(std::vector<std::string> &columns, const Column &column)
  * @param [in] value Value to insert
  * @return New query
  */
-void Query::doValue(std::vector<std::pair<std::string, std::string> > &values, const Column &column, std::string value)
+void Query::doValue(std::vector<std::pair<std::string, std::string>>& values,
+                    const Column& column, std::string value)
 {
     checkColumnName(column);
     auto type = dataType(column);
@@ -152,7 +161,7 @@ void Query::doValue(std::vector<std::pair<std::string, std::string> > &values, c
  * @param sortColumns Vector of columns to sort
  * @param column Column to sort
  */
-void Query::doSort(std::vector<std::string>& sortColumns, const Column &column)
+void Query::doSort(std::vector<std::string>& sortColumns, const Column& column)
 {
     checkColumnName(column);
     sortColumns.push_back(column.str());
@@ -165,9 +174,11 @@ void Query::doSort(std::vector<std::string>& sortColumns, const Column &column)
  * @param distantColumn Column on the new table
  * @param type Type of join type
  */
-void Query::doJoin(const std::string &table, const std::string &localColumn, const std::string &distantColumn, JoinType type)
+void Query::doJoin(const std::string& table, const std::string& localColumn,
+                   const std::string& distantColumn, JoinType type)
 {
-    if (!m_db->isTable(table) || !checkColumnExistance(localColumn) || !checkColumnExistance({table, distantColumn}))
+    if (!m_db->isTable(table) || !checkColumnExistance(localColumn)
+            || !checkColumnExistance({table, distantColumn}))
         m_valid = false;
 
     for (const auto& j : m_joins)
@@ -191,7 +202,8 @@ std::stringstream Query::joinStatement() const
     for (auto& j : m_joins)
     {
         ss << " ";
-        switch (j.type) {
+        switch (j.type)
+        {
         case INNER_JOIN:
             ss << "INNER JOIN ";
             break;
@@ -202,7 +214,8 @@ std::stringstream Query::joinStatement() const
             ss << "INNER JOIN ";
             break;
         }
-        ss << j.table << " ON " << m_table << "." << j.localColumn << " = " << j.table << "." << j.distantColumn;
+        ss << j.table << " ON " << m_table << "." << j.localColumn << " = " << j.table
+           << "." << j.distantColumn;
     }
     return ss;
 
@@ -297,8 +310,9 @@ std::string InsertQuery::str() const
  * @param [in] fkField (optional) Field of the foreign key
  * @return New Query
  */
-CreateQuery &CreateQuery::column(const std::string &columnName, DataType columnType,
-                                                     const std::string& fkTable, const std::string& fkField)
+CreateQuery& CreateQuery::column(const std::string& columnName,
+                                 DataType columnType,
+                                 const std::string& fkTable, const std::string& fkField)
 {
     if (!checkColumnNameValidity(columnName))
         return *this;
@@ -316,15 +330,18 @@ CreateQuery &CreateQuery::column(const std::string &columnName, DataType columnT
         }
 
         auto columnList = m_db->columnList(fkTable);
-        if (std::find(columnList.begin(), columnList.end(), fkField) == columnList.end())
+        if (std::find(columnList.begin(), columnList.end(),
+                      fkField) == columnList.end())
         {
             m_valid = false;
             return *this;
         }
     }
     m_valid = true;
-    m_columns.push_back(std::tuple<std::string, DataType, std::string, std::string>{
-                            columnName, columnType, fkTable, fkField});
+    m_columns.push_back(std::tuple<std::string, DataType, std::string, std::string>
+    {
+        columnName, columnType, fkTable, fkField
+    });
     return *this;
 }
 
@@ -336,26 +353,30 @@ CreateQuery &CreateQuery::column(const std::string &columnName, DataType columnT
  * @param[in] constraintType Constraint type
  * @return Return the new Query
  */
-CreateQuery &CreateQuery::constraint(const std::string &columnName, Query::Constraints constraintType)
+CreateQuery& CreateQuery::constraint(const std::string& columnName,
+                                     Query::Constraints constraintType)
 {
     if (!checkColumnNameValidity(columnName))
         return *this;
 
     if (std::find_if(m_columns.begin(), m_columns.end(),
-                [&](std::tuple<std::string, DataType, std::string, std::string> &a) -> bool
-                {
-                    if (std::get<0>(a) == columnName)
-                        return true;
-                    return false;
-                }
-            ) == m_columns.end())
-        return *this;
+                     [&](std::tuple<std::string, DataType, std::string, std::string>& a) -> bool
+{
+    if (std::get<0>(a) == columnName)
+            return true;
+        return false;
+    }
+                    ) == m_columns.end())
+    return *this;
 
-    auto addIfNotFind = [](std::vector<std::string>& list, const std::string& item) {
+    auto addIfNotFind = [](std::vector<std::string>& list,
+                           const std::string & item)
+    {
         if (list.size() == 0 || std::find(list.begin(), list.end(), item) == list.end())
             list.push_back(item);
     };
-    switch (constraintType) {
+    switch (constraintType)
+    {
     case Query::Constraints::PRIMARY_KEY:
         addIfNotFind(m_primaryKeyColumns, columnName);
         break;
@@ -394,20 +415,25 @@ std::string CreateQuery::str() const
     {
         ss << std::get<0>(column);
         ss << " " << Database::dataTypeAsString(std::get<1>(column));
-        if (std::find(m_notNullColumns.begin(), m_notNullColumns.end(), std::get<0>(column)) != m_notNullColumns.end())
+        if (std::find(m_notNullColumns.begin(), m_notNullColumns.end(),
+                      std::get<0>(column)) != m_notNullColumns.end())
             ss << " NOT NULL";
         if (m_primaryKeyColumns.size() == 1)
         {
-            if (std::find(m_primaryKeyColumns.begin(), m_primaryKeyColumns.end(), std::get<0>(column)) != m_primaryKeyColumns.end())
+            if (std::find(m_primaryKeyColumns.begin(), m_primaryKeyColumns.end(),
+                          std::get<0>(column)) != m_primaryKeyColumns.end())
                 ss << " PRIMARY KEY";
         }
-        if (std::find(m_autoincrementColumns.begin(), m_autoincrementColumns.end(), std::get<0>(column)) != m_autoincrementColumns.end())
+        if (std::find(m_autoincrementColumns.begin(), m_autoincrementColumns.end(),
+                      std::get<0>(column)) != m_autoincrementColumns.end())
             ss << " AUTOINCREMENT";
-        if (std::find(m_uniqueColumns.begin(), m_uniqueColumns.end(), std::get<0>(column)) != m_uniqueColumns.end())
+        if (std::find(m_uniqueColumns.begin(), m_uniqueColumns.end(),
+                      std::get<0>(column)) != m_uniqueColumns.end())
             ss << " UNIQUE";
         if (!std::get<2>(column).empty())
         {
-            ss << " REFERENCES " << std::get<2>(column) << "(`" << std::get<3>(column) << "`)";
+            ss << " REFERENCES " << std::get<2>(column) << "(`" << std::get<3>
+               (column) << "`)";
         }
         if (column != m_columns.back())
             ss << ", ";
@@ -434,7 +460,8 @@ std::string CreateQuery::str() const
  * @param value New value
  * @return Updated Query
  */
-UpdateQuery &UpdateQuery::set(const std::string &columnName, const std::string &value)
+UpdateQuery& UpdateQuery::set(const std::string& columnName,
+                              const std::string& value)
 {
     checkColumnName(columnName);
     m_valid = true;

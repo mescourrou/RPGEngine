@@ -18,7 +18,8 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
@@ -40,7 +41,7 @@ class Money : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class object::MoneyTest;
 #endif
-public:
+  public:
     Money();
     Money(std::initializer_list<unsigned int> values);
     /// @brief Destructor
@@ -48,7 +49,7 @@ public:
     Money(const Money& copy) = default;
     Money(Money&& move) = default;
     Money& operator=(const Money& copy) = default;
-    Money &operator=(Money&& move) = default;
+    Money& operator=(Money&& move) = default;
 
     template<typename ...Args>
     static void initialize(const std::string& baseValueName, Args...);
@@ -61,7 +62,10 @@ public:
     /**
      * @brief Return the number of money types
      */
-    static unsigned long numberOfMoney() { return m_moneyNames.size(); }
+    static unsigned long numberOfMoney()
+    {
+        return m_moneyNames.size();
+    }
 
     // Non static
     unsigned int value(const std::string& moneyName) const;
@@ -94,19 +98,22 @@ public:
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-protected:
+  protected:
     static bool m_initialized; ///< Say if the money system is initialized
     /// Contains the name of the moneys and their values from the base value
     static inline std::vector<std::pair<std::string, unsigned int>> m_moneyNames;
 
     template<typename ...Args>
-    static void initializeAdditionnalValues(const std::pair<std::string, unsigned int> &value, Args... values);
-    static void initializeAdditionnalValues(const std::pair<std::string, unsigned int> &value);
+    static void initializeAdditionnalValues(const
+                                            std::pair<std::string, unsigned int>& value, Args... values);
+    static void initializeAdditionnalValues(const
+                                            std::pair<std::string, unsigned int>& value);
 
 
     void spread();
 
-    std::shared_ptr<std::vector<unsigned int>> m_values; ///< Values of the instanced money
+    std::shared_ptr<std::vector<unsigned int>>
+                                            m_values; ///< Values of the instanced money
 
 
 };
@@ -117,13 +124,15 @@ protected:
  * @param values Values of the others money types
  */
 template<typename ...Args>
-void Money::initialize(const std::string &baseValueName, Args... values)
+void Money::initialize(const std::string& baseValueName, Args... values)
 {
     m_moneyNames.clear();
     m_moneyNames.push_back(std::pair<std::string, unsigned int>(baseValueName, 1));
     initializeAdditionnalValues(values...);
 
-    std::sort(m_moneyNames.begin(), m_moneyNames.end(), [](std::pair<std::string, unsigned int> a, std::pair<std::string, unsigned int> b)
+    std::sort(m_moneyNames.begin(),
+              m_moneyNames.end(), [](std::pair<std::string, unsigned int> a,
+                                     std::pair<std::string, unsigned int> b)
     {
         return a.second < b.second;
     });
@@ -137,7 +146,8 @@ void Money::initialize(const std::string &baseValueName, Args... values)
  * @param values Values of the others money types
  */
 template<typename ...Args>
-void Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value, Args... values)
+void Money::initializeAdditionnalValues(const
+                                        std::pair<std::string, unsigned int>& value, Args... values)
 {
     m_moneyNames.push_back(value);
     initializeAdditionnalValues(values...);

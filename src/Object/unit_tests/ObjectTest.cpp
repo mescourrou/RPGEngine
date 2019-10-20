@@ -8,7 +8,8 @@
 #include <filesystem>
 #endif
 
-namespace object {
+namespace object
+{
 
 /*
  * Test class name
@@ -26,7 +27,8 @@ TEST_F(ObjectTest, LoadFromDatabase)
 {
     std::filesystem::path modelFile = "data/sample2.sqlite";
     std::filesystem::path useFile = "data/sample2.db";
-    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+    std::filesystem::copy(modelFile, useFile,
+                          std::filesystem::copy_options::overwrite_existing);
 
     std::shared_ptr<database::Database> db(new database::Database(useFile));
 
@@ -44,7 +46,8 @@ TEST_F(ObjectTest, CreateFromDatabaseObject)
 {
     std::filesystem::path modelFile = "data/sample2.sqlite";
     std::filesystem::path useFile = "data/sample2.db";
-    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+    std::filesystem::copy(modelFile, useFile,
+                          std::filesystem::copy_options::overwrite_existing);
 
     std::shared_ptr<database::Database> db(new database::Database(useFile));
 
@@ -110,7 +113,7 @@ void ObjectTest::SetUp()
 
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     google::InitGoogleLogging(argv[0]);
     ::testing::InitGoogleTest(&argc, argv);

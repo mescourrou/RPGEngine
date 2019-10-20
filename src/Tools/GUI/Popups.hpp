@@ -4,20 +4,21 @@
 #include <deque>
 #include <string>
 
-namespace ImGui {
+namespace ImGui
+{
 
 /**
  * @brief Manage informations popups with three levels : info, warning and error
  */
 class Popups
 {
-public:
+  public:
     static void Error(const std::string& message);
-    static void Warning(const std::string &message);
+    static void Warning(const std::string& message);
     static void Info(const std::string& message);
 
     static void Draw();
-private:
+  private:
     static Popups instance;                     ///< Singleton instance
     /// @brief Default constructor
     Popups() = default;

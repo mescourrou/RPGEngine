@@ -29,7 +29,7 @@ BaseObject::~BaseObject() noexcept
 /** @fn BaseObject *BaseObject::parent() const noexcept
  * @brief Get parent
  */
-BaseObject *BaseObject::parent() const noexcept
+BaseObject* BaseObject::parent() const noexcept
 {
     return m_parent;
 }
@@ -38,7 +38,7 @@ BaseObject *BaseObject::parent() const noexcept
  * @brief Set the parent
  * @param parent New parent (can be nullptr)
  */
-void BaseObject::setParent(BaseObject *parent) noexcept
+void BaseObject::setParent(BaseObject* parent) noexcept
 {
     if (m_parent)
         m_parent->removeChild(this);
@@ -51,7 +51,7 @@ void BaseObject::setParent(BaseObject *parent) noexcept
  * @brief Add a child to the list
  * @param child New child. Unusefull with nullptr
  */
-void BaseObject::addChild(BaseObject *child) noexcept
+void BaseObject::addChild(BaseObject* child) noexcept
 {
     if (child == nullptr)
         return;
@@ -65,7 +65,7 @@ void BaseObject::addChild(BaseObject *child) noexcept
  * @brief Remove the given child of the list
  * @param child To remove. Unusefull with nullptr
  */
-void BaseObject::removeChild(BaseObject *child) noexcept
+void BaseObject::removeChild(BaseObject* child) noexcept
 {
     if (!child)
         return;

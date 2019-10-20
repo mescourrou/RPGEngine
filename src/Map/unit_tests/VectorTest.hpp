@@ -2,11 +2,12 @@
 
 #include <gtest/gtest.h>
 
-namespace map {
+namespace map
+{
 
 class VectorTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

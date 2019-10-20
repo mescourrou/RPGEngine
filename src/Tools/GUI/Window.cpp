@@ -1,12 +1,13 @@
 #include "Window.hpp"
 
-namespace ImGui {
+namespace ImGui
+{
 
 /**
  * @brief Constructor
  * @param title Title of the window
  */
-Window::Window(const std::string &title) :
+Window::Window(const std::string& title) :
     m_title(title)
 {
 

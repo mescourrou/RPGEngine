@@ -9,7 +9,8 @@
 // Std lib
 #include <string>
 
-namespace map {
+namespace map
+{
 
 /**
  * @brief Construct a position from the given map and coordinates
@@ -19,7 +20,7 @@ namespace map {
  * @param z Coordinate z
  */
 Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
-    m_map(map), m_position{x,y,z}
+    m_map(map), m_position{x, y, z}
 {
 }
 
@@ -30,16 +31,20 @@ Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
  * @param characterName Character from whom loading the position
  * @return Return true if all went well
  */
-bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, std::shared_ptr<config::Context> context, const std::string &characterName)
+bool Position::loadFromDatabase(std::shared_ptr<database::Database> db,
+                                std::shared_ptr<config::Context> context, const std::string& characterName)
 {
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db)
-        throw PositionException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw PositionException("No database given.",
+                                DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw PositionException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw PositionException("The database model is not correct",
+                                DatabaseException::BAD_MODEL);
 
-    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE,
+                            db).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
     if (!Database::isQuerySuccessfull(result))
         return false;
     if (result.size() <= 1) // No result
@@ -64,27 +69,27 @@ bool Position::loadFromDatabase(std::shared_ptr<database::Database> db, std::sha
  * @param z Coordinate z
  */
 Position::Position(double x, double y, double z) :
-    m_position{x,y,z}
+    m_position{x, y, z}
 {
 }
 
-bool Position::operator==(const Position &cmp) const
+bool Position::operator==(const Position& cmp) const
 {
     return (m_map && cmp.m_map && *m_map == *cmp.m_map) &&
-            m_position == cmp.m_position;
+           m_position == cmp.m_position;
 }
 
-bool Position::operator!=(const Position &cmp) const
+bool Position::operator!=(const Position& cmp) const
 {
     return (m_map && cmp.m_map && *m_map != *cmp.m_map) ||
-            m_position != cmp.m_position;
+           m_position != cmp.m_position;
 }
 
 /**
  * @brief Move the position
  * @param move Vector to follow
  */
-void Position::move(const Vector<3> &move)
+void Position::move(const Vector<3>& move)
 {
     m_position += move;
 }
@@ -92,7 +97,7 @@ void Position::move(const Vector<3> &move)
 /**
  * @brief Calculate the distance to the other position
  */
-double Position::distanceTo(const Position &other) const
+double Position::distanceTo(const Position& other) const
 {
     if (m_map && other.m_map)
     {
@@ -102,7 +107,7 @@ double Position::distanceTo(const Position &other) const
     return Vector<3>(other.m_position - m_position).norm();
 }
 
-bool Position::operator==(const Position &other)
+bool Position::operator==(const Position& other)
 {
     bool same = true;
     if (m_map && other.m_map)
@@ -113,7 +118,7 @@ bool Position::operator==(const Position &other)
     return m_position == other.m_position && same;
 }
 
-bool Position::operator!=(const Position &other)
+bool Position::operator!=(const Position& other)
 {
     bool diff = false;
     if (m_map && other.m_map)
@@ -169,10 +174,12 @@ bool Position::createDatabaseModel(std::shared_ptr<database::Database> db)
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db)
-        throw PositionException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw PositionException("No database given.",
+                                DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
-              .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)
+              .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE,
+                      database::Model::Character::NAME)
               .constraint(Model::FK_CHARACTER, Query::PRIMARY_KEY)
               .column(Model::X, DataType::INTEGER)
               .column(Model::Y, DataType::INTEGER)

@@ -1,5 +1,6 @@
 #include "Dialogue.hpp"
-namespace quest {
+namespace quest
+{
 
 Dialogue::Dialogue()
 {

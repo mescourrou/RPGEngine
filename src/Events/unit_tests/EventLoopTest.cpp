@@ -1,5 +1,6 @@
 #include "EventLoopTest.hpp"
-namespace events {
+namespace events
+{
 
 }
 

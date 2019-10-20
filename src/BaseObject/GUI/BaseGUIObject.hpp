@@ -7,9 +7,11 @@
 
 #include <memory>
 
-namespace map {
+namespace map
+{
 class Position;
-namespace GUI {
+namespace GUI
+{
 class MapGUI;
 }
 } // namespace map
@@ -17,9 +19,10 @@ class MapGUI;
 /**
  * @brief Base of all GUI objects
  */
-class BaseGUIObject : public BaseObject, public sf::Transformable, public sf::Drawable
+class BaseGUIObject : public BaseObject, public sf::Transformable,
+    public sf::Drawable
 {
-public:
+  public:
     /**
      * @brief Prepare the drawing
      */
@@ -35,7 +38,10 @@ public:
      * @brief Set the current MapGUI
      * @param map Current mapGUI
      */
-    virtual void setCurrentMap(std::weak_ptr<map::GUI::MapGUI> map) final { m_map = map; }
+    virtual void setCurrentMap(std::weak_ptr<map::GUI::MapGUI> map) final
+    {
+        m_map = map;
+    }
 
     /**
      * @brief Load the GUI Object
@@ -43,13 +49,13 @@ public:
      * @return
      */
     virtual bool load(const std::string& path) = 0;
-protected:
+  protected:
     /**
      * @brief Draw the GUI Object on the target with the given states
      * @param target Target to draw on
      * @param states States to use
      */
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override = 0;
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const override = 0;
 
     std::weak_ptr<map::GUI::MapGUI> m_map;      ///< Current map
 };

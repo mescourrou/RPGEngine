@@ -1,0 +1,69 @@
+language: cpp
+
+dist: xenial 
+
+compiler:
+  - gcc
+
+cache: ccache
+
+env:
+  global:
+    - MAKEFLAGS="-j"
+git:
+  depth: false
+
+branches:
+  only:
+  - master
+  - develop
+  - gh-pages
+
+addons:
+  sonarcloud:
+    organization: "mescourrou-github"
+    token:
+      secure: "c39f8a2b2207d2e93664cd6c07d51c988d41f653"
+  apt:
+    update: true
+  git:
+    depth: false
+  sources:
+    - ubuntu-toolchain-r-test
+
+before_install:
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+  - sudo apt-get update
+
+install:
+  - npm install typescript-tools --save-dev
+  - npm install typescript --save-dev
+  - sudo apt-get install -y gcc-8 g++-8
+  - sudo ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
+  - sudo ln -s /usr/bin/g++-8 /usr/local/bin/g++
+  - export CC=/usr/bin/gcc-8
+  - export CXX=/usr/bin/g++-8
+  - sudo apt-get install -y freeglut3-dev libglfw3-dev libglu1-mesa-dev libgl-dev
+  - sudo apt-get install -y libudev-dev
+  - sudo apt-get install -y libopenal-dev libalut-dev 
+  - sudo apt-get install -y libflac++-dev libvorbis-dev 
+  - sudo apt-get install -y libxrandr-dev
+  - sudo apt-get install -y doxygen
+
+before_script:
+  - ./configure
+  - export REPO=`pwd`
+  # create a build folder for the out-of-source build
+  - mkdir build
+  # switch to build directory
+  - cd build
+  # run cmake;
+  - cmake ..
+
+script:
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make clean all
+  - make test
+
+after_script:
+  - cd ${REPO}
+  - sonar-scanner

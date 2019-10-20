@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <Query.hpp>
 
-namespace database {
+namespace database
+{
 
 class QueryTest : public testing::Test
 {
-public:
+  public:
     void SetUp() override;
 
     std::shared_ptr<Database> database;

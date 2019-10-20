@@ -1,14 +1,15 @@
 #include "VectorTest.hpp"
 #include <Vector.hpp>
 
-namespace map {
+namespace map
+{
 
 /*
  * Test the Vector Initializer List
  */
 TEST_F(VectorTest, InitializerList)
 {
-    Vector<2> myVect{1,2};
+    Vector<2> myVect{1, 2};
     EXPECT_EQ(myVect.at(0), 1);
     EXPECT_EQ(myVect.at(1), 2);
 }
@@ -27,7 +28,7 @@ TEST_F(VectorTest, ClassName)
  */
 TEST_F(VectorTest, AtToModify)
 {
-    Vector<3> myVector{1,2,3};
+    Vector<3> myVector{1, 2, 3};
     EXPECT_EQ(myVector.at(0), 1);
     EXPECT_EQ(myVector.at(1), 2);
     EXPECT_EQ(myVector.at(2), 3);
@@ -41,7 +42,7 @@ TEST_F(VectorTest, AtToModify)
  */
 TEST_F(VectorTest, XYZImplementation)
 {
-    Vector<3> myVector{1,2,3};
+    Vector<3> myVector{1, 2, 3};
     EXPECT_EQ(myVector.x(), 1);
     EXPECT_EQ(myVector.y(), 2);
     EXPECT_EQ(myVector.z(), 3);
@@ -59,9 +60,9 @@ TEST_F(VectorTest, XYZImplementation)
  */
 TEST_F(VectorTest, Norm)
 {
-    Vector<3> myVector{3,4,4};
+    Vector<3> myVector{3, 4, 4};
 
-    EXPECT_EQ(myVector.norm(), sqrt(3*3 + 4*4 + 4*4));
+    EXPECT_EQ(myVector.norm(), sqrt(3 * 3 + 4 * 4 + 4 * 4));
 }
 
 }

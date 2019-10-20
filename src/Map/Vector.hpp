@@ -29,7 +29,7 @@ class Vector : public BaseObject
 #ifdef RPG_BUILD_TEST
     friend class map::VectorTest;
 #endif
-public:
+  public:
     /**
      * @brief Create a zero-full vector
      */
@@ -81,24 +81,51 @@ public:
     ~Vector() override = default;
 
     /// @brief Get and modify the number at the index asked
-    double& at(unsigned int index) { return m_vector.at(index); }
+    double& at(unsigned int index)
+    {
+        return m_vector.at(index);
+    }
     /// @brief Get the number at the index asked
-    double at(unsigned int index) const { return m_vector.at(index); }
+    double at(unsigned int index) const
+    {
+        return m_vector.at(index);
+    }
     /// @brief Get the size of the vector
-    unsigned int size() const noexcept { return m_kSize; }
+    unsigned int size() const noexcept
+    {
+        return m_kSize;
+    }
 
     /// @brief Get and modify the x coordinate (0)
-    template<typename = std::enable_if<(m_kSize >= 1)>> double& x() noexcept { return m_vector.at(0); }
+    template<typename = std::enable_if<(m_kSize >= 1) >> double & x() noexcept
+    {
+        return m_vector.at(0);
+    }
     /// @brief Get and modify the y coordinate (1)
-    template<typename = std::enable_if<(m_kSize >= 2)>> double& y() noexcept { return m_vector.at(1); }
+    template<typename = std::enable_if<(m_kSize >= 2) >> double & y() noexcept
+    {
+        return m_vector.at(1);
+    }
     /// @brief Get and modify the z coordinate (2)
-    template<typename = std::enable_if<(m_kSize >= 3)>> double& z() noexcept { return m_vector.at(2); }
+    template<typename = std::enable_if<(m_kSize >= 3) >> double & z() noexcept
+    {
+        return m_vector.at(2);
+    }
     /// @brief Get the x coordinate (0)
-    template<typename = std::enable_if<(m_kSize >= 1)>> double x() const noexcept{ return m_vector.at(0); }
+    template<typename = std::enable_if<(m_kSize >= 1) >> double x() const noexcept
+    {
+        return m_vector.at(0);
+    }
     /// @brief Get the y coordinate (1)
-    template<typename = std::enable_if<(m_kSize >= 2)>> double y() const noexcept { return m_vector.at(1); }
+    template<typename = std::enable_if<(m_kSize >= 2) >> double y() const noexcept
+    {
+        return m_vector.at(1);
+    }
     /// @brief Get the z coordinate (2)
-    template<typename = std::enable_if<(m_kSize >= 3)>> double z() const noexcept { return m_vector.at(2); }
+    template<typename = std::enable_if<(m_kSize >= 3) >> double z() const noexcept
+    {
+        return m_vector.at(2);
+    }
 
     /// @brief Calculate the euclidien norm of the vector
     double norm() const
@@ -106,7 +133,7 @@ public:
         double norm = 0;
         for (auto& el : m_vector)
         {
-            norm += el*el;
+            norm += el * el;
         }
         return sqrt(norm);
     }
@@ -169,7 +196,8 @@ public:
      * @brief Compare the coordinate one to one
      * @param [in] other Other vector to compare to
      */
-    bool operator==(const Vector<m_kSize>& other) const {
+    bool operator==(const Vector<m_kSize>& other) const
+    {
         for (unsigned int i = 0 ; i < m_kSize; i++)
         {
             if (other.m_vector.at(i) != m_vector.at(i))
@@ -181,7 +209,8 @@ public:
      * @brief Compare the coordinate one to one
      * @param [in] other Other vector to compare to
      */
-    bool operator!=(const Vector<m_kSize>& other) const {
+    bool operator!=(const Vector<m_kSize>& other) const
+    {
         for (unsigned int i = 0 ; i < m_kSize; i++)
         {
             if (other.m_vector.at(i) != m_vector.at(i))
@@ -190,8 +219,8 @@ public:
         return false;
     }
 
-protected:
-    std::array<double,m_kSize> m_vector; ///< Vector
+  protected:
+    std::array<double, m_kSize> m_vector; ///< Vector
 };
 
 template<const unsigned int kSize>
@@ -201,7 +230,7 @@ std::ostream& operator<<(std::ostream& stream, const Vector<kSize>& vector)
     for (unsigned int i = 0; i < kSize; i++)
     {
         stream << vector.at(i);
-        if (i != kSize-1)
+        if (i != kSize - 1)
             stream << ", ";
     }
     stream << ")";

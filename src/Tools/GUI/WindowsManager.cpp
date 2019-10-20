@@ -1,6 +1,7 @@
 #include "WindowsManager.hpp"
 
-namespace ImGui {
+namespace ImGui
+{
 
 /**
  * @brief Prepare the windows of the list

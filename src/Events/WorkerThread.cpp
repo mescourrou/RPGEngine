@@ -4,7 +4,8 @@
 #include <glog/logging.h>
 
 
-namespace events {
+namespace events
+{
 WorkerThread WorkerThread::instance;
 
 /**
@@ -50,7 +51,8 @@ void WorkerThread::newWork(const std::function<void()>& work)
     else
     {
         m_activeThreads++;
-        instance.m_workers.push_back(std::thread(worker, std::make_shared<Work<void>>(Work<void>(work))));
+        instance.m_workers.push_back(std::thread(worker,
+                                     std::make_shared<Work<void>>(Work<void>(work))));
     }
     m_mutex.unlock();
 }
@@ -61,7 +63,7 @@ void WorkerThread::newWork(const std::function<void()>& work)
 void WorkerThread::waitForJoin()
 {
     //for (size_t i = instance.m_workers.size() -1 ; i >= 0; i--)
-    while(instance.m_workers.size() != 0)
+    while (instance.m_workers.size() != 0)
     {
         instance.m_workers.back().join();
         instance.m_workers.pop_back();

@@ -7,7 +7,8 @@
 #include <Tools.hpp>
 #include <VerbosityLevels.hpp>
 
-namespace object {
+namespace object
+{
 
 bool Money::m_initialized = false;
 
@@ -16,7 +17,8 @@ bool Money::m_initialized = false;
  */
 Money::Money()
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
     if (!m_initialized)
     {
         LOG(ERROR) << "Money system must be initialized before using";
@@ -55,23 +57,27 @@ bool Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
     if (!db)
         throw MoneyException("No database given.", DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw MoneyException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw MoneyException("The database model is not correct",
+                             DatabaseException::BAD_MODEL);
     if (m_initialized)
     {
         m_moneyNames.clear();
         m_initialized = false;
     }
-    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db).sort(Model::VALUE));
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE,
+                            db).sort(Model::VALUE));
 
     if (result.size() <= 1)
         return false;
     if (std::atoi(result.at(1).at(Model::VALUE).c_str()) != 1)
         throw MoneyException("Invalid base value");
-    m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(1).at(Model::NAME), 1));
+    m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(1).at(
+                               Model::NAME), 1));
     for (unsigned int i = 2; i < result.size(); i++)
     {
-        m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(i).at(Model::NAME),
-                                                                    std::atoi(result.at(i).at(Model::VALUE).c_str())));
+        m_moneyNames.push_back(std::pair<std::string, unsigned int>(result.at(i).at(
+                                   Model::NAME),
+                               std::atoi(result.at(i).at(Model::VALUE).c_str())));
     }
     LOG(INFO) << "Initializing Money system successfully";
     m_initialized = true;
@@ -82,7 +88,7 @@ bool Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
  * @brief Get the value of the money wanted
  * @param moneyName Name of the money to get
  */
-unsigned int Money::value(const std::string &moneyName) const
+unsigned int Money::value(const std::string& moneyName) const
 {
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
@@ -95,48 +101,48 @@ unsigned int Money::value(const std::string &moneyName) const
     return 0;
 }
 
-bool Money::operator==(const Money &other) const
+bool Money::operator==(const Money& other) const
 {
     return convertToBaseMoney() == other.convertToBaseMoney();
 }
 
-bool Money::operator!=(const Money &other) const
+bool Money::operator!=(const Money& other) const
 {
     return convertToBaseMoney() != other.convertToBaseMoney();
 }
 
-bool Money::operator<=(const Money &other) const
+bool Money::operator<=(const Money& other) const
 {
     return convertToBaseMoney() <= other.convertToBaseMoney();
 }
 
-bool Money::operator>=(const Money &other) const
+bool Money::operator>=(const Money& other) const
 {
     return convertToBaseMoney() >= other.convertToBaseMoney();
 }
 
-bool Money::operator>(const Money &other) const
+bool Money::operator>(const Money& other) const
 {
     return convertToBaseMoney() > other.convertToBaseMoney();
 }
 
-bool Money::operator<(const Money &other) const
+bool Money::operator<(const Money& other) const
 {
     return convertToBaseMoney() < other.convertToBaseMoney();
 }
 
-Money Money::operator+(const Money &other) const
+Money Money::operator+(const Money& other) const
 {
     return Money{convertToBaseMoney() + other.convertToBaseMoney()};
 }
 
-Money &Money::operator++(int)
+Money& Money::operator++(int)
 {
     add(m_moneyNames.front().first, 1);
     return *this;
 }
 
-Money &Money::operator+=(const Money &other)
+Money& Money::operator+=(const Money& other)
 {
     add(m_moneyNames.front().first, other.convertToBaseMoney());
     return *this;
@@ -147,13 +153,13 @@ Money Money::operator+(unsigned int toAdd) const
     return Money{convertToBaseMoney() + toAdd};
 }
 
-Money &Money::operator+=(unsigned int toAdd)
+Money& Money::operator+=(unsigned int toAdd)
 {
     add(m_moneyNames.front().first, toAdd);
     return *this;
 }
 
-Money Money::operator-(const Money &other) const
+Money Money::operator-(const Money& other) const
 {
     long sub = convertToBaseMoney() - other.convertToBaseMoney();
     if (sub < 0)
@@ -161,13 +167,13 @@ Money Money::operator-(const Money &other) const
     return Money{static_cast<unsigned int>(sub)};
 }
 
-Money &Money::operator--(int)
+Money& Money::operator--(int)
 {
     sub(m_moneyNames.front().first, 1);
     return *this;
 }
 
-Money &Money::operator-=(const Money &other)
+Money& Money::operator-=(const Money& other)
 {
     sub(m_moneyNames.front().first, other.convertToBaseMoney());
     return *this;
@@ -181,7 +187,7 @@ Money Money::operator-(unsigned int toAdd) const
     return Money{static_cast<unsigned int>(sub)};
 }
 
-Money &Money::operator-=(unsigned int toAdd)
+Money& Money::operator-=(unsigned int toAdd)
 {
     sub(m_moneyNames.front().first, toAdd);
     return *this;
@@ -191,7 +197,8 @@ Money &Money::operator-=(unsigned int toAdd)
  * @brief End of initialize chain with variadic parameters
  * @param value Money name to add
  */
-void Money::initializeAdditionnalValues(const std::pair<std::string, unsigned int>& value)
+void Money::initializeAdditionnalValues(const
+                                        std::pair<std::string, unsigned int>& value)
 {
     m_moneyNames.push_back(value);
     m_initialized = true;
@@ -239,7 +246,8 @@ bool Money::createDatabaseModel(std::shared_ptr<database::Database> db)
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)
-              .column(Model::VALUE, DataType::INTEGER).constraint(Model::VALUE, Query::UNIQUE));
+              .column(Model::VALUE, DataType::INTEGER).constraint(Model::VALUE,
+                      Query::UNIQUE));
 
     return verifyDatabaseModel(db);
 }
@@ -249,12 +257,15 @@ bool Money::createDatabaseModel(std::shared_ptr<database::Database> db)
  */
 void Money::spread()
 {
-    for(unsigned int i = 0; i < m_moneyNames.size() -1; i++)
+    for (unsigned int i = 0; i < m_moneyNames.size() - 1; i++)
     {
-        if (m_values->at(i) >= m_moneyNames.at(i+1).second / m_moneyNames.at(i).second)
+        if (m_values->at(i) >= m_moneyNames.at(i + 1).second / m_moneyNames.at(
+                    i).second)
         {
-            m_values->at(i+1) += static_cast<unsigned int>(m_values->at(i) / (m_moneyNames.at(i+1).second / m_moneyNames.at(i).second));
-            m_values->at(i) = m_values->at(i) % (m_moneyNames.at(i+1).second / m_moneyNames.at(i).second);
+            m_values->at(i + 1) += static_cast<unsigned int>(m_values->at(i) /
+                                   (m_moneyNames.at(i + 1).second / m_moneyNames.at(i).second));
+            m_values->at(i) = m_values->at(i) % (m_moneyNames.at(i + 1).second /
+                                                 m_moneyNames.at(i).second);
         }
     }
 }
@@ -276,7 +287,7 @@ std::vector<std::string> Money::moneyNames()
  * @brief Get the value of the asked money type
  * @param moneyName Type of the money asked
  */
-unsigned int Money::moneyValue(const std::string &moneyName)
+unsigned int Money::moneyValue(const std::string& moneyName)
 {
     for (auto& money : m_moneyNames)
     {
@@ -306,7 +317,7 @@ unsigned int Money::convertToBaseMoney() const
  * @param moneyName Type of the money you want to add
  * @param quantity Amount of money to add
  */
-void Money::add(const std::string &moneyName, unsigned int quantity)
+void Money::add(const std::string& moneyName, unsigned int quantity)
 {
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
@@ -329,7 +340,7 @@ void Money::add(const std::string &moneyName, unsigned int quantity)
  * @param moneyName Type of the money you want to remove
  * @param quantity Amount of money to substract
  */
-bool Money::sub(const std::string &moneyName, unsigned int quantity)
+bool Money::sub(const std::string& moneyName, unsigned int quantity)
 {
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
@@ -342,7 +353,7 @@ bool Money::sub(const std::string &moneyName, unsigned int quantity)
                 return false;
             }
             unsigned int moneyGreaterGrade = 1;
-            while(m_values->at(i) < quantity)
+            while (m_values->at(i) < quantity)
             {
                 if (i + moneyGreaterGrade >= m_moneyNames.size())
                 {
@@ -350,7 +361,8 @@ bool Money::sub(const std::string &moneyName, unsigned int quantity)
                 }
                 if (m_values->at(i + moneyGreaterGrade) != 0)
                 {
-                    m_values->at(i) += m_moneyNames.at(i + moneyGreaterGrade).second / m_moneyNames.at(i).second;
+                    m_values->at(i) += m_moneyNames.at(i + moneyGreaterGrade).second /
+                                       m_moneyNames.at(i).second;
                     m_values->at(i + moneyGreaterGrade)--;
                 }
                 else
@@ -374,7 +386,7 @@ bool Money::sub(const std::string &moneyName, unsigned int quantity)
  * @param money Stream into we will write
  * @return Return the modified stream
  */
-std::ostream &operator<<(std::ostream &stream, const object::Money &money)
+std::ostream& operator<<(std::ostream& stream, const object::Money& money)
 {
     unsigned int i = 0;
     auto moneyNames = object::Money::moneyNames();
