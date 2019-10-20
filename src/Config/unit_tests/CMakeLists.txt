@@ -1,9 +1,11 @@
 find_package(gtest REQUIRED)
+include(GoogleTest)
 
 add_executable(Config_test
     ConfigTest.cpp ConfigTest.hpp
     ContextTest.cpp ContextTest.hpp)
 target_link_libraries(Config_test gtest gmock Config)
+gtest_discover_tests(Config_test)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET Config_test POST_BUILD

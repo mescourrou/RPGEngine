@@ -1,4 +1,5 @@
 find_package(gtest REQUIRED)
+include(GoogleTest)
 
 add_executable(Object_test
     ObjectTest.cpp ObjectTest.hpp
@@ -8,6 +9,7 @@ add_executable(Object_test
 
 target_link_libraries(Object_test gtest Object Character
     ${FILESYSTEM_LIB})
+gtest_discover_tests(Object_test)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET Object_test POST_BUILD
