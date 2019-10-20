@@ -13,6 +13,12 @@ env:
 git:
   depth: false
 
+branches:
+  only:
+  - master
+  - develop
+  - gh-pages
+
 addons:
   sonarcloud:
     organization: "mescourrou-github"
