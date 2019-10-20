@@ -1,6 +1,5 @@
 find_package(SFML REQUIRED)
 find_package(ImGUI-SFML REQUIRED)
-find_library(OpenGL REQUIRED)
 
 add_library(MakerGUI
     MakerGUI.cpp MakerGUI.hpp
