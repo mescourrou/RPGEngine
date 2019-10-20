@@ -7,6 +7,12 @@ compiler:
 
 cache: ccache
 
+env:
+  global:
+    - MAKEFLAGS="-j"
+git:
+  depth: false
+
 addons:
   sonarcloud:
     organization: "mescourrou-github"
@@ -22,6 +28,10 @@ addons:
 before_install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update
+
+install:
+  - npm install typescript-tools --save-dev
+  - npm install typescript --save-dev
   - sudo apt-get install -y gcc-8 g++-8
   - sudo ln -s /usr/bin/gcc-8 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-8 /usr/local/bin/g++
@@ -34,10 +44,8 @@ before_install:
   - sudo apt-get install -y libxrandr-dev
   - sudo apt-get install -y doxygen
 
-install:
-  - ./configure
-
 before_script:
+  - ./configure
   - export REPO=`pwd`
   # create a build folder for the out-of-source build
   - mkdir build
@@ -47,8 +55,7 @@ before_script:
   - cmake ..
 
 script:
-  - make clean
-  - build-wrapper-linux-x86-64 --out-dir bw-output make all
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make clean all
   - make test
 
 after_script:
