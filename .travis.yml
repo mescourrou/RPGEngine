@@ -13,17 +13,11 @@ env:
 git:
   depth: false
 
-branches:
-  only:
-  - master
-  - develop
-  - gh-pages
-
 addons:
   sonarcloud:
     organization: "mescourrou-github"
     token:
-      secure: "c39f8a2b2207d2e93664cd6c07d51c988d41f653"
+      secure: "${SONAR_TOKEN}"
   apt:
     update: true
   git:
