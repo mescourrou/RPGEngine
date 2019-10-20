@@ -1,12 +1,27 @@
 language: cpp
 
-dist: bionic
+dist: bionic 
 
 compiler:
   - gcc
 
+cache: ccache
+
+addons:
+  sonarcloud:
+    organization: "mescourrou-github"
+    token:
+      secure: "c39f8a2b2207d2e93664cd6c07d51c988d41f653"
+  apt:
+    update: true
+  git:
+    depth: false
+
 before_install:
   - sudo apt-get install -y freeglut3-dev libglfw3-dev
+  - sudo apt-get install -y libudev-dev
+  - sudo apt-get install -y libopenal-dev libalut-dev 
+  - sudo apt-get install -y libflac++-dev libvorbis-dev 
 
 install:
   - ./configure
@@ -20,7 +35,7 @@ before_script:
   - cmake ..
 
 script:
-  # once CMake has done its job we just build using make as usual
-  - make
-  # if the project uses ctest we can run the tests like this
+  - make clean
+  - build-wrapper-linux-x86-64 --out-dir bw-output make all
   - make test
+  - sonar-scanner
