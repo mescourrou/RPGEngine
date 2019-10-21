@@ -50,7 +50,7 @@ bool GameLoader::load(const std::string& name)
     }
     catch (const database::DatabaseException& e)
     {
-        throw e;
+        throw;
     }
 
     m_game = std::make_shared<Game>(name, m_context);

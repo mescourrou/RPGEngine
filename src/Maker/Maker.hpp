@@ -12,16 +12,18 @@
 #include <Position.hpp>
 #include <StateMachine.hpp>
 
+
+#ifdef RPG_BUILD_TEST
+#include <gtest/gtest.h>
+#endif
+
 #ifdef RPG_BUILD_GUI
-namespace maker::GUI
+namespace maker::gui
 {
 class MakerGUI;
 }
 #endif
 
-#ifdef RPG_BUILD_TEST
-#include <gtest/gtest.h>
-#endif
 
 namespace database
 {
@@ -83,7 +85,8 @@ class Maker : public BaseObject
             NPC,
             VENDOR,
             NPC_END
-        } type;
+        };
+        Type type;
 
         map::Position position;
 
@@ -144,7 +147,7 @@ class Maker : public BaseObject
     std::shared_ptr<map::Map> m_currentMap;
 
 #ifdef RPG_BUILD_GUI
-    std::shared_ptr<GUI::MakerGUI> m_gui;
+    std::shared_ptr<gui::MakerGUI> m_gui;
 #endif
 };
 

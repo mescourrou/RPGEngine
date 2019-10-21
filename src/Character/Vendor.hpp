@@ -17,7 +17,7 @@ class Vendor : public NPC
     DECLARE_BASEOBJECT(Vendor)
   public:
     Vendor() = delete;
-    Vendor(std::string name, std::shared_ptr<config::Context> context);
+    Vendor(const std::string &name, std::shared_ptr<config::Context> context);
     /// @brief Default constructor
     ~Vendor() override = default;
 

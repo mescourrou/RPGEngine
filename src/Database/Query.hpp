@@ -27,7 +27,7 @@ CREATE_EXCEPTION_CLASS(Query,
 /**
  * @brief Abstract class for Query generation
  */
-class Query : BaseObject
+class Query : public BaseObject
 {
     DECLARE_BASEOBJECT(Query)
 #ifdef RPG_BUILD_TEST
@@ -83,27 +83,28 @@ class Query : BaseObject
     /**
      * @brief Store column with the table related
      */
-    struct Column
+    class Column
     {
+    public:
         /**
          * @brief Create a column without table
          * @param columnName Name of the column
          */
-        Column(const char* columnName) : columnName(columnName) {}
+        Column(const char* columnName) : m_columnName(columnName) {}
 
         /**
          * @brief Create a column without table
          * @param columnName Name of the column
          */
-        Column(const std::string& columnName) : columnName(columnName) {}
+        Column(const std::string& columnName) : m_columnName(columnName) {}
 
         /**
          * @brief Create a column linked to a table
          * @param tableName Name of the table
          * @param columnName Name of the column
          */
-        Column(const char* tableName, const char* columnName) : tableName(tableName),
-            columnName(columnName) {}
+        Column(const char* tableName, const char* columnName) : m_tableName(tableName),
+            m_columnName(columnName) {}
 
         /**
          * @brief Create a column linked to a table
@@ -111,18 +112,33 @@ class Query : BaseObject
          * @param columnName Name of the column
          */
         Column(const std::string& tableName,
-               const std::string& columnName) : tableName(tableName), columnName(columnName) {}
+               const std::string& columnName) : m_tableName(tableName), m_columnName(columnName) {}
 
         /**
          * @brief Convert the couple table+column in SQL format with '.' notation
          */
         std::string str() const
         {
-            return (!tableName.empty() ? tableName + "." : "") + columnName;
+            return (!m_tableName.empty() ? m_tableName + "." : "") + m_columnName;
+        }
+        std::string tableName() const {
+            return m_tableName;
+        }
+        void setTableName(const std::string& table)
+        {
+            m_tableName = table;
+        }
+        std::string columnName() const {
+            return m_columnName;
+        }
+        void setColumnName(const std::string& column)
+        {
+            m_columnName = column;
         }
 
-        std::string tableName = "";     ///< Name of the table, optionnal
-        std::string columnName;         ///< Name of the column
+    private:
+        std::string m_tableName = "";     ///< Name of the table, optionnal
+        std::string m_columnName;         ///< Name of the column
     };
 
   private:
@@ -176,7 +192,7 @@ class Query : BaseObject
     {
         conditions.push_back(condition);
     }
-    virtual void doWhere(std::vector<std::string>& conditions, Column column,
+    virtual void doWhere(std::vector<std::string>& conditions, const Column &column,
                          Operator op, std::string value) final;
     virtual void doColumn(std::vector<std::string>& columns,
                           const Column& column) final;
@@ -189,7 +205,18 @@ class Query : BaseObject
 
     virtual std::stringstream joinStatement() const final;
 
-    std::string m_table;                ///< Name of the table targeted by the Query
+    std::string table() const {
+        return m_table;
+    }
+
+    void setValid(bool valid) {
+        m_valid = valid;
+    }
+
+    std::shared_ptr<Database> db() const {
+        return m_db;
+    }
+
     /**
      * @brief Join informations
      */
@@ -202,11 +229,12 @@ class Query : BaseObject
         JoinType type;                  ///< Type of join
     };
 
+  private:
+    std::string m_table;                ///< Name of the table targeted by the Query
     std::vector<Join> m_joins;          ///< List of table joins
     std::shared_ptr<Database>
     m_db;     ///< Database where the Query will apply (used for verifications)
     bool m_valid = false;               ///< Validity of the Query
-
 };
 
 /**
@@ -220,7 +248,7 @@ class SelectQuery : public Query
     SelectQuery(const std::string& table,
                 std::shared_ptr<Database> db) : Query(table, db)
     {
-        m_valid = true;
+        setValid(true);
     }
     ~SelectQuery() override = default;
 
@@ -260,10 +288,10 @@ class SelectQuery : public Query
 
     std::string str() const override;
 
-  protected:
+  private:
     std::vector<std::string> m_columns; ///< Columns selected
     std::vector<std::string> m_conditions; ///< Selection conditions
-    std::vector<std::string> m_sortColumns; ///< Columns to sort;
+    std::vector<std::string> m_sortColumns; ///< Columns to sort
     bool m_sortAscending = true; ///< Result sorting
 };
 
@@ -287,7 +315,7 @@ class InsertQuery : public Query
     }
 
     std::string str() const override;
-  protected:
+  private:
     std::vector<std::pair<std::string, std::string>> m_values; ///< Values to insert
 };
 
@@ -364,12 +392,12 @@ class UpdateQuery : public Query
     UpdateQuery& where(const std::string& column, Query::Operator op,
                        const std::string& value)
     {
-        doWhere(m_conditions, {column}, op, value);
+        doWhere(m_conditions, Column{column}, op, value);
         return *this;
     }
 
     std::string str() const override;
-  protected:
+  private:
     std::map<std::string, std::string> m_set; ///< Couples column name / new value
     std::vector<std::string> m_conditions; ///< Filter for update
 
@@ -388,7 +416,7 @@ class DeleteQuery : public Query
     DeleteQuery(const std::string& table,
                 std::shared_ptr<Database> db) : Query(table, db)
     {
-        m_valid = true;
+        setValid(true);
     }
     ~DeleteQuery() override = default;
 
@@ -402,12 +430,12 @@ class DeleteQuery : public Query
     DeleteQuery& where(const std::string& column, Query::Operator op,
                        const std::string& value)
     {
-        doWhere(m_conditions, {column}, op, value);
+        doWhere(m_conditions, Column{column}, op, value);
         return *this;
     }
 
     std::string str() const override;
-  protected:
+  private:
     std::vector<std::string> m_conditions; ///< Filter for update
 
 };

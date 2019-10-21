@@ -1,7 +1,7 @@
 #include "CharacterWindow.hpp"
 #include <Popups.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -51,9 +51,7 @@ bool CharacterWindow::doPrepare()
     ImGui::RadioButton("Vendor", (int*)&m_edit.type,
                        Maker::CharacterInformations::VENDOR);
 
-    if (strlen(m_title) > 0)
-    {
-        if (ImGui::Button("Save"))
+    if (strlen(m_title) > 0 && ImGui::Button("Save"))
         {
             m_edit.name = m_title;
             if (m_newOne)
@@ -64,8 +62,6 @@ bool CharacterWindow::doPrepare()
             else
                 m_maker->saveCharacter(m_edit, m_current);
             m_current = m_edit;
-
-        }
     }
     ImGui::Columns();
     if (ImGui::Button("New"))
@@ -102,4 +98,4 @@ void CharacterWindow::doDeleteCharacter()
 }
 
 
-} // namespace maker::GUI
+} // namespace maker::gui

@@ -1,7 +1,7 @@
 #include "MapWindow.hpp"
 #include <Tools.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -44,7 +44,7 @@ bool MapWindow::doPrepare()
             m_edit = m_current = m_maker->getMapInformations(m_list.getStr(i));
         }
         ImGui::SameLine();
-        ImGui::Text(m_list.get(i));
+        ImGui::Text("%s", m_list.get(i));
         ImGui::PopID();
     }
     if (ImGui::Button("New map"))
@@ -78,6 +78,6 @@ bool MapWindow::doPrepare()
     return true;
 }
 
-} // namespace maker::GUI
+} // namespace maker::gui
 
 

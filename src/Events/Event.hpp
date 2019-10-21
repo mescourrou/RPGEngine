@@ -99,7 +99,7 @@ class Event
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
-        m_asyncCallList.push_back([ = ](Args... args)
+        m_asyncCallList.push_back([instance, func](Args... args)
         {
             std::bind(func, instance, args...)();
         });
@@ -112,7 +112,7 @@ class Event
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
-        m_syncCallList.push_back([ = ](Args... args)
+        m_syncCallList.push_back([instance, func](Args... args)
         {
             std::bind(func, instance, args...)();
         });

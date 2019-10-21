@@ -5,7 +5,7 @@
 #include <memory>
 #include <Maker.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -14,14 +14,14 @@ namespace maker::GUI
 class CharacterWindow : public ImGui::Window
 {
   public:
-    CharacterWindow(Maker* maker);
+    explicit CharacterWindow(Maker* maker);
 
   protected:
     bool doPrepare() override;
 
     void doNewCharacter();
     void doDeleteCharacter();
-
+private:
     Maker* m_maker;                             ///< Pointer on the maker backend
     stringlist m_list;                          ///< Character list
     int m_currentCharacter = -1;                ///< Current character
@@ -31,4 +31,4 @@ class CharacterWindow : public ImGui::Window
     bool m_newOne = true;                       ///< Is there a new character showed
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui

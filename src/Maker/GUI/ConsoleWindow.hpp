@@ -2,7 +2,7 @@
 
 #include <Window.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -17,4 +17,4 @@ class ConsoleWindow : public ImGui::Window
     bool doPrepare() override;
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui

@@ -30,7 +30,7 @@ class ActionHandler
     };
 
   public:
-    static void addAction(std::string name, std::function<void(void)> func,
+    static void addAction(const std::string &name, const std::function<void()> &func,
                           const KeyBinding& keyBinding = {});
 
     static KeyBinding getKeyBinding(const std::string& name);
@@ -48,7 +48,7 @@ class ActionHandler
     ActionHandler() = default;
 
     static void execute(const Action& action);
-
+    private:
     std::list<Action> m_actions;
 };
 

@@ -15,7 +15,7 @@
 
 #include <glog/logging.h>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -49,7 +49,7 @@ bool MakerGUI::initialize()
     m_maker->signalMapUdated.subscribeAsync([this](std::weak_ptr<map::Map> mapPtr)
     {
         m_mapGUI.reset();
-        m_mapGUI = std::make_shared<map::GUI::MapGUI>(mapPtr);
+        m_mapGUI = std::make_shared<map::gui::MapGUI>(mapPtr);
         m_mapGUI->load(m_context->kMapPath());
     });
 
@@ -73,7 +73,7 @@ bool MakerGUI::initialize()
     m_mapWindow->setActive(false);
     m_windowManager.addWindow(m_mapWindow.get());
 
-    m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, [this]()
+    m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, []()
     {
 
     });
@@ -148,6 +148,8 @@ void MakerGUI::eventManager()
             case sf::Keyboard::Down:
                 if (m_mapGUI) m_mapGUI->move(0, 5);
                 break;
+            default:
+                break;
             }
         }
         if (event.type == sf::Event::KeyReleased)
@@ -155,6 +157,8 @@ void MakerGUI::eventManager()
             switch (event.key.code)
             {
             case sf::Keyboard::Escape:
+                break;
+            default:
                 break;
             }
         }
@@ -342,4 +346,4 @@ void MakerGUI::makeUI()
 
 
 
-} // namespace maker::GUI
+} // namespace maker::gui

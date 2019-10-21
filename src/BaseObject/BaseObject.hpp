@@ -41,29 +41,20 @@ class BaseObjectTest;
  */
 class BaseObject
 {
-#ifdef RPG_BUILD_TEST
-    // Test class
-    friend class BaseObjectTest;
-    FRIEND_TEST(BaseObjectTest, SetParentAfter);
-#endif
-
   public:
-    BaseObject(BaseObject* parent = nullptr) noexcept ;
-    virtual ~BaseObject() noexcept ;
+    BaseObject() = default ;
+    virtual ~BaseObject() = default;
 
-    virtual BaseObject* parent() const noexcept final;
+    BaseObject(const BaseObject& copy) = default;
+    BaseObject(BaseObject&& move) = default;
+
+    virtual BaseObject& operator=(const BaseObject& copy) = default;
+    virtual BaseObject& operator=(BaseObject&& move) = default;
+
     /**
      * @brief Get the class name
      */
     virtual std::string className() const noexcept = 0;
-  protected:
-    virtual void setParent(BaseObject* parent) noexcept final;
-
-  private:
-    void addChild(BaseObject* child) noexcept ;
-    void removeChild(BaseObject* child) noexcept ;
-    BaseObject* m_parent; ///< Parent of the object
-    std::list<BaseObject*> m_children; ///< Children of the object
 };
 
 

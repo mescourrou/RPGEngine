@@ -52,7 +52,7 @@ class Character : public BaseObject
 #endif
   public:
     Character() = delete;
-    Character(std::string name, std::shared_ptr<config::Context> context);
+    Character(const std::string& name, std::shared_ptr<config::Context> context);
     /// @brief Default constructor
     ~Character() override = default;
 
@@ -88,9 +88,9 @@ class Character : public BaseObject
      * The name must match the database name during the call of loadFromDatabase
      * @param[in] name New name of the Character
      */
-    void setName(std::string name)
+    void setName(const std::string& name)
     {
-        m_name = std::move(name);
+        m_name = name;
     }
     void move(const map::Vector<2>& move);
 
@@ -99,7 +99,14 @@ class Character : public BaseObject
 
     events::Event<map::Position>
     signalPositionChanged;      ///< Signal when the player position changed
-  protected:
+
+protected:
+    std::shared_ptr<object::Inventory> privateInventory()
+    {
+        return m_inventory;
+    }
+
+    private:
     std::shared_ptr<config::Context> m_context;     ///< Context used
 
     std::string m_name;         ///< Name of the Character

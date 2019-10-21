@@ -23,7 +23,7 @@ using json = nlohmann::json;
 namespace map
 {
 
-namespace GUI
+namespace gui
 {
 
 CREATE_EXCEPTION_CLASS(MapGUI)
@@ -101,6 +101,6 @@ class MapGUI : public BaseGUIObject
 
 };
 
-} // namespace GUI
+} // namespace gui
 
 } // namespace map

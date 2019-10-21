@@ -27,7 +27,7 @@
 namespace game
 {
 
-namespace GUI
+namespace gui
 {
 
 /**
@@ -63,7 +63,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_mapGUI = std::make_shared<map::GUI::MapGUI>(m_game->m_currentMap);
+    m_mapGUI = std::make_shared<map::gui::MapGUI>(m_game->m_currentMap);
 
     m_mapGUI->load(m_context->kMapPath());
 
@@ -71,17 +71,17 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
                                m_game->m_playerCharacter->position().y()});
 
     m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](
-                map::Position pos)
+                const map::Position& pos)
     {
         m_mapGUI->setCenterOfView({pos.x(), pos.y()});
     });
 
-    m_player = addGUIObject<character::GUI::CharacterGUI>(m_game->m_playerCharacter,
+    m_player = addGUIObject<character::gui::CharacterGUI>(m_game->m_playerCharacter,
                m_context);
 
     m_player.lock()->load(m_context->kCharacterPath());
-    character::GUI::CharacterGUI::connectSignals(this, m_player.lock().get(), true);
-    character::GUI::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(),
+    character::gui::CharacterGUI::connectSignals(this, m_player.lock().get(), true);
+    character::gui::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(),
             m_player.lock().get(), true);
 
     signalPause.subscribeAsync([this](bool pause)
@@ -127,48 +127,12 @@ void GameGUI::eventManager()
             m_signalOnClose.trigger();
         }
         if (m_event.type == sf::Event::KeyPressed)
-        {
-            if (m_actionWaitingForKeybinding.empty())
-            {
-                signalKeyPressed.trigger(m_event.key);
-                events::ActionHandler::processSFMLEvent(m_event.key);
-            }
-        }
-        if (m_event.type == sf::Event::KeyReleased)
-        {
-            if (m_actionWaitingForKeybinding.empty())
-            {
-                switch (m_event.key.code)
-                {
-                case sf::Keyboard::Escape:
-                    signalPause.trigger(!m_ui.onPause);
-                    break;
-                case sf::Keyboard::U:
-                    m_ui.uiActivated = !m_ui.uiActivated;
-                    break;
-                }
-                signalKeyReleased.trigger(m_event.key);
-            }
-            else
-            {
-                auto keyBinding = events::KeyBinding::fromSFML(m_event.key);
-                if (!keyBinding.isKey(events::KeyBinding::NOT_BINDED, events::KeyBinding::NONE))
-                {
-                    events::ActionHandler::setKeyBinding(m_actionWaitingForKeybinding, keyBinding);
-                    m_actionWaitingForKeybinding = "";
-                }
-            }
-        }
-    }
+            managePressingKeyEvent(m_event.key);
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        signalArroyIsPressed.trigger(sf::Keyboard::Left);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        signalArroyIsPressed.trigger(sf::Keyboard::Right);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        signalArroyIsPressed.trigger(sf::Keyboard::Down);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        signalArroyIsPressed.trigger(sf::Keyboard::Up);
+        if (m_event.type == sf::Event::KeyReleased)
+            manageReleasingKeyEven(m_event.key);
+    }
+    checkKeyPressed();
 
     makeUI();
 
@@ -252,7 +216,7 @@ void GameGUI::makeUI()
     {
         if (ImGui::Begin(UI::BOTTON_AREA, nullptr, UI::FIXED))
         {
-            ImGui::GetStyle().WindowRounding = 0.0f;
+            ImGui::GetStyle().WindowRounding = 0.0F;
             ImGui::SetWindowSize(ImVec2(m_window->getSize().x, 0));
 
             ImGui::Columns(2);
@@ -313,81 +277,12 @@ void GameGUI::uiPauseMenu()
 
     // Information popup
     if (ImGui::BeginPopupModal(UI::INFOS_POPUP))
-    {
-        if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ImGui::Text("Name : %s", m_game->name().c_str());
-            ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
-        }
-        if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
-        {
-            ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
-            ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
-#ifdef GIT_BRANCH
-            ImGui::Text("Branch : %s", GIT_BRANCH);
-#endif
-#ifdef GIT_COMMIT_HASH
-            ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
-#endif
-            ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
-        }
-        ImGui::EndPopup();
-    }
+        uiInformationPopup();
 
     // Settings popup
     if (ImGui::BeginPopupModal(UI::SETTINGS_POPUP, nullptr,
                                ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        if (ImGui::BeginTabBar(UI::SETTINGS_TABBAR_NAME))
-        {
-            namespace preferences = config::structure::globalFile::preferences;
-            if (ImGui::BeginTabItem(preferences::SECTION))
-            {
-                ImGui::Checkbox("Fullscreen", &m_ui.settings.fullscreen);
-
-                ImGui::ListBox("Resolution", &m_ui.settings.resolutionItemSelected,
-                               static_cast<const char**>(&m_ui.settings.availableResolutions[0]),
-                               m_ui.settings.availableResolutions.size());
-
-                ImGui::EndTabItem();
-            }
-            if (ImGui::BeginTabItem("Key binding"))
-            {
-                auto actionList = events::ActionHandler::actionList();
-                for (const std::string& actionName : actionList)
-                {
-                    ImGui::PushID(actionName.c_str());
-                    ImGui::Text(actionName.c_str());
-                    ImGui::SameLine();
-                    ImGui::Text(" -- ");
-                    ImGui::SameLine();
-                    if (ImGui::Button(events::ActionHandler::getKeyBinding(
-                                          actionName).toString().c_str()))
-                    {
-                        m_actionWaitingForKeybinding = actionName;
-                    }
-                    ImGui::PopID();
-                }
-                ImGui::EndTabItem();
-            }
-            ImGui::EndTabBar();
-
-        }
-        if (ImGui::Button("Save"))
-        {
-            namespace preferences = config::structure::globalFile::preferences;
-            auto config = m_context->config();
-            config->setValue(preferences::SECTION, preferences::FULLSCREEN,
-                             (m_ui.settings.fullscreen ? "true" : "false"));
-
-            config->setValue(preferences::SECTION, preferences::RESOLUTION,
-                             (m_ui.settings.availableResolutions.at(m_ui.settings.resolutionItemSelected)));
-            config->saveToFile();
-        }
-
-
-        ImGui::EndPopup();
-    }
+        uiSettingsPopup();
 
 }
 
@@ -421,6 +316,130 @@ void GameGUI::uiLoadSettingsPopup()
         m_ui.settings.availableResolutions.push_back(m_ui.settings.resolution.c_str());
 }
 
-} // namespace GUI
+void GameGUI::uiInformationPopup()
+{
+    if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Text("Name : %s", m_game->name().c_str());
+        ImGui::Text("Game directory : %s", m_context->gameLocation().c_str());
+    }
+    if (ImGui::CollapsingHeader("Engine", ImGuiTreeNodeFlags_DefaultOpen))
+    {
+        ImGui::Text("Version : %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUILD);
+        ImGui::Text("Build date : %s %s", __DATE__, __TIME__);
+#ifdef GIT_BRANCH
+        ImGui::Text("Branch : %s", GIT_BRANCH);
+#endif
+#ifdef GIT_COMMIT_HASH
+        ImGui::Text("Commit hash : %s", GIT_COMMIT_HASH);
+#endif
+        ImGui::Text("Engine location : %s", m_context->runtimeDirectory().c_str());
+    }
+    ImGui::EndPopup();
+}
+
+void GameGUI::uiSettingsPopup()
+{
+    if (ImGui::BeginTabBar(UI::SETTINGS_TABBAR_NAME))
+    {
+        namespace preferences = config::structure::globalFile::preferences;
+        if (ImGui::BeginTabItem(preferences::SECTION))
+        {
+            ImGui::Checkbox("Fullscreen", &m_ui.settings.fullscreen);
+
+            ImGui::ListBox("Resolution", &m_ui.settings.resolutionItemSelected,
+                           static_cast<const char**>(&m_ui.settings.availableResolutions[0]),
+                           m_ui.settings.availableResolutions.size());
+
+            ImGui::EndTabItem();
+        }
+        if (ImGui::BeginTabItem("Key binding"))
+        {
+            auto actionList = events::ActionHandler::actionList();
+            for (const std::string& actionName : actionList)
+            {
+                ImGui::PushID(actionName.c_str());
+                ImGui::Text("%s", actionName.c_str());
+                ImGui::SameLine();
+                ImGui::Text(" -- ");
+                ImGui::SameLine();
+                if (ImGui::Button(events::ActionHandler::getKeyBinding(
+                                      actionName).toString().c_str()))
+                {
+                    m_actionWaitingForKeybinding = actionName;
+                }
+                ImGui::PopID();
+            }
+            ImGui::EndTabItem();
+        }
+        ImGui::EndTabBar();
+
+    }
+    if (ImGui::Button("Save"))
+    {
+        namespace preferences = config::structure::globalFile::preferences;
+        auto config = m_context->config();
+        config->setValue(preferences::SECTION, preferences::FULLSCREEN,
+                         (m_ui.settings.fullscreen ? "true" : "false"));
+
+        config->setValue(preferences::SECTION, preferences::RESOLUTION,
+                         (m_ui.settings.availableResolutions.at(m_ui.settings.resolutionItemSelected)));
+        config->saveToFile();
+    }
+
+
+    ImGui::EndPopup();
+}
+
+void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent &key)
+{
+    if (m_actionWaitingForKeybinding.empty())
+    {
+        signalKeyPressed.trigger(key);
+        events::ActionHandler::processSFMLEvent(key);
+    }
+}
+
+void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent &key)
+{
+    if (m_actionWaitingForKeybinding.empty())
+    {
+        switch (key.code)
+        {
+        case sf::Keyboard::Escape:
+            signalPause.trigger(!m_ui.onPause);
+            break;
+        case sf::Keyboard::U:
+            m_ui.uiActivated = !m_ui.uiActivated;
+            break;
+        default:
+            break;
+        }
+        signalKeyReleased.trigger(key);
+    }
+    else
+    {
+        auto keyBinding = events::KeyBinding::fromSFML(key);
+        if (!keyBinding.isKey(events::KeyBinding::NOT_BINDED, events::KeyBinding::NONE))
+        {
+            events::ActionHandler::setKeyBinding(m_actionWaitingForKeybinding, keyBinding);
+            m_actionWaitingForKeybinding = "";
+        }
+    }
+}
+
+void GameGUI::checkKeyPressed()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        signalArroyIsPressed.trigger(sf::Keyboard::Left);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        signalArroyIsPressed.trigger(sf::Keyboard::Right);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+        signalArroyIsPressed.trigger(sf::Keyboard::Down);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+        signalArroyIsPressed.trigger(sf::Keyboard::Up);
+}
+
+} // namespace gui
 
 } // namespace map

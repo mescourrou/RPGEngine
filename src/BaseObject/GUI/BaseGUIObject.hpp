@@ -10,7 +10,7 @@
 namespace map
 {
 class Position;
-namespace GUI
+namespace gui
 {
 class MapGUI;
 }
@@ -38,9 +38,17 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
      * @brief Set the current MapGUI
      * @param map Current mapGUI
      */
-    virtual void setCurrentMap(std::weak_ptr<map::GUI::MapGUI> map) final
+    virtual void setCurrentMap(std::weak_ptr<map::gui::MapGUI> map) final
     {
         m_map = map;
+    }
+
+    /**
+     * @brief Get the current map pointer
+     */
+    virtual std::weak_ptr<map::gui::MapGUI> currentMap() const final
+    {
+        return m_map;
     }
 
     /**
@@ -56,7 +64,7 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
      * @param states States to use
      */
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override = 0;
-
-    std::weak_ptr<map::GUI::MapGUI> m_map;      ///< Current map
+private:
+    std::weak_ptr<map::gui::MapGUI> m_map;      ///< Current map
 };
 

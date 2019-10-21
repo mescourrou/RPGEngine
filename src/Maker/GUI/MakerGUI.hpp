@@ -34,13 +34,13 @@ namespace maker
 class Maker;
 }
 
-namespace map::GUI
+namespace map::gui
 {
 class MapGUI;
 }
 
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 CREATE_EXCEPTION_CLASS(MakerGUI)
@@ -64,11 +64,11 @@ class MakerGUI : public BaseObject
 
   protected:
     void makeUI();
-
+  private:
     sf::RenderWindow m_window;     ///< SFML render window
 
     std::shared_ptr<config::Context> m_context;     ///< Used context
-    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Pointer on the GUI map
+    std::shared_ptr<map::gui::MapGUI> m_mapGUI;     ///< Pointer on the GUI map
 
     /**
      * @brief UI informations
@@ -112,13 +112,13 @@ class MakerGUI : public BaseObject
 
     ImGui::WindowsManager
     m_windowManager;                              ///< Window manager
-    std::unique_ptr<maker::GUI::CharacterWindow>
+    std::unique_ptr<maker::gui::CharacterWindow>
     m_characterWindow;     ///< Pointer on the character window
-    std::unique_ptr<maker::GUI::ConsoleWindow>
+    std::unique_ptr<maker::gui::ConsoleWindow>
     m_consoleWindow;         ///< Pointer on the console window
-    std::unique_ptr<maker::GUI::MoneyWindow>
+    std::unique_ptr<maker::gui::MoneyWindow>
     m_moneyWindow;             ///< Pointer on the money window
-    std::unique_ptr<maker::GUI::MapWindow>
+    std::unique_ptr<maker::gui::MapWindow>
     m_mapWindow;                 ///< Pointer on the map windows
 
     std::unique_ptr<ImGui::FileBrowser>
@@ -128,4 +128,4 @@ class MakerGUI : public BaseObject
 
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui

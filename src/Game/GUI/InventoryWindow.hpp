@@ -2,7 +2,7 @@
 
 #include <Window.hpp>
 
-namespace game::GUI
+namespace game::gui
 {
 
 /**
@@ -19,4 +19,4 @@ class InventoryWindow : public ImGui::Window
     bool doCollapsedState() override;
 };
 
-} // namespace game::GUI
+} // namespace game::gui

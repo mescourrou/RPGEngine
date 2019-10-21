@@ -15,7 +15,7 @@
 #include <json.hpp>
 using json = nlohmann::json;
 
-namespace game::GUI
+namespace game::gui
 {
 class GameGUI;
 }
@@ -23,7 +23,7 @@ class GameGUI;
 namespace character
 {
 class Character;
-namespace GUI
+namespace gui
 {
 
 CREATE_EXCEPTION_CLASS(CharacterGUI)
@@ -35,7 +35,7 @@ class CharacterGUI : public BaseGUIObject
 {
     DECLARE_BASEOBJECT(CharacterGUI)
   public:
-    static void connectSignals(game::GUI::GameGUI* game, CharacterGUI* character,
+    static void connectSignals(game::gui::GameGUI* game, CharacterGUI* character,
                                bool player = false);
     static void connectSignals(Character* character, CharacterGUI* characterGUI,
                                bool player = false);
@@ -45,7 +45,7 @@ class CharacterGUI : public BaseGUIObject
     /// @brief Default destructor
     ~CharacterGUI() override = default;
 
-    void prepare(const sf::Vector2f& targetSize) override;
+    void prepare(const sf::Vector2f&) override;
 
     void setOnScreenPosition(const sf::Vector2f& position) override;
 
@@ -70,6 +70,11 @@ class CharacterGUI : public BaseGUIObject
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
   private:
+    static bool verifyJSONTopStructure(const json &json);
+    static bool verifyJSONSpriteSetsStructure(const json &set);
+    bool loadSets(const json& json, const std::string &characterRessourcesDir);
+    bool loadActions(const json& json);
+
     std::weak_ptr<Character>
     m_character;                       ///< Pointer on the backend character
     std::shared_ptr<config::Context> m_context;
@@ -113,10 +118,8 @@ class CharacterGUI : public BaseGUIObject
         static constexpr char LEFT_STOPPED[] = "leftStopped";
         static constexpr char LEFT[] = "left";
     };
-
-
 };
 
-} // namespace GUI
+} // namespace gui
 
 } // namespace character

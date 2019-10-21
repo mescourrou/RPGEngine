@@ -59,7 +59,7 @@ std::list<std::string> ActionHandler::actionList()
 }
 
 #ifdef RPG_BUILD_GUI
-void ActionHandler::addAction(std::string name, std::function<void ()> func,
+void ActionHandler::addAction(const std::string& name, const std::function<void ()>& func,
                               const KeyBinding& keyBinding)
 {
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),

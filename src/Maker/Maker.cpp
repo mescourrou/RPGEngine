@@ -21,6 +21,7 @@
 #include <Money.hpp>
 #include <Context.hpp>
 #include <Game.hpp>
+#include <GameLauncher.hpp>
 
 #ifdef RPG_BUILD_GUI
 #include <MakerGUI.hpp>
@@ -28,9 +29,6 @@
 
 #include <glog/logging.h>
 #include <gflags/gflags.h>
-
-
-DEFINE_int32(verbose, VERBOSE, "Verbosity level");
 
 namespace maker
 {
@@ -40,22 +38,8 @@ namespace maker
  */
 Maker::Maker(int argc, char** argv)
 {
-    google::InitGoogleLogging(argv[0]);
-    google::AddLogSink(&Logger::getInstance());
-    gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(
-                                 VERSION_MINOR) + "."
-                             + std::to_string(VERSION_BUILD));
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
-    if (FLAGS_verbose > 0)
-        LOG(INFO) << "Flag verbose : " << FLAGS_verbose;
+    m_context = game::GameLauncher::initializeEnvironment(argc, argv, "RPGMaker");
 
-    google::SetVLOGLevel("*", FLAGS_verbose);
-    google::LogToStderr();
-    LOG(INFO) << "Starting RPGMaker v" << static_cast<short>
-              (VERSION_MAJOR) << "." <<
-              static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
-
-    m_context = std::make_shared<config::Context>(argc, argv);
     std::string configPath = m_context->kConfigPath() + "/" +
                              m_context->kGlobalConfigFilename();
     if (!m_generalConfig.loadFile(configPath))
@@ -77,7 +61,7 @@ Maker::Maker(int argc, char** argv)
 bool Maker::initialize()
 {
 #ifdef RPG_BUILD_GUI
-    m_gui = std::make_shared<GUI::MakerGUI>(m_context, this);
+    m_gui = std::make_shared<gui::MakerGUI>(m_context, this);
     if (!m_gui->initialize())
     {
         m_running = false;

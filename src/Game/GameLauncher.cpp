@@ -27,7 +27,7 @@ namespace game
  * @param argc Number of arguments in argv
  * @param argv Program arguments
  */
-GameLauncher::GameLauncher(int argc, char** argv)
+std::shared_ptr<config::Context> GameLauncher::initializeEnvironment(int argc, char **argv, const std::string& instanceName = "")
 {
     google::InitGoogleLogging(argv[0]);
     gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(
@@ -39,12 +39,18 @@ GameLauncher::GameLauncher(int argc, char** argv)
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
-    LOG(INFO) << "Starting GameLauncher v" << static_cast<short>
+    LOG(INFO) << "Starting " << instanceName<< " v" << static_cast<short>
               (VERSION_MAJOR) << "." <<
               static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
+
+    return std::make_shared<config::Context>(argc, argv);
+}
+
+GameLauncher::GameLauncher(int argc, char** argv)
+{
+    m_context = initializeEnvironment(argc, argv, "GameLauncher");
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
-    m_context = std::make_shared<config::Context>(argc, argv);
 
 }
 
@@ -101,7 +107,7 @@ bool GameLauncher::initialize()
  * @brief Start the game given
  * @param [in] gameName NameVERBOSE of the game to start
  */
-void GameLauncher::startGame(std::string gameName) const
+void GameLauncher::startGame(const std::string& gameName) const
 {
     LOG(INFO) << "Starting " << gameName;
     try

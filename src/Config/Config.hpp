@@ -40,7 +40,7 @@ class Config : public BaseObject
 #endif
   public:
     Config();
-    Config(const std::string& filename);
+    explicit Config(const std::string& filename);
     ~Config() override = default;
 
     virtual bool loadFile(const std::string& filename) noexcept final;
@@ -61,7 +61,7 @@ class Config : public BaseObject
     events::Event<void>
     signalConfigUpdated;        ///< Signal emitted when the config is saved
 
-  protected:
+  private:
     CSimpleIniCaseA m_iniFile; ///< INI file load in memory
     std::string m_filename;    ///< Filename used to load the config
 };

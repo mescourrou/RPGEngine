@@ -22,9 +22,10 @@ namespace character
  * @param[in] name Name of the character, must match a name in the database
  * @param[in] context Context to use
  */
-Character::Character(std::string name,
+Character::Character(const std::string& name,
                      std::shared_ptr<config::Context> context) :
-    m_name(std::move(name)), m_context(context),
+    BaseObject(),
+    m_name(name), m_context(context),
     m_inventory(std::make_unique<object::Inventory>())
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<

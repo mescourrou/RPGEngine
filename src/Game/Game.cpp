@@ -31,10 +31,10 @@ namespace game
  * @brief Construct a game with a context
  * @param gameContext Context
  */
-Game::Game(std::string name, std::shared_ptr<config::Context> gameContext) :
+Game::Game(const std::string& name, std::shared_ptr<config::Context> gameContext) :
     m_context(gameContext), m_name(name)
 #ifdef RPG_BUILD_GUI
-    , m_gui(std::make_shared<GUI::GameGUI>(m_context, this))
+    , m_gui(std::make_shared<gui::GameGUI>(m_context, this))
 #endif
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
@@ -100,7 +100,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     m_currentMap = m_playerCharacter->position().map();
 
 #ifdef RPG_BUILD_GUI
-    // Initialize the GUI
+    // Initialize the gui
     LOG(INFO) << "Initialize GUI";
     if (!m_gui->initialize(m_db))
     {
@@ -132,7 +132,6 @@ bool Game::run()
 
     while (m_running)
     {
-        //PerformanceTimer loop("Main loop");
 #ifdef RPG_BUILD_GUI
         // Treat GUI events
         m_gui->eventManager();
@@ -142,7 +141,6 @@ bool Game::run()
                                   clock).count();
         clock = std::chrono::high_resolution_clock::now();
         m_gui->draw();
-        printf("%10ld\n", m_context->framePeriod);
 #endif
     }
     return true;
@@ -176,11 +174,11 @@ void Game::loadMapContents(const std::string& mapName)
                                std::make_shared<character::Character>(characterName, m_context));
             newOne->loadFromDatabase(m_db);
 #ifdef RPG_BUILD_GUI
-            auto guiChar = m_gui->addGUIObject<character::GUI::CharacterGUI>(newOne,
+            auto guiChar = m_gui->addGUIObject<character::gui::CharacterGUI>(newOne,
                            m_context);
             guiChar.lock()->load(m_context->kCharacterPath());
-            character::GUI::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
-            character::GUI::CharacterGUI::connectSignals(newOne.get(),
+            character::gui::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
+            character::gui::CharacterGUI::connectSignals(newOne.get(),
                     guiChar.lock().get());
 #endif
         }

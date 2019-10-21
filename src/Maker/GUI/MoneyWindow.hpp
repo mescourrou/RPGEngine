@@ -4,7 +4,7 @@
 #include <Maker.hpp>
 #include <Stringlist.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -13,13 +13,13 @@ namespace maker::GUI
 class MoneyWindow : public ImGui::Window
 {
   public:
-    MoneyWindow(Maker* maker);
+    explicit MoneyWindow(Maker* maker);
 
   protected:
     bool doPrepare() override;
 
     void doSaveMoney();
-
+  private:
     Maker* m_maker;                     ///< Pointer on the maker backend
 
     Maker::MoneyInformations
@@ -28,4 +28,4 @@ class MoneyWindow : public ImGui::Window
     bool m_moneyLoaded = false;         ///< Is money loaded?
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui
