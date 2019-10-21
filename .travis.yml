@@ -72,6 +72,8 @@ deploy:
   github_token: $GITHUB_TOKEN
   keep_history: true
   on:
-    branch: feature/qa-corrections
+    branch: 
+    - master 
+    - develop
   local_dir: build/docs/html
 
