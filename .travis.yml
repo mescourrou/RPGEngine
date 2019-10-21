@@ -61,3 +61,17 @@ script:
 after_script:
   - cd ${REPO}
   - sonar-scanner
+
+before_deploy:
+  - cd ${REPO}/build
+  - make doc
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: feature/qa-corrections
+  local_dir: build/docs/html
+
