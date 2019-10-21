@@ -42,6 +42,7 @@ make
 
 ## Documentation
 You can build the documentation with `make doc` when you are in the build directory. You can use `make show_dow` to open the html in you browser.
+Otherwise, the documentation is available here : https://mescourrou.github.io/RPGEngine/index.html
 
 # Installation
 No installation for now, the executable is in the build directory, build/bin/Engine/RPGEngine.
