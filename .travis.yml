@@ -43,9 +43,14 @@ install:
   - sudo apt-get install -y libflac++-dev libvorbis-dev 
   - sudo apt-get install -y libxrandr-dev
   - sudo apt-get install -y doxygen
+  - sudo apt-get install -y astyle
+  - astyle --version
 
 before_script:
   - ./configure
+    #  - if [[ $TRAVIS_EVENT_TYPE == "pull_request" ]] ; then ./checkstyle -d ; fi
+    # - ./checkstyle -d
+  - astyle --dry-run
   - export REPO=`pwd`
   # create a build folder for the out-of-source build
   - mkdir build
