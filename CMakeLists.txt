@@ -44,11 +44,15 @@ endif()
 option(BUILD_USE_FILESYSTEM "Use the filesystem from c++17" ON)
 option(GAME_AUTO_CHOOSE "Chosse automaticaly the 1st game" ON)
 
+#Profiling
+option(PROFILING "Enable the profiling exports" OFF)
+
 set(GAME_DEFAULT_RESOLUTION "800x600")
 mark_as_advanced(GAME_DEFAULT_RESOLUTION
-	GAME_AUTO_CHOOSE
-	BUILD_USE_FILESYSTEM
-	BUILD_INCLUDE_GIT_INFOS)
+    GAME_AUTO_CHOOSE
+    BUILD_USE_FILESYSTEM
+    BUILD_INCLUDE_GIT_INFOS
+    PROFILING)
 
 set(FILESYSTEM_LIB)
 if(BUILD_USE_FILESYSTEM)
