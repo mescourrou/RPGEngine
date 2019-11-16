@@ -1,15 +1,36 @@
 #include "Instrumentor.hpp"
 
+/**
+ * @brief Default constructor.
+ */
 Instrumentor::Instrumentor()
     : m_currentSession(nullptr), m_profileCount(0)
 {
 }
 
+/**
+ * @brief Finish the session if endSession was not called.
+ */
+Instrumentor::~Instrumentor()
+{
+    if (m_currentSession)
+        endSession();
+}
+
+/**
+ * @brief Begin a profiling session (single file).
+ * @param name Name of the session
+ */
 void Instrumentor::beginSession(const std::string &name)
 {
     beginSession(name, name+"_result.json");
 }
 
+/**
+ * @brief Begin a profiling session (single file).
+ * @param name Name of the session
+ * @param filepath Path of the output file
+ */
 void Instrumentor::beginSession(const std::string &name, const std::string &filepath)
 {
     m_outputStream.open(filepath);
@@ -17,6 +38,9 @@ void Instrumentor::beginSession(const std::string &name, const std::string &file
     m_currentSession = new InstrumentationSession{ name };
 }
 
+/**
+ * @brief Finish session.
+ */
 void Instrumentor::endSession()
 {
     writeFooter();
@@ -26,6 +50,10 @@ void Instrumentor::endSession()
     m_profileCount = 0;
 }
 
+/**
+ * @brief Write the profile on the output file
+ * @param result Result to write
+ */
 void Instrumentor::writeProfile(const ProfileResult &result)
 {
     if (m_profileCount++ > 0)
@@ -47,12 +75,18 @@ void Instrumentor::writeProfile(const ProfileResult &result)
     m_outputStream.flush();
 }
 
+/**
+ * @brief Write the header of the output file
+ */
 void Instrumentor::writeHeader()
 {
     m_outputStream << "{\"otherData\": {},\"traceEvents\":[";
     m_outputStream.flush();
 }
 
+/**
+ * @brief Write the footer of the output file
+ */
 void Instrumentor::writeFooter()
 {
     m_outputStream << "]}";

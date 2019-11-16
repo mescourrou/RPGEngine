@@ -13,20 +13,33 @@
 #define PROFILE_FUNCTION()
 #endif
 
+/**
+ * @brief Timer class for Instrumentation. Use Instrumentor.
+ */
 class InstrumentationTimer
 {
 public:
+    /**
+     * @brief Construct a timer with the given name
+     * @param name Name of the timer
+     */
     InstrumentationTimer(const char* name) : m_name(name), m_stopped(false)
     {
         m_start = std::chrono::high_resolution_clock::now();
     }
 
+    /**
+     * @brief If the timer was not stopped, we stop it
+     */
     ~InstrumentationTimer()
     {
         if (!m_stopped)
             stop();
     }
 
+    /**
+     * @brief Stop the timer and call the Instrumentor.
+     */
     void stop() {
         auto endTimepoint = std::chrono::high_resolution_clock::now();
         long long start = std::chrono::time_point_cast<std::chrono::nanoseconds>(m_start).time_since_epoch().count();
@@ -40,8 +53,8 @@ public:
 
 
 private:
-    const char* m_name;
-    std::chrono::time_point<std::chrono::high_resolution_clock> m_start;
-    bool m_stopped;
+    const char* m_name; ///< Name of the timer
+    std::chrono::time_point<std::chrono::high_resolution_clock> m_start; ///< Starting point of the Timer
+    bool m_stopped; ///< Is the timer stopped ?
 };
 

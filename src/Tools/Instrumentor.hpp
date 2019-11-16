@@ -14,26 +14,31 @@
 #define END_SESSION()
 #endif
 
+/**
+ * @brief Profile result description
+ */
 struct ProfileResult
 {
-    std::string name;
-    long long start, end;
-    uint32_t threadID;
+    std::string name; ///< Name of the profile
+    long long start; ///< Start timepoint
+    long long end; ///< End timepoint
+    uint32_t threadID; ///< ID of the profile thread
 };
 
+/**
+ * @brief Session description
+ */
 struct InstrumentationSession
 {
-    std::string name;
+    std::string name; ///< Name of the session
 };
 
+/**
+ * @brief Singleton managing the profiling sessions and writings
+ */
 class Instrumentor
 {
-private:
-    InstrumentationSession* m_currentSession;
-    std::ofstream m_outputStream;
-    int m_profileCount;
 public:
-    Instrumentor();
 
     void beginSession(const std::string& name);
 
@@ -52,5 +57,12 @@ public:
         static Instrumentor instance;
         return instance;
     }
+
+private:
+    Instrumentor();
+    ~Instrumentor();
+    InstrumentationSession* m_currentSession;
+    std::ofstream m_outputStream;
+    int m_profileCount;
 };
 
