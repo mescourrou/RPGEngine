@@ -1,7 +1,8 @@
 find_package(gtest REQUIRED)
 
 add_executable(Epstl_test main.cpp
-	vectorTest.cpp vectorTest.hpp)
+	vectorTest.cpp vectorTest.hpp
+	mapTest.cpp mapTest.hpp)
 target_link_libraries(Epstl_test gtest epstl Tools)
 
 if(EXISTS /data AND IS_DIRECTORY /data)

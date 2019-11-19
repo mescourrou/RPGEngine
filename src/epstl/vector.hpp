@@ -48,6 +48,9 @@ public:
 	const T* at(int index) const noexcept override;
 	T* at(int index) noexcept override;
 
+	const T& operator[](int index) const { m_data[index]; }
+	T& operator[](int index) { m_data[index]; }
+
 	epstl::size_t allocated() const noexcept;
 
 	iterator begin() const { return iterator(m_data); }
