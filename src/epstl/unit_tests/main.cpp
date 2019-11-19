@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "vectorTest.hpp"
+#include "mapTest.hpp"
 
 int main(int argc, char **argv)
 {
