@@ -3,6 +3,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <InstrumentationTimer.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -74,6 +75,7 @@ class Work : public AbstractWork
      */
     void run() override
     {
+        PROFILE_FUNCTION();
         std::apply(m_func, m_arguments);
     }
 
@@ -102,6 +104,7 @@ class Work<void> : public AbstractWork
      */
     void run() override
     {
+        PROFILE_FUNCTION();
         m_func();
     }
 

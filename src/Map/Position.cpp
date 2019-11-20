@@ -5,6 +5,7 @@
 #include <Model.hpp>
 #include <Query.hpp>
 #include <Database.hpp>
+#include <InstrumentationTimer.hpp>
 
 // Std lib
 #include <string>
@@ -34,6 +35,7 @@ Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
 bool Position::loadFromDatabase(std::shared_ptr<database::Database> db,
                                 std::shared_ptr<config::Context> context, const std::string& characterName)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db)
@@ -99,6 +101,7 @@ void Position::move(const Vector<3>& move)
  */
 double Position::distanceTo(const Position& other) const
 {
+    PROFILE_FUNCTION();
     if (m_map && other.m_map)
     {
         if (m_map->name() != other.m_map->name())
@@ -136,6 +139,7 @@ bool Position::operator!=(const Position& other)
  */
 bool Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db->isTable(Model::TABLE))
@@ -171,6 +175,7 @@ bool Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Position::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Position;
     using namespace database;
     if (!db)

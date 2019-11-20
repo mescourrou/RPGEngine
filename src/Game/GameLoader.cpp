@@ -8,6 +8,7 @@
 #include <ConfigFiles.hpp>
 #include <memory>
 #include <Character.hpp>
+#include <InstrumentationTimer.hpp>
 
 #include <glog/logging.h>
 
@@ -34,6 +35,7 @@ GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
  */
 bool GameLoader::load(const std::string& name)
 {
+    PROFILE_FUNCTION();
     namespace structure = config::structure::globalFile;
     std::string databasePath = m_config->getValue(structure::ressources::SECTION,
                                structure::ressources::DATABASE);
@@ -41,7 +43,8 @@ bool GameLoader::load(const std::string& name)
     {
         LOG(ERROR) << "'" << structure::ressources::SECTION << ":" <<
                    structure::ressources::DATABASE << "' field in configuration file not found";
-        return false;
+        throw std::runtime_error(std::string() + "'" + structure::ressources::SECTION + ":" +
+                                 structure::ressources::DATABASE + "' field in configuration file not found");
     }
     databasePath = m_context->gameLocation() + "/" + databasePath;
     try
@@ -64,6 +67,7 @@ bool GameLoader::load(const std::string& name)
  */
 bool GameLoader::run()
 {
+    PROFILE_FUNCTION();
     return m_game->run();
 }
 

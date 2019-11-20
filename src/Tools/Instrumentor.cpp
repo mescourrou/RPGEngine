@@ -43,6 +43,8 @@ void Instrumentor::beginSession(const std::string &name, const std::string &file
  */
 void Instrumentor::endSession()
 {
+    if (!m_currentSession)
+        return;
     writeFooter();
     m_outputStream.close();
     delete m_currentSession;
@@ -56,11 +58,15 @@ void Instrumentor::endSession()
  */
 void Instrumentor::writeProfile(const ProfileResult &result)
 {
+    if (!m_currentSession)
+        return;
+    std::lock_guard<std::mutex> lock(m_mutex);
     if (m_profileCount++ > 0)
-        m_outputStream << ",";
+        m_outputStream << ",\n";
 
     std::string name = result.name;
     std::replace(name.begin(), name.end(), '"', '\'');
+    std::replace(name.begin(), name.end(), '\n', ' ');
 
     m_outputStream << "{";
     m_outputStream << "\"cat\":\"function\",";

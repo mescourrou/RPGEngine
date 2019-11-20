@@ -9,6 +9,7 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <VerbosityLevels.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External Lib
 #include <glog/logging.h>
@@ -33,6 +34,7 @@ Inventory::Inventory()
  */
 std::shared_ptr<Object> Inventory::get(unsigned int index) const
 {
+    PROFILE_FUNCTION();
     if (index < m_inventory.size())
     {
         unsigned int i = 0;
@@ -54,6 +56,7 @@ std::shared_ptr<Object> Inventory::get(unsigned int index) const
  */
 std::shared_ptr<Object> Inventory::get(const std::string& objectName) const
 {
+    PROFILE_FUNCTION();
     auto objectIt = std::find_if(m_inventory.begin(), m_inventory.end(),
                                  [objectName](std::shared_ptr<Object> object) -> bool { if (object) return object->name() == objectName; return false; });
     if (objectIt != m_inventory.end())
@@ -68,6 +71,7 @@ std::shared_ptr<Object> Inventory::get(const std::string& objectName) const
  */
 unsigned int Inventory::getNumberOf(const std::string& objectName) const
 {
+    PROFILE_FUNCTION();
     auto count = std::count_if(m_inventory.begin(), m_inventory.end(),
                                [objectName](std::shared_ptr<Object> object) -> bool
     {
@@ -85,6 +89,7 @@ unsigned int Inventory::getNumberOf(const std::string& objectName) const
  */
 std::shared_ptr<Object> Inventory::pop(unsigned int index)
 {
+    PROFILE_FUNCTION();
     std::shared_ptr<Object> ret = get(index);
     if (ret)
     {
@@ -101,6 +106,7 @@ std::shared_ptr<Object> Inventory::pop(unsigned int index)
  */
 std::shared_ptr<Object> Inventory::pop(const std::string& objectName)
 {
+    PROFILE_FUNCTION();
     std::shared_ptr<Object> ret = get(objectName);
     if (ret)
     {
@@ -115,6 +121,7 @@ std::shared_ptr<Object> Inventory::pop(const std::string& objectName)
  */
 void Inventory::push(const std::shared_ptr<Object>& newObject)
 {
+    PROFILE_FUNCTION();
     if (newObject)
         m_inventory.emplace_back(newObject);
 }
@@ -130,6 +137,7 @@ void Inventory::push(const std::shared_ptr<Object>& newObject)
 bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db,
                                  const std::string characterName)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
     using namespace database;
     if (!db)
@@ -179,6 +187,7 @@ bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db,
  */
 bool Inventory::pullMoney(const Money& m)
 {
+    PROFILE_FUNCTION();
     if (m_money >= m)
     {
         m_money -= m;
@@ -194,6 +203,7 @@ bool Inventory::pullMoney(const Money& m)
  */
 bool Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
     using namespace database;
     if (!db->isTable(Model::TABLE))
@@ -242,6 +252,7 @@ bool Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Inventory::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
     using namespace database;
 

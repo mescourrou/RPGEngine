@@ -1,4 +1,5 @@
 #include "ActionHandler.hpp"
+#include <InstrumentationTimer.hpp>
 
 namespace events
 {
@@ -11,6 +12,7 @@ ActionHandler ActionHandler::instance;
  */
 KeyBinding ActionHandler::getKeyBinding(const std::string& name)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
                            [&name](const Action & a)
     {
@@ -29,6 +31,7 @@ KeyBinding ActionHandler::getKeyBinding(const std::string& name)
 void ActionHandler::setKeyBinding(const std::string& actionName,
                                   const KeyBinding& key)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
                            [&actionName](const Action & a)
     {
@@ -44,6 +47,7 @@ void ActionHandler::setKeyBinding(const std::string& actionName,
  */
 void ActionHandler::execute(const std::string& actionName)
 {
+    PROFILE_FUNCTION();
     const auto& it = std::find_if(instance.m_actions.begin(),
                                   instance.m_actions.end(),
                                   [&actionName](const Action & a)
@@ -66,6 +70,7 @@ void ActionHandler::execute(const std::string& actionName)
  */
 std::list<std::string> ActionHandler::actionList()
 {
+    PROFILE_FUNCTION();
     std::list<std::string> ret;
     for (const auto& a : instance.m_actions)
     {
@@ -86,6 +91,7 @@ void ActionHandler::addAction(const std::string& name,
                               const std::function<void ()>& func,
                               const KeyBinding& keyBinding)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
                            [&name](const Action & a)
     {
@@ -107,6 +113,7 @@ void ActionHandler::addAction(const std::string& name,
  */
 void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent& event)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(),
                            instance.m_actions.end(), [&event](const Action & a)
     {
@@ -123,6 +130,7 @@ void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent& event)
  */
 void ActionHandler::execute(const ActionHandler::Action& action)
 {
+    PROFILE_FUNCTION();
     for (const auto& a : action.functionList)
     {
         WorkerThread::newWork(a);

@@ -11,6 +11,7 @@
 #include <GameGUI.hpp>
 #include <Character.hpp>
 #include <ConfigFiles.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External libs
 #include <SFML/Graphics/Shape.hpp>
@@ -31,6 +32,7 @@ namespace character::gui
 void CharacterGUI::connectSignals(game::gui::GameGUI* game,
                                   CharacterGUI* character, bool player)
 {
+    PROFILE_FUNCTION();
     if (player)
     {
         game->signalArroyIsPressed.subscribeAsync(character,
@@ -71,6 +73,7 @@ CharacterGUI::CharacterGUI(std::weak_ptr<Character> character,
  */
 void CharacterGUI::prepare(const sf::Vector2f&)
 {
+    PROFILE_FUNCTION();
     if (m_tics == 0)
     {
         auto actualiseCurrentSprite = [this](const std::vector<unsigned int>& action)
@@ -125,6 +128,7 @@ void CharacterGUI::prepare(const sf::Vector2f&)
  */
 void CharacterGUI::setOnScreenPosition(const sf::Vector2f& position)
 {
+    PROFILE_FUNCTION();
     setPosition(position);
     m_currentSprite->setPosition(position);
 }
@@ -136,6 +140,7 @@ void CharacterGUI::setOnScreenPosition(const sf::Vector2f& position)
  */
 bool CharacterGUI::verifyJSONTopStructure(const json& json)
 {
+    PROFILE_FUNCTION();
     namespace characterFile = config::structure::characterFile;
     if (!json.is_object())
         return false;
@@ -159,6 +164,7 @@ bool CharacterGUI::verifyJSONTopStructure(const json& json)
  */
 bool CharacterGUI::verifyJSONSpriteSetsStructure(const json& set)
 {
+    PROFILE_FUNCTION();
     namespace characterFile = config::structure::characterFile;
     if (!set.is_object())
         return false;
@@ -204,6 +210,7 @@ bool CharacterGUI::verifyJSONSpriteSetsStructure(const json& set)
 bool CharacterGUI::loadSets(const json& json,
                             const std::string& characterRessourcesDir)
 {
+    PROFILE_FUNCTION();
     namespace characterFile = config::structure::characterFile;
     for (auto set : json[characterFile::SPRITE_SETS])
     {
@@ -272,6 +279,7 @@ bool CharacterGUI::loadSets(const json& json,
  */
 bool CharacterGUI::loadActions(const json& json)
 {
+    PROFILE_FUNCTION();
     namespace characterFile = config::structure::characterFile;
     // Get all the actions
     for (auto a : json[characterFile::ACTIONS].items())
@@ -307,6 +315,7 @@ bool CharacterGUI::loadActions(const json& json)
  */
 bool CharacterGUI::load(const std::string& characterRessourcesDir)
 {
+    PROFILE_FUNCTION();
     std::ifstream file(characterRessourcesDir + "/" + Tools::snakeCase(
                            m_character.lock()->name()) + ".json");
     if (file.is_open())
@@ -338,6 +347,7 @@ bool CharacterGUI::load(const std::string& characterRessourcesDir)
  */
 void CharacterGUI::slotArrowPressed(sf::Keyboard::Key arrow)
 {
+    PROFILE_FUNCTION();
     double speed = 50 * m_context->framePeriod * 0.00000001;
     if (arrow == sf::Keyboard::Left && (!m_moving || m_currentDirection == Left))
     {
@@ -373,6 +383,7 @@ void CharacterGUI::slotArrowPressed(sf::Keyboard::Key arrow)
  */
 void CharacterGUI::slotKeyReleased(sf::Event::KeyEvent key)
 {
+    PROFILE_FUNCTION();
     if ((key.code == sf::Keyboard::Left && m_currentDirection == Left) ||
             (key.code == sf::Keyboard::Right && m_currentDirection == Right) ||
             (key.code == sf::Keyboard::Up && m_currentDirection == Up) ||
@@ -389,6 +400,7 @@ void CharacterGUI::slotKeyReleased(sf::Event::KeyEvent key)
  */
 void CharacterGUI::uiRealtimeInformations()
 {
+    PROFILE_FUNCTION();
     ImGui::Text("%s", m_character.lock()->name().c_str());
 
     ImGui::ProgressBar(1, ImVec2(-1, 0), "Life");
@@ -418,6 +430,7 @@ void CharacterGUI::uiInventoryWindow()
  */
 void CharacterGUI::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+    PROFILE_FUNCTION();
     target.draw(*m_currentSprite, states);
 }
 

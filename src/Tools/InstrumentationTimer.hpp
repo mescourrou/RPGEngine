@@ -7,7 +7,7 @@
 
 #ifdef PROFILING
 #define PROFILE_SCOPE(name) InstrumentationTimer timer##__LINE__ (name)
-#define PROFILE_FUNCTION() PROFILE_SCOPE(__FUNCSIG__)
+#define PROFILE_FUNCTION() PROFILE_SCOPE(_FUNCTION_SIGNATURE_)
 #else
 #define PROFILE_SCORE(name)
 #define PROFILE_FUNCTION()
@@ -42,8 +42,8 @@ public:
      */
     void stop() {
         auto endTimepoint = std::chrono::high_resolution_clock::now();
-        long long start = std::chrono::time_point_cast<std::chrono::nanoseconds>(m_start).time_since_epoch().count();
-        long long end = std::chrono::time_point_cast<std::chrono::nanoseconds>(endTimepoint).time_since_epoch().count();
+        long long start = std::chrono::time_point_cast<std::chrono::microseconds>(m_start).time_since_epoch().count();
+        long long end = std::chrono::time_point_cast<std::chrono::microseconds>(endTimepoint).time_since_epoch().count();
 
         uint32_t threadID = std::hash<std::thread::id>{}(std::this_thread::get_id());
         Instrumentor::get().writeProfile({ m_name, start, end, threadID });

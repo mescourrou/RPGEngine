@@ -1,4 +1,5 @@
 #pragma once
+#include "compiler_proper_defines.hpp"
 // File generated from @RPG_CONFIG_FILE_DIR@/config.hpp.in
 constexpr unsigned int VERBOSE = @RPG_VERBOSE@;
 #cmakedefine RPG_BUILD_TEST

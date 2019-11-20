@@ -8,6 +8,7 @@
 #include <Area.hpp>
 #include <Tools.hpp>
 #include <ConfigFiles.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External lib
 #include <glog/logging.h>
@@ -37,6 +38,7 @@ Map::Map(std::shared_ptr<config::Context> context, const std::string& name) :
  */
 bool Map::load()
 {
+    PROFILE_FUNCTION();
     std::ifstream file(m_context->kMapPath() + "/" + Tools::snakeCase(
                            m_name) + ".json");
     if (file.is_open())
@@ -83,6 +85,7 @@ bool Map::load()
  */
 void Map::addCollisionArea(const map::Area& area)
 {
+    PROFILE_FUNCTION();
     m_collisionLayer.push_back(area);
 }
 
@@ -93,6 +96,7 @@ void Map::addCollisionArea(const map::Area& area)
  */
 bool Map::collision(const Vector<2>& point) const
 {
+    PROFILE_FUNCTION();
     for (const auto& area : m_collisionLayer)
     {
         if (area.isInside(point))
@@ -111,6 +115,7 @@ bool Map::collision(const Vector<2>& point) const
 bool Map::collision(const Vector<2>& origin, const Vector<2>& moveVector,
                     Vector<2>& intersect) const
 {
+    PROFILE_FUNCTION();
     for (const auto& area : m_collisionLayer)
     {
         if (area.intersect(origin, moveVector, intersect))
@@ -126,6 +131,7 @@ bool Map::collision(const Vector<2>& origin, const Vector<2>& moveVector,
  */
 void Map::addTeleportArea(const Area& area, const Position& destination)
 {
+    PROFILE_FUNCTION();
 
 }
 
@@ -137,6 +143,7 @@ void Map::addTeleportArea(const Area& area, const Position& destination)
  */
 bool Map::doITeleport(const Vector<2>& point, Position& destination) const
 {
+    PROFILE_FUNCTION();
     for (const auto& area : m_teleportArea)
     {
         if (area.first.isInside(point))
@@ -155,6 +162,7 @@ bool Map::doITeleport(const Vector<2>& point, Position& destination) const
  */
 bool Map::loadCollisionLayer(const json& layer)
 {
+    PROFILE_FUNCTION();
     if (!layer.is_object())
         return false;
     namespace mapFile = config::structure::mapFile;

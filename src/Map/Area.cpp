@@ -1,4 +1,5 @@
 #include "Area.hpp"
+#include <InstrumentationTimer.hpp>
 
 namespace map
 {
@@ -22,6 +23,7 @@ Area::Area(std::initializer_list<Vector<2>> list) : m_points{list}
  */
 void Area::addPoint(const Vector<2>& point, int index)
 {
+    PROFILE_FUNCTION();
     if (std::abs(index) >= m_points.size() && index != -1)
         return;
     if (index < 0)
@@ -43,6 +45,7 @@ void Area::addPoint(const Vector<2>& point, int index)
  */
 bool Area::isInside(const Vector<2>& point) const
 {
+    PROFILE_FUNCTION();
     unsigned int nbIntersections = 0;
 
     for (unsigned int i = 0; i < m_points.size(); i++)
@@ -79,6 +82,7 @@ bool Area::isInside(const Vector<2>& point) const
  */
 bool Area::onSegment(const Vector<2>& p, const Vector<2>& q, const Vector<2>& r)
 {
+    PROFILE_FUNCTION();
     // Use of https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
     if (q.x() <= std::max(p.x(), r.x()) && q.x() >= std::min(p.x(), r.x()) &&
@@ -100,6 +104,7 @@ bool Area::onSegment(const Vector<2>& p, const Vector<2>& q, const Vector<2>& r)
 int Area::orientation(const Vector<2>& p, const Vector<2>& q,
                       const Vector<2>& r)
 {
+    PROFILE_FUNCTION();
     // Use of https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
     // See https://www.geeksforgeeks.org/orientation-3-ordered-points/
@@ -123,6 +128,7 @@ int Area::orientation(const Vector<2>& p, const Vector<2>& q,
 bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1,
                        const Vector<2>& p2, const Vector<2>& q2)
 {
+    PROFILE_FUNCTION();
     // Use of https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
     // Find the four orientations needed for general and special cases
     int o1 = orientation(p1, q1, p2);
@@ -160,6 +166,7 @@ bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1,
 bool Area::intersect(const Vector<2>& origin, const Vector<2>& vector,
                      Vector<2>& outIntersect) const
 {
+    PROFILE_FUNCTION();
     auto destination = origin + vector;
     if (vector == Vector<2> {0, 0})
         return false;
@@ -321,6 +328,7 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2>& vector,
  */
 void Area::move(const Vector<2>& vector)
 {
+    PROFILE_FUNCTION();
     for (auto& pt : m_points)
     {
         pt += vector;
@@ -354,6 +362,7 @@ size_t Area::pointCount() const
 bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2,
                               const Vector<2>& origin, Direction dir)
 {
+    PROFILE_FUNCTION();
     const auto& highPt = std::max(pt1, pt2, [](const Vector<2>& p1,
                                   const Vector<2>& p2)
     {
@@ -407,6 +416,7 @@ bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2,
 bool Area::intersectXHalfLine(const Vector<2>& pt1, const Vector<2>& pt2,
                               const Vector<2>& origin, Direction dir)
 {
+    PROFILE_FUNCTION();
     const auto& leftPt = std::max(pt1, pt2, [](const Vector<2>& p1,
                                   const Vector<2>& p2)
     {

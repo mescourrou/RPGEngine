@@ -9,6 +9,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <WorkerThread.hpp>
+#include <InstrumentationTimer.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -80,6 +81,7 @@ class Event
      */
     void subscribeAsync(std::function<void(Args...)> func)
     {
+        PROFILE_FUNCTION();
         m_asyncCallList.push_back(func);
     }
     /**
@@ -88,6 +90,7 @@ class Event
      */
     void subscribeSync(std::function<void(Args...)> func)
     {
+        PROFILE_FUNCTION();
         m_syncCallList.push_back(func);
     }
 
@@ -99,6 +102,7 @@ class Event
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
+        PROFILE_FUNCTION();
         m_asyncCallList.push_back([instance, func](Args... args)
         {
             std::bind(func, instance, args...)();
@@ -112,6 +116,7 @@ class Event
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
+        PROFILE_FUNCTION();
         m_syncCallList.push_back([instance, func](Args... args)
         {
             std::bind(func, instance, args...)();
@@ -132,6 +137,7 @@ class Event
 template<typename... Args>
 void Event<Args...>::trigger(Args... arguments) const
 {
+    PROFILE_FUNCTION();
     for (auto& call : m_asyncCallList)
     {
         WorkerThread::newWork(call, arguments...);
@@ -172,6 +178,7 @@ class Event<void>
      */
     void trigger() const
     {
+        PROFILE_FUNCTION();
         for (auto& call : m_asyncCallList)
         {
             WorkerThread::newWork(call);
@@ -195,6 +202,7 @@ class Event<void>
      */
     void subscribeSync(const std::function<void(void)>& func)
     {
+        PROFILE_FUNCTION();
         m_syncCallList.push_back(func);
     }
 
@@ -206,6 +214,7 @@ class Event<void>
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
+        PROFILE_FUNCTION();
         m_asyncCallList.push_back([instance, func]()
         {
             std::bind(func, instance)();
@@ -219,6 +228,7 @@ class Event<void>
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
+        PROFILE_FUNCTION();
         m_syncCallList.push_back([instance, func]()
         {
             std::bind(func, instance)();

@@ -6,6 +6,7 @@
 #include <Query.hpp>
 #include <Tools.hpp>
 #include <VerbosityLevels.hpp>
+#include <InstrumentationTimer.hpp>
 
 namespace object
 {
@@ -17,6 +18,7 @@ bool Money::m_initialized = false;
  */
 Money::Money()
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
     if (!m_initialized)
@@ -33,6 +35,7 @@ Money::Money()
  */
 Money::Money(std::initializer_list<unsigned int> values) : Money()
 {
+    PROFILE_FUNCTION();
     if (values.size() > m_moneyNames.size())
         LOG(FATAL) << "Number of values must be at worse equal to the number of money";
     unsigned int i = 0;
@@ -52,6 +55,7 @@ Money::Money(std::initializer_list<unsigned int> values) : Money()
  */
 bool Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Money;
     using namespace database;
     if (!db)
@@ -90,6 +94,7 @@ bool Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
  */
 unsigned int Money::value(const std::string& moneyName) const
 {
+    PROFILE_FUNCTION();
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
     {
@@ -211,6 +216,7 @@ void Money::initializeAdditionnalValues(const
  */
 bool Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Money;
     using namespace database;
     if (!db->isTable(Model::TABLE))
@@ -239,6 +245,7 @@ bool Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Money::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Money;
     using namespace database;
     if (!db)
@@ -257,6 +264,7 @@ bool Money::createDatabaseModel(std::shared_ptr<database::Database> db)
  */
 void Money::spread()
 {
+    PROFILE_FUNCTION();
     for (unsigned int i = 0; i < m_moneyNames.size() - 1; i++)
     {
         if (m_values->at(i) >= m_moneyNames.at(i + 1).second / m_moneyNames.at(
@@ -275,6 +283,7 @@ void Money::spread()
  */
 std::vector<std::string> Money::moneyNames()
 {
+    PROFILE_FUNCTION();
     std::vector<std::string> retList;
     for (auto& money : m_moneyNames)
     {
@@ -289,6 +298,7 @@ std::vector<std::string> Money::moneyNames()
  */
 unsigned int Money::moneyValue(const std::string& moneyName)
 {
+    PROFILE_FUNCTION();
     for (auto& money : m_moneyNames)
     {
         if (money.first == moneyName)
@@ -303,6 +313,7 @@ unsigned int Money::moneyValue(const std::string& moneyName)
  */
 unsigned int Money::convertToBaseMoney() const
 {
+    PROFILE_FUNCTION();
     unsigned int sum = 0;
     for (unsigned int i = 0; i < m_moneyNames.size(); i++)
     {
@@ -319,6 +330,7 @@ unsigned int Money::convertToBaseMoney() const
  */
 void Money::add(const std::string& moneyName, unsigned int quantity)
 {
+    PROFILE_FUNCTION();
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
     {
@@ -342,6 +354,7 @@ void Money::add(const std::string& moneyName, unsigned int quantity)
  */
 bool Money::sub(const std::string& moneyName, unsigned int quantity)
 {
+    PROFILE_FUNCTION();
     unsigned int i = 0;
     for (auto& money : m_moneyNames)
     {

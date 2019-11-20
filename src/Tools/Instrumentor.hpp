@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
+#include <mutex>
 
 #include <general_config.hpp>
 
@@ -64,5 +65,6 @@ private:
     InstrumentationSession* m_currentSession;
     std::ofstream m_outputStream;
     int m_profileCount;
+    std::mutex m_mutex;
 };
 

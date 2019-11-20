@@ -14,6 +14,7 @@
 #include <VerbosityLevels.hpp>
 #include <Money.hpp>
 #include <PerformanceTimer.hpp>
+#include <InstrumentationTimer.hpp>
 
 #ifdef RPG_BUILD_GUI
 #include <GUI/GameGUI.hpp>
@@ -49,6 +50,7 @@ Game::Game(const std::string& name,
  */
 bool Game::initialize(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     // Database verification
     LOG(INFO) << "Verify database";
     using namespace database;
@@ -89,14 +91,17 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     {
         LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() <<
                    " from the database";
-        return false;
+        throw character::CharacterException(std::string() + "Fail to load the character " + m_playerCharacter->name() +
+                                          " from the database", character::CharacterException::LOADING_FAIL);
     }
     LOG(INFO) << "Load the map";
     if (!m_playerCharacter->position().map()->load())
     {
         LOG(ERROR) << "Fail to load the map " <<
                    m_playerCharacter->position().map()->name();
-        return false;
+        throw character::CharacterException(std::string() + "Fail to load the map " +
+                                            m_playerCharacter->position().map()->name(),
+                                            character::CharacterException::LOADING_FAIL);
     }
     m_currentMap = m_playerCharacter->position().map();
 
@@ -106,7 +111,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     if (!m_gui->initialize(m_db))
     {
         LOG(ERROR) << "Fail to initialize GUI";
-        return false;
+        throw std::runtime_error("Fail to initialize GUI");
     }
     m_gui->subscribeOnClose([this]()
     {
@@ -125,12 +130,8 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
  */
 bool Game::run()
 {
+    PROFILE_FUNCTION();
     LOG(INFO) << "Starting";
-
-    using namespace std::chrono_literals;
-
-    auto clock = std::chrono::high_resolution_clock::now();
-
     while (m_running)
     {
 #ifdef RPG_BUILD_GUI
@@ -138,9 +139,6 @@ bool Game::run()
         m_gui->eventManager();
 #endif
 #ifdef RPG_BUILD_GUI
-        m_context->framePeriod = (std::chrono::high_resolution_clock::now() -
-                                  clock).count();
-        clock = std::chrono::high_resolution_clock::now();
         m_gui->draw();
 #endif
     }
@@ -153,6 +151,7 @@ bool Game::run()
  */
 void Game::loadMapContents(const std::string& mapName)
 {
+    PROFILE_FUNCTION();
     using namespace database;
 
     // Loading the NPCs of the current map
@@ -191,6 +190,7 @@ void Game::loadMapContents(const std::string& mapName)
  */
 void Game::unloadCurrentMap()
 {
+    PROFILE_FUNCTION();
     m_characterList.clear();
 }
 
@@ -201,6 +201,7 @@ void Game::unloadCurrentMap()
  */
 bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Game;
     using namespace database;
     if (!db)
@@ -238,6 +239,7 @@ bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Game::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Game;
     using namespace database;
     if (!db)

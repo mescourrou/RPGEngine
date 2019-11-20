@@ -30,7 +30,8 @@ namespace character
 /**
  * @brief The CharacterException class group exceptions linked to the Character
  */
-CREATE_EXCEPTION_CLASS(Character)
+CREATE_EXCEPTION_CLASS(Character,
+                       ADD_EXCEPTION_CODE(LOADING_FAIL))
 
 #ifdef RPG_BUILD_TEST
 class CharacterTest;
