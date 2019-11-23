@@ -61,7 +61,7 @@ script:
 
 after_script:
   - cd ${REPO}
-  - ls -la build/bin/Database/unit_tests
+  - ls -la build/bin/Database
   - sonar-scanner -X
 
 before_deploy:
