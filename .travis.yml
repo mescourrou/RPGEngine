@@ -43,8 +43,8 @@ install:
   - sudo apt-get install -y libflac++-dev libvorbis-dev 
   - sudo apt-get install -y libxrandr-dev
   - sudo apt-get install -y doxygen
-  - sudo apt-get install -y lcov
-  - sudo ln -s /usr/bin/lcov-8 /usr/local/bin/lcov
+  - sudo apt-get install -y ggcov
+  - sudo ln -s /usr/bin/gcov-8 /usr/local/bin/gcov
   - gcov --version
 
 before_script:

@@ -151,5 +151,4 @@ CTestTestfile.cmake
 
 # End of https://www.gitignore.io/api/c++,cmake,qtcreator
 build/
-**/*.info
-**/Coverage/
+**/*.gcov

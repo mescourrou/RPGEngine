@@ -22,6 +22,7 @@ endif()
 add_custom_command(TARGET Object_test
     POST_BUILD
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/..
-    COMMAND lcov -c -i -d . -o Coverage.info
-    COMMAND genhtml Coverage.info --output-directory ${CMAKE_CURRENT_SOURCE_DIR}/../Coverage
+    COMMAND find . -name "*.gcda" -exec gcov {}  \\\;
+    COMMAND mkdir -p ${CMAKE_CURRENT_SOURCE_DIR}/../gcov
+    COMMAND mv *.gcov ${CMAKE_CURRENT_SOURCE_DIR}/../gcov
 )
