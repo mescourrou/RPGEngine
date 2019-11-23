@@ -91,8 +91,9 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     {
         LOG(ERROR) << "Fail to load the character " << m_playerCharacter->name() <<
                    " from the database";
-        throw character::CharacterException(std::string() + "Fail to load the character " + m_playerCharacter->name() +
-                                          " from the database", character::CharacterException::LOADING_FAIL);
+        throw character::CharacterException(std::string() +
+                                            "Fail to load the character " + m_playerCharacter->name() +
+                                            " from the database", BaseException::LOADING);
     }
     LOG(INFO) << "Load the map";
     if (!m_playerCharacter->position().map()->load())
@@ -101,7 +102,7 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
                    m_playerCharacter->position().map()->name();
         throw character::CharacterException(std::string() + "Fail to load the map " +
                                             m_playerCharacter->position().map()->name(),
-                                            character::CharacterException::LOADING_FAIL);
+                                            BaseException::LOADING);
     }
     m_currentMap = m_playerCharacter->position().map();
 
@@ -111,7 +112,8 @@ bool Game::initialize(std::shared_ptr<database::Database> db)
     if (!m_gui->initialize(m_db))
     {
         LOG(ERROR) << "Fail to initialize GUI";
-        throw std::runtime_error("Fail to initialize GUI");
+        throw game::gui::GameGUIException("Fail to initialize GUI",
+                                          BaseException::LOADING);
     }
     m_gui->subscribeOnClose([this]()
     {

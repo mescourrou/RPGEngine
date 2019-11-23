@@ -39,7 +39,7 @@ struct InstrumentationSession
  */
 class Instrumentor
 {
-public:
+  public:
 
     void beginSession(const std::string& name);
 
@@ -59,7 +59,7 @@ public:
         return instance;
     }
 
-private:
+  private:
     Instrumentor();
     ~Instrumentor();
     InstrumentationSession* m_currentSession;

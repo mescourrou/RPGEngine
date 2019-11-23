@@ -22,8 +22,7 @@
 namespace config
 {
 
-CREATE_EXCEPTION_CLASS(Config,
-                       ADD_EXCEPTION_CODE(FILE_LOADING))
+CREATE_EXCEPTION_CLASS(Config)
 
 #ifdef RPG_BUILD_TEST
 class ConfigTest;

@@ -4,6 +4,6 @@
 
 class InstrumentorTest : public testing::Test
 {
-public:
+  public:
 };
 

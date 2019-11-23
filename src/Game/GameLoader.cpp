@@ -43,8 +43,10 @@ bool GameLoader::load(const std::string& name)
     {
         LOG(ERROR) << "'" << structure::ressources::SECTION << ":" <<
                    structure::ressources::DATABASE << "' field in configuration file not found";
-        throw std::runtime_error(std::string() + "'" + structure::ressources::SECTION + ":" +
-                                 structure::ressources::DATABASE + "' field in configuration file not found");
+        throw config::ConfigException(std::string() + "'" +
+                                      structure::ressources::SECTION + ":" +
+                                      structure::ressources::DATABASE + "' field in configuration file not found",
+                                      config::ConfigException::LOADING);
     }
     databasePath = m_context->gameLocation() + "/" + databasePath;
     try

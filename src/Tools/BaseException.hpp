@@ -45,6 +45,7 @@ class BaseException : public std::exception
     };
     static const inline Errors UNKNOWN = Errors(__COUNTER__);
     static const inline Errors MUTEX = Errors(__COUNTER__);
+    static const inline Errors LOADING = Errors(__COUNTER__);
     /**
      * @brief Construct an exception
      * @param w Description of the error

@@ -21,9 +21,9 @@ Instrumentor::~Instrumentor()
  * @brief Begin a profiling session (single file).
  * @param name Name of the session
  */
-void Instrumentor::beginSession(const std::string &name)
+void Instrumentor::beginSession(const std::string& name)
 {
-    beginSession(name, name+"_result.json");
+    beginSession(name, name + "_result.json");
 }
 
 /**
@@ -31,7 +31,8 @@ void Instrumentor::beginSession(const std::string &name)
  * @param name Name of the session
  * @param filepath Path of the output file
  */
-void Instrumentor::beginSession(const std::string &name, const std::string &filepath)
+void Instrumentor::beginSession(const std::string& name,
+                                const std::string& filepath)
 {
     m_outputStream.open(filepath);
     writeHeader();
@@ -56,7 +57,7 @@ void Instrumentor::endSession()
  * @brief Write the profile on the output file
  * @param result Result to write
  */
-void Instrumentor::writeProfile(const ProfileResult &result)
+void Instrumentor::writeProfile(const ProfileResult& result)
 {
     if (!m_currentSession)
         return;
