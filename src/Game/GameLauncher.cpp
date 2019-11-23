@@ -11,6 +11,8 @@
 #include <WorkerThread.hpp>
 #include <VerbosityLevels.hpp>
 #include <ConfigFiles.hpp>
+#include <InstrumentationTimer.hpp>
+#include <Instrumentor.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -30,6 +32,7 @@ namespace game
 std::shared_ptr<config::Context> GameLauncher::initializeEnvironment(int argc,
         char** argv, const std::string& instanceName = "")
 {
+    PROFILE_FUNCTION();
     google::InitGoogleLogging(argv[0]);
     gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(
                                  VERSION_MINOR) + "."
@@ -61,6 +64,7 @@ GameLauncher::GameLauncher(int argc, char** argv)
  */
 int GameLauncher::start()
 {
+    PROFILE_FUNCTION();
     if (!initialize())
         return -2;
     int choice = -1;
@@ -99,6 +103,7 @@ int GameLauncher::start()
  */
 bool GameLauncher::initialize()
 {
+    PROFILE_FUNCTION();
     m_gameList = m_context->config()->getAllSections();
 
     return true;
@@ -110,6 +115,7 @@ bool GameLauncher::initialize()
  */
 void GameLauncher::startGame(const std::string& gameName) const
 {
+    PROFILE_FUNCTION();
     LOG(INFO) << "Starting " << gameName;
     try
     {
@@ -128,14 +134,18 @@ void GameLauncher::startGame(const std::string& gameName) const
         m_context->gameLocation() = gameDirectory;
 
         GameLoader loader(m_context);
+        BEGIN_SESSION("Initialization");
         if (!loader.load(gameName))
             return;
+        END_SESSION();
+        BEGIN_SESSION("Running");
         loader.run();
     }
     catch (const BaseException& e)
     {
         LOG(ERROR) << "Impossible to start '" << gameName << "' : " << e.what();
     }
+    END_SESSION();
     LOG(INFO) << "Exit " << gameName;
 }
 

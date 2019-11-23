@@ -1,5 +1,7 @@
 #include "Query.hpp"
 
+#include <InstrumentationTimer.hpp>
+
 // External libs
 #include <glog/logging.h>
 
@@ -13,6 +15,8 @@ namespace database
  */
 DataType Query::dataType(Column column)
 {
+
+    PROFILE_FUNCTION();
     if (!db())
         throw QueryException("No database given", DatabaseException::MISSING_DATABASE);
     if (column.tableName().empty())
@@ -60,6 +64,7 @@ std::string Query::operatorAsString(Query::Operator op)
  */
 void Query::checkColumnName(const Column& column)
 {
+    PROFILE_FUNCTION();
     if (!checkColumnNameValidity(column))
         throw QueryException(std::string("Column name not valid : ").append(
                                  column.tableName()), QueryException::INVALID_COLUMN_NAME);
@@ -80,6 +85,7 @@ void Query::checkColumnName(const Column& column)
  */
 bool Query::checkColumnNameValidity(const Column& column)
 {
+    PROFILE_FUNCTION();
     if (column.columnName().find(' ') != std::string::npos)
     {
         setValid(false);
@@ -98,6 +104,7 @@ bool Query::checkColumnNameValidity(const Column& column)
  */
 bool Query::checkColumnExistance(Column column)
 {
+    PROFILE_FUNCTION();
     if (column.tableName().empty())
         column.setTableName(table());
     auto columnList = db()->columnList(column.tableName());
@@ -122,6 +129,7 @@ bool Query::checkColumnExistance(Column column)
 void Query::doWhere(std::vector<std::string>& conditions, const Column& column,
                     Query::Operator op, std::string value)
 {
+    PROFILE_FUNCTION();
     auto type = dataType(column);
     if (type == BLOB || type == TEXT)
         value = std::string("'").append(value).append("'");
@@ -136,6 +144,7 @@ void Query::doWhere(std::vector<std::string>& conditions, const Column& column,
  */
 void Query::doColumn(std::vector<std::string>& columns, const Column& column)
 {
+    PROFILE_FUNCTION();
     checkColumnName(column);
     columns.push_back(column.str());
 }
@@ -149,6 +158,7 @@ void Query::doColumn(std::vector<std::string>& columns, const Column& column)
 void Query::doValue(std::vector<std::pair<std::string, std::string>>& values,
                     const Column& column, std::string value)
 {
+    PROFILE_FUNCTION();
     checkColumnName(column);
     auto type = dataType(column);
     if (type == BLOB || type == TEXT)
@@ -164,6 +174,7 @@ void Query::doValue(std::vector<std::pair<std::string, std::string>>& values,
  */
 void Query::doSort(std::vector<std::string>& sortColumns, const Column& column)
 {
+    PROFILE_FUNCTION();
     checkColumnName(column);
     sortColumns.push_back(column.str());
 }
@@ -178,6 +189,7 @@ void Query::doSort(std::vector<std::string>& sortColumns, const Column& column)
 void Query::doJoin(const std::string& table, const std::string& localColumn,
                    const std::string& distantColumn, JoinType type)
 {
+    PROFILE_FUNCTION();
     if (!db()->isTable(table) || !checkColumnExistance(Column(localColumn))
             || !checkColumnExistance(Column{table, distantColumn}))
         setValid(false);
@@ -199,6 +211,7 @@ void Query::doJoin(const std::string& table, const std::string& localColumn,
  */
 std::stringstream Query::joinStatement() const
 {
+    PROFILE_FUNCTION();
     std::stringstream ss;
     for (auto& j : m_joins)
     {
@@ -228,6 +241,7 @@ std::stringstream Query::joinStatement() const
  */
 std::string SelectQuery::str() const
 {
+    PROFILE_FUNCTION();
     std::stringstream ss;
     ss << "SELECT ";
     if (m_columns.size() == 0)
@@ -277,6 +291,7 @@ std::string SelectQuery::str() const
  */
 std::string InsertQuery::str() const
 {
+    PROFILE_FUNCTION();
     if (!isValid())
         return {};
     std::stringstream ss;
@@ -315,6 +330,7 @@ CreateQuery& CreateQuery::column(const std::string& columnName,
                                  DataType columnType,
                                  const std::string& fkTable, const std::string& fkField)
 {
+    PROFILE_FUNCTION();
     if (!checkColumnNameValidity(Column(columnName)))
         return *this;
     if (!fkTable.empty())
@@ -357,6 +373,7 @@ CreateQuery& CreateQuery::column(const std::string& columnName,
 CreateQuery& CreateQuery::constraint(const std::string& columnName,
                                      Query::Constraints constraintType)
 {
+    PROFILE_FUNCTION();
     if (!checkColumnNameValidity(Column(columnName)))
         return *this;
 
@@ -406,6 +423,7 @@ CreateQuery& CreateQuery::constraint(const std::string& columnName,
  */
 std::string CreateQuery::str() const
 {
+    PROFILE_FUNCTION();
     if (!isValid())
         return {};
     std::stringstream ss;
@@ -466,6 +484,7 @@ std::string CreateQuery::str() const
 UpdateQuery& UpdateQuery::set(const std::string& columnName,
                               const std::string& value)
 {
+    PROFILE_FUNCTION();
     checkColumnName(Column(columnName));
     setValid(true);
     m_set[columnName] = value;
@@ -479,6 +498,7 @@ UpdateQuery& UpdateQuery::set(const std::string& columnName,
  */
 std::string UpdateQuery::str() const
 {
+    PROFILE_FUNCTION();
     if (!isValid())
         return {};
     std::stringstream ss;
@@ -523,6 +543,7 @@ std::string UpdateQuery::str() const
  */
 std::string DeleteQuery::str() const
 {
+    PROFILE_FUNCTION();
     if (!isValid())
         return {};
     std::stringstream ss;

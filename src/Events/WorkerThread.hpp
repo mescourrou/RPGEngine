@@ -87,6 +87,7 @@ template<typename ...Args>
 void WorkerThread::newWork(const std::function<void(Args...)>& work,
                            Args... arguments)
 {
+    PROFILE_FUNCTION();
     m_mutex.lock();
     if (m_activeThreads >= maxThreads)
         m_waitingList.push_back(std::make_shared<Work<Args...>>(Work<Args...>(work,
@@ -103,6 +104,7 @@ void WorkerThread::newWork(const std::function<void(Args...)>& work,
 template<typename I, typename M, typename... Args>
 void WorkerThread::newWork(I* objectInstance, M func, Args ...arguments)
 {
+    PROFILE_FUNCTION();
     newWork([objectInstance, func, arguments...]()
     {
         std::bind(func, objectInstance, arguments...)();
@@ -112,6 +114,7 @@ void WorkerThread::newWork(I* objectInstance, M func, Args ...arguments)
 template<typename I, typename M>
 void WorkerThread::newWork(I* objectInstance, M func)
 {
+    PROFILE_FUNCTION();
     newWork([objectInstance, func]()
     {
         std::bind(func, objectInstance)();

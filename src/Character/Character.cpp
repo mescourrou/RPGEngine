@@ -7,6 +7,7 @@
 #include <Inventory.hpp>
 #include <VerbosityLevels.hpp>
 #include <Map.hpp>
+#include <InstrumentationTimer.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -28,6 +29,7 @@ Character::Character(const std::string& name,
     m_context(context), m_name(name),
     m_inventory(std::make_unique<object::Inventory>())
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
     setPosition(m_position);
@@ -41,6 +43,7 @@ Character::Character(const std::string& name,
  */
 bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
@@ -71,6 +74,7 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
  */
 bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
@@ -101,6 +105,7 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
@@ -146,6 +151,7 @@ map::Position Character::position() const
  */
 void Character::move(const map::Vector<2>& move)
 {
+    PROFILE_FUNCTION();
     map::Vector<2> intersection;
 
     if (m_position.map()->collision({m_position.x(), m_position.y()}, move,

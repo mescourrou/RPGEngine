@@ -15,6 +15,7 @@
  */
 config::Context::Context(int argc, char** argv)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
     if (!argv)

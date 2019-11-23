@@ -1,5 +1,6 @@
 #include "KeyBinding.hpp"
 #include <map>
+#include <InstrumentationTimer.hpp>
 
 namespace events
 {
@@ -104,6 +105,7 @@ std::string KeyBinding::toString() const
  */
 bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
 {
+    PROFILE_FUNCTION();
     if (m_key == NOT_BINDED)
         return false;
     KeyBinding::LayerKey layer = 0;
@@ -124,6 +126,7 @@ bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
  */
 KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent& event)
 {
+    PROFILE_FUNCTION();
     short layer = 0;
     if (event.alt)
         layer |= ALT;

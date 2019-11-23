@@ -11,6 +11,7 @@
 // Project
 #include <Query.hpp>
 #include <VerbosityLevels.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -25,6 +26,7 @@ namespace database
  */
 Database::Database(const std::string& path)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
     sqlite3_initialize();
@@ -52,6 +54,7 @@ Database::Database(const std::string& path)
  */
 Database::~Database()
 {
+    PROFILE_FUNCTION();
     if (m_sqlite3Handler)
     {
         sqlite3_close(m_sqlite3Handler);
@@ -66,6 +69,7 @@ Database::~Database()
 std::vector<std::map<std::string, std::string>> Database::query(
             const Query& dbQuery)
 {
+    PROFILE_FUNCTION();
     std::string strQuery = dbQuery.str();
     std::lock_guard<std::mutex> lock(m_queryMutex);
     query(strQuery);
@@ -81,6 +85,7 @@ std::vector<std::map<std::string, std::string>> Database::query(
  */
 int Database::callback(int argc, char** argv, char** colName)
 {
+    PROFILE_FUNCTION();
     std::map<std::string, std::string> row;
     for (int i = 0; i < argc ; i++)
     {
@@ -98,6 +103,7 @@ int Database::callback(int argc, char** argv, char** colName)
  */
 bool Database::query(const std::string& query)
 {
+    PROFILE_FUNCTION();
     if (m_queryMutex.try_lock())
     {
         m_queryMutex.unlock();
@@ -152,6 +158,7 @@ bool Database::isQuerySuccessfull(const
  */
 std::vector<std::string> Database::tableList()
 {
+    PROFILE_FUNCTION();
     auto lock = lockGuard();
     if (query("SELECT name FROM sqlite_master WHERE type='table';"))
     {
@@ -176,6 +183,7 @@ std::vector<std::string> Database::tableList()
  */
 bool Database::isTable(const std::string& table)
 {
+    PROFILE_FUNCTION();
     auto tables = tableList();
     return std::find(tables.begin(), tables.end(), table) != tables.end();
 }
@@ -187,6 +195,7 @@ bool Database::isTable(const std::string& table)
  */
 std::vector<std::string> Database::columnList(const std::string& table)
 {
+    PROFILE_FUNCTION();
     auto lock = lockGuard();
     if (query("PRAGMA table_info('" + table + "');"))
     {
@@ -221,6 +230,7 @@ std::vector<std::string> Database::columnList(const std::string& table)
  */
 std::map<std::string, DataType> Database::columnsType(const std::string& table)
 {
+    PROFILE_FUNCTION();
     auto lock = lockGuard();
     if (query("PRAGMA table_info('" + table + "');"))
     {

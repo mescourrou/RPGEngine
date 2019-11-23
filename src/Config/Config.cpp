@@ -10,6 +10,7 @@
 
 // Project
 #include <VerbosityLevels.hpp>
+#include <InstrumentationTimer.hpp>
 
 // Extern libs
 #include <glog/logging.h>
@@ -32,6 +33,7 @@ Config::Config()
  */
 Config::Config(const std::string& filename)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
     if (!loadFile(filename))
@@ -45,6 +47,7 @@ Config::Config(const std::string& filename)
  */
 bool Config::loadFile(const std::string& filename) noexcept
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Call loadFile(" << filename << ")";
     m_iniFile.SetUnicode();
     m_iniFile.SetMultiKey();
@@ -69,6 +72,7 @@ bool Config::loadFile(const std::string& filename) noexcept
  */
 bool Config::saveToFile(std::string filename)
 {
+    PROFILE_FUNCTION();
     if (filename.empty())
         filename = m_filename;
     if (m_iniFile.SaveFile(filename.c_str()) < 0)
@@ -90,6 +94,7 @@ bool Config::saveToFile(std::string filename)
 std::string Config::getValue(const std::string& section,
                              const std::string& key) const
 {
+    PROFILE_FUNCTION();
     bool multipleValues = false;
     const char* rawValue = m_iniFile.GetValue(section.c_str(), key.c_str(), nullptr,
                            &multipleValues);
@@ -113,6 +118,7 @@ std::string Config::getValue(const std::string& section,
  */
 std::string Config::getValue(const std::string& key) const
 {
+    PROFILE_FUNCTION();
     CSimpleIniCaseA::TNamesDepend sections;
     m_iniFile.GetAllSections(sections);
 
@@ -138,6 +144,7 @@ std::string Config::getValue(const std::string& key) const
 std::vector<std::string> Config::getAllValues(const std::string& section,
         const std::string& key) const
 {
+    PROFILE_FUNCTION();
     std::vector<std::string> ret;
     CSimpleIniCaseA::TNamesDepend values;
     m_iniFile.GetAllValues(section.c_str(), key.c_str(), values);
@@ -159,6 +166,7 @@ std::vector<std::string> Config::getAllValues(const std::string& section,
  */
 std::vector<std::string> Config::getAllSections() const
 {
+    PROFILE_FUNCTION();
     std::vector<std::string> sectionList;
     CSimpleIniCaseA::TNamesDepend sections;
     m_iniFile.GetAllSections(sections);
@@ -181,6 +189,7 @@ std::vector<std::string> Config::getAllSections() const
 bool Config::setValue(const std::string& section, const std::string& key,
                       const std::string& value, bool forceRemplace)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "setValue (" << section << ", " << key <<
                                         ", " << value << ", " << forceRemplace << ")";
     int rc = m_iniFile.SetValue(section.c_str(), key.c_str(), value.c_str(),

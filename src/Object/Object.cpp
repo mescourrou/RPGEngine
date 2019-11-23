@@ -29,6 +29,7 @@ Object::Object(std::string name) : m_name(std::move(name))
  */
 bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
     using namespace database;
     if (!db)
@@ -55,6 +56,7 @@ bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
 std::shared_ptr<Object> Object::createFromDatabase(const std::string& name,
         std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
     using namespace database;
     if (!db)
@@ -90,6 +92,7 @@ std::shared_ptr<Object> Object::createFromDatabase(const std::string& name,
  */
 bool Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
     if (!db->isTable(Model::TABLE))
         return false;
@@ -120,6 +123,7 @@ bool Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Object::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
     using namespace database;
 

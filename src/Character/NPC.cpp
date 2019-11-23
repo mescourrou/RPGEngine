@@ -2,6 +2,7 @@
 #include <Database.hpp>
 #include <Model.hpp>
 #include <Query.hpp>
+#include <InstrumentationTimer.hpp>
 
 namespace character
 {
@@ -24,6 +25,7 @@ NPC::NPC(const std::string& name, std::shared_ptr<config::Context> context):
  */
 bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::NPC;
     using namespace database;
     if (!verifyDatabaseModel(db))
@@ -51,6 +53,7 @@ bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
  */
 bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     using namespace database;
     if (!db)
         throw CharacterException("No database given.",
@@ -66,6 +69,7 @@ bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
 
     using namespace database;
     if (!db)
@@ -104,6 +108,7 @@ void NPC::updatePosition()
  */
 bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::NPC;
     if (!db->isTable(Model::TABLE))
         return false;
@@ -131,10 +136,12 @@ bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
  */
 bool NPC::verifyNPCPathModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::NPCPath;
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
+
 
     unsigned short goodColumns = 0;
     for (auto& column : columnList)

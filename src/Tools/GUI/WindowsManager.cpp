@@ -1,4 +1,5 @@
 #include "WindowsManager.hpp"
+#include <InstrumentationTimer.hpp>
 
 namespace ImGui
 {
@@ -8,6 +9,7 @@ namespace ImGui
  */
 void WindowsManager::prepareWindows()
 {
+    PROFILE_FUNCTION();
     for (auto& w : m_windowList)
     {
         if (w)

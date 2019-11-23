@@ -8,6 +8,7 @@
 #include <ConfigFiles.hpp>
 #include <Tools.hpp>
 #include <PerformanceTimer.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External library
 #include <tinyxml2.h>
@@ -42,6 +43,7 @@ MapGUI::MapGUI(std::weak_ptr<Map> map) :
  */
 void MapGUI::move(double offsetX, double offsetY)
 {
+    PROFILE_FUNCTION();
     m_centerOfView.x() += offsetX;
     m_centerOfView.y() += offsetY;
     saturateCenterOfView();
@@ -53,6 +55,7 @@ void MapGUI::move(double offsetX, double offsetY)
  */
 void MapGUI::setCenterOfView(const Position& centralPosition)
 {
+    PROFILE_FUNCTION();
     m_centerOfView.x() = centralPosition.x();
     m_centerOfView.y() = centralPosition.y();
     saturateCenterOfView();
@@ -66,6 +69,7 @@ void MapGUI::setCenterOfView(const Position& centralPosition)
  */
 bool MapGUI::load(const std::string& mapDirPath)
 {
+    PROFILE_FUNCTION();
     std::ifstream file(mapDirPath + "/" + Tools::snakeCase(m_map.lock()->name()) +
                        ".json");
     if (file.is_open())
@@ -96,6 +100,7 @@ bool MapGUI::load(const std::string& mapDirPath)
  */
 void MapGUI::prepare(const sf::Vector2f& targetSize)
 {
+    PROFILE_FUNCTION();
     if (m_mapMoved) // We compute the parameters only if the map moved since last time
     {
         // Position on the map of the top left corner of the screen
@@ -131,6 +136,7 @@ void MapGUI::prepare(const sf::Vector2f& targetSize)
  */
 void MapGUI::forcePrepare(const sf::Vector2f& targetSize)
 {
+    PROFILE_FUNCTION();
     m_mapMoved = true;
     prepare(targetSize);
 }
@@ -154,6 +160,7 @@ sf::Vector2f MapGUI::positionOnScreenFrom(const Position& position)
 void map::gui::MapGUI::draw(sf::RenderTarget& target,
                             sf::RenderStates states) const
 {
+    PROFILE_FUNCTION();
     int i = m_firstTileCoordinates.x;
     int j = m_firstTileCoordinates.y;
     // Copy to iterate without modify the origin
@@ -189,6 +196,7 @@ void map::gui::MapGUI::draw(sf::RenderTarget& target,
  */
 bool MapGUI::loadTiles(const json& layer)
 {
+    PROFILE_FUNCTION();
     namespace mapFile = config::structure::mapFile;
     if (!layer.contains(mapFile::KEY_TILE_DATA))
         return false;
@@ -252,6 +260,7 @@ bool MapGUI::loadTiles(const json& layer)
  */
 bool MapGUI::loadTilesets(const std::string& mapDirPath, const json& json)
 {
+    PROFILE_FUNCTION();
     namespace mapFile = config::structure::mapFile;
     if (!json.contains(mapFile::KEY_WIDTH)
             || !json[mapFile::KEY_WIDTH].is_number_integer())
@@ -293,6 +302,7 @@ bool MapGUI::loadTilesets(const std::string& mapDirPath, const json& json)
  */
 void MapGUI::saturateCenterOfView()
 {
+    PROFILE_FUNCTION();
     if (m_centerOfView.x() < 0)
         m_centerOfView.x() = 0;
     if (m_centerOfView.y() < 0)
@@ -313,6 +323,7 @@ void MapGUI::saturateCenterOfView()
  */
 bool MapGUI::loadTileset(const std::string& mapDirPath, const json& tileset)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "loadTileset";
     namespace mapFile = config::structure::mapFile;
     if (!tileset.is_object())

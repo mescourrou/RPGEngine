@@ -13,6 +13,7 @@
 #include <ActionHandler.hpp>
 #include <WindowsManager.hpp>
 #include <PerformanceTimer.hpp>
+#include <InstrumentationTimer.hpp>
 
 #include <CharacterGUI.hpp>
 
@@ -38,6 +39,7 @@ namespace gui
 GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
     m_context(context), m_game(game)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
 
@@ -50,6 +52,7 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
 
 GameGUI::~GameGUI()
 {
+    PROFILE_FUNCTION();
     m_window->close();
     ImGui::SFML::Shutdown();
 }
@@ -61,6 +64,7 @@ GameGUI::~GameGUI()
  */
 bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
     m_mapGUI = std::make_shared<map::gui::MapGUI>(m_game->m_currentMap);
@@ -115,6 +119,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
  */
 void GameGUI::eventManager()
 {
+    PROFILE_FUNCTION();
     static sf::Clock deltaClock;
     ImGui::SFML::Update(*m_window, deltaClock.restart());
     // Process events
@@ -143,6 +148,7 @@ void GameGUI::eventManager()
  */
 void GameGUI::draw()
 {
+    PROFILE_FUNCTION();
     m_windowsManager.prepareWindows();
     m_mapGUI->prepare(m_window->getView().getSize());
     std::sort(m_guiObjects.begin(),
@@ -177,6 +183,7 @@ void GameGUI::draw()
  */
 void GameGUI::loadFromConfig()
 {
+    PROFILE_FUNCTION();
     if (m_window)
         m_window->close();
     namespace structure = config::structure::globalFile;
@@ -212,6 +219,7 @@ void GameGUI::loadFromConfig()
  */
 void GameGUI::makeUI()
 {
+    PROFILE_FUNCTION();
     if (m_ui.uiActivated)
     {
         if (ImGui::Begin(UI::BOTTON_AREA, nullptr, UI::FIXED))
@@ -256,6 +264,7 @@ void GameGUI::makeUI()
  */
 void GameGUI::uiPauseMenu()
 {
+    PROFILE_FUNCTION();
     // Main pause menu
     if (ImGui::Button("Return to the game"))
         signalPause.trigger(false);
@@ -291,6 +300,7 @@ void GameGUI::uiPauseMenu()
  */
 void GameGUI::uiLoadSettingsPopup()
 {
+    PROFILE_FUNCTION();
     namespace preferences = config::structure::globalFile::preferences;
     m_ui.settings.fullscreen = false;
     std::string tmp = m_context->config()->getValue(preferences::SECTION,
@@ -318,6 +328,7 @@ void GameGUI::uiLoadSettingsPopup()
 
 void GameGUI::uiInformationPopup()
 {
+    PROFILE_FUNCTION();
     if (ImGui::CollapsingHeader("Game", ImGuiTreeNodeFlags_DefaultOpen))
     {
         ImGui::Text("Name : %s", m_game->name().c_str());
@@ -340,6 +351,7 @@ void GameGUI::uiInformationPopup()
 
 void GameGUI::uiSettingsPopup()
 {
+    PROFILE_FUNCTION();
     if (ImGui::BeginTabBar(UI::SETTINGS_TABBAR_NAME))
     {
         namespace preferences = config::structure::globalFile::preferences;
@@ -393,6 +405,7 @@ void GameGUI::uiSettingsPopup()
 
 void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent& key)
 {
+    PROFILE_FUNCTION();
     if (m_actionWaitingForKeybinding.empty())
     {
         signalKeyPressed.trigger(key);
@@ -402,6 +415,7 @@ void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent& key)
 
 void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
 {
+    PROFILE_FUNCTION();
     if (m_actionWaitingForKeybinding.empty())
     {
         switch (key.code)
@@ -430,6 +444,7 @@ void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
 
 void GameGUI::checkKeyPressed()
 {
+    PROFILE_FUNCTION();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
         signalArroyIsPressed.trigger(sf::Keyboard::Left);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))

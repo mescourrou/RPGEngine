@@ -3,6 +3,7 @@
 #include <Database.hpp>
 #include <Query.hpp>
 #include <Model.hpp>
+#include <InstrumentationTimer.hpp>
 
 namespace character
 {
@@ -22,6 +23,7 @@ Vendor::Vendor(const std::string& name,
 
 bool Vendor::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     if (!NPC::loadFromDatabase(db))
         return false;
     using namespace database;
@@ -51,6 +53,7 @@ const std::weak_ptr<object::Inventory> Vendor::seeInventory() const
  */
 bool Vendor::sell(const std::string& objectName, Character& buyer)
 {
+    PROFILE_FUNCTION();
     if (!privateInventory()->get(objectName))
         return false;
     if (buyer.inventory().lock()->pullMoney(privateInventory()->get(
@@ -72,6 +75,7 @@ bool Vendor::sell(const std::string& objectName, Character& buyer)
  */
 bool Vendor::sell(unsigned int objectInventoryId, Character& buyer)
 {
+    PROFILE_FUNCTION();
     if (!privateInventory()->get(objectInventoryId))
         return false;
     if (buyer.inventory().lock()->pullMoney(privateInventory()->get(
@@ -95,6 +99,7 @@ bool Vendor::sell(unsigned int objectInventoryId, Character& buyer)
  */
 bool Vendor::buy(const std::string& objectName, Character& seller)
 {
+    PROFILE_FUNCTION();
     if (!seller.inventory().lock()->get(objectName))
         return false;
     if (privateInventory()->pullMoney(seller.inventory().lock()->get(
@@ -117,6 +122,7 @@ bool Vendor::buy(const std::string& objectName, Character& seller)
  */
 bool Vendor::buy(unsigned int objectInventoryId, Character& seller)
 {
+    PROFILE_FUNCTION();
     if (!seller.inventory().lock()->get(objectInventoryId))
         return false;
     if (privateInventory()->pullMoney(seller.inventory().lock()->get(

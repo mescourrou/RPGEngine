@@ -10,6 +10,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -126,6 +127,7 @@ class Money : public BaseObject
 template<typename ...Args>
 void Money::initialize(const std::string& baseValueName, Args... values)
 {
+    PROFILE_FUNCTION();
     m_moneyNames.clear();
     m_moneyNames.push_back(std::pair<std::string, unsigned int>(baseValueName, 1));
     initializeAdditionnalValues(values...);
@@ -149,6 +151,7 @@ template<typename ...Args>
 void Money::initializeAdditionnalValues(const
                                         std::pair<std::string, unsigned int>& value, Args... values)
 {
+    PROFILE_FUNCTION();
     m_moneyNames.push_back(value);
     initializeAdditionnalValues(values...);
 }
