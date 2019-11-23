@@ -30,11 +30,8 @@ Database::Database(const std::string& path)
     sqlite3_initialize();
 #ifdef  BUILD_USE_FILESYSTEM
     std::filesystem::path parentPath = std::filesystem::path(path).parent_path();
-    if (!parentPath.string().empty())
-    {
-        if (!std::filesystem::exists(parentPath))
-            std::filesystem::create_directories(parentPath);
-    }
+    if (!parentPath.string().empty() && !std::filesystem::exists(parentPath))
+        std::filesystem::create_directories(parentPath);
 #endif
     if (sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
@@ -119,7 +116,7 @@ bool Database::query(const std::string& query)
     // Error buffer
     char* zErrMsg;
     auto cb = [](void* currentDatabase, int argc, char** argv,
-                 char** colName) -> int
+                 char** colName)
     {
         return static_cast<Database*>(currentDatabase)->callback(argc, argv, colName);
     };
@@ -260,8 +257,9 @@ std::string Database::dataTypeAsString(const DataType& data)
         return "NUMERIC";
     case BLOB:
         return "BLOB";
+    default:
+        return "BLOB";
     }
-    return "BLOB";
 }
 
 /**

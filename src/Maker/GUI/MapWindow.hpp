@@ -4,7 +4,7 @@
 #include <Stringlist.hpp>
 #include <Maker.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -13,11 +13,11 @@ namespace maker::GUI
 class MapWindow : public ImGui::Window
 {
   public:
-    MapWindow(Maker* maker);
+    explicit MapWindow(Maker* maker);
 
   protected:
     bool doPrepare() override;
-
+  private:
     Maker* m_maker;                     ///< Pointer on the maker
 
     Maker::MapInformations m_edit;      ///< Editted informations
@@ -28,4 +28,4 @@ class MapWindow : public ImGui::Window
     bool m_newOne = false;              ///< Is there a new map
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui

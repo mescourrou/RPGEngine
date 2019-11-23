@@ -4,6 +4,8 @@ The engine will come with a executable to create the game files.
 
 [![Build Status](https://travis-ci.com/mescourrou/RPGEngine.svg?branch=master)](https://travis-ci.com/mescourrou/RPGEngine)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mescourrou_RPGEngine&metric=alert_status)](https://sonarcloud.io/dashboard?id=mescourrou_RPGEngine) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=mescourrou_RPGEngine&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=mescourrou_RPGEngine) [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=mescourrou_RPGEngine&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=mescourrou_RPGEngine) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=mescourrou_RPGEngine&metric=security_rating)](https://sonarcloud.io/dashboard?id=mescourrou_RPGEngine)
+
 # Build
 ## Dependencies
 To build the project, you will need:
@@ -42,6 +44,7 @@ make
 
 ## Documentation
 You can build the documentation with `make doc` when you are in the build directory. You can use `make show_dow` to open the html in you browser.
+Otherwise, the documentation is available here : https://mescourrou.github.io/RPGEngine/index.html
 
 # Installation
 No installation for now, the executable is in the build directory, build/bin/Engine/RPGEngine.

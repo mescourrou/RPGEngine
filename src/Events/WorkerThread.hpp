@@ -33,6 +33,10 @@ class WorkerThread
 #endif
   public:
     ~WorkerThread();
+    WorkerThread(const WorkerThread&) = delete;
+    WorkerThread(WorkerThread&&) = delete;
+    WorkerThread& operator=(const WorkerThread&) = delete;
+    WorkerThread& operator=(WorkerThread&&) = delete;
 
     template<typename ...Args>
     static void newWork(const std::function<void(Args...)>& work,
@@ -40,9 +44,9 @@ class WorkerThread
     static void newWork(const std::function<void()>& work);
 
     template<typename I, typename M, typename ...Args>
-    static void newWork(I* instance, M func, Args... arguments);
+    static void newWork(I* s_instance, M func, Args... arguments);
     template<typename I, typename M>
-    static void newWork(I* instance, M func);
+    static void newWork(I* s_instance, M func);
 
     static void waitForJoin();
 
@@ -51,7 +55,7 @@ class WorkerThread
     /// @brief Constructor
     WorkerThread() = default;
 
-    static WorkerThread instance; ///< Singleton instance
+    static WorkerThread s_instance; ///< Singleton instance
     static void worker(std::shared_ptr<AbstractWork> firstWork);
 
     /**
@@ -90,27 +94,27 @@ void WorkerThread::newWork(const std::function<void(Args...)>& work,
     else
     {
         m_activeThreads++;
-        instance.m_workers.push_back(std::thread(worker,
-                                     std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
+        s_instance.m_workers.push_back(std::thread(worker,
+                                       std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
     }
     m_mutex.unlock();
 }
 
 template<typename I, typename M, typename... Args>
-void WorkerThread::newWork(I* instance, M func, Args ...arguments)
+void WorkerThread::newWork(I* objectInstance, M func, Args ...arguments)
 {
-    newWork([ = ]()
+    newWork([objectInstance, func, arguments...]()
     {
-        std::bind(func, instance, arguments...)();
+        std::bind(func, objectInstance, arguments...)();
     });
 }
 
 template<typename I, typename M>
-void WorkerThread::newWork(I* instance, M func)
+void WorkerThread::newWork(I* objectInstance, M func)
 {
-    newWork([ = ]()
+    newWork([objectInstance, func]()
     {
-        std::bind(func, instance)();
+        std::bind(func, objectInstance)();
     });
 }
 

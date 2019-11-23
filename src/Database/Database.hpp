@@ -6,16 +6,19 @@
 #include <vector>
 #include <memory>
 
+
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 
-class sqlite3;
-
+// Libs
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
+
+class sqlite3;
+
 
 /**
  * @namespace database
@@ -58,7 +61,7 @@ class Database : public BaseObject
     FRIEND_TEST(DatabaseTest, QueryText);
 #endif
   public:
-    Database(const std::string& path);
+    explicit Database(const std::string& path);
     ~Database() override;
 
     std::vector<std::map<std::string, std::string>> query(const Query& dbQuery);
@@ -83,7 +86,7 @@ class Database : public BaseObject
 
     static std::string dataTypeAsString(const DataType& data);
     static DataType dataTypeFromString(const std::string& data);
-  protected:
+  private:
     int callback(int argc, char** argv, char** colName);
 
     std::mutex m_queryMutex;    ///< Mutex to protect the result access

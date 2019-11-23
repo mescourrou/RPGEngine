@@ -12,7 +12,8 @@ namespace character
  * @param name Name of the Vendor
  * @param context Context used
  */
-Vendor::Vendor(std::string name, std::shared_ptr<config::Context> context) :
+Vendor::Vendor(const std::string& name,
+               std::shared_ptr<config::Context> context) :
     NPC(std::move(name), context)
 {
 
@@ -26,7 +27,7 @@ bool Vendor::loadFromDatabase(std::shared_ptr<database::Database> db)
     using namespace database;
     namespace Model = Model::NPC;
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                            .where(Model::NAME, Query::EQUAL, m_name)
+                            .where(Model::NAME, Query::EQUAL, name())
                             .column(Model::TYPE));
     if (std::stoi(result.at(1).at(Model::TYPE)) != Model::VENDOR)
         return false;
@@ -40,7 +41,7 @@ bool Vendor::loadFromDatabase(std::shared_ptr<database::Database> db)
  */
 const std::weak_ptr<object::Inventory> Vendor::seeInventory() const
 {
-    return m_inventory;
+    return inventory();
 }
 
 /**
@@ -50,12 +51,13 @@ const std::weak_ptr<object::Inventory> Vendor::seeInventory() const
  */
 bool Vendor::sell(const std::string& objectName, Character& buyer)
 {
-    if (!m_inventory->get(objectName))
+    if (!privateInventory()->get(objectName))
         return false;
-    if (buyer.inventory().lock()->pullMoney(m_inventory->get(objectName)->value()))
+    if (buyer.inventory().lock()->pullMoney(privateInventory()->get(
+            objectName)->value()))
     {
-        m_inventory->addMoney(m_inventory->get(objectName)->value());
-        auto object = m_inventory->pop(objectName);
+        privateInventory()->addMoney(privateInventory()->get(objectName)->value());
+        auto object = privateInventory()->pop(objectName);
 
         buyer.inventory().lock()->push(object);
         return true;
@@ -70,13 +72,14 @@ bool Vendor::sell(const std::string& objectName, Character& buyer)
  */
 bool Vendor::sell(unsigned int objectInventoryId, Character& buyer)
 {
-    if (!m_inventory->get(objectInventoryId))
+    if (!privateInventory()->get(objectInventoryId))
         return false;
-    if (buyer.inventory().lock()->pullMoney(m_inventory->get(
+    if (buyer.inventory().lock()->pullMoney(privateInventory()->get(
             objectInventoryId)->value()))
     {
-        m_inventory->addMoney(m_inventory->get(objectInventoryId)->value());
-        auto object = m_inventory->pop(objectInventoryId);
+        privateInventory()->addMoney(privateInventory()->get(
+                                         objectInventoryId)->value());
+        auto object = privateInventory()->pop(objectInventoryId);
 
         buyer.inventory().lock()->push(object);
         return true;
@@ -94,13 +97,14 @@ bool Vendor::buy(const std::string& objectName, Character& seller)
 {
     if (!seller.inventory().lock()->get(objectName))
         return false;
-    if (m_inventory->pullMoney(seller.inventory().lock()->get(objectName)->value()))
+    if (privateInventory()->pullMoney(seller.inventory().lock()->get(
+                                          objectName)->value()))
     {
         seller.inventory().lock()->addMoney(seller.inventory().lock()->get(
                                                 objectName)->value());
         auto object = seller.inventory().lock()->pop(objectName);
 
-        m_inventory->push(object);
+        privateInventory()->push(object);
         return true;
     }
     return false;
@@ -115,14 +119,14 @@ bool Vendor::buy(unsigned int objectInventoryId, Character& seller)
 {
     if (!seller.inventory().lock()->get(objectInventoryId))
         return false;
-    if (m_inventory->pullMoney(seller.inventory().lock()->get(
-                                   objectInventoryId)->value()))
+    if (privateInventory()->pullMoney(seller.inventory().lock()->get(
+                                          objectInventoryId)->value()))
     {
         seller.inventory().lock()->addMoney(seller.inventory().lock()->get(
                                                 objectInventoryId)->value());
         auto object = seller.inventory().lock()->pop(objectInventoryId);
 
-        m_inventory->push(object);
+        privateInventory()->push(object);
         return true;
     }
     return false;

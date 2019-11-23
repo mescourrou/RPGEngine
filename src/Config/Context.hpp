@@ -35,6 +35,7 @@ class Context : public BaseObject
     FRIEND_TEST(ContextTest, Initialization);
 #endif
   public:
+    static std::shared_ptr<Context> initialize(int argc, char** argv);
     Context(int argc, char** argv);
     ~Context() override = default;
 

@@ -21,7 +21,7 @@
 namespace map
 {
 
-namespace GUI
+namespace gui
 {
 
 /**
@@ -151,7 +151,7 @@ sf::Vector2f MapGUI::positionOnScreenFrom(const Position& position)
  * @param target Target to draw on
  * @param states Render states to use
  */
-void map::GUI::MapGUI::draw(sf::RenderTarget& target,
+void map::gui::MapGUI::draw(sf::RenderTarget& target,
                             sf::RenderStates states) const
 {
     int i = m_firstTileCoordinates.x;
@@ -410,7 +410,7 @@ bool MapGUI::loadTileset(const std::string& mapDirPath, const json& tileset)
     return true;
 }
 
-} // namespace GUI
+} // namespace gui
 
 } // namespace map
 

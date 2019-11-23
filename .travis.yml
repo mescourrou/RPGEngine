@@ -6,6 +6,9 @@ compiler:
   - gcc
 
 cache: ccache
+cache:
+    directories:
+     - /home/travis/build/mescourrou/RPGEngine/build/
 
 env:
   global:
@@ -13,17 +16,11 @@ env:
 git:
   depth: false
 
-branches:
-  only:
-  - master
-  - develop
-  - gh-pages
-
 addons:
   sonarcloud:
     organization: "mescourrou-github"
     token:
-      secure: "c39f8a2b2207d2e93664cd6c07d51c988d41f653"
+      secure: "${SONAR_TOKEN}"
   apt:
     update: true
   git:
@@ -51,10 +48,10 @@ install:
   - sudo apt-get install -y doxygen
 
 before_script:
-  - ./configure
   - export REPO=`pwd`
+  - ./configure
   # create a build folder for the out-of-source build
-  - mkdir build
+  - mkdir -p build
   # switch to build directory
   - cd build
   # run cmake;
@@ -66,4 +63,21 @@ script:
 
 after_script:
   - cd ${REPO}
-  - sonar-scanner
+  - ls -la
+  - sonar-scanner -X
+
+before_deploy:
+  - cd ${REPO}/build
+  - make doc
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  on:
+    branch: 
+    - master 
+    - develop
+  local_dir: build/docs/html
+

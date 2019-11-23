@@ -36,7 +36,7 @@ class Character;
 namespace game
 {
 #ifdef RPG_BUILD_GUI
-namespace GUI
+namespace gui
 {
 class GameGUI;
 }
@@ -62,11 +62,11 @@ class Game : public BaseObject
     friend class game::GameTest;
 #endif
 #ifdef RPG_BUILD_GUI
-    friend class GUI::GameGUI;
+    friend class gui::GameGUI;
 #endif
   public:
 
-    Game(std::string name, std::shared_ptr<config::Context> gameContext);
+    Game(const std::string& name, std::shared_ptr<config::Context> gameContext);
     /// @brief Destructor
     ~Game() override = default;
 
@@ -84,7 +84,7 @@ class Game : public BaseObject
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-  protected:
+  private:
 
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
     std::shared_ptr<database::Database>
@@ -99,7 +99,7 @@ class Game : public BaseObject
     std::list<std::shared_ptr<character::Character>>
             m_characterList;        ///< List of characters, excepted the character of the player
 #ifdef RPG_BUILD_GUI
-    std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
+    std::shared_ptr<game::gui::GameGUI> m_gui;              ///< GUI pointer
 #endif
     bool m_running = true;                                  ///< Main loop condition
 

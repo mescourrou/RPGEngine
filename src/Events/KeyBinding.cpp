@@ -113,11 +113,8 @@ bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
         layer |= KeyBinding::SHIFT;
     if (keyboard.control)
         layer |= KeyBinding::CTRL;
-    if (m_layer == layer)
-    {
-        if (m_key == keyFromSFML(keyboard.code))
-            return true;
-    }
+    if (m_layer == layer && m_key == keyFromSFML(keyboard.code))
+        return true;
     return false;
 }
 

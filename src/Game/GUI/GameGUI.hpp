@@ -22,7 +22,7 @@ namespace sf
 class RenderWindow;
 }
 
-namespace character::GUI
+namespace character::gui
 {
 class CharacterGUI;
 }
@@ -33,7 +33,7 @@ namespace game
 
 class Game;
 
-namespace GUI
+namespace gui
 {
 
 CREATE_EXCEPTION_CLASS(GameGUI)
@@ -64,7 +64,7 @@ class GameGUI : public BaseObject
     /**
      * @brief Get the event triggered when the user close the game
      */
-    void subscribeOnClose(std::function<void(void)> func)
+    void subscribeOnClose(const std::function<void(void)>& func)
     {
         m_signalOnClose.subscribeAsync(func);
     }
@@ -83,12 +83,22 @@ class GameGUI : public BaseObject
 
   protected:
     void loadFromConfig();
+
+    void makeUI();
+    void uiPauseMenu();
+    void uiLoadSettingsPopup();
+    void uiInformationPopup();
+    void uiSettingsPopup();
+    void managePressingKeyEvent(const sf::Event::KeyEvent& key);
+    void manageReleasingKeyEven(const sf::Event::KeyEvent& key);
+    void checkKeyPressed();
+  private:
     std::vector<std::shared_ptr<BaseGUIObject>>
             m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
-    std::weak_ptr<character::GUI::CharacterGUI>
+    std::weak_ptr<character::gui::CharacterGUI>
     m_player;       ///< Pointer on the GUI object linked to the player
 
-    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Current mapGUI
+    std::shared_ptr<map::gui::MapGUI> m_mapGUI;     ///< Current mapGUI
 
     std::shared_ptr<config::Context> m_context;     ///< Context to use
 
@@ -142,15 +152,14 @@ class GameGUI : public BaseObject
             std::string resolution = "";                    ///< Currrent resolution
             int resolutionItemSelected = 0;                 ///< Selected resolution index
             std::vector<const char*> availableResolutions;  ///< Available resolutions
-        } settings;                                         ///< Seleted settings
-    } m_ui;                                         ///< UI structure containing the ui linked variable
+        };
+        Settings settings;                                         ///< Seleted settings
+    };
+    UI m_ui;                                         ///< UI structure containing the ui linked variable
 
-    void makeUI();
-    void uiPauseMenu();
-    void uiLoadSettingsPopup();
 
 };
 
-} // namespace GUI
+} // namespace gui
 
 } // namespace map

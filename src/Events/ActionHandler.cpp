@@ -4,6 +4,11 @@ namespace events
 {
 ActionHandler ActionHandler::instance;
 
+/**
+ * @brief Get the keybinding of the named action
+ * @param name Name of the action
+ * @return KeyBinding
+ */
 KeyBinding ActionHandler::getKeyBinding(const std::string& name)
 {
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
@@ -16,6 +21,11 @@ KeyBinding ActionHandler::getKeyBinding(const std::string& name)
     return {};
 }
 
+/**
+ * @brief Set the KeyBinding of the given action
+ * @param actionName Name of the action
+ * @param key KeyBinding to apply
+ */
 void ActionHandler::setKeyBinding(const std::string& actionName,
                                   const KeyBinding& key)
 {
@@ -28,6 +38,10 @@ void ActionHandler::setKeyBinding(const std::string& actionName,
         it->keyBinding = key;
 }
 
+/**
+ * @brief Execute the given action
+ * @param actionName Name of the action to execute
+ */
 void ActionHandler::execute(const std::string& actionName)
 {
     const auto& it = std::find_if(instance.m_actions.begin(),
@@ -47,6 +61,9 @@ void ActionHandler::execute(const std::string& actionName)
     }
 }
 
+/**
+ * @brief Get the list of actions
+ */
 std::list<std::string> ActionHandler::actionList()
 {
     std::list<std::string> ret;
@@ -59,7 +76,14 @@ std::list<std::string> ActionHandler::actionList()
 }
 
 #ifdef RPG_BUILD_GUI
-void ActionHandler::addAction(std::string name, std::function<void ()> func,
+/**
+ * @brief Add an action
+ * @param name Name of the action
+ * @param func Function to execute when the action is triggered
+ * @param keyBinding KeyBinding of the action
+ */
+void ActionHandler::addAction(const std::string& name,
+                              const std::function<void ()>& func,
                               const KeyBinding& keyBinding)
 {
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
@@ -77,6 +101,10 @@ void ActionHandler::addAction(std::string name, std::function<void ()> func,
     }
 }
 
+/**
+ * @brief Trigger the actions corresponding to the SFML event given
+ * @param event Event to process
+ */
 void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent& event)
 {
     auto it = std::find_if(instance.m_actions.begin(),
@@ -89,6 +117,10 @@ void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent& event)
 }
 #endif
 
+/**
+ * @brief Execute the action
+ * @param action Action to execute
+ */
 void ActionHandler::execute(const ActionHandler::Action& action)
 {
     for (const auto& a : action.functionList)

@@ -40,13 +40,13 @@ class GameLoader : public BaseObject
     friend class game::GameLoaderTest;
 #endif
   public:
-    GameLoader(std::shared_ptr<config::Context> context);
+    explicit GameLoader(std::shared_ptr<config::Context> context);
     /// @brief Destructor
     ~GameLoader() override = default;
 
     bool load(const std::string& name);
     bool run();
-  protected:
+  private:
     std::shared_ptr<config::Context> m_context; ///< Context
     std::shared_ptr<config::Config> m_config;   ///< Game configuration
     std::shared_ptr<database::Database> m_db;   ///< Game database

@@ -1,6 +1,6 @@
 #include "CharacterWindow.hpp"
 
-namespace game::GUI
+namespace game::gui
 {
 
 /**
@@ -24,5 +24,5 @@ bool CharacterWindow::doCollapsedState()
     return true;
 }
 
-} // namespace game::GUI
+} // namespace game::gui
 

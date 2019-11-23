@@ -20,8 +20,14 @@ namespace events
 CREATE_EXCEPTION_CLASS(ActionHandler,
                        ADD_EXCEPTION_CODE(UNKNOWN_ACTION))
 
+/**
+ * @brief Manage the actions of the engine
+ */
 class ActionHandler
 {
+    /**
+     * @brief Action structure
+     */
     struct Action
     {
         std::string name;
@@ -30,7 +36,8 @@ class ActionHandler
     };
 
   public:
-    static void addAction(std::string name, std::function<void(void)> func,
+    static void addAction(const std::string& name,
+                          const std::function<void()>& func,
                           const KeyBinding& keyBinding = {});
 
     static KeyBinding getKeyBinding(const std::string& name);
@@ -44,12 +51,12 @@ class ActionHandler
 #endif
 
   protected:
-    static ActionHandler instance;
+    static ActionHandler instance; ///< Singleton instance
     ActionHandler() = default;
 
     static void execute(const Action& action);
-
-    std::list<Action> m_actions;
+  private:
+    std::list<Action> m_actions; ///< List of the actions
 };
 
 } // namespace events

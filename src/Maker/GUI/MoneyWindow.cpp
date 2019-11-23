@@ -2,7 +2,7 @@
 #include <glog/logging.h>
 #include <Popups.hpp>
 
-namespace maker::GUI
+namespace maker::gui
 {
 
 /**
@@ -88,5 +88,5 @@ void MoneyWindow::doSaveMoney()
     m_maker->saveMoney(m_infos);
 }
 
-} // namespace maker::GUI
+} // namespace maker::gui
 
