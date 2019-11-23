@@ -16,4 +16,9 @@ add_custom_command(TARGET Quest_test POST_BUILD
   COMMENT "Copying test data output directory")
 endif()
 
-
+add_custom_command(TARGET Quest_test
+    POST_BUILD
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/..
+    COMMAND lcov -c -i -d . -o Coverage.info
+    COMMAND genhtml Coverage.info --output-directory ${CMAKE_CURRENT_SOURCE_DIR}/../Coverage
+)

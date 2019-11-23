@@ -60,6 +60,8 @@ if(BUILD_USE_FILESYSTEM)
 endif()
 if (RPG_BUILD_TEST)
     enable_testing()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
+    set(CMAKE_LD_FLAGS "${CMAKE_LD_FLAGS} -fprofile-arcs -ftest-coverage")
 endif()
 
 include(documentation)

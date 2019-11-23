@@ -6,10 +6,6 @@ compiler:
   - gcc
 
 cache: ccache
-cache:
-    directories:
-     - /home/travis/build/mescourrou/RPGEngine/build/
-     - /home/travis/build/mescourrou/RPGEngine/bw-output/
 
 env:
   global:
@@ -47,11 +43,14 @@ install:
   - sudo apt-get install -y libflac++-dev libvorbis-dev 
   - sudo apt-get install -y libxrandr-dev
   - sudo apt-get install -y doxygen
+  - sudo apt-get install -y lcov
+  - sudo ln -s /usr/bin/lcov-8 /usr/local/bin/lcov
+  - gcov --version
 
 before_script:
   - export REPO=`pwd`
-  - export GTEST_OUTPUT="xml:test_output.xml"
   - ./configure
+  - mkdir -p build
   # switch to build directory
   - cd build
   # run cmake;
@@ -62,7 +61,7 @@ script:
 
 after_script:
   - cd ${REPO}
-  - ls -la bin/Database/unit_tests
+  - ls -la build/bin/Database/unit_tests
   - sonar-scanner -X
 
 before_deploy:
