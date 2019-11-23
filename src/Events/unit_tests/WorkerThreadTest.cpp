@@ -47,7 +47,7 @@ TEST_F(WorkerThreadTest, WaitForJoin)
     auto cb = [&]()
     {
         active = true;
-        usleep(1000);
+        usleep(10000);
         active = false;
     };
 
