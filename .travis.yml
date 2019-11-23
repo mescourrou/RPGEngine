@@ -30,6 +30,11 @@ before_install:
   - sudo apt-get update
 
 install:
+  - wget http://archive.ubuntu.com/ubuntu/pool/universe/a/astyle/astyle_3.1-1ubuntu2_i386.deb
+  - wget http://archive.ubuntu.com/ubuntu/pool/main/g/glibc/libc6_2.27-3ubuntu1_i386.deb
+  - wget http://archive.ubuntu.com/ubuntu/pool/main/g/gcc-8/libstdc++6_8.3.0-6ubuntu1~18.04.1_i386.deb
+  - sudo dpkg --install libstdc++6_8.3.0-6ubuntu1~18.04.1_i386.deb libc6_2.27-3ubuntu1_i386.deb
+  - sudo dpkg --install astyle_3.1-1ubuntu2_i386.deb
   - npm install typescript-tools --save-dev
   - npm install typescript --save-dev
   - sudo apt-get install -y gcc-8 g++-8
@@ -43,8 +48,6 @@ install:
   - sudo apt-get install -y libflac++-dev libvorbis-dev 
   - sudo apt-get install -y libxrandr-dev
   - sudo apt-get install -y doxygen
-  - sudo apt-get install -y astyle
-  - astyle --version
 
 before_script:
   - ./configure
