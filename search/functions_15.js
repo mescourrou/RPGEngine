@@ -7,5 +7,8 @@ var searchData=
   ['window',['Window',['../class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc',1,'ImGui::Window']]],
   ['windowslist',['windowsList',['../class_im_gui_1_1_windows_manager.html#a87a27506a47a97abaa42655af9e258fd',1,'ImGui::WindowsManager']]],
   ['windowsmanager',['WindowsManager',['../class_im_gui_1_1_windows_manager.html#a71af026699a96c962c579e259455f069',1,'ImGui::WindowsManager']]],
-  ['work',['Work',['../classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b',1,'events::Work::Work()'],['../classevents_1_1_work_3_01void_01_4.html#ab1afb76ef8d0c5707a3bdf5609957844',1,'events::Work&lt; void &gt;::Work()']]]
+  ['work',['Work',['../classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b',1,'events::Work::Work()'],['../classevents_1_1_work_3_01void_01_4.html#ab1afb76ef8d0c5707a3bdf5609957844',1,'events::Work&lt; void &gt;::Work()']]],
+  ['writefooter',['writeFooter',['../class_instrumentor.html#a10e64bc7ba1f480817f8fe4c378b76fe',1,'Instrumentor']]],
+  ['writeheader',['writeHeader',['../class_instrumentor.html#abf0e8e4528d1ddd3d6f8eb026032065c',1,'Instrumentor']]],
+  ['writeprofile',['writeProfile',['../class_instrumentor.html#aad96a49c8aaf6c3462e8a6b107141fdb',1,'Instrumentor']]]
 ];

@@ -6,6 +6,7 @@ var searchData=
   ['initializeadditionnalvalues',['initializeAdditionnalValues',['../classobject_1_1_money.html#a26c23a05b9112186f6e54516391a87fe',1,'object::Money::initializeAdditionnalValues(const std::pair&lt; std::string, unsigned int &gt; &amp;value, Args...values)'],['../classobject_1_1_money.html#a2d52c3a6e94536f0ad3154c1d3d0f7d6',1,'object::Money::initializeAdditionnalValues(const std::pair&lt; std::string, unsigned int &gt; &amp;value)']]],
   ['initializefromdatabase',['initializeFromDatabase',['../classobject_1_1_money.html#a0470654e18e79b7d7a64dd2e97427f78',1,'object::Money']]],
   ['insertquery',['InsertQuery',['../classdatabase_1_1_insert_query.html#a07994a0c1b087c9d13c104c52abaf791',1,'database::InsertQuery']]],
+  ['instrumentationtimer',['InstrumentationTimer',['../class_instrumentation_timer.html#afbe6d6632ac2b01e347408e692db4f49',1,'InstrumentationTimer']]],
   ['intersect',['intersect',['../classmap_1_1_area.html#afa370bd6a9b1e1202166a65aed632352',1,'map::Area']]],
   ['intersectxhalfline',['intersectXHalfLine',['../classmap_1_1_area.html#ade24410f699926c89eba6e133ed8f5e3',1,'map::Area']]],
   ['intersectyhalfline',['intersectYHalfLine',['../classmap_1_1_area.html#acf9a40270d1d69fd9116fbe37db5f19d',1,'map::Area']]],

@@ -31,8 +31,12 @@ var annotated_dup =
     [ "BaseGUIObject", "class_base_g_u_i_object.html", "class_base_g_u_i_object" ],
     [ "BaseObject", "class_base_object.html", "class_base_object" ],
     [ "Counter", "class_counter.html", "class_counter" ],
+    [ "InstrumentationSession", "struct_instrumentation_session.html", "struct_instrumentation_session" ],
+    [ "InstrumentationTimer", "class_instrumentation_timer.html", "class_instrumentation_timer" ],
+    [ "Instrumentor", "class_instrumentor.html", "class_instrumentor" ],
     [ "Logger", "class_logger.html", "class_logger" ],
     [ "PerformanceTimer", "class_performance_timer.html", "class_performance_timer" ],
+    [ "ProfileResult", "struct_profile_result.html", "struct_profile_result" ],
     [ "StateMachine", "class_state_machine.html", "class_state_machine" ],
     [ "stringlist_batch", "classstringlist__batch.html", "classstringlist__batch" ],
     [ "Tools", "class_tools.html", "class_tools" ]

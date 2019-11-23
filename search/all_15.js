@@ -12,5 +12,8 @@ var searchData=
   ['work',['Work',['../classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b',1,'events::Work::Work()'],['../classevents_1_1_work_3_01void_01_4.html#ab1afb76ef8d0c5707a3bdf5609957844',1,'events::Work&lt; void &gt;::Work()']]],
   ['work',['Work',['../classevents_1_1_work.html',1,'events']]],
   ['work_3c_20void_20_3e',['Work&lt; void &gt;',['../classevents_1_1_work_3_01void_01_4.html',1,'events']]],
-  ['workerthread',['WorkerThread',['../classevents_1_1_worker_thread.html',1,'events']]]
+  ['workerthread',['WorkerThread',['../classevents_1_1_worker_thread.html',1,'events']]],
+  ['writefooter',['writeFooter',['../class_instrumentor.html#a10e64bc7ba1f480817f8fe4c378b76fe',1,'Instrumentor']]],
+  ['writeheader',['writeHeader',['../class_instrumentor.html#abf0e8e4528d1ddd3d6f8eb026032065c',1,'Instrumentor']]],
+  ['writeprofile',['writeProfile',['../class_instrumentor.html#aad96a49c8aaf6c3462e8a6b107141fdb',1,'Instrumentor']]]
 ];

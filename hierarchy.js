@@ -15,6 +15,7 @@ var hierarchy =
           [ "character::Vendor", "classcharacter_1_1_vendor.html", null ]
         ] ]
       ] ],
+      [ "config::Config", "classconfig_1_1_config.html", null ],
       [ "config::Context", "classconfig_1_1_context.html", null ],
       [ "database::Database", "classdatabase_1_1_database.html", null ],
       [ "events::EventLoop", "classevents_1_1_event_loop.html", null ],
@@ -52,6 +53,9 @@ var hierarchy =
     [ "database::Query::FindQueryType< Query::INSERT >", "structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_i_n_s_e_r_t_01_4.html", null ],
     [ "database::Query::FindQueryType< Query::SELECT >", "structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_s_e_l_e_c_t_01_4.html", null ],
     [ "database::Query::FindQueryType< Query::UPDATE >", "structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_u_p_d_a_t_e_01_4.html", null ],
+    [ "InstrumentationSession", "struct_instrumentation_session.html", null ],
+    [ "InstrumentationTimer", "class_instrumentation_timer.html", null ],
+    [ "Instrumentor", "class_instrumentor.html", null ],
     [ "events::KeyBinding", "classevents_1_1_key_binding.html", null ],
     [ "LogSink", null, [
       [ "Logger", "class_logger.html", null ]
@@ -60,6 +64,7 @@ var hierarchy =
     [ "maker::gui::MakerGUI::UI::OpenGame", "structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html", null ],
     [ "PerformanceTimer", "class_performance_timer.html", null ],
     [ "ImGui::Popups", "class_im_gui_1_1_popups.html", null ],
+    [ "ProfileResult", "struct_profile_result.html", null ],
     [ "Query", null, [
       [ "database::CreateQuery", "classdatabase_1_1_create_query.html", null ],
       [ "database::DeleteQuery", "classdatabase_1_1_delete_query.html", null ],

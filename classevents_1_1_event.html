@@ -154,7 +154,7 @@ class events::Event&lt; Args &gt;</h3>
 <p>Handle subsciption to an event and triggering it. </p>
 <p>See <a class="el" href="classevents_1_1_event_3_01void_01_4.html">Event&lt;void&gt;</a> for event without arguments</p>
 <p>Example: </p><div class="fragment"><div class="line">Event&lt;int&gt; event;</div><div class="line"><span class="keywordtype">bool</span> argCb = <span class="keyword">false</span>;</div><div class="line"><span class="keyword">auto</span> cb = [&amp;argCb] (<span class="keywordtype">int</span> number) {</div><div class="line">    <span class="keywordflow">if</span> (number == 3)</div><div class="line">        argCb = <span class="keyword">true</span>;</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">event</span>.subscribe(cb);</div><div class="line"></div><div class="line"><span class="keyword">event</span>.trigger(3);</div></div><!-- fragment --><p>With an object method, you need to use std::bin. </p><div class="fragment"><div class="line">Event&lt;std::string&gt; event;</div><div class="line">AClass o;</div><div class="line"></div><div class="line">e2.subscribe(std::bind(&amp;AClass::argMethod, &amp;o, std::placeholders::_1));</div><div class="line"></div><div class="line">e2.trigger(<span class="stringliteral">&quot;Hello&quot;</span>);</div></div><!-- fragment --> 
-<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00059">59</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00060">60</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="a5f2f2deb6d6cc300c71baa7f3e18d09e"></a>
 <div class="memitem">
@@ -188,7 +188,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00081">81</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00082">82</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -237,7 +237,7 @@ template&lt;typename T , typename M &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00100">100</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00103">103</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -273,7 +273,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00089">89</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00091">91</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -322,7 +322,7 @@ template&lt;typename T , typename M &gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00113">113</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00117">117</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>
@@ -350,7 +350,7 @@ template&lt;typename... Args&gt; </div>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00133">133</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_event_8hpp_source.html#l00138">138</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 
 </div>
 </div>

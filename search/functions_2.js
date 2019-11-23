@@ -11,7 +11,7 @@ var searchData=
   ['column',['column',['../classdatabase_1_1_select_query.html#a73da69d54efc8bc5cd7d462ea3b3b8c5',1,'database::SelectQuery::column()'],['../classdatabase_1_1_create_query.html#ab8cf256eaf7b4c83406399d977869beb',1,'database::CreateQuery::column()']]],
   ['columnlist',['columnList',['../classdatabase_1_1_database.html#ac693b392838f1be0a67553acf50963a6',1,'database::Database']]],
   ['columnstype',['columnsType',['../classdatabase_1_1_database.html#a4d29aca81401bbdcdce09e7b4c0a2d57',1,'database::Database']]],
-  ['config',['config',['../classconfig_1_1_context.html#ad4e383763bac5b1162a42fad16373db5',1,'config::Context']]],
+  ['config',['Config',['../classconfig_1_1_config.html#a406fd596b8db4ee66e2e431b29beb7a4',1,'config::Config::Config()'],['../classconfig_1_1_config.html#aff1e0fe79fa6859e3cb8b8a22eac9be0',1,'config::Config::Config(const std::string &amp;filename)'],['../classconfig_1_1_context.html#ad4e383763bac5b1162a42fad16373db5',1,'config::Context::config()']]],
   ['connectsignals',['connectSignals',['../classcharacter_1_1gui_1_1_character_g_u_i.html#a2593269ad48d1cdea8aecf7180f3250c',1,'character::gui::CharacterGUI::connectSignals(game::gui::GameGUI *game, CharacterGUI *character, bool player=false)'],['../classcharacter_1_1gui_1_1_character_g_u_i.html#a2e0eb533f050686d796b227254d485bc',1,'character::gui::CharacterGUI::connectSignals(Character *, CharacterGUI *, bool=false)']]],
   ['constraint',['constraint',['../classdatabase_1_1_create_query.html#ae34ab7a105a7c320cc96cebfc19796df',1,'database::CreateQuery']]],
   ['context',['Context',['../classconfig_1_1_context.html#aa11596f6c1fd51a3b1b8f46eaa23b858',1,'config::Context']]],

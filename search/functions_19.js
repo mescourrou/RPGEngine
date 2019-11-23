@@ -7,6 +7,7 @@ var searchData=
   ['_7edatabase',['~Database',['../classdatabase_1_1_database.html#a43daa39d5dd4b057a63221d75c4f90c2',1,'database::Database']]],
   ['_7eevent',['~Event',['../classevents_1_1_event.html#a6d7f85207fe0b905ca4b8247e930837a',1,'events::Event']]],
   ['_7egameloader',['~GameLoader',['../classgame_1_1_game_loader.html#a7bc64b550b4103c28f91bb01974bafa0',1,'game::GameLoader']]],
+  ['_7einstrumentationtimer',['~InstrumentationTimer',['../class_instrumentation_timer.html#a16d4d0333bd9bdbdfe0341ff07f26a3b',1,'InstrumentationTimer']]],
   ['_7einventory',['~Inventory',['../classobject_1_1_inventory.html#af917da8ee7b4704c5f454226999d5216',1,'object::Inventory']]],
   ['_7emakergui',['~MakerGUI',['../classmaker_1_1gui_1_1_maker_g_u_i.html#adc24065947d64b74123309c60b0608c0',1,'maker::gui::MakerGUI']]],
   ['_7emap',['~Map',['../classmap_1_1_map.html#a0d985d50b35f42b119fe33018af1b50d',1,'map::Map']]],

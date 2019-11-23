@@ -91,6 +91,19 @@
               </section>
             </section>
             <section title="config" ref="namespaceconfig.html">
+              <section title="Config" ref="classconfig_1_1_config.html">
+                <section title="Config" ref="classconfig_1_1_config.html#a406fd596b8db4ee66e2e431b29beb7a4" />
+                <section title="Config" ref="classconfig_1_1_config.html#aff1e0fe79fa6859e3cb8b8a22eac9be0" />
+                <section title="~Config" ref="classconfig_1_1_config.html#a9e6ac6b58abbcab667def9104254b8c5" />
+                <section title="getAllSections" ref="classconfig_1_1_config.html#a49c07725c7aeac4425774fe1d995feef" />
+                <section title="getAllValues" ref="classconfig_1_1_config.html#a7e66ece0be45dec34f219d9226edc6bc" />
+                <section title="getValue" ref="classconfig_1_1_config.html#a42ca9a02728f05446b0aba72ac379d45" />
+                <section title="getValue" ref="classconfig_1_1_config.html#a7fffa0083f4e7f5d2b03d036663d2ef1" />
+                <section title="loadFile" ref="classconfig_1_1_config.html#a21bbc182a450f60e203cad3f6e772c2b" />
+                <section title="saveToFile" ref="classconfig_1_1_config.html#ae5571e7b13f8a9a229a4c1b81785a73e" />
+                <section title="setValue" ref="classconfig_1_1_config.html#a1895ec17fd953511f4cd41ebbc7cbaf3" />
+                <section title="signalConfigUpdated" ref="classconfig_1_1_config.html#aa762520f7c9a8cf8db8bcca0353dcfb8" />
+              </section>
               <section title="Context" ref="classconfig_1_1_context.html">
                 <section title="Context" ref="classconfig_1_1_context.html#aa11596f6c1fd51a3b1b8f46eaa23b858" />
                 <section title="~Context" ref="classconfig_1_1_context.html#ad10f52b7ccb86f1350174188b9eaf4ca" />
@@ -615,6 +628,24 @@
               <section title="~Counter" ref="class_counter.html#a837a36624edb4cfcac1140eada2d0e5f" />
               <section title="number" ref="class_counter.html#a876de96fd188e988fd78c6be466256d5" />
             </section>
+            <section title="InstrumentationSession" ref="struct_instrumentation_session.html">
+              <section title="name" ref="struct_instrumentation_session.html#a20ac740022b4aaf629500e71a66ab490" />
+            </section>
+            <section title="InstrumentationTimer" ref="class_instrumentation_timer.html">
+              <section title="InstrumentationTimer" ref="class_instrumentation_timer.html#afbe6d6632ac2b01e347408e692db4f49" />
+              <section title="~InstrumentationTimer" ref="class_instrumentation_timer.html#a16d4d0333bd9bdbdfe0341ff07f26a3b" />
+              <section title="InstrumentationTimer" ref="class_instrumentation_timer.html#aa4393f1ac11d34e5e240d1d9bd69eee7" />
+              <section title="InstrumentationTimer" ref="class_instrumentation_timer.html#a0bd98b0f973c8cce498440970e09360b" />
+              <section title="stop" ref="class_instrumentation_timer.html#a4ba9b94c61ccb153ae6b3f7cc6c25f37" />
+            </section>
+            <section title="Instrumentor" ref="class_instrumentor.html">
+              <section title="beginSession" ref="class_instrumentor.html#a296f9e066d77830d70b69e9cfa53adbb" />
+              <section title="beginSession" ref="class_instrumentor.html#ae651c18fd5baddceee92c894cc1685b8" />
+              <section title="endSession" ref="class_instrumentor.html#a0422729e885ec6dbf9f5bb2a201cbd9f" />
+              <section title="writeFooter" ref="class_instrumentor.html#a10e64bc7ba1f480817f8fe4c378b76fe" />
+              <section title="writeHeader" ref="class_instrumentor.html#abf0e8e4528d1ddd3d6f8eb026032065c" />
+              <section title="writeProfile" ref="class_instrumentor.html#aad96a49c8aaf6c3462e8a6b107141fdb" />
+            </section>
             <section title="Logger" ref="class_logger.html">
               <section title="send" ref="class_logger.html#a6af7dd7acd8250cd64fba6ab075fa99e" />
             </section>
@@ -624,6 +655,12 @@
               <section title="m_clock" ref="class_performance_timer.html#ad6c87adde8f4427b0ce1ceb0e1e0465d" />
               <section title="m_name" ref="class_performance_timer.html#a64093f7245681341f7a7c8a6832e3de0" />
               <section title="m_printInfos" ref="class_performance_timer.html#ab256036769683c1c1800761af7c0bc47" />
+            </section>
+            <section title="ProfileResult" ref="struct_profile_result.html">
+              <section title="end" ref="struct_profile_result.html#a31048b69fcde88bbcd6289be33ce96a2" />
+              <section title="name" ref="struct_profile_result.html#a4969975dff8a4e7d110dab7cba677171" />
+              <section title="start" ref="struct_profile_result.html#a55679c12a6919106a69676165bbaea7d" />
+              <section title="threadID" ref="struct_profile_result.html#a6ab9f66cf8808a9bc7dad3f164465d84" />
             </section>
             <section title="StateMachine" ref="class_state_machine.html">
               <section title="StateMachine" ref="class_state_machine.html#aa5aa46d549d363b2026cf65e4e75c514" />
@@ -676,6 +713,7 @@
                   <section title="character::Vendor" ref="classcharacter_1_1_vendor.html" />
                 </section>
               </section>
+              <section title="config::Config" ref="classconfig_1_1_config.html" />
               <section title="config::Context" ref="classconfig_1_1_context.html" />
               <section title="database::Database" ref="classdatabase_1_1_database.html" />
               <section title="events::EventLoop" ref="classevents_1_1_event_loop.html" />
@@ -713,6 +751,9 @@
             <section title="database::Query::FindQueryType&lt; Query::INSERT &gt;" ref="structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_i_n_s_e_r_t_01_4.html" />
             <section title="database::Query::FindQueryType&lt; Query::SELECT &gt;" ref="structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_s_e_l_e_c_t_01_4.html" />
             <section title="database::Query::FindQueryType&lt; Query::UPDATE &gt;" ref="structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_u_p_d_a_t_e_01_4.html" />
+            <section title="InstrumentationSession" ref="struct_instrumentation_session.html" />
+            <section title="InstrumentationTimer" ref="class_instrumentation_timer.html" />
+            <section title="Instrumentor" ref="class_instrumentor.html" />
             <section title="events::KeyBinding" ref="classevents_1_1_key_binding.html" />
             <section title="LogSink">
               <section title="Logger" ref="class_logger.html" />
@@ -721,6 +762,7 @@
             <section title="maker::gui::MakerGUI::UI::OpenGame" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html" />
             <section title="PerformanceTimer" ref="class_performance_timer.html" />
             <section title="ImGui::Popups" ref="class_im_gui_1_1_popups.html" />
+            <section title="ProfileResult" ref="struct_profile_result.html" />
             <section title="Query">
               <section title="database::CreateQuery" ref="classdatabase_1_1_create_query.html" />
               <section title="database::DeleteQuery" ref="classdatabase_1_1_delete_query.html" />
@@ -980,6 +1022,10 @@
                   <section title="CREATE_EXCEPTION_CLASS" ref="_base_exception_8hpp.html#a3919bcf4908821a246761a1329df05db" />
                 </section>
                 <section title="Counter.hpp" ref="_counter_8hpp_source.html" />
+                <section title="InstrumentationTimer.cpp" ref="_instrumentation_timer_8cpp_source.html" />
+                <section title="InstrumentationTimer.hpp" ref="_instrumentation_timer_8hpp_source.html" />
+                <section title="Instrumentor.cpp" ref="_instrumentor_8cpp_source.html" />
+                <section title="Instrumentor.hpp" ref="_instrumentor_8hpp_source.html" />
                 <section title="Logger.cpp" ref="_logger_8cpp_source.html" />
                 <section title="Logger.hpp" ref="_logger_8hpp_source.html" />
                 <section title="PerformanceTimer.cpp" ref="_performance_timer_8cpp_source.html" />
@@ -1012,6 +1058,7 @@
       <keyword name="code" id="BaseException::code" ref="class_base_exception.html#a02a90f8017de9c98c4ea3b48bf417781" />
       <keyword name="UNKNOWN" id="BaseException::UNKNOWN" ref="class_base_exception.html#a43043a3d2eddfa6de03341b74fbd73c1" />
       <keyword name="MUTEX" id="BaseException::MUTEX" ref="class_base_exception.html#ab73f95a38d32365c57c72c42c53e1b4b" />
+      <keyword name="LOADING" id="BaseException::LOADING" ref="class_base_exception.html#a4b8430ef1bb875be0e7910aed3f2ed30" />
       <keyword name="m_what" id="BaseException::m_what" ref="class_base_exception.html#a8d9bf453111e8c7bcab9e260dd717f22" />
       <keyword name="m_code" id="BaseException::m_code" ref="class_base_exception.html#ae9078b125ee16e27b4856ac85db4f435" />
       <keyword name="BaseException::Errors" id="BaseException::Errors" ref="class_base_exception_1_1_errors.html" />
@@ -1039,6 +1086,22 @@
       <keyword name="Counter" id="Counter" ref="class_counter.html" />
       <keyword name="Counter" id="Counter::Counter" ref="class_counter.html#a5582e98f3d04360881bbb6d51433ac42" />
       <keyword name="number" id="Counter::number" ref="class_counter.html#a876de96fd188e988fd78c6be466256d5" />
+      <keyword name="InstrumentationSession" id="InstrumentationSession" ref="struct_instrumentation_session.html" />
+      <keyword name="name" id="InstrumentationSession::name" ref="struct_instrumentation_session.html#a20ac740022b4aaf629500e71a66ab490" />
+      <keyword name="InstrumentationTimer" id="InstrumentationTimer" ref="class_instrumentation_timer.html" />
+      <keyword name="InstrumentationTimer" id="InstrumentationTimer::InstrumentationTimer" ref="class_instrumentation_timer.html#afbe6d6632ac2b01e347408e692db4f49" />
+      <keyword name="~InstrumentationTimer" id="InstrumentationTimer::~InstrumentationTimer" ref="class_instrumentation_timer.html#a16d4d0333bd9bdbdfe0341ff07f26a3b" />
+      <keyword name="InstrumentationTimer" id="InstrumentationTimer::InstrumentationTimer" ref="class_instrumentation_timer.html#aa4393f1ac11d34e5e240d1d9bd69eee7" />
+      <keyword name="InstrumentationTimer" id="InstrumentationTimer::InstrumentationTimer" ref="class_instrumentation_timer.html#a0bd98b0f973c8cce498440970e09360b" />
+      <keyword name="stop" id="InstrumentationTimer::stop" ref="class_instrumentation_timer.html#a4ba9b94c61ccb153ae6b3f7cc6c25f37" />
+      <keyword name="Instrumentor" id="Instrumentor" ref="class_instrumentor.html" />
+      <keyword name="beginSession" id="Instrumentor::beginSession" ref="class_instrumentor.html#a296f9e066d77830d70b69e9cfa53adbb" />
+      <keyword name="beginSession" id="Instrumentor::beginSession" ref="class_instrumentor.html#ae651c18fd5baddceee92c894cc1685b8" />
+      <keyword name="endSession" id="Instrumentor::endSession" ref="class_instrumentor.html#a0422729e885ec6dbf9f5bb2a201cbd9f" />
+      <keyword name="writeProfile" id="Instrumentor::writeProfile" ref="class_instrumentor.html#aad96a49c8aaf6c3462e8a6b107141fdb" />
+      <keyword name="writeHeader" id="Instrumentor::writeHeader" ref="class_instrumentor.html#abf0e8e4528d1ddd3d6f8eb026032065c" />
+      <keyword name="writeFooter" id="Instrumentor::writeFooter" ref="class_instrumentor.html#a10e64bc7ba1f480817f8fe4c378b76fe" />
+      <keyword name="get" id="Instrumentor::get" ref="class_instrumentor.html#a8793c93dc5f35884e825eb6c26894158" />
       <keyword name="Logger" id="Logger" ref="class_logger.html" />
       <keyword name="send" id="Logger::send" ref="class_logger.html#a6af7dd7acd8250cd64fba6ab075fa99e" />
       <keyword name="getInstance" id="Logger::getInstance" ref="class_logger.html#acebb37f5538780e6c14f13de6ec497bc" />
@@ -1051,6 +1114,11 @@
       <keyword name="m_printInfos" id="PerformanceTimer::m_printInfos" ref="class_performance_timer.html#ab256036769683c1c1800761af7c0bc47" />
       <keyword name="m_clock" id="PerformanceTimer::m_clock" ref="class_performance_timer.html#ad6c87adde8f4427b0ce1ceb0e1e0465d" />
       <keyword name="m_informations" id="PerformanceTimer::m_informations" ref="class_performance_timer.html#a1b0cdf01e1e9e1b3e76127a8a3dabcf5" />
+      <keyword name="ProfileResult" id="ProfileResult" ref="struct_profile_result.html" />
+      <keyword name="name" id="ProfileResult::name" ref="struct_profile_result.html#a4969975dff8a4e7d110dab7cba677171" />
+      <keyword name="start" id="ProfileResult::start" ref="struct_profile_result.html#a55679c12a6919106a69676165bbaea7d" />
+      <keyword name="end" id="ProfileResult::end" ref="struct_profile_result.html#a31048b69fcde88bbcd6289be33ce96a2" />
+      <keyword name="threadID" id="ProfileResult::threadID" ref="struct_profile_result.html#a6ab9f66cf8808a9bc7dad3f164465d84" />
       <keyword name="StateMachine" id="StateMachine" ref="class_state_machine.html" />
       <keyword name="StateMachine" id="StateMachine::StateMachine" ref="class_state_machine.html#aa5aa46d549d363b2026cf65e4e75c514" />
       <keyword name="addEntryStateAction" id="StateMachine::addEntryStateAction" ref="class_state_machine.html#a4cb6aecc5806bc63bca899d10ea0a8b5" />
@@ -1191,6 +1259,22 @@
       <keyword name="connectSignals" id="character::gui::CharacterGUI::connectSignals" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a2e0eb533f050686d796b227254d485bc" />
       <keyword name="draw" id="character::gui::CharacterGUI::draw" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a34f6cd024e11b01423a485a49884bfd0" />
       <keyword name="config" id="config" ref="namespaceconfig.html" />
+      <keyword name="config::Config" id="config::Config" ref="classconfig_1_1_config.html" />
+      <keyword name="Config" id="config::Config::Config" ref="classconfig_1_1_config.html#a406fd596b8db4ee66e2e431b29beb7a4" />
+      <keyword name="Config" id="config::Config::Config" ref="classconfig_1_1_config.html#aff1e0fe79fa6859e3cb8b8a22eac9be0" />
+      <keyword name="loadFile" id="config::Config::loadFile" ref="classconfig_1_1_config.html#a21bbc182a450f60e203cad3f6e772c2b" />
+      <keyword name="saveToFile" id="config::Config::saveToFile" ref="classconfig_1_1_config.html#ae5571e7b13f8a9a229a4c1b81785a73e" />
+      <keyword name="getValue" id="config::Config::getValue" ref="classconfig_1_1_config.html#a42ca9a02728f05446b0aba72ac379d45" />
+      <keyword name="getValue" id="config::Config::getValue" ref="classconfig_1_1_config.html#a7fffa0083f4e7f5d2b03d036663d2ef1" />
+      <keyword name="getAllValues" id="config::Config::getAllValues" ref="classconfig_1_1_config.html#a7e66ece0be45dec34f219d9226edc6bc" />
+      <keyword name="getAllSections" id="config::Config::getAllSections" ref="classconfig_1_1_config.html#a49c07725c7aeac4425774fe1d995feef" />
+      <keyword name="setValue" id="config::Config::setValue" ref="classconfig_1_1_config.html#a1895ec17fd953511f4cd41ebbc7cbaf3" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
+      <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
+      <keyword name="signalConfigUpdated" id="config::Config::signalConfigUpdated" ref="classconfig_1_1_config.html#aa762520f7c9a8cf8db8bcca0353dcfb8" />
       <keyword name="config::Context" id="config::Context" ref="classconfig_1_1_context.html" />
       <keyword name="Context" id="config::Context::Context" ref="classconfig_1_1_context.html#aa11596f6c1fd51a3b1b8f46eaa23b858" />
       <keyword name="runtimeDirectory" id="config::Context::runtimeDirectory" ref="classconfig_1_1_context.html#a4422de766211adcd893dcf8a575c4538" />
@@ -1838,6 +1922,10 @@
       <file>_window_8hpp_source.html</file>
       <file>_windows_manager_8cpp_source.html</file>
       <file>_windows_manager_8hpp_source.html</file>
+      <file>_instrumentation_timer_8cpp_source.html</file>
+      <file>_instrumentation_timer_8hpp_source.html</file>
+      <file>_instrumentor_8cpp_source.html</file>
+      <file>_instrumentor_8hpp_source.html</file>
       <file>_logger_8cpp_source.html</file>
       <file>_logger_8hpp_source.html</file>
       <file>_performance_timer_8cpp_source.html</file>
@@ -1864,11 +1952,19 @@
       <file>class_base_object-members.html</file>
       <file>class_counter.html</file>
       <file>class_counter-members.html</file>
+      <file>struct_instrumentation_session.html</file>
+      <file>struct_instrumentation_session-members.html</file>
+      <file>class_instrumentation_timer.html</file>
+      <file>class_instrumentation_timer-members.html</file>
+      <file>class_instrumentor.html</file>
+      <file>class_instrumentor-members.html</file>
       <file>class_logger.html</file>
       <file>class_logger.png</file>
       <file>class_logger-members.html</file>
       <file>class_performance_timer.html</file>
       <file>class_performance_timer-members.html</file>
+      <file>struct_profile_result.html</file>
+      <file>struct_profile_result-members.html</file>
       <file>class_state_machine.html</file>
       <file>class_state_machine-members.html</file>
       <file>classstringlist__batch.html</file>
@@ -1889,6 +1985,9 @@
       <file>classcharacter_1_1gui_1_1_character_g_u_i.png</file>
       <file>classcharacter_1_1gui_1_1_character_g_u_i-members.html</file>
       <file>namespaceconfig.html</file>
+      <file>classconfig_1_1_config.html</file>
+      <file>classconfig_1_1_config.png</file>
+      <file>classconfig_1_1_config-members.html</file>
       <file>classconfig_1_1_context.html</file>
       <file>classconfig_1_1_context.png</file>
       <file>classconfig_1_1_context-members.html</file>
@@ -2106,6 +2205,9 @@
       <file>functions_func_y.html</file>
       <file>functions_func_z.html</file>
       <file>functions_func_0x7e.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
+      <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
