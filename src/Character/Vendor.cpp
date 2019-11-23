@@ -12,7 +12,8 @@ namespace character
  * @param name Name of the Vendor
  * @param context Context used
  */
-Vendor::Vendor(const std::string& name, std::shared_ptr<config::Context> context) :
+Vendor::Vendor(const std::string& name,
+               std::shared_ptr<config::Context> context) :
     NPC(std::move(name), context)
 {
 
@@ -52,7 +53,8 @@ bool Vendor::sell(const std::string& objectName, Character& buyer)
 {
     if (!privateInventory()->get(objectName))
         return false;
-    if (buyer.inventory().lock()->pullMoney(privateInventory()->get(objectName)->value()))
+    if (buyer.inventory().lock()->pullMoney(privateInventory()->get(
+            objectName)->value()))
     {
         privateInventory()->addMoney(privateInventory()->get(objectName)->value());
         auto object = privateInventory()->pop(objectName);
@@ -75,7 +77,8 @@ bool Vendor::sell(unsigned int objectInventoryId, Character& buyer)
     if (buyer.inventory().lock()->pullMoney(privateInventory()->get(
             objectInventoryId)->value()))
     {
-        privateInventory()->addMoney(privateInventory()->get(objectInventoryId)->value());
+        privateInventory()->addMoney(privateInventory()->get(
+                                         objectInventoryId)->value());
         auto object = privateInventory()->pop(objectInventoryId);
 
         buyer.inventory().lock()->push(object);
@@ -94,7 +97,8 @@ bool Vendor::buy(const std::string& objectName, Character& seller)
 {
     if (!seller.inventory().lock()->get(objectName))
         return false;
-    if (privateInventory()->pullMoney(seller.inventory().lock()->get(objectName)->value()))
+    if (privateInventory()->pullMoney(seller.inventory().lock()->get(
+                                          objectName)->value()))
     {
         seller.inventory().lock()->addMoney(seller.inventory().lock()->get(
                                                 objectName)->value());
@@ -116,7 +120,7 @@ bool Vendor::buy(unsigned int objectInventoryId, Character& seller)
     if (!seller.inventory().lock()->get(objectInventoryId))
         return false;
     if (privateInventory()->pullMoney(seller.inventory().lock()->get(
-                                   objectInventoryId)->value()))
+                                          objectInventoryId)->value()))
     {
         seller.inventory().lock()->addMoney(seller.inventory().lock()->get(
                                                 objectInventoryId)->value());

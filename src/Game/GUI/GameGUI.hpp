@@ -92,7 +92,7 @@ class GameGUI : public BaseObject
     void managePressingKeyEvent(const sf::Event::KeyEvent& key);
     void manageReleasingKeyEven(const sf::Event::KeyEvent& key);
     void checkKeyPressed();
-
+  private:
     std::vector<std::shared_ptr<BaseGUIObject>>
             m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
     std::weak_ptr<character::gui::CharacterGUI>

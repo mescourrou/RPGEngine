@@ -64,7 +64,8 @@ class Work : public AbstractWork
      * @param func Function to do
      * @param arguments Arguments of the function
      */
-    Work(std::function<void(Args...)> func, Args... arguments) : m_func(func),
+    explicit Work(const std::function<void(Args...)>& func,
+                  Args... arguments) : m_func(func),
         m_arguments(arguments...) {}
     ~Work() override = default;
 
@@ -94,7 +95,7 @@ class Work<void> : public AbstractWork
      * @brief Construct a work with the given function
      * @param func Function to do
      */
-    Work(std::function<void(void)> func) : m_func(func) {}
+    explicit Work(const std::function<void(void)>& func) : m_func(func) {}
     ~Work() override = default;
     /**
      * @brief Run the job

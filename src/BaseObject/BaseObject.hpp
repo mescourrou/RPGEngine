@@ -42,14 +42,14 @@ class BaseObjectTest;
 class BaseObject
 {
   public:
-    BaseObject() = default ;
+    explicit BaseObject() = default ;
     virtual ~BaseObject() = default;
 
     BaseObject(const BaseObject& copy) = default;
     BaseObject(BaseObject&& move) = default;
 
-    virtual BaseObject& operator=(const BaseObject& copy) = default;
-    virtual BaseObject& operator=(BaseObject&& move) = default;
+    BaseObject& operator=(const BaseObject& copy) = default;
+    BaseObject& operator=(BaseObject&& move) = default;
 
     /**
      * @brief Get the class name

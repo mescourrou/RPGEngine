@@ -37,8 +37,8 @@ class CharacterGUI : public BaseGUIObject
   public:
     static void connectSignals(game::gui::GameGUI* game, CharacterGUI* character,
                                bool player = false);
-    static void connectSignals(Character* character, CharacterGUI* characterGUI,
-                               bool player = false);
+    static void connectSignals(Character*, CharacterGUI*,
+                               bool = false);
 
     CharacterGUI(std::weak_ptr<Character> character,
                  std::shared_ptr<config::Context> context);
@@ -70,9 +70,9 @@ class CharacterGUI : public BaseGUIObject
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
   private:
-    static bool verifyJSONTopStructure(const json &json);
-    static bool verifyJSONSpriteSetsStructure(const json &set);
-    bool loadSets(const json& json, const std::string &characterRessourcesDir);
+    static bool verifyJSONTopStructure(const json& json);
+    static bool verifyJSONSpriteSetsStructure(const json& set);
+    bool loadSets(const json& json, const std::string& characterRessourcesDir);
     bool loadActions(const json& json);
 
     std::weak_ptr<Character>

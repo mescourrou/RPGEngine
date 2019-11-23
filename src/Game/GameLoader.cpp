@@ -48,7 +48,7 @@ bool GameLoader::load(const std::string& name)
     {
         m_db.reset(new database::Database(databasePath));
     }
-    catch (const database::DatabaseException& e)
+    catch (const database::DatabaseException&)
     {
         throw;
     }

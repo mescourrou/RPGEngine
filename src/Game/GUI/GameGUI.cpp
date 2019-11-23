@@ -71,7 +71,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
                                m_game->m_playerCharacter->position().y()});
 
     m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](
-                const map::Position& pos)
+                const map::Position & pos)
     {
         m_mapGUI->setCenterOfView({pos.x(), pos.y()});
     });
@@ -391,7 +391,7 @@ void GameGUI::uiSettingsPopup()
     ImGui::EndPopup();
 }
 
-void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent &key)
+void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent& key)
 {
     if (m_actionWaitingForKeybinding.empty())
     {
@@ -400,7 +400,7 @@ void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent &key)
     }
 }
 
-void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent &key)
+void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
 {
     if (m_actionWaitingForKeybinding.empty())
     {

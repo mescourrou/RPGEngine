@@ -362,11 +362,11 @@ CreateQuery& CreateQuery::constraint(const std::string& columnName,
 
     if (std::find_if(m_columns.begin(), m_columns.end(),
                      [&columnName](std::tuple<std::string, DataType, std::string, std::string>& a)
-                    {
-                    if (std::get<0>(a) == columnName)
-                            return true;
-                        return false;
-                    }
+{
+    if (std::get<0>(a) == columnName)
+            return true;
+        return false;
+    }
                     ) == m_columns.end())
     {
         return *this;
@@ -422,9 +422,10 @@ std::string CreateQuery::str() const
                       std::get<0>(column)) != m_notNullColumns.end())
             ss << " NOT NULL";
         if (m_primaryKeyColumns.size() == 1 &&
-                std::find(m_primaryKeyColumns.begin(), m_primaryKeyColumns.end(), std::get<0>(column)) != m_primaryKeyColumns.end())
+                std::find(m_primaryKeyColumns.begin(), m_primaryKeyColumns.end(),
+                          std::get<0>(column)) != m_primaryKeyColumns.end())
         {
-                ss << " PRIMARY KEY";
+            ss << " PRIMARY KEY";
         }
         if (std::find(m_autoincrementColumns.begin(), m_autoincrementColumns.end(),
                       std::get<0>(column)) != m_autoincrementColumns.end())

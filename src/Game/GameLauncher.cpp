@@ -27,7 +27,8 @@ namespace game
  * @param argc Number of arguments in argv
  * @param argv Program arguments
  */
-std::shared_ptr<config::Context> GameLauncher::initializeEnvironment(int argc, char **argv, const std::string& instanceName = "")
+std::shared_ptr<config::Context> GameLauncher::initializeEnvironment(int argc,
+        char** argv, const std::string& instanceName = "")
 {
     google::InitGoogleLogging(argv[0]);
     gflags::SetVersionString(std::to_string(VERSION_MAJOR) + "." + std::to_string(
@@ -39,7 +40,7 @@ std::shared_ptr<config::Context> GameLauncher::initializeEnvironment(int argc, c
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
-    LOG(INFO) << "Starting " << instanceName<< " v" << static_cast<short>
+    LOG(INFO) << "Starting " << instanceName << " v" << static_cast<short>
               (VERSION_MAJOR) << "." <<
               static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
 

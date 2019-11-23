@@ -15,7 +15,7 @@ class NPC : public Character
     DECLARE_BASEOBJECT(NPC)
   public:
     NPC() = delete;
-    NPC(const std::string &name, std::shared_ptr<config::Context> context);
+    NPC(const std::string& name, std::shared_ptr<config::Context> context);
     /// @brief Default constructor
     ~NPC() override = default;
 
@@ -29,9 +29,8 @@ class NPC : public Character
   private:
     static bool verifyNPCModel(std::shared_ptr<database::Database> db);
     static bool verifyNPCPathModel(std::shared_ptr<database::Database> db);
-    std::list<map::Position>
-    m_path;                    ///< List of points to follow
-    map::Position* m_targettedPosition = nullptr;       ///< Current point targetted
+    std::list<map::Position> m_path; ///< List of points to follow
+    map::Position* m_targettedPosition = nullptr; ///< Current point targetted
 
 };
 

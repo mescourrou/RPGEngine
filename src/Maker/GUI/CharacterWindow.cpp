@@ -52,16 +52,16 @@ bool CharacterWindow::doPrepare()
                        Maker::CharacterInformations::VENDOR);
 
     if (strlen(m_title) > 0 && ImGui::Button("Save"))
+    {
+        m_edit.name = m_title;
+        if (m_newOne)
         {
-            m_edit.name = m_title;
-            if (m_newOne)
-            {
-                m_maker->saveCharacter(m_edit);
-                m_newOne = false;
-            }
-            else
-                m_maker->saveCharacter(m_edit, m_current);
-            m_current = m_edit;
+            m_maker->saveCharacter(m_edit);
+            m_newOne = false;
+        }
+        else
+            m_maker->saveCharacter(m_edit, m_current);
+        m_current = m_edit;
     }
     ImGui::Columns();
     if (ImGui::Button("New"))

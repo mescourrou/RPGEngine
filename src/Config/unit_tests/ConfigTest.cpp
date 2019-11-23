@@ -155,7 +155,8 @@ TEST_F(ConfigTest, SetValueWithoutSection)
  */
 TEST_F(ConfigTest, Save)
 {
-    std::filesystem::copy_file("data/sample1.ini", "data/sampleModifyable.ini", std::filesystem::copy_options::overwrite_existing);
+    std::filesystem::copy_file("data/sample1.ini", "data/sampleModifyable.ini",
+                               std::filesystem::copy_options::overwrite_existing);
     Config conf1("data/sampleModifyable.ini");
 
     ASSERT_EQ(conf1.getValue("Section 1", "a_lovely_number"), "8");

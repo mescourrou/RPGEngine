@@ -41,7 +41,8 @@ class GameLauncher : public BaseObject
     friend class game::GameLauncherTest;
 #endif
   public:
-    static std::shared_ptr<config::Context> initializeEnvironment(int argc, char** argv, const std::string &instanceName);
+    static std::shared_ptr<config::Context> initializeEnvironment(int argc,
+            char** argv, const std::string& instanceName);
     GameLauncher(int argc, char** argv);
     /// @brief Destructor
     ~GameLauncher() override = default;
@@ -51,7 +52,7 @@ class GameLauncher : public BaseObject
   protected:
     bool initialize();
   private:
-    void startGame(const std::string &gameName) const;
+    void startGame(const std::string& gameName) const;
     std::shared_ptr<config::Context> m_context;     ///< Context
     std::vector<std::string> m_gameList;            ///< List of the founded games
 };

@@ -95,26 +95,26 @@ void WorkerThread::newWork(const std::function<void(Args...)>& work,
     {
         m_activeThreads++;
         s_instance.m_workers.push_back(std::thread(worker,
-                                     std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
+                                       std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
     }
     m_mutex.unlock();
 }
 
 template<typename I, typename M, typename... Args>
-void WorkerThread::newWork(I* instance, M func, Args ...arguments)
+void WorkerThread::newWork(I* objectInstance, M func, Args ...arguments)
 {
-    newWork([instance, func, arguments...]()
+    newWork([objectInstance, func, arguments...]()
     {
-        std::bind(func, instance, arguments...)();
+        std::bind(func, objectInstance, arguments...)();
     });
 }
 
 template<typename I, typename M>
-void WorkerThread::newWork(I* instance, M func)
+void WorkerThread::newWork(I* objectInstance, M func)
 {
-    newWork([instance, func]()
+    newWork([objectInstance, func]()
     {
-        std::bind(func, instance)();
+        std::bind(func, objectInstance)();
     });
 }
 

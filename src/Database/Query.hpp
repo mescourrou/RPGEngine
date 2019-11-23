@@ -85,7 +85,7 @@ class Query : public BaseObject
      */
     class Column
     {
-    public:
+      public:
         /**
          * @brief Create a column without table
          * @param columnName Name of the column
@@ -112,7 +112,8 @@ class Query : public BaseObject
          * @param columnName Name of the column
          */
         Column(const std::string& tableName,
-               const std::string& columnName) : m_tableName(tableName), m_columnName(columnName) {}
+               const std::string& columnName) : m_tableName(tableName),
+            m_columnName(columnName) {}
 
         /**
          * @brief Convert the couple table+column in SQL format with '.' notation
@@ -121,14 +122,16 @@ class Query : public BaseObject
         {
             return (!m_tableName.empty() ? m_tableName + "." : "") + m_columnName;
         }
-        std::string tableName() const {
+        std::string tableName() const
+        {
             return m_tableName;
         }
         void setTableName(const std::string& table)
         {
             m_tableName = table;
         }
-        std::string columnName() const {
+        std::string columnName() const
+        {
             return m_columnName;
         }
         void setColumnName(const std::string& column)
@@ -136,7 +139,7 @@ class Query : public BaseObject
             m_columnName = column;
         }
 
-    private:
+      private:
         std::string m_tableName = "";     ///< Name of the table, optionnal
         std::string m_columnName;         ///< Name of the column
     };
@@ -192,7 +195,7 @@ class Query : public BaseObject
     {
         conditions.push_back(condition);
     }
-    virtual void doWhere(std::vector<std::string>& conditions, const Column &column,
+    virtual void doWhere(std::vector<std::string>& conditions, const Column& column,
                          Operator op, std::string value) final;
     virtual void doColumn(std::vector<std::string>& columns,
                           const Column& column) final;
@@ -205,15 +208,18 @@ class Query : public BaseObject
 
     virtual std::stringstream joinStatement() const final;
 
-    std::string table() const {
+    std::string table() const
+    {
         return m_table;
     }
 
-    void setValid(bool valid) {
+    void setValid(bool valid)
+    {
         m_valid = valid;
     }
 
-    std::shared_ptr<Database> db() const {
+    std::shared_ptr<Database> db() const
+    {
         return m_db;
     }
 
@@ -233,7 +239,7 @@ class Query : public BaseObject
     std::string m_table;                ///< Name of the table targeted by the Query
     std::vector<Join> m_joins;          ///< List of table joins
     std::shared_ptr<Database>
-    m_db;     ///< Database where the Query will apply (used for verifications)
+    m_db; ///< Database where the Query will apply (used for verifications)
     bool m_valid = false;               ///< Validity of the Query
 };
 
@@ -346,7 +352,7 @@ class CreateQuery : public Query
                             Query::Constraints constraintType);
 
     std::string str() const override;
-  protected:
+  private:
     bool m_ifNotExists = false; ///< "IF NOT EXISTS" statement add
 
     /**

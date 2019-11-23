@@ -66,7 +66,7 @@ class Game : public BaseObject
 #endif
   public:
 
-    Game(const std::string &name, std::shared_ptr<config::Context> gameContext);
+    Game(const std::string& name, std::shared_ptr<config::Context> gameContext);
     /// @brief Destructor
     ~Game() override = default;
 

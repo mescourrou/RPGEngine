@@ -73,17 +73,18 @@ bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
                                  DatabaseException::MISSING_DATABASE);
     namespace ModelNPC = database::Model::NPC;
     db->query(Query::createQuery<Query::CREATE>(ModelNPC::TABLE, db).ifNotExists()
-                  .column(ModelNPC::NAME).constraint(ModelNPC::NAME, Query::PRIMARY_KEY)
-                  .column(ModelNPC::TYPE, DataType::INTEGER));
+              .column(ModelNPC::NAME).constraint(ModelNPC::NAME, Query::PRIMARY_KEY)
+              .column(ModelNPC::TYPE, DataType::INTEGER));
 
     namespace ModelNPCPath = database::Model::NPCPath;
-    db->query(Query::createQuery<Query::CREATE>(ModelNPCPath::TABLE, db).ifNotExists()
-                  .column(ModelNPCPath::FK_NPC_NAME, DataType::BLOB, database::Model::NPC::TABLE,
-                          database::Model::NPC::NAME)
-                  .constraint(ModelNPCPath::FK_NPC_NAME, Query::PRIMARY_KEY)
-                  .column(ModelNPCPath::X, DataType::INTEGER)
-                  .column(ModelNPCPath::Y, DataType::INTEGER)
-                  .column(ModelNPCPath::Z, DataType::INTEGER));
+    db->query(Query::createQuery<Query::CREATE>(ModelNPCPath::TABLE,
+              db).ifNotExists()
+              .column(ModelNPCPath::FK_NPC_NAME, DataType::BLOB, database::Model::NPC::TABLE,
+                      database::Model::NPC::NAME)
+              .constraint(ModelNPCPath::FK_NPC_NAME, Query::PRIMARY_KEY)
+              .column(ModelNPCPath::X, DataType::INTEGER)
+              .column(ModelNPCPath::Y, DataType::INTEGER)
+              .column(ModelNPCPath::Z, DataType::INTEGER));
 
     return verifyDatabaseModel(db);
 }
@@ -93,9 +94,14 @@ bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
  */
 void NPC::updatePosition()
 {
-    // Patrol to implement^
+    // Patrol to implement
 }
 
+/**
+ * @brief Verify the model of NPC table
+ * @param db Databasse to check
+ * @return Return true if the model is correct
+ */
 bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::NPC;
@@ -118,6 +124,11 @@ bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
     return  true;
 }
 
+/**
+ * @brief Verify the NPCPath table model
+ * @param db Database to check
+ * @return Return true if the model is correct
+ */
 bool NPC::verifyNPCPathModel(std::shared_ptr<database::Database> db)
 {
     namespace Model = database::Model::NPCPath;

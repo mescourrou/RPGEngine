@@ -64,7 +64,7 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
      * @param states States to use
      */
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override = 0;
-private:
+  private:
     std::weak_ptr<map::gui::MapGUI> m_map;      ///< Current map
 };
 

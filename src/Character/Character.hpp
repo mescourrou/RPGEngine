@@ -100,13 +100,13 @@ class Character : public BaseObject
     events::Event<map::Position>
     signalPositionChanged;      ///< Signal when the player position changed
 
-protected:
+  protected:
     std::shared_ptr<object::Inventory> privateInventory()
     {
         return m_inventory;
     }
 
-    private:
+  private:
     std::shared_ptr<config::Context> m_context;     ///< Context used
 
     std::string m_name;         ///< Name of the Character

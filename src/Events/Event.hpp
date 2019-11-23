@@ -185,7 +185,7 @@ class Event<void>
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
      */
-    void subscribeAsync(std::function<void(void)> func)
+    void subscribeAsync(const std::function<void(void)>& func)
     {
         m_asyncCallList.push_back(func);
     }
@@ -193,7 +193,7 @@ class Event<void>
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
      */
-    void subscribeSync(std::function<void(void)> func)
+    void subscribeSync(const std::function<void(void)>& func)
     {
         m_syncCallList.push_back(func);
     }
@@ -206,7 +206,7 @@ class Event<void>
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
-        m_asyncCallList.push_back([ = ]()
+        m_asyncCallList.push_back([instance, func]()
         {
             std::bind(func, instance)();
         });
@@ -219,7 +219,7 @@ class Event<void>
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
-        m_syncCallList.push_back([ = ]()
+        m_syncCallList.push_back([instance, func]()
         {
             std::bind(func, instance)();
         });

@@ -21,7 +21,7 @@ class CharacterWindow : public ImGui::Window
 
     void doNewCharacter();
     void doDeleteCharacter();
-private:
+  private:
     Maker* m_maker;                             ///< Pointer on the maker backend
     stringlist m_list;                          ///< Character list
     int m_currentCharacter = -1;                ///< Current character

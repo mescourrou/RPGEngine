@@ -31,7 +31,7 @@ Database::Database(const std::string& path)
 #ifdef  BUILD_USE_FILESYSTEM
     std::filesystem::path parentPath = std::filesystem::path(path).parent_path();
     if (!parentPath.string().empty() && !std::filesystem::exists(parentPath))
-            std::filesystem::create_directories(parentPath);
+        std::filesystem::create_directories(parentPath);
 #endif
     if (sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {

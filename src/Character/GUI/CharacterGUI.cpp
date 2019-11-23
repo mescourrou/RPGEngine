@@ -47,10 +47,10 @@ void CharacterGUI::connectSignals(game::gui::GameGUI* game,
  * @param characterGUI Frontend
  * @param player If the character is the player
  */
-void CharacterGUI::connectSignals(Character* character,
-                                  CharacterGUI* characterGUI, bool player)
+void CharacterGUI::connectSignals(Character*,
+                                  CharacterGUI*, bool)
 {
-
+    // Nothing to do yet
 }
 
 /**
@@ -129,6 +129,11 @@ void CharacterGUI::setOnScreenPosition(const sf::Vector2f& position)
     m_currentSprite->setPosition(position);
 }
 
+/**
+ * @brief Verify the top structure of the json file
+ * @param json Json to verify
+ * @return Return true if all needed fields are presents
+ */
 bool CharacterGUI::verifyJSONTopStructure(const json& json)
 {
     namespace characterFile = config::structure::characterFile;
@@ -147,7 +152,12 @@ bool CharacterGUI::verifyJSONTopStructure(const json& json)
     return true;
 }
 
-bool CharacterGUI::verifyJSONSpriteSetsStructure(const json &set)
+/**
+ * @brief Verify the structure of the sprite sets
+ * @param set Set to verify
+ * @return Return true if all needed fields are presents
+ */
+bool CharacterGUI::verifyJSONSpriteSetsStructure(const json& set)
 {
     namespace characterFile = config::structure::characterFile;
     if (!set.is_object())
@@ -185,7 +195,14 @@ bool CharacterGUI::verifyJSONSpriteSetsStructure(const json &set)
     return true;
 }
 
-bool CharacterGUI::loadSets(const json &json, const std::string& characterRessourcesDir)
+/**
+ * @brief Load the sprite character sprite sets
+ * @param json Describing json
+ * @param characterRessourcesDir Directory where are character assets
+ * @return Return true if the loading was successful
+ */
+bool CharacterGUI::loadSets(const json& json,
+                            const std::string& characterRessourcesDir)
 {
     namespace characterFile = config::structure::characterFile;
     for (auto set : json[characterFile::SPRITE_SETS])
@@ -198,7 +215,7 @@ bool CharacterGUI::loadSets(const json &json, const std::string& characterRessou
         id = set[characterFile::FIRST_ID].get<unsigned int>();
 
         std::string filename = characterRessourcesDir + '/' +
-                           set[characterFile::SET_FILE].get<std::string>();
+                               set[characterFile::SET_FILE].get<std::string>();
         if (!std::filesystem::exists(filename))
             return false;
         sf::Image image;
@@ -247,7 +264,13 @@ bool CharacterGUI::loadSets(const json &json, const std::string& characterRessou
     return true;
 }
 
-bool CharacterGUI::loadActions(const json &json)
+/**
+ * @brief Load the differents Character actions
+ * An action is a possible movement of the character
+ * @param json Json describing the actions
+ * @return Return true if the loading was successful
+ */
+bool CharacterGUI::loadActions(const json& json)
 {
     namespace characterFile = config::structure::characterFile;
     // Get all the actions

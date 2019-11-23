@@ -25,7 +25,7 @@ namespace character
 Character::Character(const std::string& name,
                      std::shared_ptr<config::Context> context) :
     BaseObject(),
-    m_name(name), m_context(context),
+    m_context(context), m_name(name),
     m_inventory(std::make_unique<object::Inventory>())
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
