@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['inventoryopen',['inventoryOpen',['../structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#aa973733002159c0b76f1fca52023b6c9',1,'game::GUI::GameGUI::UI']]]
+  ['resolution',['resolution',['../structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a085c327df0bc6ed419b6115199aa2608',1,'game::gui::GameGUI::UI::Settings']]],
+  ['resolutionitemselected',['resolutionItemSelected',['../structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#af7f43708fdf7fa49bcbf9d7bcad8d1d0',1,'game::gui::GameGUI::UI::Settings']]]
 ];

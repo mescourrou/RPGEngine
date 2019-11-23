@@ -32,30 +32,30 @@
         <section title="Classes" ref="annotated.html">
           <section title="Class List" ref="annotated.html">
             <section title="character" ref="namespacecharacter.html">
-              <section title="GUI">
-                <section title="CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html">
-                  <section title="Direction" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2056406c8c4e10ccb7d8d80816807a53">
-                    <section title="Up" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2056406c8c4e10ccb7d8d80816807a53a87fd3283f4074bbefcad514ab05fd708" />
-                    <section title="Down" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2056406c8c4e10ccb7d8d80816807a53aa63d7228b105239a8338975165af55c5" />
-                    <section title="Left" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2056406c8c4e10ccb7d8d80816807a53a277548c5625188dfaa3e329fd5290a75" />
-                    <section title="Right" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2056406c8c4e10ccb7d8d80816807a53a2b063ac79732d560089a4b20f75109aa" />
+              <section title="gui">
+                <section title="CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html">
+                  <section title="Direction" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a0caad776012c9f40c2b888a6ae7ec6f1">
+                    <section title="Up" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a0caad776012c9f40c2b888a6ae7ec6f1a68534329fa33d06234cb7bc31609f355" />
+                    <section title="Down" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a0caad776012c9f40c2b888a6ae7ec6f1a962e3ad43c195658c95d3dd8a0053880" />
+                    <section title="Left" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a0caad776012c9f40c2b888a6ae7ec6f1ab50ed60aecd51e8af9c7c9bb88ddac1c" />
+                    <section title="Right" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a0caad776012c9f40c2b888a6ae7ec6f1ac7b162e40c17e257f30598c29e404788" />
                   </section>
-                  <section title="CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#ae1ef7bf612e36ff2513eb1d40637e86a" />
-                  <section title="~CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a04e9139c56ee13a169495f55f0c823a9" />
-                  <section title="draw" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2c81d1300ebe77ba7a3f00a1a0c85cca" />
-                  <section title="load" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a796f3c10bd8280d4953a0b041b243b4a" />
-                  <section title="prepare" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#abbd24e26a69de6750f67e25ec3e532c7" />
-                  <section title="setOnScreenPosition" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#adadf887ea0140bc814d7daf79cfb3d8b" />
-                  <section title="slotArrowPressed" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#af74eeaf77690164671ebf9e95c52a0ab" />
-                  <section title="slotKeyReleased" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a58e6d21a61311106f0ea4926a6bca48c" />
-                  <section title="uiFullInformations" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a6feaced98ecf0aba838180cd7b7d8c02" />
-                  <section title="uiInventoryWindow" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#ad2feacd394f082d3235bce3619376eea" />
-                  <section title="uiRealtimeInformations" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#af2ce857833c72a41453bafd88983c359" />
+                  <section title="CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#af4b57bdb6b354d3765cb54fc863f6f52" />
+                  <section title="~CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#ad029ea06679fa38d42e3c89b3d8d256f" />
+                  <section title="draw" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a34f6cd024e11b01423a485a49884bfd0" />
+                  <section title="load" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a89cc3959ef62703f20023585a9dd09b8" />
+                  <section title="prepare" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a83ac304204a2905216bb0ee5915212d3" />
+                  <section title="setOnScreenPosition" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a2f54c73f15dfd9fba40eb96370081c86" />
+                  <section title="slotArrowPressed" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#af7ee1c2dc87f47212629acd5539695fd" />
+                  <section title="slotKeyReleased" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#ac86f7c39773c5a8048eb882336187c64" />
+                  <section title="uiFullInformations" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a6e5c7df6890f71835c7fda5ecf00f2dd" />
+                  <section title="uiInventoryWindow" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a7b2ac1c2d0f8a2029e335828f444521a" />
+                  <section title="uiRealtimeInformations" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a120f069a040111bd9dc21c2bf0f4dc77" />
                 </section>
               </section>
               <section title="Character" ref="classcharacter_1_1_character.html">
                 <section title="Character" ref="classcharacter_1_1_character.html#a06393fc860c12f2b37f2a73cd5923db7" />
-                <section title="Character" ref="classcharacter_1_1_character.html#a442757ab6b2c99fe9882160f506dd7da" />
+                <section title="Character" ref="classcharacter_1_1_character.html#aa051700f9c1135a1dcc67f7e35c36850" />
                 <section title="~Character" ref="classcharacter_1_1_character.html#af892f906b1bc79b66f5777c49528cf62" />
                 <section title="Character" ref="classcharacter_1_1_character.html#aad9015026217aaa471f8912682dba837" />
                 <section title="Character" ref="classcharacter_1_1_character.html#a1f3dd55505078a405c86c697d4e2f027" />
@@ -66,26 +66,21 @@
                 <section title="operator=" ref="classcharacter_1_1_character.html#a452d97c22610b823e5debd2462d03948" />
                 <section title="operator=" ref="classcharacter_1_1_character.html#a397316a6e30fe809e7611326a2bfb2e7" />
                 <section title="position" ref="classcharacter_1_1_character.html#a66f7afdf506871aae6cd07a060602d66" />
-                <section title="setName" ref="classcharacter_1_1_character.html#a67817784f37642e7ea967f542dbfcf33" />
+                <section title="privateInventory" ref="classcharacter_1_1_character.html#a92bfff397c543fbc08a6c4d168e5c784" />
+                <section title="setName" ref="classcharacter_1_1_character.html#a94f3efe0bd98b240f32983a6a0883587" />
                 <section title="setPosition" ref="classcharacter_1_1_character.html#a0b5f05494028a5946770b5af57ab4e1d" />
-                <section title="m_context" ref="classcharacter_1_1_character.html#aa725c31ddb59f1b9b960c7b46b4a8df1" />
-                <section title="m_inventory" ref="classcharacter_1_1_character.html#a98d6ef5ceeb9fc13b36be27cbca32cfd" />
-                <section title="m_name" ref="classcharacter_1_1_character.html#a1d6be39c46e2413ceb254b691ca4a79e" />
-                <section title="m_position" ref="classcharacter_1_1_character.html#ab2cc8677185e0a26414dd2cc76311f33" />
                 <section title="signalPositionChanged" ref="classcharacter_1_1_character.html#a4b6d9b76a13d40465970b03e56e86be3" />
               </section>
               <section title="NPC" ref="classcharacter_1_1_n_p_c.html">
                 <section title="NPC" ref="classcharacter_1_1_n_p_c.html#a42090c495d4e6698c4037f36fbd6fb1f" />
-                <section title="NPC" ref="classcharacter_1_1_n_p_c.html#a1189a10b9ae64889e60cbbcb935a3837" />
+                <section title="NPC" ref="classcharacter_1_1_n_p_c.html#ac5ea0d19289c9f2b76960418d63de641" />
                 <section title="~NPC" ref="classcharacter_1_1_n_p_c.html#a5edc26fe0513ca3dec752acb91ef3e4e" />
                 <section title="loadFromDatabase" ref="classcharacter_1_1_n_p_c.html#af944466ef0638819571580a5b09f10df" />
                 <section title="updatePosition" ref="classcharacter_1_1_n_p_c.html#a9a2b20193266c5cb1f66684c9c0fb9ba" />
-                <section title="m_path" ref="classcharacter_1_1_n_p_c.html#ab59432792728ac250ff03655044cb437" />
-                <section title="m_targettedPosition" ref="classcharacter_1_1_n_p_c.html#ae8618d539ceb551cd769690ad1396ae8" />
               </section>
               <section title="Vendor" ref="classcharacter_1_1_vendor.html">
                 <section title="Vendor" ref="classcharacter_1_1_vendor.html#aefbb90b28cd3ec7f1c3f4e34d6723b82" />
-                <section title="Vendor" ref="classcharacter_1_1_vendor.html#a4f43625a95e4c2ac07d73572aef374f8" />
+                <section title="Vendor" ref="classcharacter_1_1_vendor.html#a16f3d880aceb03553cc29bca98a1edc4" />
                 <section title="~Vendor" ref="classcharacter_1_1_vendor.html#af580215030b4094c71c1d42b9222600d" />
                 <section title="buy" ref="classcharacter_1_1_vendor.html#ad685435500cbb784cff1ec262437f547" />
                 <section title="buy" ref="classcharacter_1_1_vendor.html#ad4dd9ff57be0fd71f6cd16efb59e4433" />
@@ -136,17 +131,10 @@
                 <section title="constraint" ref="classdatabase_1_1_create_query.html#ae34ab7a105a7c320cc96cebfc19796df" />
                 <section title="ifNotExists" ref="classdatabase_1_1_create_query.html#a1d801c094b4e7f84a4a4d70b77a1b4ca" />
                 <section title="str" ref="classdatabase_1_1_create_query.html#abb0abbdf485c5fa8e969edd92ba38261" />
-                <section title="m_autoincrementColumns" ref="classdatabase_1_1_create_query.html#a389a49057d2dfcf82ffde306a8841d0c" />
-                <section title="m_columns" ref="classdatabase_1_1_create_query.html#a767adc7520134ed3e81fe36b64ae7cdb" />
-                <section title="m_ifNotExists" ref="classdatabase_1_1_create_query.html#a4cf10b8ef16226fd3d7467b82fd15bfd" />
-                <section title="m_notNullColumns" ref="classdatabase_1_1_create_query.html#a2a1c2c90ff04cd89dbdb635a719c0f8a" />
-                <section title="m_primaryKeyColumns" ref="classdatabase_1_1_create_query.html#ac734a9080748b8195066a79b2a96f57e" />
-                <section title="m_uniqueColumns" ref="classdatabase_1_1_create_query.html#ae8a3ad419ff2a28d5065399e009110b5" />
               </section>
               <section title="Database" ref="classdatabase_1_1_database.html">
                 <section title="Database" ref="classdatabase_1_1_database.html#ae8383b8a3fbcf55fa57db812ad3a5152" />
                 <section title="~Database" ref="classdatabase_1_1_database.html#a43daa39d5dd4b057a63221d75c4f90c2" />
-                <section title="callback" ref="classdatabase_1_1_database.html#a222ce084d6a029f5b3ed776b4f62c495" />
                 <section title="columnList" ref="classdatabase_1_1_database.html#ac693b392838f1be0a67553acf50963a6" />
                 <section title="columnsType" ref="classdatabase_1_1_database.html#a4d29aca81401bbdcdce09e7b4c0a2d57" />
                 <section title="isTable" ref="classdatabase_1_1_database.html#a34904b5ce54415c2dab704121ccd8244" />
@@ -154,9 +142,6 @@
                 <section title="query" ref="classdatabase_1_1_database.html#aeaf2094861f0966b1b16639c5afad84e" />
                 <section title="query" ref="classdatabase_1_1_database.html#a34bf0f8abdbefc46ef2829ee50a6e0fa" />
                 <section title="tableList" ref="classdatabase_1_1_database.html#a2ee07349cd3af730a0c7d74ac37070c8" />
-                <section title="m_queryMutex" ref="classdatabase_1_1_database.html#a739bbc442683113cb9f2edcbab93d2ed" />
-                <section title="m_result" ref="classdatabase_1_1_database.html#a708f786c1764d05b0c3c217fb2601190" />
-                <section title="m_sqlite3Handler" ref="classdatabase_1_1_database.html#a019b90a07173443c53d60343f7fea6b5" />
               </section>
               <section title="DeleteQuery" ref="classdatabase_1_1_delete_query.html">
                 <section title="DeleteQuery" ref="classdatabase_1_1_delete_query.html#a892791dfd88b6976e12ef298294172e0" />
@@ -164,14 +149,12 @@
                 <section title="str" ref="classdatabase_1_1_delete_query.html#a74c70ecbe07678095feb018f641de752" />
                 <section title="where" ref="classdatabase_1_1_delete_query.html#a9273f24890ae80034019b32274475e07" />
                 <section title="where" ref="classdatabase_1_1_delete_query.html#ac720b13972839cc48b5dd08d9806e818" />
-                <section title="m_conditions" ref="classdatabase_1_1_delete_query.html#a88e54cf09682d9aa2f5d5c723003e2b5" />
               </section>
               <section title="InsertQuery" ref="classdatabase_1_1_insert_query.html">
                 <section title="InsertQuery" ref="classdatabase_1_1_insert_query.html#a07994a0c1b087c9d13c104c52abaf791" />
                 <section title="~InsertQuery" ref="classdatabase_1_1_insert_query.html#a14092daca1c87c03aa05c9b7627650db" />
                 <section title="str" ref="classdatabase_1_1_insert_query.html#a691aacaaeba1cd05d242cafc9e4c9033" />
                 <section title="value" ref="classdatabase_1_1_insert_query.html#a135230ddbcf671f2df7755ba9b497fdd" />
-                <section title="m_values" ref="classdatabase_1_1_insert_query.html#a7aa8fec43dcfd8ea5d9b2fed07ad3067" />
               </section>
               <section title="SelectQuery" ref="classdatabase_1_1_select_query.html">
                 <section title="SelectQuery" ref="classdatabase_1_1_select_query.html#afd53920d75ca76acd487f0a757aa29cb" />
@@ -182,10 +165,6 @@
                 <section title="str" ref="classdatabase_1_1_select_query.html#a60924f73ad03d57c972a7e06e2de4afb" />
                 <section title="where" ref="classdatabase_1_1_select_query.html#ac49313037c4af1b88f95d249466ea4b0" />
                 <section title="where" ref="classdatabase_1_1_select_query.html#a20159230441125b9876f7a0a776e5d87" />
-                <section title="m_columns" ref="classdatabase_1_1_select_query.html#a82a561af28914a8bfac2b6b3111a9cd4" />
-                <section title="m_conditions" ref="classdatabase_1_1_select_query.html#ab62fe2e6d854c7b4856c26957798962a" />
-                <section title="m_sortAscending" ref="classdatabase_1_1_select_query.html#aa2497a722174cd1608a6bade51ea65f0" />
-                <section title="m_sortColumns" ref="classdatabase_1_1_select_query.html#a407e1a706a23d7284e389cf2ed9fcab1" />
               </section>
               <section title="UpdateQuery" ref="classdatabase_1_1_update_query.html">
                 <section title="UpdateQuery" ref="classdatabase_1_1_update_query.html#a31bc77f72f88333ef5b41f8d2670ed7c" />
@@ -194,8 +173,6 @@
                 <section title="str" ref="classdatabase_1_1_update_query.html#ab536c312210c92970abe666255c21ea9" />
                 <section title="where" ref="classdatabase_1_1_update_query.html#a574efc4d9b7b00199f0c7171f9354af4" />
                 <section title="where" ref="classdatabase_1_1_update_query.html#ae7e6745fba290906854c4bd31b7bad90" />
-                <section title="m_conditions" ref="classdatabase_1_1_update_query.html#abc12465565e7822c5d70dbe98aa9329d" />
-                <section title="m_set" ref="classdatabase_1_1_update_query.html#a79718a76d0e9e9e1c3cba47630f47888" />
               </section>
             </section>
             <section title="events" ref="namespaceevents.html">
@@ -216,9 +193,9 @@
               <section title="Event&lt; void &gt;" ref="classevents_1_1_event_3_01void_01_4.html">
                 <section title="Event" ref="classevents_1_1_event_3_01void_01_4.html#a7f7deaff7263eca17ed932878054a7f4" />
                 <section title="~Event" ref="classevents_1_1_event_3_01void_01_4.html#a77bcef37e357a0c2e7b26bb038107e5e" />
-                <section title="subscribeAsync" ref="classevents_1_1_event_3_01void_01_4.html#a332c03170818fb03bca2661150de33e8" />
+                <section title="subscribeAsync" ref="classevents_1_1_event_3_01void_01_4.html#a0b81923cbcc773430847608a5bbe242b" />
                 <section title="subscribeAsync" ref="classevents_1_1_event_3_01void_01_4.html#a7bb7e9b32937345e9b742a70ddc2392c" />
-                <section title="subscribeSync" ref="classevents_1_1_event_3_01void_01_4.html#a0fc3316023f621ca3c0bd856d39afa51" />
+                <section title="subscribeSync" ref="classevents_1_1_event_3_01void_01_4.html#ab5678ce9ef395836cdd2a2a33e17e7da" />
                 <section title="subscribeSync" ref="classevents_1_1_event_3_01void_01_4.html#a7018aa0efc4fcc57758453555da03102" />
                 <section title="trigger" ref="classevents_1_1_event_3_01void_01_4.html#a8011b8fa69254b049f948e746c494fc4" />
               </section>
@@ -303,74 +280,56 @@
                 <section title="toString" ref="classevents_1_1_key_binding.html#ae3958f5ea836f1651f120d984816aa07" />
               </section>
               <section title="Work" ref="classevents_1_1_work.html">
-                <section title="Work" ref="classevents_1_1_work.html#a2a1014572a9b87894822b9805c759205" />
+                <section title="Work" ref="classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b" />
                 <section title="~Work" ref="classevents_1_1_work.html#a1be6c3936fb26ed9f8e146404a104e9e" />
                 <section title="run" ref="classevents_1_1_work.html#a39480faf4c1b597da1df0e50e251c0af" />
               </section>
               <section title="Work&lt; void &gt;" ref="classevents_1_1_work_3_01void_01_4.html">
-                <section title="Work" ref="classevents_1_1_work_3_01void_01_4.html#a71a71f904996af3314d39ff8acb98888" />
+                <section title="Work" ref="classevents_1_1_work_3_01void_01_4.html#ab1afb76ef8d0c5707a3bdf5609957844" />
                 <section title="~Work" ref="classevents_1_1_work_3_01void_01_4.html#a1972c009bf566f98a8f5baa7e8d8a614" />
                 <section title="run" ref="classevents_1_1_work_3_01void_01_4.html#afe18f1251e05e24e4d9c0f28c773222b" />
               </section>
               <section title="WorkerThread" ref="classevents_1_1_worker_thread.html">
                 <section title="~WorkerThread" ref="classevents_1_1_worker_thread.html#abd69bf18d984127d9b7406a6cd9f314c" />
+                <section title="WorkerThread" ref="classevents_1_1_worker_thread.html#a209207f8c7c6d4cbab0e57582b8e018a" />
+                <section title="WorkerThread" ref="classevents_1_1_worker_thread.html#a200b04f67d7b0346c34fa190cace8b19" />
+                <section title="operator=" ref="classevents_1_1_worker_thread.html#ac742ba93aaaa4586cac89cf878771cc4" />
+                <section title="operator=" ref="classevents_1_1_worker_thread.html#ac6e2a217229344078c9bca2e13c06886" />
               </section>
             </section>
             <section title="game" ref="namespacegame.html">
-              <section title="GUI">
-                <section title="CharacterWindow" ref="classgame_1_1_g_u_i_1_1_character_window.html">
-                  <section title="CharacterWindow" ref="classgame_1_1_g_u_i_1_1_character_window.html#ade7b373d195de9da24e9f84458b12916" />
-                  <section title="doCollapsedState" ref="classgame_1_1_g_u_i_1_1_character_window.html#ae488c80abd0857bb6fc3e609791dd1ff" />
-                  <section title="doPrepare" ref="classgame_1_1_g_u_i_1_1_character_window.html#a945a7cfd3a67a575f0bf46795318ae05" />
+              <section title="gui">
+                <section title="CharacterWindow" ref="classgame_1_1gui_1_1_character_window.html">
+                  <section title="CharacterWindow" ref="classgame_1_1gui_1_1_character_window.html#a67545891f5e725404938f5dfa74edf77" />
+                  <section title="doCollapsedState" ref="classgame_1_1gui_1_1_character_window.html#a04060837e35fe08aa328ccff94b697c1" />
+                  <section title="doPrepare" ref="classgame_1_1gui_1_1_character_window.html#a1a790847410431e40d588e68ebc8a2d3" />
                 </section>
-                <section title="GameGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html">
-                  <section title="UI" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html">
-                    <section title="Settings" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html">
-                      <section title="availableResolutions" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a9df1fa7836d473644132fab02d65b254" />
-                      <section title="fullscreen" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a65a1c9c450b9144441d44cf4e2ea6426" />
-                      <section title="resolution" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#adeb8418c899f2cb0295acc4923b39977" />
-                      <section title="resolutionItemSelected" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#ae83d4fef71613a51a33d4ef0e6b5f3f8" />
-                    </section>
-                    <section title="characterOpen" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a611d058e0def1a172dd7f99337c8e9a3" />
-                    <section title="inventoryOpen" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#aa973733002159c0b76f1fca52023b6c9" />
-                    <section title="onPause" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#af0cda369653b9a99d25d76fa03cb9220" />
-                    <section title="settings" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a7fbf5bc735adbdb8fd48f2a2420e12a5" />
-                    <section title="uiActivated" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#ae6592b55d01a15e1d680cfb8c2ebf5e2" />
-                  </section>
-                  <section title="GameGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a86d1e73edfa0d87ae97f411005677ffa" />
-                  <section title="~GameGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a8aad848201568070ee20fcc6c0417100" />
-                  <section title="addGUIObject" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a8317fdcd6889f142a47a29f960ffce0a" />
-                  <section title="draw" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a981523a563706b7c804b180a6c191c60" />
-                  <section title="eventManager" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#adf88c18ce0f5b3c109552d61c5ed1249" />
-                  <section title="initialize" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#afc1390806f7230ab9d4a2ff285b6e186" />
-                  <section title="loadFromConfig" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a1cac0130c6e2f28fccbd6b0f415eb347" />
-                  <section title="makeUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#aa799539893c7695110254759b2d56f81" />
-                  <section title="subscribeOnClose" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#ad45ca0387e734f9246ae80693660c10c" />
-                  <section title="uiLoadSettingsPopup" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a184f2870c8970d0d5740c8bda81cd29b" />
-                  <section title="uiPauseMenu" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a5a60ae144bf4c969c96b058e8442e0dd" />
-                  <section title="m_actionWaitingForKeybinding" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#adc5647a0bad14d607517b6c84d1f0aff" />
-                  <section title="m_characterWindow" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a955b0e0017a071972af0ea84f7609fcf" />
-                  <section title="m_context" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a0a8a097c578d777c2d5cce981e13a4d1" />
-                  <section title="m_db" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a438793b2a85c1ea9c4e07bcde185cb31" />
-                  <section title="m_event" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#ac916e9f689c919b056d7f39ccc1f8800" />
-                  <section title="m_game" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a56cfc8ea27b0a78a2b515561c9372b36" />
-                  <section title="m_guiObjects" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a19e9c4854687b87c5db54258ca6dd27f" />
-                  <section title="m_inventoryWindow" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#aca63bc688977ab719966a328c547ff40" />
-                  <section title="m_mapGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a458768c7865a302fade31daaa55771d0" />
-                  <section title="m_player" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a9ed313be2843b111f2757edb3ea60e6c" />
-                  <section title="m_signalOnClose" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a9d780f1c8baebb7b9bd31a8f2144f849" />
-                  <section title="m_ui" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a0e1a31603e38cb82f6b0537c9ecb0505" />
-                  <section title="m_window" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a2280fd4ad026980bd847b5543e4909a9" />
-                  <section title="m_windowsManager" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a37ee887a41455462c414368b6fb95e7f" />
-                  <section title="signalArroyIsPressed" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a3cad00cdddb66ca2ebb63a6bb4728cbb" />
-                  <section title="signalKeyPressed" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a456afbd25e128bd89aaf952eb570b6e9" />
-                  <section title="signalKeyReleased" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#aa84174db508821e4852c63fd4a078bd1" />
-                  <section title="signalPause" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a46dd94e3ce144c4f96f829a5be9a2070" />
+                <section title="GameGUI" ref="classgame_1_1gui_1_1_game_g_u_i.html">
+                  <section title="GameGUI" ref="classgame_1_1gui_1_1_game_g_u_i.html#ad5e26b6c4d0ecd3a5596efb1d565a73e" />
+                  <section title="~GameGUI" ref="classgame_1_1gui_1_1_game_g_u_i.html#a2de172f74bca8512f64ee044ff9afb91" />
+                  <section title="addGUIObject" ref="classgame_1_1gui_1_1_game_g_u_i.html#a58d1ab3abb4897af6395f9ed9f1b5a9e" />
+                  <section title="checkKeyPressed" ref="classgame_1_1gui_1_1_game_g_u_i.html#a094156b33c72c2b4d40245419c74923f" />
+                  <section title="draw" ref="classgame_1_1gui_1_1_game_g_u_i.html#ab442115783d4522ff95093dff86fb047" />
+                  <section title="eventManager" ref="classgame_1_1gui_1_1_game_g_u_i.html#a9b2365c66919d3ae0ca2da33b5f4fbb5" />
+                  <section title="initialize" ref="classgame_1_1gui_1_1_game_g_u_i.html#a51992426d7b9b21bc6a03d285733ac37" />
+                  <section title="loadFromConfig" ref="classgame_1_1gui_1_1_game_g_u_i.html#a250a52309d7ae540ff7d0346ef53f599" />
+                  <section title="makeUI" ref="classgame_1_1gui_1_1_game_g_u_i.html#a826e7835ef268f2053b49d410809b6c3" />
+                  <section title="managePressingKeyEvent" ref="classgame_1_1gui_1_1_game_g_u_i.html#afccafbd3a4afa982e74971beda2a5b41" />
+                  <section title="manageReleasingKeyEven" ref="classgame_1_1gui_1_1_game_g_u_i.html#afa59c839d9585ce49f5971b6cd18cfb0" />
+                  <section title="subscribeOnClose" ref="classgame_1_1gui_1_1_game_g_u_i.html#a0659a876b505889b19a4050408ede956" />
+                  <section title="uiInformationPopup" ref="classgame_1_1gui_1_1_game_g_u_i.html#a057d839e54556ec9c22e4b01dce67851" />
+                  <section title="uiLoadSettingsPopup" ref="classgame_1_1gui_1_1_game_g_u_i.html#a3ec31f4053b6253a5727b8c0667158b6" />
+                  <section title="uiPauseMenu" ref="classgame_1_1gui_1_1_game_g_u_i.html#aea28841aa0ec69985f3d8a9dbfbaaf9f" />
+                  <section title="uiSettingsPopup" ref="classgame_1_1gui_1_1_game_g_u_i.html#ab784b3b7299155f67a83ed77c9a9db60" />
+                  <section title="signalArroyIsPressed" ref="classgame_1_1gui_1_1_game_g_u_i.html#a9c2bd02dcd9c3966d8041928dcbfe46d" />
+                  <section title="signalKeyPressed" ref="classgame_1_1gui_1_1_game_g_u_i.html#aacde14d00c5c191dac669ac58f6cd43c" />
+                  <section title="signalKeyReleased" ref="classgame_1_1gui_1_1_game_g_u_i.html#ae76e8f49a747d699ab41f576cb909a4d" />
+                  <section title="signalPause" ref="classgame_1_1gui_1_1_game_g_u_i.html#a2c401f5e989ea8c42865b3dbf120c62a" />
                 </section>
-                <section title="InventoryWindow" ref="classgame_1_1_g_u_i_1_1_inventory_window.html">
-                  <section title="InventoryWindow" ref="classgame_1_1_g_u_i_1_1_inventory_window.html#adbb8b424f30e190373a3209b3e24687a" />
-                  <section title="doCollapsedState" ref="classgame_1_1_g_u_i_1_1_inventory_window.html#afe7e4a26459115c96fac748bde6d5c47" />
-                  <section title="doPrepare" ref="classgame_1_1_g_u_i_1_1_inventory_window.html#a7e8d6baaaa41f5d55b1c4a5b5886416d" />
+                <section title="InventoryWindow" ref="classgame_1_1gui_1_1_inventory_window.html">
+                  <section title="InventoryWindow" ref="classgame_1_1gui_1_1_inventory_window.html#ad8980d3bb5fce1ae1698809d56360111" />
+                  <section title="doCollapsedState" ref="classgame_1_1gui_1_1_inventory_window.html#a8d94242db7602f5546b1464c16c10dce" />
+                  <section title="doPrepare" ref="classgame_1_1gui_1_1_inventory_window.html#a22b819242247ea47118201b04dd105e7" />
                 </section>
               </section>
               <section title="GameLoader" ref="classgame_1_1_game_loader.html">
@@ -378,10 +337,6 @@
                 <section title="~GameLoader" ref="classgame_1_1_game_loader.html#a7bc64b550b4103c28f91bb01974bafa0" />
                 <section title="load" ref="classgame_1_1_game_loader.html#ab57cc56c41af75aef86001f14742720c" />
                 <section title="run" ref="classgame_1_1_game_loader.html#a336fe600234b780502e0fafdf13e934f" />
-                <section title="m_config" ref="classgame_1_1_game_loader.html#a97d335def66b4bcffb338bb4a5be7099" />
-                <section title="m_context" ref="classgame_1_1_game_loader.html#a52f00262e41175e8ec19a6ce7323b259" />
-                <section title="m_db" ref="classgame_1_1_game_loader.html#ad43c4c2a755c1e5cea648c14e8b27f04" />
-                <section title="m_game" ref="classgame_1_1_game_loader.html#a39b6a6f3a2f671bbeac298110c396156" />
               </section>
             </section>
             <section title="ImGui">
@@ -420,101 +375,52 @@
               </section>
             </section>
             <section title="maker">
-              <section title="GUI">
-                <section title="CharacterWindow" ref="classmaker_1_1_g_u_i_1_1_character_window.html">
-                  <section title="CharacterWindow" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a9fefc7cbc824f6c760d13de390ce43fa" />
-                  <section title="doDeleteCharacter" ref="classmaker_1_1_g_u_i_1_1_character_window.html#ab8652105c74c47702c739142ef2812e3" />
-                  <section title="doNewCharacter" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a0d5c7adbee70f8f351e6710527c307dc" />
-                  <section title="doPrepare" ref="classmaker_1_1_g_u_i_1_1_character_window.html#aa7791f026156a45c13b50a5b51b1c91b" />
-                  <section title="m_current" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a8e5593d91efa438f04a08661cf0d5e08" />
-                  <section title="m_currentCharacter" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a5e84afbfab4d4eb16c74fffc99fc71da" />
-                  <section title="m_edit" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a1f6725c083659453ecf89892e11010e8" />
-                  <section title="m_list" ref="classmaker_1_1_g_u_i_1_1_character_window.html#ab14a08b659b78eadd60283fba24bce06" />
-                  <section title="m_maker" ref="classmaker_1_1_g_u_i_1_1_character_window.html#aa1fa3c3b226006a4bdcd1de5975f4fa5" />
-                  <section title="m_newOne" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a93e8f10147a1a24708ad96395c54ab47" />
-                  <section title="m_title" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a3102b5d6460b1dc15999975b92c28e74" />
+              <section title="gui">
+                <section title="CharacterWindow" ref="classmaker_1_1gui_1_1_character_window.html">
+                  <section title="CharacterWindow" ref="classmaker_1_1gui_1_1_character_window.html#a814fc3486213e866dbfeb677ddbbeed8" />
+                  <section title="doDeleteCharacter" ref="classmaker_1_1gui_1_1_character_window.html#ad580fcf68bc9197a7f4c7b9d00a8d61d" />
+                  <section title="doNewCharacter" ref="classmaker_1_1gui_1_1_character_window.html#a9fdd176730f03e431894bfc404e8fc77" />
+                  <section title="doPrepare" ref="classmaker_1_1gui_1_1_character_window.html#a44d1d6458a09afac8a9fb69b27b9f9b9" />
                 </section>
-                <section title="ConsoleWindow" ref="classmaker_1_1_g_u_i_1_1_console_window.html">
-                  <section title="ConsoleWindow" ref="classmaker_1_1_g_u_i_1_1_console_window.html#ac7b8ac61135073709f8cfb8e18cb33cb" />
-                  <section title="doPrepare" ref="classmaker_1_1_g_u_i_1_1_console_window.html#acccb56c696639fb6abf28ee2e850b3cb" />
+                <section title="ConsoleWindow" ref="classmaker_1_1gui_1_1_console_window.html">
+                  <section title="ConsoleWindow" ref="classmaker_1_1gui_1_1_console_window.html#a34e9ffe7e85623ae8b213a3330cbf741" />
+                  <section title="doPrepare" ref="classmaker_1_1gui_1_1_console_window.html#a5059f9878665f2939e6dc606db025692" />
                 </section>
-                <section title="MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html">
-                  <section title="UI" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html">
-                    <section title="NewGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html">
-                      <section title="State" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29d">
-                        <section title="NONE" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29daf8a2b135eefc88a453916173cf2b6834" />
-                        <section title="DIRECTORY" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29da6349a42d854ce584b0e31774978f33df" />
-                        <section title="INFORMATIONS" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29da4d9c8d8a26e714c67ac819478a5d6e19" />
-                      </section>
-                      <section title="directory" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a0d50649052199da73ddf4b8511acca63" />
-                      <section title="gameName" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#ac6348cd08c0654f1f3abc563dfafeeef" />
-                      <section title="state" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#aa556c956242d31da00bdaa940b0f0a7e" />
-                    </section>
-                    <section title="OpenGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html">
-                      <section title="gameList" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a0b5e2bcb08eac5655593a0eb02ae7145" />
-                      <section title="selectedItem" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a59cb111d581417cbdddc2f076939ec8e" />
-                      <section title="window" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#aeb1e36d0b1ece58d769601e1d2266c06" />
-                    </section>
-                    <section title="newGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html#a3cd5768e99e917a9a26d04bda6c0f9cd" />
-                    <section title="openGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html#aed322e4039b57bf7d1caa9428a4429bc" />
-                  </section>
-                  <section title="MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a139f66da8917ce6f2e2ca5a54f12cc1b" />
-                  <section title="~MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a8e51923a03dfca1492fb13b4c8033bdd" />
-                  <section title="draw" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a125ca266583586ccb0c807d0842b8e4c" />
-                  <section title="eventManager" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a6f8a2512f5b5558277993cc31ea6dcac" />
-                  <section title="initialize" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a204d39619c4e35d86dd0211160dbc129" />
-                  <section title="makeUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#ac0588061eb65e3170bd2da7622066c6b" />
-                  <section title="resetUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aae22be98eacb2df114452b2ba27db573" />
-                  <section title="m_characterWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aa053dc8e24236c413e04f6ccafde0612" />
-                  <section title="m_consoleWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a002c6bcef6aa469930c53d0c0c1051c4" />
-                  <section title="m_context" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aaf296bf0e934c8f3965070872d39f69a" />
-                  <section title="m_fileBrowser" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a7d69a111446f3f470221cf5c1ed7fca9" />
-                  <section title="m_maker" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#ac200c848b38190db18794668a22bf2a6" />
-                  <section title="m_mapGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aaf2af59886de51346e02c92327d0113f" />
-                  <section title="m_mapWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a5bcd50590a608807ac1cfb4a1542c673" />
-                  <section title="m_moneyWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a73966de179e79058557e26513d697fd5" />
-                  <section title="m_ui" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a3fb65877774fd1a38862eebe7e7998b3" />
-                  <section title="m_window" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#acbf5a233840074d459e9af20e899236c" />
-                  <section title="m_windowManager" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aef0d2529c133781477e7ac6f8a204980" />
-                  <section title="signalClose" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a1bcf139152ede42ede9452ab8bf4750c" />
+                <section title="MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html">
+                  <section title="MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a4c39dfe9cffcc07751037a2ae69dcc7e" />
+                  <section title="~MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#adc24065947d64b74123309c60b0608c0" />
+                  <section title="draw" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a9ae62f8eb17f1608e15c1915e4d76cdc" />
+                  <section title="eventManager" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a1795ea4bb0a5d1c9aa8987b477eb9497" />
+                  <section title="initialize" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a4025bb801287a4104dd1f5adf60c437a" />
+                  <section title="makeUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a91f305fe9e76d5e1c013589c2d70b3de" />
+                  <section title="signalClose" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#ab4dd6321ff482e9e5821d6faea00e634" />
                 </section>
-                <section title="MapWindow" ref="classmaker_1_1_g_u_i_1_1_map_window.html">
-                  <section title="MapWindow" ref="classmaker_1_1_g_u_i_1_1_map_window.html#af0c014e7e164958f9fc920da3ab8451b" />
-                  <section title="doPrepare" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a47dd535b7d11861abc8c572d99f733e1" />
-                  <section title="m_current" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a0429b5f57a9efa4fd17cc778ab4a1b2a" />
-                  <section title="m_edit" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a08ce07336f6e885a589c2021e316c427" />
-                  <section title="m_list" ref="classmaker_1_1_g_u_i_1_1_map_window.html#af700fc7a050276f846463fadb3e23885" />
-                  <section title="m_loaded" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a9f095408e82a111c9cba026b41d5dad8" />
-                  <section title="m_maker" ref="classmaker_1_1_g_u_i_1_1_map_window.html#aecc954c77d924d048960f8c025264415" />
-                  <section title="m_newOne" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a4ae0cb58828785674f9b912463182896" />
-                  <section title="m_selected" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a05fd2eae753fdd431489ed39ed97f379" />
+                <section title="MapWindow" ref="classmaker_1_1gui_1_1_map_window.html">
+                  <section title="MapWindow" ref="classmaker_1_1gui_1_1_map_window.html#a82044f03e5c9e334d369915bf3a0a80f" />
+                  <section title="doPrepare" ref="classmaker_1_1gui_1_1_map_window.html#a38a9690df70305d9637c1e0467b29cc3" />
                 </section>
-                <section title="MoneyWindow" ref="classmaker_1_1_g_u_i_1_1_money_window.html">
-                  <section title="MoneyWindow" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a9102c3af0c260ceb4884a8b5fa395b1f" />
-                  <section title="doPrepare" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a35668a468a4f0401ecfd599dcd5b5f9d" />
-                  <section title="doSaveMoney" ref="classmaker_1_1_g_u_i_1_1_money_window.html#aa3ef29c9bc66c56a8fef575f00540312" />
-                  <section title="m_infos" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a7a71f502275b129a6d13fb7f493b5546" />
-                  <section title="m_maker" ref="classmaker_1_1_g_u_i_1_1_money_window.html#aca5543745cd29c3ac5ccd7186dbbba92" />
-                  <section title="m_moneyLoaded" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a65693a61431533238c738c2a37ad7c5c" />
-                  <section title="m_nameList" ref="classmaker_1_1_g_u_i_1_1_money_window.html#aa3bfac00156e46072b163fcea5aaad53" />
+                <section title="MoneyWindow" ref="classmaker_1_1gui_1_1_money_window.html">
+                  <section title="MoneyWindow" ref="classmaker_1_1gui_1_1_money_window.html#aea19ea254a140cfe42f08850ea9a74c3" />
+                  <section title="doPrepare" ref="classmaker_1_1gui_1_1_money_window.html#ac552f2183edc3c75b37ea24b8dbd6330" />
+                  <section title="doSaveMoney" ref="classmaker_1_1gui_1_1_money_window.html#a5062874d57595993704b6ca064d9732a" />
                 </section>
               </section>
             </section>
             <section title="map" ref="namespacemap.html">
-              <section title="GUI">
-                <section title="MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html">
-                  <section title="MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a6592c13c2e63f699117d06e641258575" />
-                  <section title="~MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#ae43365ab0bc667baad5b97f5ad28ab6f" />
-                  <section title="draw" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a2f6e04836faf7cef20a1712fdd4305f2" />
-                  <section title="forcePrepare" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a31d9b1def51431f86556e5ab8e6edc49" />
-                  <section title="load" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a113cae831ae57b674c4de3ea0cbe86d4" />
-                  <section title="loadTiles" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a2b0cc63b642537f381351e8745a99441" />
-                  <section title="loadTilesets" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#abe9989802997c1b1a151aa6e87269a69" />
-                  <section title="move" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a13912b56c9dc363a2f954df60ef237bb" />
-                  <section title="positionOnScreenFrom" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a20a4e491443626806e8a94a19f87dc0a" />
-                  <section title="prepare" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a14bcff4fa003e4d56583506dba4ece23" />
-                  <section title="setCenterOfView" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a1879082e7b74d37aa1fe0179ff633a36" />
-                  <section title="setOnScreenPosition" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#acb515df1d6e7b91c71a43fb9f814dbb3" />
+              <section title="gui">
+                <section title="MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html">
+                  <section title="MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html#ab18b19306a3d6ef1ac3dda321bdf8153" />
+                  <section title="~MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html#ada12f70a7e7486e7d6781f4418e07d54" />
+                  <section title="draw" ref="classmap_1_1gui_1_1_map_g_u_i.html#ae1dd6f5d7220ab133b0367e2b4c40f1d" />
+                  <section title="forcePrepare" ref="classmap_1_1gui_1_1_map_g_u_i.html#a9062fcea57a672beb3121e2fdff23d5b" />
+                  <section title="load" ref="classmap_1_1gui_1_1_map_g_u_i.html#a32c2796222ea8cf54cd66dbab6052bbd" />
+                  <section title="loadTiles" ref="classmap_1_1gui_1_1_map_g_u_i.html#a37ddb588a8c92c8467f3e25dd10486da" />
+                  <section title="loadTilesets" ref="classmap_1_1gui_1_1_map_g_u_i.html#aafde80325ee627592e4773c804338824" />
+                  <section title="move" ref="classmap_1_1gui_1_1_map_g_u_i.html#a2441dde7f603959f341feed8d62f2210" />
+                  <section title="positionOnScreenFrom" ref="classmap_1_1gui_1_1_map_g_u_i.html#aca25ee42be8589b58363880cc27fde7a" />
+                  <section title="prepare" ref="classmap_1_1gui_1_1_map_g_u_i.html#a4e8284686d5f8bdbabf218b386b960fb" />
+                  <section title="setCenterOfView" ref="classmap_1_1gui_1_1_map_g_u_i.html#a0ac3977b93d2788ff277cd73234586e5" />
+                  <section title="setOnScreenPosition" ref="classmap_1_1gui_1_1_map_g_u_i.html#a6a79391d3e066e4b08a44ccfd38bd8da" />
                 </section>
               </section>
               <section title="Area" ref="classmap_1_1_area.html">
@@ -688,19 +594,21 @@
               <section title="m_what" ref="class_base_exception.html#a8d9bf453111e8c7bcab9e260dd717f22" />
             </section>
             <section title="BaseGUIObject" ref="class_base_g_u_i_object.html">
+              <section title="currentMap" ref="class_base_g_u_i_object.html#a09950ddc57a3d334ea2c9013ddf2d802" />
               <section title="draw" ref="class_base_g_u_i_object.html#ade0c4724b95ed6191ad5acd257bdb8aa" />
               <section title="load" ref="class_base_g_u_i_object.html#ae783b0cdbd349bfa8fe7cbe856839bd0" />
               <section title="prepare" ref="class_base_g_u_i_object.html#ac1f984873aeaa66b8af26ebaca16e515" />
-              <section title="setCurrentMap" ref="class_base_g_u_i_object.html#aa05189a0f513b9edeefeae0c8246eeab" />
+              <section title="setCurrentMap" ref="class_base_g_u_i_object.html#a6f84433f9c61ae882c14844504686203" />
               <section title="setOnScreenPosition" ref="class_base_g_u_i_object.html#a75e5bf5eff7e20170c1dc86093e7d1a7" />
-              <section title="m_map" ref="class_base_g_u_i_object.html#af2aa74e8645b07455ae5813845ea60d2" />
             </section>
             <section title="BaseObject" ref="class_base_object.html">
-              <section title="BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-              <section title="~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
+              <section title="BaseObject" ref="class_base_object.html#a79675951ff52b07deb05b3ca55890405" />
+              <section title="~BaseObject" ref="class_base_object.html#ad95e51ce97d02cc74b73cfead389e964" />
+              <section title="BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+              <section title="BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
               <section title="className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-              <section title="parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
-              <section title="setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
+              <section title="operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+              <section title="operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
             </section>
             <section title="Counter" ref="class_counter.html">
               <section title="Counter" ref="class_counter.html#a5582e98f3d04360881bbb6d51433ac42" />
@@ -760,8 +668,8 @@
             <section title="map::Area" ref="classmap_1_1_area.html" />
             <section title="BaseObject" ref="class_base_object.html">
               <section title="BaseGUIObject" ref="class_base_g_u_i_object.html">
-                <section title="character::GUI::CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html" />
-                <section title="map::GUI::MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html" />
+                <section title="character::gui::CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html" />
+                <section title="map::gui::MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html" />
               </section>
               <section title="character::Character" ref="classcharacter_1_1_character.html">
                 <section title="character::NPC" ref="classcharacter_1_1_n_p_c.html">
@@ -772,8 +680,8 @@
               <section title="database::Database" ref="classdatabase_1_1_database.html" />
               <section title="events::EventLoop" ref="classevents_1_1_event_loop.html" />
               <section title="game::GameLoader" ref="classgame_1_1_game_loader.html" />
-              <section title="game::GUI::GameGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html" />
-              <section title="maker::GUI::MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html" />
+              <section title="game::gui::GameGUI" ref="classgame_1_1gui_1_1_game_g_u_i.html" />
+              <section title="maker::gui::MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html" />
               <section title="map::Map" ref="classmap_1_1_map.html" />
               <section title="map::Position" ref="classmap_1_1_position.html" />
               <section title="map::Vector&lt; m_kSize &gt;" ref="classmap_1_1_vector.html" />
@@ -809,8 +717,8 @@
             <section title="LogSink">
               <section title="Logger" ref="class_logger.html" />
             </section>
-            <section title="maker::GUI::MakerGUI::UI::NewGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html" />
-            <section title="maker::GUI::MakerGUI::UI::OpenGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html" />
+            <section title="maker::gui::MakerGUI::UI::NewGame" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html" />
+            <section title="maker::gui::MakerGUI::UI::OpenGame" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html" />
             <section title="PerformanceTimer" ref="class_performance_timer.html" />
             <section title="ImGui::Popups" ref="class_im_gui_1_1_popups.html" />
             <section title="Query">
@@ -820,7 +728,7 @@
               <section title="database::SelectQuery" ref="classdatabase_1_1_select_query.html" />
               <section title="database::UpdateQuery" ref="classdatabase_1_1_update_query.html" />
             </section>
-            <section title="game::GUI::GameGUI::UI::Settings" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html" />
+            <section title="game::gui::GameGUI::UI::Settings" ref="structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html" />
             <section title="StateMachine&lt; T &gt;" ref="class_state_machine.html" />
             <section title="stringlist_batch&lt; BATCH &gt;" ref="classstringlist__batch.html" />
             <section title="stringlist_batch&lt; 5 &gt;" ref="classstringlist__batch.html" />
@@ -828,15 +736,13 @@
             <section title="Transformable">
               <section title="BaseGUIObject" ref="class_base_g_u_i_object.html" />
             </section>
-            <section title="maker::GUI::MakerGUI::UI" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html" />
-            <section title="game::GUI::GameGUI::UI" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html" />
             <section title="ImGui::Window" ref="class_im_gui_1_1_window.html">
-              <section title="game::GUI::CharacterWindow" ref="classgame_1_1_g_u_i_1_1_character_window.html" />
-              <section title="game::GUI::InventoryWindow" ref="classgame_1_1_g_u_i_1_1_inventory_window.html" />
-              <section title="maker::GUI::CharacterWindow" ref="classmaker_1_1_g_u_i_1_1_character_window.html" />
-              <section title="maker::GUI::ConsoleWindow" ref="classmaker_1_1_g_u_i_1_1_console_window.html" />
-              <section title="maker::GUI::MapWindow" ref="classmaker_1_1_g_u_i_1_1_map_window.html" />
-              <section title="maker::GUI::MoneyWindow" ref="classmaker_1_1_g_u_i_1_1_money_window.html" />
+              <section title="game::gui::CharacterWindow" ref="classgame_1_1gui_1_1_character_window.html" />
+              <section title="game::gui::InventoryWindow" ref="classgame_1_1gui_1_1_inventory_window.html" />
+              <section title="maker::gui::CharacterWindow" ref="classmaker_1_1gui_1_1_character_window.html" />
+              <section title="maker::gui::ConsoleWindow" ref="classmaker_1_1gui_1_1_console_window.html" />
+              <section title="maker::gui::MapWindow" ref="classmaker_1_1gui_1_1_map_window.html" />
+              <section title="maker::gui::MoneyWindow" ref="classmaker_1_1gui_1_1_money_window.html" />
             </section>
             <section title="ImGui::WindowsManager" ref="class_im_gui_1_1_windows_manager.html" />
             <section title="events::WorkerThread" ref="classevents_1_1_worker_thread.html" />
@@ -916,11 +822,13 @@
                 <section title="BaseObject.cpp" ref="_base_object_8cpp_source.html" />
                 <section title="BaseObject.hpp" ref="_base_object_8hpp.html">
                   <section title="BaseObject" ref="class_base_object.html">
-                    <section title="BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-                    <section title="~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
+                    <section title="BaseObject" ref="class_base_object.html#a79675951ff52b07deb05b3ca55890405" />
+                    <section title="~BaseObject" ref="class_base_object.html#ad95e51ce97d02cc74b73cfead389e964" />
+                    <section title="BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+                    <section title="BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
                     <section title="className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-                    <section title="parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
-                    <section title="setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
+                    <section title="operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+                    <section title="operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
                   </section>
                   <section title="DECLARE_BASEOBJECT" ref="_base_object_8hpp.html#a88978c39544ba13ca9bb3f88075f68fd" />
                 </section>
@@ -1113,21 +1021,21 @@
       <keyword name="BaseGUIObject" id="BaseGUIObject" ref="class_base_g_u_i_object.html" />
       <keyword name="prepare" id="BaseGUIObject::prepare" ref="class_base_g_u_i_object.html#ac1f984873aeaa66b8af26ebaca16e515" />
       <keyword name="setOnScreenPosition" id="BaseGUIObject::setOnScreenPosition" ref="class_base_g_u_i_object.html#a75e5bf5eff7e20170c1dc86093e7d1a7" />
-      <keyword name="setCurrentMap" id="BaseGUIObject::setCurrentMap" ref="class_base_g_u_i_object.html#aa05189a0f513b9edeefeae0c8246eeab" />
+      <keyword name="setCurrentMap" id="BaseGUIObject::setCurrentMap" ref="class_base_g_u_i_object.html#a6f84433f9c61ae882c14844504686203" />
+      <keyword name="currentMap" id="BaseGUIObject::currentMap" ref="class_base_g_u_i_object.html#a09950ddc57a3d334ea2c9013ddf2d802" />
       <keyword name="load" id="BaseGUIObject::load" ref="class_base_g_u_i_object.html#ae783b0cdbd349bfa8fe7cbe856839bd0" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="draw" id="BaseGUIObject::draw" ref="class_base_g_u_i_object.html#ade0c4724b95ed6191ad5acd257bdb8aa" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_map" id="BaseGUIObject::m_map" ref="class_base_g_u_i_object.html#af2aa74e8645b07455ae5813845ea60d2" />
       <keyword name="BaseObject" id="BaseObject" ref="class_base_object.html" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="Counter" id="Counter" ref="class_counter.html" />
       <keyword name="Counter" id="Counter::Counter" ref="class_counter.html#a5582e98f3d04360881bbb6d51433ac42" />
       <keyword name="number" id="Counter::number" ref="class_counter.html#a876de96fd188e988fd78c6be466256d5" />
@@ -1176,7 +1084,7 @@
       <keyword name="linearModulo" id="Tools::linearModulo" ref="class_tools.html#aac5e1e7a80188fc4fb464067ba8af52a" />
       <keyword name="character" id="character" ref="namespacecharacter.html" />
       <keyword name="character::Character" id="character::Character" ref="classcharacter_1_1_character.html" />
-      <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#a442757ab6b2c99fe9882160f506dd7da" />
+      <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#aa051700f9c1135a1dcc67f7e35c36850" />
       <keyword name="~Character" id="character::Character::~Character" ref="classcharacter_1_1_character.html#af892f906b1bc79b66f5777c49528cf62" />
       <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#aad9015026217aaa471f8912682dba837" />
       <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#a1f3dd55505078a405c86c697d4e2f027" />
@@ -1187,26 +1095,23 @@
       <keyword name="setPosition" id="character::Character::setPosition" ref="classcharacter_1_1_character.html#a0b5f05494028a5946770b5af57ab4e1d" />
       <keyword name="position" id="character::Character::position" ref="classcharacter_1_1_character.html#a66f7afdf506871aae6cd07a060602d66" />
       <keyword name="inventory" id="character::Character::inventory" ref="classcharacter_1_1_character.html#aacaa3f1173e0299289c966525d5c47d2" />
-      <keyword name="setName" id="character::Character::setName" ref="classcharacter_1_1_character.html#a67817784f37642e7ea967f542dbfcf33" />
+      <keyword name="setName" id="character::Character::setName" ref="classcharacter_1_1_character.html#a94f3efe0bd98b240f32983a6a0883587" />
       <keyword name="move" id="character::Character::move" ref="classcharacter_1_1_character.html#afa07c35a604156d651a00ded1d344e99" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="verifyDatabaseModel" id="character::Character::verifyDatabaseModel" ref="classcharacter_1_1_character.html#ae618f9937b7936f33d27be2af7789797" />
       <keyword name="createDatabaseModel" id="character::Character::createDatabaseModel" ref="classcharacter_1_1_character.html#a0c493929583e8519a2dd2a795e9647e7" />
       <keyword name="signalPositionChanged" id="character::Character::signalPositionChanged" ref="classcharacter_1_1_character.html#a4b6d9b76a13d40465970b03e56e86be3" />
-      <keyword name="m_context" id="character::Character::m_context" ref="classcharacter_1_1_character.html#aa725c31ddb59f1b9b960c7b46b4a8df1" />
-      <keyword name="m_name" id="character::Character::m_name" ref="classcharacter_1_1_character.html#a1d6be39c46e2413ceb254b691ca4a79e" />
-      <keyword name="m_position" id="character::Character::m_position" ref="classcharacter_1_1_character.html#ab2cc8677185e0a26414dd2cc76311f33" />
-      <keyword name="m_inventory" id="character::Character::m_inventory" ref="classcharacter_1_1_character.html#a98d6ef5ceeb9fc13b36be27cbca32cfd" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
+      <keyword name="privateInventory" id="character::Character::privateInventory" ref="classcharacter_1_1_character.html#a92bfff397c543fbc08a6c4d168e5c784" />
       <keyword name="character::NPC" id="character::NPC" ref="classcharacter_1_1_n_p_c.html" />
-      <keyword name="NPC" id="character::NPC::NPC" ref="classcharacter_1_1_n_p_c.html#a1189a10b9ae64889e60cbbcb935a3837" />
+      <keyword name="NPC" id="character::NPC::NPC" ref="classcharacter_1_1_n_p_c.html#ac5ea0d19289c9f2b76960418d63de641" />
       <keyword name="~NPC" id="character::NPC::~NPC" ref="classcharacter_1_1_n_p_c.html#a5edc26fe0513ca3dec752acb91ef3e4e" />
       <keyword name="loadFromDatabase" id="character::NPC::loadFromDatabase" ref="classcharacter_1_1_n_p_c.html#af944466ef0638819571580a5b09f10df" />
       <keyword name="updatePosition" id="character::NPC::updatePosition" ref="classcharacter_1_1_n_p_c.html#a9a2b20193266c5cb1f66684c9c0fb9ba" />
-      <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#a442757ab6b2c99fe9882160f506dd7da" />
+      <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#aa051700f9c1135a1dcc67f7e35c36850" />
       <keyword name="~Character" id="character::Character::~Character" ref="classcharacter_1_1_character.html#af892f906b1bc79b66f5777c49528cf62" />
       <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#aad9015026217aaa471f8912682dba837" />
       <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#a1f3dd55505078a405c86c697d4e2f027" />
@@ -1216,26 +1121,21 @@
       <keyword name="setPosition" id="character::Character::setPosition" ref="classcharacter_1_1_character.html#a0b5f05494028a5946770b5af57ab4e1d" />
       <keyword name="position" id="character::Character::position" ref="classcharacter_1_1_character.html#a66f7afdf506871aae6cd07a060602d66" />
       <keyword name="inventory" id="character::Character::inventory" ref="classcharacter_1_1_character.html#aacaa3f1173e0299289c966525d5c47d2" />
-      <keyword name="setName" id="character::Character::setName" ref="classcharacter_1_1_character.html#a67817784f37642e7ea967f542dbfcf33" />
+      <keyword name="setName" id="character::Character::setName" ref="classcharacter_1_1_character.html#a94f3efe0bd98b240f32983a6a0883587" />
       <keyword name="move" id="character::Character::move" ref="classcharacter_1_1_character.html#afa07c35a604156d651a00ded1d344e99" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="verifyDatabaseModel" id="character::NPC::verifyDatabaseModel" ref="classcharacter_1_1_n_p_c.html#aea63a42d375742ded820c850e3d8ff46" />
       <keyword name="createDatabaseModel" id="character::NPC::createDatabaseModel" ref="classcharacter_1_1_n_p_c.html#aa6c7265d927531a502a64d1ee84b895f" />
       <keyword name="verifyDatabaseModel" id="character::Character::verifyDatabaseModel" ref="classcharacter_1_1_character.html#ae618f9937b7936f33d27be2af7789797" />
       <keyword name="createDatabaseModel" id="character::Character::createDatabaseModel" ref="classcharacter_1_1_character.html#a0c493929583e8519a2dd2a795e9647e7" />
-      <keyword name="m_path" id="character::NPC::m_path" ref="classcharacter_1_1_n_p_c.html#ab59432792728ac250ff03655044cb437" />
-      <keyword name="m_targettedPosition" id="character::NPC::m_targettedPosition" ref="classcharacter_1_1_n_p_c.html#ae8618d539ceb551cd769690ad1396ae8" />
-      <keyword name="m_context" id="character::Character::m_context" ref="classcharacter_1_1_character.html#aa725c31ddb59f1b9b960c7b46b4a8df1" />
-      <keyword name="m_name" id="character::Character::m_name" ref="classcharacter_1_1_character.html#a1d6be39c46e2413ceb254b691ca4a79e" />
-      <keyword name="m_position" id="character::Character::m_position" ref="classcharacter_1_1_character.html#ab2cc8677185e0a26414dd2cc76311f33" />
-      <keyword name="m_inventory" id="character::Character::m_inventory" ref="classcharacter_1_1_character.html#a98d6ef5ceeb9fc13b36be27cbca32cfd" />
       <keyword name="signalPositionChanged" id="character::Character::signalPositionChanged" ref="classcharacter_1_1_character.html#a4b6d9b76a13d40465970b03e56e86be3" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
+      <keyword name="privateInventory" id="character::Character::privateInventory" ref="classcharacter_1_1_character.html#a92bfff397c543fbc08a6c4d168e5c784" />
       <keyword name="character::Vendor" id="character::Vendor" ref="classcharacter_1_1_vendor.html" />
-      <keyword name="Vendor" id="character::Vendor::Vendor" ref="classcharacter_1_1_vendor.html#a4f43625a95e4c2ac07d73572aef374f8" />
+      <keyword name="Vendor" id="character::Vendor::Vendor" ref="classcharacter_1_1_vendor.html#a16f3d880aceb03553cc29bca98a1edc4" />
       <keyword name="~Vendor" id="character::Vendor::~Vendor" ref="classcharacter_1_1_vendor.html#af580215030b4094c71c1d42b9222600d" />
       <keyword name="loadFromDatabase" id="character::Vendor::loadFromDatabase" ref="classcharacter_1_1_vendor.html#a7d5ffd0dcc53b13597916394002509d9" />
       <keyword name="seeInventory" id="character::Vendor::seeInventory" ref="classcharacter_1_1_vendor.html#a6b7d9f31123491948d75a43da7d705b9" />
@@ -1243,10 +1143,10 @@
       <keyword name="sell" id="character::Vendor::sell" ref="classcharacter_1_1_vendor.html#ad5fb05f73d483531eeabda0a06b931be" />
       <keyword name="buy" id="character::Vendor::buy" ref="classcharacter_1_1_vendor.html#ad685435500cbb784cff1ec262437f547" />
       <keyword name="buy" id="character::Vendor::buy" ref="classcharacter_1_1_vendor.html#ad4dd9ff57be0fd71f6cd16efb59e4433" />
-      <keyword name="NPC" id="character::NPC::NPC" ref="classcharacter_1_1_n_p_c.html#a1189a10b9ae64889e60cbbcb935a3837" />
+      <keyword name="NPC" id="character::NPC::NPC" ref="classcharacter_1_1_n_p_c.html#ac5ea0d19289c9f2b76960418d63de641" />
       <keyword name="~NPC" id="character::NPC::~NPC" ref="classcharacter_1_1_n_p_c.html#a5edc26fe0513ca3dec752acb91ef3e4e" />
       <keyword name="updatePosition" id="character::NPC::updatePosition" ref="classcharacter_1_1_n_p_c.html#a9a2b20193266c5cb1f66684c9c0fb9ba" />
-      <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#a442757ab6b2c99fe9882160f506dd7da" />
+      <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#aa051700f9c1135a1dcc67f7e35c36850" />
       <keyword name="~Character" id="character::Character::~Character" ref="classcharacter_1_1_character.html#af892f906b1bc79b66f5777c49528cf62" />
       <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#aad9015026217aaa471f8912682dba837" />
       <keyword name="Character" id="character::Character::Character" ref="classcharacter_1_1_character.html#a1f3dd55505078a405c86c697d4e2f027" />
@@ -1256,45 +1156,40 @@
       <keyword name="setPosition" id="character::Character::setPosition" ref="classcharacter_1_1_character.html#a0b5f05494028a5946770b5af57ab4e1d" />
       <keyword name="position" id="character::Character::position" ref="classcharacter_1_1_character.html#a66f7afdf506871aae6cd07a060602d66" />
       <keyword name="inventory" id="character::Character::inventory" ref="classcharacter_1_1_character.html#aacaa3f1173e0299289c966525d5c47d2" />
-      <keyword name="setName" id="character::Character::setName" ref="classcharacter_1_1_character.html#a67817784f37642e7ea967f542dbfcf33" />
+      <keyword name="setName" id="character::Character::setName" ref="classcharacter_1_1_character.html#a94f3efe0bd98b240f32983a6a0883587" />
       <keyword name="move" id="character::Character::move" ref="classcharacter_1_1_character.html#afa07c35a604156d651a00ded1d344e99" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="verifyDatabaseModel" id="character::NPC::verifyDatabaseModel" ref="classcharacter_1_1_n_p_c.html#aea63a42d375742ded820c850e3d8ff46" />
       <keyword name="createDatabaseModel" id="character::NPC::createDatabaseModel" ref="classcharacter_1_1_n_p_c.html#aa6c7265d927531a502a64d1ee84b895f" />
       <keyword name="verifyDatabaseModel" id="character::Character::verifyDatabaseModel" ref="classcharacter_1_1_character.html#ae618f9937b7936f33d27be2af7789797" />
       <keyword name="createDatabaseModel" id="character::Character::createDatabaseModel" ref="classcharacter_1_1_character.html#a0c493929583e8519a2dd2a795e9647e7" />
       <keyword name="signalPositionChanged" id="character::Character::signalPositionChanged" ref="classcharacter_1_1_character.html#a4b6d9b76a13d40465970b03e56e86be3" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_path" id="character::NPC::m_path" ref="classcharacter_1_1_n_p_c.html#ab59432792728ac250ff03655044cb437" />
-      <keyword name="m_targettedPosition" id="character::NPC::m_targettedPosition" ref="classcharacter_1_1_n_p_c.html#ae8618d539ceb551cd769690ad1396ae8" />
-      <keyword name="m_context" id="character::Character::m_context" ref="classcharacter_1_1_character.html#aa725c31ddb59f1b9b960c7b46b4a8df1" />
-      <keyword name="m_name" id="character::Character::m_name" ref="classcharacter_1_1_character.html#a1d6be39c46e2413ceb254b691ca4a79e" />
-      <keyword name="m_position" id="character::Character::m_position" ref="classcharacter_1_1_character.html#ab2cc8677185e0a26414dd2cc76311f33" />
-      <keyword name="m_inventory" id="character::Character::m_inventory" ref="classcharacter_1_1_character.html#a98d6ef5ceeb9fc13b36be27cbca32cfd" />
-      <keyword name="character::GUI::CharacterGUI" id="character::GUI::CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html" />
-      <keyword name="CharacterGUI" id="character::GUI::CharacterGUI::CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#ae1ef7bf612e36ff2513eb1d40637e86a" />
-      <keyword name="~CharacterGUI" id="character::GUI::CharacterGUI::~CharacterGUI" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a04e9139c56ee13a169495f55f0c823a9" />
-      <keyword name="prepare" id="character::GUI::CharacterGUI::prepare" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#abbd24e26a69de6750f67e25ec3e532c7" />
-      <keyword name="setOnScreenPosition" id="character::GUI::CharacterGUI::setOnScreenPosition" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#adadf887ea0140bc814d7daf79cfb3d8b" />
-      <keyword name="load" id="character::GUI::CharacterGUI::load" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a796f3c10bd8280d4953a0b041b243b4a" />
-      <keyword name="slotArrowPressed" id="character::GUI::CharacterGUI::slotArrowPressed" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#af74eeaf77690164671ebf9e95c52a0ab" />
-      <keyword name="slotKeyReleased" id="character::GUI::CharacterGUI::slotKeyReleased" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a58e6d21a61311106f0ea4926a6bca48c" />
-      <keyword name="uiRealtimeInformations" id="character::GUI::CharacterGUI::uiRealtimeInformations" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#af2ce857833c72a41453bafd88983c359" />
-      <keyword name="uiFullInformations" id="character::GUI::CharacterGUI::uiFullInformations" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a6feaced98ecf0aba838180cd7b7d8c02" />
-      <keyword name="uiInventoryWindow" id="character::GUI::CharacterGUI::uiInventoryWindow" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#ad2feacd394f082d3235bce3619376eea" />
-      <keyword name="setCurrentMap" id="BaseGUIObject::setCurrentMap" ref="class_base_g_u_i_object.html#aa05189a0f513b9edeefeae0c8246eeab" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="privateInventory" id="character::Character::privateInventory" ref="classcharacter_1_1_character.html#a92bfff397c543fbc08a6c4d168e5c784" />
+      <keyword name="character::gui::CharacterGUI" id="character::gui::CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html" />
+      <keyword name="CharacterGUI" id="character::gui::CharacterGUI::CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#af4b57bdb6b354d3765cb54fc863f6f52" />
+      <keyword name="~CharacterGUI" id="character::gui::CharacterGUI::~CharacterGUI" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#ad029ea06679fa38d42e3c89b3d8d256f" />
+      <keyword name="prepare" id="character::gui::CharacterGUI::prepare" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a83ac304204a2905216bb0ee5915212d3" />
+      <keyword name="setOnScreenPosition" id="character::gui::CharacterGUI::setOnScreenPosition" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a2f54c73f15dfd9fba40eb96370081c86" />
+      <keyword name="load" id="character::gui::CharacterGUI::load" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a89cc3959ef62703f20023585a9dd09b8" />
+      <keyword name="slotArrowPressed" id="character::gui::CharacterGUI::slotArrowPressed" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#af7ee1c2dc87f47212629acd5539695fd" />
+      <keyword name="slotKeyReleased" id="character::gui::CharacterGUI::slotKeyReleased" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#ac86f7c39773c5a8048eb882336187c64" />
+      <keyword name="uiRealtimeInformations" id="character::gui::CharacterGUI::uiRealtimeInformations" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a120f069a040111bd9dc21c2bf0f4dc77" />
+      <keyword name="uiFullInformations" id="character::gui::CharacterGUI::uiFullInformations" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a6e5c7df6890f71835c7fda5ecf00f2dd" />
+      <keyword name="uiInventoryWindow" id="character::gui::CharacterGUI::uiInventoryWindow" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a7b2ac1c2d0f8a2029e335828f444521a" />
+      <keyword name="setCurrentMap" id="BaseGUIObject::setCurrentMap" ref="class_base_g_u_i_object.html#a6f84433f9c61ae882c14844504686203" />
+      <keyword name="currentMap" id="BaseGUIObject::currentMap" ref="class_base_g_u_i_object.html#a09950ddc57a3d334ea2c9013ddf2d802" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="connectSignals" id="character::GUI::CharacterGUI::connectSignals" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a19e90f42abc31008bc556b7f66698004" />
-      <keyword name="connectSignals" id="character::GUI::CharacterGUI::connectSignals" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#abcf1b251aa80776548c4af3004ef326e" />
-      <keyword name="draw" id="character::GUI::CharacterGUI::draw" ref="classcharacter_1_1_g_u_i_1_1_character_g_u_i.html#a2c81d1300ebe77ba7a3f00a1a0c85cca" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_map" id="BaseGUIObject::m_map" ref="class_base_g_u_i_object.html#af2aa74e8645b07455ae5813845ea60d2" />
+      <keyword name="connectSignals" id="character::gui::CharacterGUI::connectSignals" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a2593269ad48d1cdea8aecf7180f3250c" />
+      <keyword name="connectSignals" id="character::gui::CharacterGUI::connectSignals" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a2e0eb533f050686d796b227254d485bc" />
+      <keyword name="draw" id="character::gui::CharacterGUI::draw" ref="classcharacter_1_1gui_1_1_character_g_u_i.html#a34f6cd024e11b01423a485a49884bfd0" />
       <keyword name="config" id="config" ref="namespaceconfig.html" />
       <keyword name="config::Context" id="config::Context" ref="classconfig_1_1_context.html" />
       <keyword name="Context" id="config::Context::Context" ref="classconfig_1_1_context.html#aa11596f6c1fd51a3b1b8f46eaa23b858" />
@@ -1306,12 +1201,13 @@
       <keyword name="kCharacterPath" id="config::Context::kCharacterPath" ref="classconfig_1_1_context.html#a4699a4c052a8ea6219c48086be9bcc64" />
       <keyword name="kProgramArguments" id="config::Context::kProgramArguments" ref="classconfig_1_1_context.html#ab4efa9d83bdda37b032c3b013f005d07" />
       <keyword name="gameLocation" id="config::Context::gameLocation" ref="classconfig_1_1_context.html#a3b6965fc96896ce3dccbba1ad6c27400" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
+      <keyword name="initialize" id="config::Context::initialize" ref="classconfig_1_1_context.html#ad53979cc6884f439b7509d1b8300edd3" />
       <keyword name="framePeriod" id="config::Context::framePeriod" ref="classconfig_1_1_context.html#aa5635c729a9b637d73c1f469c411c5e3" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="database" id="database" ref="namespacedatabase.html" />
       <keyword name="CREATE_EXCEPTION_CLASS" id="database::CREATE_EXCEPTION_CLASS" ref="namespacedatabase.html#a0c6ede2371ec406ba71a5cc84609ef55" />
       <keyword name="database::CreateQuery" id="database::CreateQuery" ref="classdatabase_1_1_create_query.html" />
@@ -1320,12 +1216,6 @@
       <keyword name="column" id="database::CreateQuery::column" ref="classdatabase_1_1_create_query.html#ab8cf256eaf7b4c83406399d977869beb" />
       <keyword name="constraint" id="database::CreateQuery::constraint" ref="classdatabase_1_1_create_query.html#ae34ab7a105a7c320cc96cebfc19796df" />
       <keyword name="str" id="database::CreateQuery::str" ref="classdatabase_1_1_create_query.html#abb0abbdf485c5fa8e969edd92ba38261" />
-      <keyword name="m_ifNotExists" id="database::CreateQuery::m_ifNotExists" ref="classdatabase_1_1_create_query.html#a4cf10b8ef16226fd3d7467b82fd15bfd" />
-      <keyword name="m_columns" id="database::CreateQuery::m_columns" ref="classdatabase_1_1_create_query.html#a767adc7520134ed3e81fe36b64ae7cdb" />
-      <keyword name="m_primaryKeyColumns" id="database::CreateQuery::m_primaryKeyColumns" ref="classdatabase_1_1_create_query.html#ac734a9080748b8195066a79b2a96f57e" />
-      <keyword name="m_uniqueColumns" id="database::CreateQuery::m_uniqueColumns" ref="classdatabase_1_1_create_query.html#ae8a3ad419ff2a28d5065399e009110b5" />
-      <keyword name="m_autoincrementColumns" id="database::CreateQuery::m_autoincrementColumns" ref="classdatabase_1_1_create_query.html#a389a49057d2dfcf82ffde306a8841d0c" />
-      <keyword name="m_notNullColumns" id="database::CreateQuery::m_notNullColumns" ref="classdatabase_1_1_create_query.html#a2a1c2c90ff04cd89dbdb635a719c0f8a" />
       <keyword name="database::Database" id="database::Database" ref="classdatabase_1_1_database.html" />
       <keyword name="Database" id="database::Database::Database" ref="classdatabase_1_1_database.html#ae8383b8a3fbcf55fa57db812ad3a5152" />
       <keyword name="~Database" id="database::Database::~Database" ref="classdatabase_1_1_database.html#a43daa39d5dd4b057a63221d75c4f90c2" />
@@ -1336,29 +1226,23 @@
       <keyword name="isTable" id="database::Database::isTable" ref="classdatabase_1_1_database.html#a34904b5ce54415c2dab704121ccd8244" />
       <keyword name="columnList" id="database::Database::columnList" ref="classdatabase_1_1_database.html#ac693b392838f1be0a67553acf50963a6" />
       <keyword name="columnsType" id="database::Database::columnsType" ref="classdatabase_1_1_database.html#a4d29aca81401bbdcdce09e7b4c0a2d57" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="isQuerySuccessfull" id="database::Database::isQuerySuccessfull" ref="classdatabase_1_1_database.html#af50d2a9279cdb4d4a03227fc30f2b098" />
       <keyword name="dataTypeAsString" id="database::Database::dataTypeAsString" ref="classdatabase_1_1_database.html#a9c401b02b505b84b21fd081fa9af2c3b" />
       <keyword name="dataTypeFromString" id="database::Database::dataTypeFromString" ref="classdatabase_1_1_database.html#a622503d69a5ade547bc04fba7448fb00" />
-      <keyword name="callback" id="database::Database::callback" ref="classdatabase_1_1_database.html#a222ce084d6a029f5b3ed776b4f62c495" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_queryMutex" id="database::Database::m_queryMutex" ref="classdatabase_1_1_database.html#a739bbc442683113cb9f2edcbab93d2ed" />
-      <keyword name="m_sqlite3Handler" id="database::Database::m_sqlite3Handler" ref="classdatabase_1_1_database.html#a019b90a07173443c53d60343f7fea6b5" />
-      <keyword name="m_result" id="database::Database::m_result" ref="classdatabase_1_1_database.html#a708f786c1764d05b0c3c217fb2601190" />
       <keyword name="database::DeleteQuery" id="database::DeleteQuery" ref="classdatabase_1_1_delete_query.html" />
       <keyword name="DeleteQuery" id="database::DeleteQuery::DeleteQuery" ref="classdatabase_1_1_delete_query.html#a892791dfd88b6976e12ef298294172e0" />
       <keyword name="where" id="database::DeleteQuery::where" ref="classdatabase_1_1_delete_query.html#a9273f24890ae80034019b32274475e07" />
       <keyword name="where" id="database::DeleteQuery::where" ref="classdatabase_1_1_delete_query.html#ac720b13972839cc48b5dd08d9806e818" />
       <keyword name="str" id="database::DeleteQuery::str" ref="classdatabase_1_1_delete_query.html#a74c70ecbe07678095feb018f641de752" />
-      <keyword name="m_conditions" id="database::DeleteQuery::m_conditions" ref="classdatabase_1_1_delete_query.html#a88e54cf09682d9aa2f5d5c723003e2b5" />
       <keyword name="database::InsertQuery" id="database::InsertQuery" ref="classdatabase_1_1_insert_query.html" />
       <keyword name="InsertQuery" id="database::InsertQuery::InsertQuery" ref="classdatabase_1_1_insert_query.html#a07994a0c1b087c9d13c104c52abaf791" />
       <keyword name="value" id="database::InsertQuery::value" ref="classdatabase_1_1_insert_query.html#a135230ddbcf671f2df7755ba9b497fdd" />
       <keyword name="str" id="database::InsertQuery::str" ref="classdatabase_1_1_insert_query.html#a691aacaaeba1cd05d242cafc9e4c9033" />
-      <keyword name="m_values" id="database::InsertQuery::m_values" ref="classdatabase_1_1_insert_query.html#a7aa8fec43dcfd8ea5d9b2fed07ad3067" />
       <keyword name="database::SelectQuery" id="database::SelectQuery" ref="classdatabase_1_1_select_query.html" />
       <keyword name="SelectQuery" id="database::SelectQuery::SelectQuery" ref="classdatabase_1_1_select_query.html#afd53920d75ca76acd487f0a757aa29cb" />
       <keyword name="column" id="database::SelectQuery::column" ref="classdatabase_1_1_select_query.html#a73da69d54efc8bc5cd7d462ea3b3b8c5" />
@@ -1367,18 +1251,12 @@
       <keyword name="sort" id="database::SelectQuery::sort" ref="classdatabase_1_1_select_query.html#ac2461f549780e001d22ea3e9a544cebd" />
       <keyword name="join" id="database::SelectQuery::join" ref="classdatabase_1_1_select_query.html#a59035c37800ca2293935b4991e3fe135" />
       <keyword name="str" id="database::SelectQuery::str" ref="classdatabase_1_1_select_query.html#a60924f73ad03d57c972a7e06e2de4afb" />
-      <keyword name="m_columns" id="database::SelectQuery::m_columns" ref="classdatabase_1_1_select_query.html#a82a561af28914a8bfac2b6b3111a9cd4" />
-      <keyword name="m_conditions" id="database::SelectQuery::m_conditions" ref="classdatabase_1_1_select_query.html#ab62fe2e6d854c7b4856c26957798962a" />
-      <keyword name="m_sortColumns" id="database::SelectQuery::m_sortColumns" ref="classdatabase_1_1_select_query.html#a407e1a706a23d7284e389cf2ed9fcab1" />
-      <keyword name="m_sortAscending" id="database::SelectQuery::m_sortAscending" ref="classdatabase_1_1_select_query.html#aa2497a722174cd1608a6bade51ea65f0" />
       <keyword name="database::UpdateQuery" id="database::UpdateQuery" ref="classdatabase_1_1_update_query.html" />
       <keyword name="UpdateQuery" id="database::UpdateQuery::UpdateQuery" ref="classdatabase_1_1_update_query.html#a31bc77f72f88333ef5b41f8d2670ed7c" />
       <keyword name="set" id="database::UpdateQuery::set" ref="classdatabase_1_1_update_query.html#ad18ba755402b8e3db5dbc519ffd08b87" />
       <keyword name="where" id="database::UpdateQuery::where" ref="classdatabase_1_1_update_query.html#a574efc4d9b7b00199f0c7171f9354af4" />
       <keyword name="where" id="database::UpdateQuery::where" ref="classdatabase_1_1_update_query.html#ae7e6745fba290906854c4bd31b7bad90" />
       <keyword name="str" id="database::UpdateQuery::str" ref="classdatabase_1_1_update_query.html#ab536c312210c92970abe666255c21ea9" />
-      <keyword name="m_set" id="database::UpdateQuery::m_set" ref="classdatabase_1_1_update_query.html#a79718a76d0e9e9e1c3cba47630f47888" />
-      <keyword name="m_conditions" id="database::UpdateQuery::m_conditions" ref="classdatabase_1_1_update_query.html#abc12465565e7822c5d70dbe98aa9329d" />
       <keyword name="database::Query::FindQueryType&lt; Query::CREATE &gt;" id="database::Query::FindQueryType&lt; Query::CREATE &gt;" ref="structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_c_r_e_a_t_e_01_4.html" />
       <keyword name="type" id="database::Query::FindQueryType&lt; Query::CREATE &gt;::type" ref="structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_c_r_e_a_t_e_01_4.html#aae0f41982d2e6d4390d1b29fb77551dc" />
       <keyword name="database::Query::FindQueryType&lt; Query::DELETE &gt;" id="database::Query::FindQueryType&lt; Query::DELETE &gt;" ref="structdatabase_1_1_query_1_1_find_query_type_3_01_query_1_1_d_e_l_e_t_e_01_4.html" />
@@ -1405,16 +1283,16 @@
       <keyword name="subscribeSync" id="events::Event::subscribeSync" ref="classevents_1_1_event.html#aeb2a6b12d043cffd72087d3d9c5a2ac1" />
       <keyword name="events::Event&lt; void &gt;" id="events::Event&lt; void &gt;" ref="classevents_1_1_event_3_01void_01_4.html" />
       <keyword name="trigger" id="events::Event&lt; void &gt;::trigger" ref="classevents_1_1_event_3_01void_01_4.html#a8011b8fa69254b049f948e746c494fc4" />
-      <keyword name="subscribeAsync" id="events::Event&lt; void &gt;::subscribeAsync" ref="classevents_1_1_event_3_01void_01_4.html#a332c03170818fb03bca2661150de33e8" />
-      <keyword name="subscribeSync" id="events::Event&lt; void &gt;::subscribeSync" ref="classevents_1_1_event_3_01void_01_4.html#a0fc3316023f621ca3c0bd856d39afa51" />
+      <keyword name="subscribeAsync" id="events::Event&lt; void &gt;::subscribeAsync" ref="classevents_1_1_event_3_01void_01_4.html#a0b81923cbcc773430847608a5bbe242b" />
+      <keyword name="subscribeSync" id="events::Event&lt; void &gt;::subscribeSync" ref="classevents_1_1_event_3_01void_01_4.html#ab5678ce9ef395836cdd2a2a33e17e7da" />
       <keyword name="subscribeAsync" id="events::Event&lt; void &gt;::subscribeAsync" ref="classevents_1_1_event_3_01void_01_4.html#a7bb7e9b32937345e9b742a70ddc2392c" />
       <keyword name="subscribeSync" id="events::Event&lt; void &gt;::subscribeSync" ref="classevents_1_1_event_3_01void_01_4.html#a7018aa0efc4fcc57758453555da03102" />
       <keyword name="events::EventLoop" id="events::EventLoop" ref="classevents_1_1_event_loop.html" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="events::KeyBinding" id="events::KeyBinding" ref="classevents_1_1_key_binding.html" />
       <keyword name="LayerKey" id="events::KeyBinding::LayerKey" ref="classevents_1_1_key_binding.html#ac248038a70a0f38effcbc07c10b03200" />
       <keyword name="KeyBinding" id="events::KeyBinding::KeyBinding" ref="classevents_1_1_key_binding.html#a01f6f67644164d71a4577ab5777cba67" />
@@ -1426,21 +1304,25 @@
       <keyword name="ALT" id="events::KeyBinding::ALT" ref="classevents_1_1_key_binding.html#a03e562c590ebb334440e0dacabf925b7af956e89e767ab0934b955c3ab0855fda" />
       <keyword name="SHIFT" id="events::KeyBinding::SHIFT" ref="classevents_1_1_key_binding.html#a03e562c590ebb334440e0dacabf925b7a4a32d37e2e806793963585be96c8bde0" />
       <keyword name="events::Work" id="events::Work" ref="classevents_1_1_work.html" />
-      <keyword name="Work" id="events::Work::Work" ref="classevents_1_1_work.html#a2a1014572a9b87894822b9805c759205" />
+      <keyword name="Work" id="events::Work::Work" ref="classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b" />
       <keyword name="run" id="events::Work::run" ref="classevents_1_1_work.html#a39480faf4c1b597da1df0e50e251c0af" />
       <keyword name="AbstractWork" id="events::AbstractWork::AbstractWork" ref="classevents_1_1_abstract_work.html#ab4c14462f6a1cde3f209b20b9ca68013" />
       <keyword name="~AbstractWork" id="events::AbstractWork::~AbstractWork" ref="classevents_1_1_abstract_work.html#afa3dd0df8b9234206ac8495ff0b59b5e" />
       <keyword name="events::Work&lt; void &gt;" id="events::Work&lt; void &gt;" ref="classevents_1_1_work_3_01void_01_4.html" />
-      <keyword name="Work" id="events::Work&lt; void &gt;::Work" ref="classevents_1_1_work_3_01void_01_4.html#a71a71f904996af3314d39ff8acb98888" />
+      <keyword name="Work" id="events::Work&lt; void &gt;::Work" ref="classevents_1_1_work_3_01void_01_4.html#ab1afb76ef8d0c5707a3bdf5609957844" />
       <keyword name="run" id="events::Work&lt; void &gt;::run" ref="classevents_1_1_work_3_01void_01_4.html#afe18f1251e05e24e4d9c0f28c773222b" />
       <keyword name="AbstractWork" id="events::AbstractWork::AbstractWork" ref="classevents_1_1_abstract_work.html#ab4c14462f6a1cde3f209b20b9ca68013" />
       <keyword name="~AbstractWork" id="events::AbstractWork::~AbstractWork" ref="classevents_1_1_abstract_work.html#afa3dd0df8b9234206ac8495ff0b59b5e" />
       <keyword name="events::WorkerThread" id="events::WorkerThread" ref="classevents_1_1_worker_thread.html" />
       <keyword name="~WorkerThread" id="events::WorkerThread::~WorkerThread" ref="classevents_1_1_worker_thread.html#abd69bf18d984127d9b7406a6cd9f314c" />
+      <keyword name="WorkerThread" id="events::WorkerThread::WorkerThread" ref="classevents_1_1_worker_thread.html#a209207f8c7c6d4cbab0e57582b8e018a" />
+      <keyword name="WorkerThread" id="events::WorkerThread::WorkerThread" ref="classevents_1_1_worker_thread.html#a200b04f67d7b0346c34fa190cace8b19" />
+      <keyword name="operator=" id="events::WorkerThread::operator=" ref="classevents_1_1_worker_thread.html#ac742ba93aaaa4586cac89cf878771cc4" />
+      <keyword name="operator=" id="events::WorkerThread::operator=" ref="classevents_1_1_worker_thread.html#ac6e2a217229344078c9bca2e13c06886" />
       <keyword name="newWork" id="events::WorkerThread::newWork" ref="classevents_1_1_worker_thread.html#ae3642f7b7c0610c99862efc6459a3089" />
       <keyword name="newWork" id="events::WorkerThread::newWork" ref="classevents_1_1_worker_thread.html#a4c0ae7ce65f3ff769b1ea7956884375e" />
-      <keyword name="newWork" id="events::WorkerThread::newWork" ref="classevents_1_1_worker_thread.html#a6a03ba4d0defacd2ac8f47f9d46ea70e" />
-      <keyword name="newWork" id="events::WorkerThread::newWork" ref="classevents_1_1_worker_thread.html#a676a3ad06501aefe326081a9f5693f14" />
+      <keyword name="newWork" id="events::WorkerThread::newWork" ref="classevents_1_1_worker_thread.html#a80b3580f9effa9b6c11b4af4e4200d33" />
+      <keyword name="newWork" id="events::WorkerThread::newWork" ref="classevents_1_1_worker_thread.html#a1885f40b69bbf9f19d5e1822f7b0c770" />
       <keyword name="waitForJoin" id="events::WorkerThread::waitForJoin" ref="classevents_1_1_worker_thread.html#a2525de4c2edaeeb40329d52e8f98b37a" />
       <keyword name="game" id="game" ref="namespacegame.html" />
       <keyword name="game::GameLoader" id="game::GameLoader" ref="classgame_1_1_game_loader.html" />
@@ -1448,17 +1330,13 @@
       <keyword name="~GameLoader" id="game::GameLoader::~GameLoader" ref="classgame_1_1_game_loader.html#a7bc64b550b4103c28f91bb01974bafa0" />
       <keyword name="load" id="game::GameLoader::load" ref="classgame_1_1_game_loader.html#ab57cc56c41af75aef86001f14742720c" />
       <keyword name="run" id="game::GameLoader::run" ref="classgame_1_1_game_loader.html#a336fe600234b780502e0fafdf13e934f" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="m_context" id="game::GameLoader::m_context" ref="classgame_1_1_game_loader.html#a52f00262e41175e8ec19a6ce7323b259" />
-      <keyword name="m_config" id="game::GameLoader::m_config" ref="classgame_1_1_game_loader.html#a97d335def66b4bcffb338bb4a5be7099" />
-      <keyword name="m_db" id="game::GameLoader::m_db" ref="classgame_1_1_game_loader.html#ad43c4c2a755c1e5cea648c14e8b27f04" />
-      <keyword name="m_game" id="game::GameLoader::m_game" ref="classgame_1_1_game_loader.html#a39b6a6f3a2f671bbeac298110c396156" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="game::GUI::CharacterWindow" id="game::GUI::CharacterWindow" ref="classgame_1_1_g_u_i_1_1_character_window.html" />
-      <keyword name="CharacterWindow" id="game::GUI::CharacterWindow::CharacterWindow" ref="classgame_1_1_g_u_i_1_1_character_window.html#ade7b373d195de9da24e9f84458b12916" />
+      <keyword name="game::gui::CharacterWindow" id="game::gui::CharacterWindow" ref="classgame_1_1gui_1_1_character_window.html" />
+      <keyword name="CharacterWindow" id="game::gui::CharacterWindow::CharacterWindow" ref="classgame_1_1gui_1_1_character_window.html#a67545891f5e725404938f5dfa74edf77" />
       <keyword name="Window" id="ImGui::Window::Window" ref="class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc" />
       <keyword name="~Window" id="ImGui::Window::~Window" ref="class_im_gui_1_1_window.html#ae28775306b7cb06759f78de7cdf4f611" />
       <keyword name="prepare" id="ImGui::Window::prepare" ref="class_im_gui_1_1_window.html#ad19a52d068f70272a25e7ff05b3e8f40" />
@@ -1467,66 +1345,40 @@
       <keyword name="active" id="ImGui::Window::active" ref="class_im_gui_1_1_window.html#a2f5cc0996323c3130d4ca5edb4262e93" />
       <keyword name="title" id="ImGui::Window::title" ref="class_im_gui_1_1_window.html#ad10c2af3f9818ad3b12bbbea1d2371f5" />
       <keyword name="setTitle" id="ImGui::Window::setTitle" ref="class_im_gui_1_1_window.html#accf422802f1274d129c2fe9ce33afdf4" />
-      <keyword name="doPrepare" id="game::GUI::CharacterWindow::doPrepare" ref="classgame_1_1_g_u_i_1_1_character_window.html#a945a7cfd3a67a575f0bf46795318ae05" />
-      <keyword name="doCollapsedState" id="game::GUI::CharacterWindow::doCollapsedState" ref="classgame_1_1_g_u_i_1_1_character_window.html#ae488c80abd0857bb6fc3e609791dd1ff" />
-      <keyword name="game::GUI::GameGUI" id="game::GUI::GameGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html" />
-      <keyword name="GameGUI" id="game::GUI::GameGUI::GameGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a86d1e73edfa0d87ae97f411005677ffa" />
-      <keyword name="initialize" id="game::GUI::GameGUI::initialize" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#afc1390806f7230ab9d4a2ff285b6e186" />
-      <keyword name="eventManager" id="game::GUI::GameGUI::eventManager" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#adf88c18ce0f5b3c109552d61c5ed1249" />
-      <keyword name="draw" id="game::GUI::GameGUI::draw" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a981523a563706b7c804b180a6c191c60" />
-      <keyword name="subscribeOnClose" id="game::GUI::GameGUI::subscribeOnClose" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#ad45ca0387e734f9246ae80693660c10c" />
-      <keyword name="addGUIObject" id="game::GUI::GameGUI::addGUIObject" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a8317fdcd6889f142a47a29f960ffce0a" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="doPrepare" id="game::gui::CharacterWindow::doPrepare" ref="classgame_1_1gui_1_1_character_window.html#a1a790847410431e40d588e68ebc8a2d3" />
+      <keyword name="doCollapsedState" id="game::gui::CharacterWindow::doCollapsedState" ref="classgame_1_1gui_1_1_character_window.html#a04060837e35fe08aa328ccff94b697c1" />
+      <keyword name="game::gui::GameGUI" id="game::gui::GameGUI" ref="classgame_1_1gui_1_1_game_g_u_i.html" />
+      <keyword name="GameGUI" id="game::gui::GameGUI::GameGUI" ref="classgame_1_1gui_1_1_game_g_u_i.html#ad5e26b6c4d0ecd3a5596efb1d565a73e" />
+      <keyword name="initialize" id="game::gui::GameGUI::initialize" ref="classgame_1_1gui_1_1_game_g_u_i.html#a51992426d7b9b21bc6a03d285733ac37" />
+      <keyword name="eventManager" id="game::gui::GameGUI::eventManager" ref="classgame_1_1gui_1_1_game_g_u_i.html#a9b2365c66919d3ae0ca2da33b5f4fbb5" />
+      <keyword name="draw" id="game::gui::GameGUI::draw" ref="classgame_1_1gui_1_1_game_g_u_i.html#ab442115783d4522ff95093dff86fb047" />
+      <keyword name="subscribeOnClose" id="game::gui::GameGUI::subscribeOnClose" ref="classgame_1_1gui_1_1_game_g_u_i.html#a0659a876b505889b19a4050408ede956" />
+      <keyword name="addGUIObject" id="game::gui::GameGUI::addGUIObject" ref="classgame_1_1gui_1_1_game_g_u_i.html#a58d1ab3abb4897af6395f9ed9f1b5a9e" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="signalKeyPressed" id="game::GUI::GameGUI::signalKeyPressed" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a456afbd25e128bd89aaf952eb570b6e9" />
-      <keyword name="signalKeyReleased" id="game::GUI::GameGUI::signalKeyReleased" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#aa84174db508821e4852c63fd4a078bd1" />
-      <keyword name="signalArroyIsPressed" id="game::GUI::GameGUI::signalArroyIsPressed" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a3cad00cdddb66ca2ebb63a6bb4728cbb" />
-      <keyword name="signalPause" id="game::GUI::GameGUI::signalPause" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a46dd94e3ce144c4f96f829a5be9a2070" />
-      <keyword name="loadFromConfig" id="game::GUI::GameGUI::loadFromConfig" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a1cac0130c6e2f28fccbd6b0f415eb347" />
-      <keyword name="makeUI" id="game::GUI::GameGUI::makeUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#aa799539893c7695110254759b2d56f81" />
-      <keyword name="uiPauseMenu" id="game::GUI::GameGUI::uiPauseMenu" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a5a60ae144bf4c969c96b058e8442e0dd" />
-      <keyword name="uiLoadSettingsPopup" id="game::GUI::GameGUI::uiLoadSettingsPopup" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a184f2870c8970d0d5740c8bda81cd29b" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_guiObjects" id="game::GUI::GameGUI::m_guiObjects" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a19e9c4854687b87c5db54258ca6dd27f" />
-      <keyword name="m_player" id="game::GUI::GameGUI::m_player" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a9ed313be2843b111f2757edb3ea60e6c" />
-      <keyword name="m_mapGUI" id="game::GUI::GameGUI::m_mapGUI" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a458768c7865a302fade31daaa55771d0" />
-      <keyword name="m_context" id="game::GUI::GameGUI::m_context" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a0a8a097c578d777c2d5cce981e13a4d1" />
-      <keyword name="m_db" id="game::GUI::GameGUI::m_db" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a438793b2a85c1ea9c4e07bcde185cb31" />
-      <keyword name="m_window" id="game::GUI::GameGUI::m_window" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a2280fd4ad026980bd847b5543e4909a9" />
-      <keyword name="m_signalOnClose" id="game::GUI::GameGUI::m_signalOnClose" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a9d780f1c8baebb7b9bd31a8f2144f849" />
-      <keyword name="m_windowsManager" id="game::GUI::GameGUI::m_windowsManager" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a37ee887a41455462c414368b6fb95e7f" />
-      <keyword name="m_characterWindow" id="game::GUI::GameGUI::m_characterWindow" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a955b0e0017a071972af0ea84f7609fcf" />
-      <keyword name="m_inventoryWindow" id="game::GUI::GameGUI::m_inventoryWindow" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#aca63bc688977ab719966a328c547ff40" />
-      <keyword name="m_actionWaitingForKeybinding" id="game::GUI::GameGUI::m_actionWaitingForKeybinding" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#adc5647a0bad14d607517b6c84d1f0aff" />
-      <keyword name="m_event" id="game::GUI::GameGUI::m_event" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#ac916e9f689c919b056d7f39ccc1f8800" />
-      <keyword name="m_game" id="game::GUI::GameGUI::m_game" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a56cfc8ea27b0a78a2b515561c9372b36" />
-      <keyword name="m_ui" id="game::GUI::GameGUI::m_ui" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a0e1a31603e38cb82f6b0537c9ecb0505" />
-      <keyword name="CHARACTER_WINDOW_ACTION" id="game::GUI::GameGUI::CHARACTER_WINDOW_ACTION" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#af75ee4dd06d9f58a39e32ef84aaa7bcb" />
-      <keyword name="INVENTORY_WINDOW_ACTION" id="game::GUI::GameGUI::INVENTORY_WINDOW_ACTION" ref="classgame_1_1_g_u_i_1_1_game_g_u_i.html#a59c86f3b0ed5c3d5c9b55bebad04ac5d" />
-      <keyword name="game::GUI::GameGUI::UI" id="game::GUI::GameGUI::UI" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html" />
-      <keyword name="onPause" id="game::GUI::GameGUI::UI::onPause" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#af0cda369653b9a99d25d76fa03cb9220" />
-      <keyword name="uiActivated" id="game::GUI::GameGUI::UI::uiActivated" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#ae6592b55d01a15e1d680cfb8c2ebf5e2" />
-      <keyword name="inventoryOpen" id="game::GUI::GameGUI::UI::inventoryOpen" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#aa973733002159c0b76f1fca52023b6c9" />
-      <keyword name="characterOpen" id="game::GUI::GameGUI::UI::characterOpen" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a611d058e0def1a172dd7f99337c8e9a3" />
-      <keyword name="settings" id="game::GUI::GameGUI::UI::settings" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a7fbf5bc735adbdb8fd48f2a2420e12a5" />
-      <keyword name="MAIN_UI" id="game::GUI::GameGUI::UI::MAIN_UI" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a48ad0b57b7e4393576628b663d719559" />
-      <keyword name="PAUSE_POPUP" id="game::GUI::GameGUI::UI::PAUSE_POPUP" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#abd3ed16111127a0bd74d52fcba5b2dd9" />
-      <keyword name="INFOS_POPUP" id="game::GUI::GameGUI::UI::INFOS_POPUP" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a7efc587fd9ea548a5c8ba8e26ba6280a" />
-      <keyword name="SETTINGS_POPUP" id="game::GUI::GameGUI::UI::SETTINGS_POPUP" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a55f733cdbb878077d24df18709fff5cd" />
-      <keyword name="SETTINGS_TABBAR_NAME" id="game::GUI::GameGUI::UI::SETTINGS_TABBAR_NAME" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a63483956f5e5f2c502aff9e7f1fd2f75" />
-      <keyword name="BOTTON_AREA" id="game::GUI::GameGUI::UI::BOTTON_AREA" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a3b20b61c20d796c60ae766c493273ff6" />
-      <keyword name="CHARACTER_BUTTON" id="game::GUI::GameGUI::UI::CHARACTER_BUTTON" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#ab2574f5324625801fc32e3ed2497c0dc" />
-      <keyword name="INVENTORY_BUTTON" id="game::GUI::GameGUI::UI::INVENTORY_BUTTON" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a9f624fa0e54d1ca959a1d1fab5526275" />
-      <keyword name="FIXED" id="game::GUI::GameGUI::UI::FIXED" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a35e6035e3a20a76c51af9c3525ff4d7d" />
-      <keyword name="game::GUI::GameGUI::UI::Settings" id="game::GUI::GameGUI::UI::Settings" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html" />
-      <keyword name="fullscreen" id="game::GUI::GameGUI::UI::Settings::fullscreen" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a65a1c9c450b9144441d44cf4e2ea6426" />
-      <keyword name="resolution" id="game::GUI::GameGUI::UI::Settings::resolution" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#adeb8418c899f2cb0295acc4923b39977" />
-      <keyword name="resolutionItemSelected" id="game::GUI::GameGUI::UI::Settings::resolutionItemSelected" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#ae83d4fef71613a51a33d4ef0e6b5f3f8" />
-      <keyword name="availableResolutions" id="game::GUI::GameGUI::UI::Settings::availableResolutions" ref="structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a9df1fa7836d473644132fab02d65b254" />
-      <keyword name="game::GUI::InventoryWindow" id="game::GUI::InventoryWindow" ref="classgame_1_1_g_u_i_1_1_inventory_window.html" />
-      <keyword name="InventoryWindow" id="game::GUI::InventoryWindow::InventoryWindow" ref="classgame_1_1_g_u_i_1_1_inventory_window.html#adbb8b424f30e190373a3209b3e24687a" />
+      <keyword name="signalKeyPressed" id="game::gui::GameGUI::signalKeyPressed" ref="classgame_1_1gui_1_1_game_g_u_i.html#aacde14d00c5c191dac669ac58f6cd43c" />
+      <keyword name="signalKeyReleased" id="game::gui::GameGUI::signalKeyReleased" ref="classgame_1_1gui_1_1_game_g_u_i.html#ae76e8f49a747d699ab41f576cb909a4d" />
+      <keyword name="signalArroyIsPressed" id="game::gui::GameGUI::signalArroyIsPressed" ref="classgame_1_1gui_1_1_game_g_u_i.html#a9c2bd02dcd9c3966d8041928dcbfe46d" />
+      <keyword name="signalPause" id="game::gui::GameGUI::signalPause" ref="classgame_1_1gui_1_1_game_g_u_i.html#a2c401f5e989ea8c42865b3dbf120c62a" />
+      <keyword name="loadFromConfig" id="game::gui::GameGUI::loadFromConfig" ref="classgame_1_1gui_1_1_game_g_u_i.html#a250a52309d7ae540ff7d0346ef53f599" />
+      <keyword name="makeUI" id="game::gui::GameGUI::makeUI" ref="classgame_1_1gui_1_1_game_g_u_i.html#a826e7835ef268f2053b49d410809b6c3" />
+      <keyword name="uiPauseMenu" id="game::gui::GameGUI::uiPauseMenu" ref="classgame_1_1gui_1_1_game_g_u_i.html#aea28841aa0ec69985f3d8a9dbfbaaf9f" />
+      <keyword name="uiLoadSettingsPopup" id="game::gui::GameGUI::uiLoadSettingsPopup" ref="classgame_1_1gui_1_1_game_g_u_i.html#a3ec31f4053b6253a5727b8c0667158b6" />
+      <keyword name="uiInformationPopup" id="game::gui::GameGUI::uiInformationPopup" ref="classgame_1_1gui_1_1_game_g_u_i.html#a057d839e54556ec9c22e4b01dce67851" />
+      <keyword name="uiSettingsPopup" id="game::gui::GameGUI::uiSettingsPopup" ref="classgame_1_1gui_1_1_game_g_u_i.html#ab784b3b7299155f67a83ed77c9a9db60" />
+      <keyword name="managePressingKeyEvent" id="game::gui::GameGUI::managePressingKeyEvent" ref="classgame_1_1gui_1_1_game_g_u_i.html#afccafbd3a4afa982e74971beda2a5b41" />
+      <keyword name="manageReleasingKeyEven" id="game::gui::GameGUI::manageReleasingKeyEven" ref="classgame_1_1gui_1_1_game_g_u_i.html#afa59c839d9585ce49f5971b6cd18cfb0" />
+      <keyword name="checkKeyPressed" id="game::gui::GameGUI::checkKeyPressed" ref="classgame_1_1gui_1_1_game_g_u_i.html#a094156b33c72c2b4d40245419c74923f" />
+      <keyword name="game::gui::GameGUI::UI::Settings" id="game::gui::GameGUI::UI::Settings" ref="structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html" />
+      <keyword name="fullscreen" id="game::gui::GameGUI::UI::Settings::fullscreen" ref="structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#ae77271c84a2f3a4531ef66a03f99630b" />
+      <keyword name="resolution" id="game::gui::GameGUI::UI::Settings::resolution" ref="structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a085c327df0bc6ed419b6115199aa2608" />
+      <keyword name="resolutionItemSelected" id="game::gui::GameGUI::UI::Settings::resolutionItemSelected" ref="structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#af7f43708fdf7fa49bcbf9d7bcad8d1d0" />
+      <keyword name="availableResolutions" id="game::gui::GameGUI::UI::Settings::availableResolutions" ref="structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a1d851064488c820ff9c789426073104d" />
+      <keyword name="game::gui::InventoryWindow" id="game::gui::InventoryWindow" ref="classgame_1_1gui_1_1_inventory_window.html" />
+      <keyword name="InventoryWindow" id="game::gui::InventoryWindow::InventoryWindow" ref="classgame_1_1gui_1_1_inventory_window.html#ad8980d3bb5fce1ae1698809d56360111" />
       <keyword name="Window" id="ImGui::Window::Window" ref="class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc" />
       <keyword name="~Window" id="ImGui::Window::~Window" ref="class_im_gui_1_1_window.html#ae28775306b7cb06759f78de7cdf4f611" />
       <keyword name="prepare" id="ImGui::Window::prepare" ref="class_im_gui_1_1_window.html#ad19a52d068f70272a25e7ff05b3e8f40" />
@@ -1535,8 +1387,8 @@
       <keyword name="active" id="ImGui::Window::active" ref="class_im_gui_1_1_window.html#a2f5cc0996323c3130d4ca5edb4262e93" />
       <keyword name="title" id="ImGui::Window::title" ref="class_im_gui_1_1_window.html#ad10c2af3f9818ad3b12bbbea1d2371f5" />
       <keyword name="setTitle" id="ImGui::Window::setTitle" ref="class_im_gui_1_1_window.html#accf422802f1274d129c2fe9ce33afdf4" />
-      <keyword name="doPrepare" id="game::GUI::InventoryWindow::doPrepare" ref="classgame_1_1_g_u_i_1_1_inventory_window.html#a7e8d6baaaa41f5d55b1c4a5b5886416d" />
-      <keyword name="doCollapsedState" id="game::GUI::InventoryWindow::doCollapsedState" ref="classgame_1_1_g_u_i_1_1_inventory_window.html#afe7e4a26459115c96fac748bde6d5c47" />
+      <keyword name="doPrepare" id="game::gui::InventoryWindow::doPrepare" ref="classgame_1_1gui_1_1_inventory_window.html#a22b819242247ea47118201b04dd105e7" />
+      <keyword name="doCollapsedState" id="game::gui::InventoryWindow::doCollapsedState" ref="classgame_1_1gui_1_1_inventory_window.html#a8d94242db7602f5546b1464c16c10dce" />
       <keyword name="globalFile" id="globalFile" ref="namespaceglobal_file.html" />
       <keyword name="ImGui::FileBrowser" id="ImGui::FileBrowser" ref="class_im_gui_1_1_file_browser.html" />
       <keyword name="FileBrowser" id="ImGui::FileBrowser::FileBrowser" ref="class_im_gui_1_1_file_browser.html#a7a565d7069ecedb86dd37aaad8986255" />
@@ -1572,8 +1424,8 @@
       <keyword name="prepareWindows" id="ImGui::WindowsManager::prepareWindows" ref="class_im_gui_1_1_windows_manager.html#a0637c3a5e7a18a36561c21b00fac5f0d" />
       <keyword name="addWindow" id="ImGui::WindowsManager::addWindow" ref="class_im_gui_1_1_windows_manager.html#a2b58a12b37603f176245f8706b400260" />
       <keyword name="windowsList" id="ImGui::WindowsManager::windowsList" ref="class_im_gui_1_1_windows_manager.html#a87a27506a47a97abaa42655af9e258fd" />
-      <keyword name="maker::GUI::CharacterWindow" id="maker::GUI::CharacterWindow" ref="classmaker_1_1_g_u_i_1_1_character_window.html" />
-      <keyword name="CharacterWindow" id="maker::GUI::CharacterWindow::CharacterWindow" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a9fefc7cbc824f6c760d13de390ce43fa" />
+      <keyword name="maker::gui::CharacterWindow" id="maker::gui::CharacterWindow" ref="classmaker_1_1gui_1_1_character_window.html" />
+      <keyword name="CharacterWindow" id="maker::gui::CharacterWindow::CharacterWindow" ref="classmaker_1_1gui_1_1_character_window.html#a814fc3486213e866dbfeb677ddbbeed8" />
       <keyword name="Window" id="ImGui::Window::Window" ref="class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc" />
       <keyword name="~Window" id="ImGui::Window::~Window" ref="class_im_gui_1_1_window.html#ae28775306b7cb06759f78de7cdf4f611" />
       <keyword name="prepare" id="ImGui::Window::prepare" ref="class_im_gui_1_1_window.html#ad19a52d068f70272a25e7ff05b3e8f40" />
@@ -1582,19 +1434,12 @@
       <keyword name="active" id="ImGui::Window::active" ref="class_im_gui_1_1_window.html#a2f5cc0996323c3130d4ca5edb4262e93" />
       <keyword name="title" id="ImGui::Window::title" ref="class_im_gui_1_1_window.html#ad10c2af3f9818ad3b12bbbea1d2371f5" />
       <keyword name="setTitle" id="ImGui::Window::setTitle" ref="class_im_gui_1_1_window.html#accf422802f1274d129c2fe9ce33afdf4" />
-      <keyword name="doPrepare" id="maker::GUI::CharacterWindow::doPrepare" ref="classmaker_1_1_g_u_i_1_1_character_window.html#aa7791f026156a45c13b50a5b51b1c91b" />
-      <keyword name="doNewCharacter" id="maker::GUI::CharacterWindow::doNewCharacter" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a0d5c7adbee70f8f351e6710527c307dc" />
-      <keyword name="doDeleteCharacter" id="maker::GUI::CharacterWindow::doDeleteCharacter" ref="classmaker_1_1_g_u_i_1_1_character_window.html#ab8652105c74c47702c739142ef2812e3" />
+      <keyword name="doPrepare" id="maker::gui::CharacterWindow::doPrepare" ref="classmaker_1_1gui_1_1_character_window.html#a44d1d6458a09afac8a9fb69b27b9f9b9" />
+      <keyword name="doNewCharacter" id="maker::gui::CharacterWindow::doNewCharacter" ref="classmaker_1_1gui_1_1_character_window.html#a9fdd176730f03e431894bfc404e8fc77" />
+      <keyword name="doDeleteCharacter" id="maker::gui::CharacterWindow::doDeleteCharacter" ref="classmaker_1_1gui_1_1_character_window.html#ad580fcf68bc9197a7f4c7b9d00a8d61d" />
       <keyword name="doCollapsedState" id="ImGui::Window::doCollapsedState" ref="class_im_gui_1_1_window.html#a3e07e846c7a161eab0f128fe90f9e8da" />
-      <keyword name="m_maker" id="maker::GUI::CharacterWindow::m_maker" ref="classmaker_1_1_g_u_i_1_1_character_window.html#aa1fa3c3b226006a4bdcd1de5975f4fa5" />
-      <keyword name="m_list" id="maker::GUI::CharacterWindow::m_list" ref="classmaker_1_1_g_u_i_1_1_character_window.html#ab14a08b659b78eadd60283fba24bce06" />
-      <keyword name="m_currentCharacter" id="maker::GUI::CharacterWindow::m_currentCharacter" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a5e84afbfab4d4eb16c74fffc99fc71da" />
-      <keyword name="m_current" id="maker::GUI::CharacterWindow::m_current" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a8e5593d91efa438f04a08661cf0d5e08" />
-      <keyword name="m_edit" id="maker::GUI::CharacterWindow::m_edit" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a1f6725c083659453ecf89892e11010e8" />
-      <keyword name="m_title" id="maker::GUI::CharacterWindow::m_title" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a3102b5d6460b1dc15999975b92c28e74" />
-      <keyword name="m_newOne" id="maker::GUI::CharacterWindow::m_newOne" ref="classmaker_1_1_g_u_i_1_1_character_window.html#a93e8f10147a1a24708ad96395c54ab47" />
-      <keyword name="maker::GUI::ConsoleWindow" id="maker::GUI::ConsoleWindow" ref="classmaker_1_1_g_u_i_1_1_console_window.html" />
-      <keyword name="doPrepare" id="maker::GUI::ConsoleWindow::doPrepare" ref="classmaker_1_1_g_u_i_1_1_console_window.html#acccb56c696639fb6abf28ee2e850b3cb" />
+      <keyword name="maker::gui::ConsoleWindow" id="maker::gui::ConsoleWindow" ref="classmaker_1_1gui_1_1_console_window.html" />
+      <keyword name="doPrepare" id="maker::gui::ConsoleWindow::doPrepare" ref="classmaker_1_1gui_1_1_console_window.html#a5059f9878665f2939e6dc606db025692" />
       <keyword name="doCollapsedState" id="ImGui::Window::doCollapsedState" ref="class_im_gui_1_1_window.html#a3e07e846c7a161eab0f128fe90f9e8da" />
       <keyword name="Window" id="ImGui::Window::Window" ref="class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc" />
       <keyword name="~Window" id="ImGui::Window::~Window" ref="class_im_gui_1_1_window.html#ae28775306b7cb06759f78de7cdf4f611" />
@@ -1604,47 +1449,32 @@
       <keyword name="active" id="ImGui::Window::active" ref="class_im_gui_1_1_window.html#a2f5cc0996323c3130d4ca5edb4262e93" />
       <keyword name="title" id="ImGui::Window::title" ref="class_im_gui_1_1_window.html#ad10c2af3f9818ad3b12bbbea1d2371f5" />
       <keyword name="setTitle" id="ImGui::Window::setTitle" ref="class_im_gui_1_1_window.html#accf422802f1274d129c2fe9ce33afdf4" />
-      <keyword name="maker::GUI::MakerGUI" id="maker::GUI::MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html" />
-      <keyword name="MakerGUI" id="maker::GUI::MakerGUI::MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a139f66da8917ce6f2e2ca5a54f12cc1b" />
-      <keyword name="~MakerGUI" id="maker::GUI::MakerGUI::~MakerGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a8e51923a03dfca1492fb13b4c8033bdd" />
-      <keyword name="initialize" id="maker::GUI::MakerGUI::initialize" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a204d39619c4e35d86dd0211160dbc129" />
-      <keyword name="eventManager" id="maker::GUI::MakerGUI::eventManager" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a6f8a2512f5b5558277993cc31ea6dcac" />
-      <keyword name="draw" id="maker::GUI::MakerGUI::draw" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a125ca266583586ccb0c807d0842b8e4c" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="maker::gui::MakerGUI" id="maker::gui::MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html" />
+      <keyword name="MakerGUI" id="maker::gui::MakerGUI::MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a4c39dfe9cffcc07751037a2ae69dcc7e" />
+      <keyword name="~MakerGUI" id="maker::gui::MakerGUI::~MakerGUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#adc24065947d64b74123309c60b0608c0" />
+      <keyword name="initialize" id="maker::gui::MakerGUI::initialize" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a4025bb801287a4104dd1f5adf60c437a" />
+      <keyword name="eventManager" id="maker::gui::MakerGUI::eventManager" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a1795ea4bb0a5d1c9aa8987b477eb9497" />
+      <keyword name="draw" id="maker::gui::MakerGUI::draw" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a9ae62f8eb17f1608e15c1915e4d76cdc" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="signalClose" id="maker::GUI::MakerGUI::signalClose" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a1bcf139152ede42ede9452ab8bf4750c" />
-      <keyword name="makeUI" id="maker::GUI::MakerGUI::makeUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#ac0588061eb65e3170bd2da7622066c6b" />
-      <keyword name="resetUI" id="maker::GUI::MakerGUI::resetUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aae22be98eacb2df114452b2ba27db573" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_window" id="maker::GUI::MakerGUI::m_window" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#acbf5a233840074d459e9af20e899236c" />
-      <keyword name="m_context" id="maker::GUI::MakerGUI::m_context" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aaf296bf0e934c8f3965070872d39f69a" />
-      <keyword name="m_mapGUI" id="maker::GUI::MakerGUI::m_mapGUI" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aaf2af59886de51346e02c92327d0113f" />
-      <keyword name="m_ui" id="maker::GUI::MakerGUI::m_ui" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a3fb65877774fd1a38862eebe7e7998b3" />
-      <keyword name="m_windowManager" id="maker::GUI::MakerGUI::m_windowManager" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aef0d2529c133781477e7ac6f8a204980" />
-      <keyword name="m_characterWindow" id="maker::GUI::MakerGUI::m_characterWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#aa053dc8e24236c413e04f6ccafde0612" />
-      <keyword name="m_consoleWindow" id="maker::GUI::MakerGUI::m_consoleWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a002c6bcef6aa469930c53d0c0c1051c4" />
-      <keyword name="m_moneyWindow" id="maker::GUI::MakerGUI::m_moneyWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a73966de179e79058557e26513d697fd5" />
-      <keyword name="m_mapWindow" id="maker::GUI::MakerGUI::m_mapWindow" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a5bcd50590a608807ac1cfb4a1542c673" />
-      <keyword name="m_fileBrowser" id="maker::GUI::MakerGUI::m_fileBrowser" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#a7d69a111446f3f470221cf5c1ed7fca9" />
-      <keyword name="m_maker" id="maker::GUI::MakerGUI::m_maker" ref="classmaker_1_1_g_u_i_1_1_maker_g_u_i.html#ac200c848b38190db18794668a22bf2a6" />
-      <keyword name="maker::GUI::MakerGUI::UI" id="maker::GUI::MakerGUI::UI" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html" />
-      <keyword name="newGame" id="maker::GUI::MakerGUI::UI::newGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html#a3cd5768e99e917a9a26d04bda6c0f9cd" />
-      <keyword name="openGame" id="maker::GUI::MakerGUI::UI::openGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html#aed322e4039b57bf7d1caa9428a4429bc" />
-      <keyword name="maker::GUI::MakerGUI::UI::NewGame" id="maker::GUI::MakerGUI::UI::NewGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html" />
-      <keyword name="state" id="maker::GUI::MakerGUI::UI::NewGame::state" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#aa556c956242d31da00bdaa940b0f0a7e" />
-      <keyword name="directory" id="maker::GUI::MakerGUI::UI::NewGame::directory" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a0d50649052199da73ddf4b8511acca63" />
-      <keyword name="gameName" id="maker::GUI::MakerGUI::UI::NewGame::gameName" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#ac6348cd08c0654f1f3abc563dfafeeef" />
-      <keyword name="NONE" id="maker::GUI::MakerGUI::UI::NewGame::NONE" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29daf8a2b135eefc88a453916173cf2b6834" />
-      <keyword name="DIRECTORY" id="maker::GUI::MakerGUI::UI::NewGame::DIRECTORY" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29da6349a42d854ce584b0e31774978f33df" />
-      <keyword name="INFORMATIONS" id="maker::GUI::MakerGUI::UI::NewGame::INFORMATIONS" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a898ed9d0f88b050a5a5bc696638ef29da4d9c8d8a26e714c67ac819478a5d6e19" />
-      <keyword name="maker::GUI::MakerGUI::UI::OpenGame" id="maker::GUI::MakerGUI::UI::OpenGame" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html" />
-      <keyword name="window" id="maker::GUI::MakerGUI::UI::OpenGame::window" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#aeb1e36d0b1ece58d769601e1d2266c06" />
-      <keyword name="gameList" id="maker::GUI::MakerGUI::UI::OpenGame::gameList" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a0b5e2bcb08eac5655593a0eb02ae7145" />
-      <keyword name="selectedItem" id="maker::GUI::MakerGUI::UI::OpenGame::selectedItem" ref="structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a59cb111d581417cbdddc2f076939ec8e" />
-      <keyword name="maker::GUI::MapWindow" id="maker::GUI::MapWindow" ref="classmaker_1_1_g_u_i_1_1_map_window.html" />
-      <keyword name="MapWindow" id="maker::GUI::MapWindow::MapWindow" ref="classmaker_1_1_g_u_i_1_1_map_window.html#af0c014e7e164958f9fc920da3ab8451b" />
+      <keyword name="signalClose" id="maker::gui::MakerGUI::signalClose" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#ab4dd6321ff482e9e5821d6faea00e634" />
+      <keyword name="makeUI" id="maker::gui::MakerGUI::makeUI" ref="classmaker_1_1gui_1_1_maker_g_u_i.html#a91f305fe9e76d5e1c013589c2d70b3de" />
+      <keyword name="maker::gui::MakerGUI::UI::NewGame" id="maker::gui::MakerGUI::UI::NewGame" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html" />
+      <keyword name="state" id="maker::gui::MakerGUI::UI::NewGame::state" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a136833ef8f6e1f799def967d4567c1a6" />
+      <keyword name="directory" id="maker::gui::MakerGUI::UI::NewGame::directory" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a186e4d5e8fc61bd111d1c9ba6a0b2375" />
+      <keyword name="gameName" id="maker::gui::MakerGUI::UI::NewGame::gameName" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#af34553a98d53d8e6462c74bd0a5bb068" />
+      <keyword name="NONE" id="maker::gui::MakerGUI::UI::NewGame::NONE" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#af9e90f9f3f19bddb33242deb9db4aea2a1c015e2c6a39f5db1a52ba0f0b3b1b66" />
+      <keyword name="DIRECTORY" id="maker::gui::MakerGUI::UI::NewGame::DIRECTORY" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#af9e90f9f3f19bddb33242deb9db4aea2a7d7bbd942b02493e129bd4627d661072" />
+      <keyword name="INFORMATIONS" id="maker::gui::MakerGUI::UI::NewGame::INFORMATIONS" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#af9e90f9f3f19bddb33242deb9db4aea2ae4cd204ab6a0bff6d1e95d664d5cd71b" />
+      <keyword name="maker::gui::MakerGUI::UI::OpenGame" id="maker::gui::MakerGUI::UI::OpenGame" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html" />
+      <keyword name="window" id="maker::gui::MakerGUI::UI::OpenGame::window" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a0eea72ac1ee8bf68fd492a2f46dcd318" />
+      <keyword name="gameList" id="maker::gui::MakerGUI::UI::OpenGame::gameList" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#ab2fb3cd62838de236ae0d0e98ba160b3" />
+      <keyword name="selectedItem" id="maker::gui::MakerGUI::UI::OpenGame::selectedItem" ref="structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a9a759d4a69ab3dd70d5549fa9c8dcbfb" />
+      <keyword name="maker::gui::MapWindow" id="maker::gui::MapWindow" ref="classmaker_1_1gui_1_1_map_window.html" />
+      <keyword name="MapWindow" id="maker::gui::MapWindow::MapWindow" ref="classmaker_1_1gui_1_1_map_window.html#a82044f03e5c9e334d369915bf3a0a80f" />
       <keyword name="Window" id="ImGui::Window::Window" ref="class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc" />
       <keyword name="~Window" id="ImGui::Window::~Window" ref="class_im_gui_1_1_window.html#ae28775306b7cb06759f78de7cdf4f611" />
       <keyword name="prepare" id="ImGui::Window::prepare" ref="class_im_gui_1_1_window.html#ad19a52d068f70272a25e7ff05b3e8f40" />
@@ -1653,17 +1483,10 @@
       <keyword name="active" id="ImGui::Window::active" ref="class_im_gui_1_1_window.html#a2f5cc0996323c3130d4ca5edb4262e93" />
       <keyword name="title" id="ImGui::Window::title" ref="class_im_gui_1_1_window.html#ad10c2af3f9818ad3b12bbbea1d2371f5" />
       <keyword name="setTitle" id="ImGui::Window::setTitle" ref="class_im_gui_1_1_window.html#accf422802f1274d129c2fe9ce33afdf4" />
-      <keyword name="doPrepare" id="maker::GUI::MapWindow::doPrepare" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a47dd535b7d11861abc8c572d99f733e1" />
+      <keyword name="doPrepare" id="maker::gui::MapWindow::doPrepare" ref="classmaker_1_1gui_1_1_map_window.html#a38a9690df70305d9637c1e0467b29cc3" />
       <keyword name="doCollapsedState" id="ImGui::Window::doCollapsedState" ref="class_im_gui_1_1_window.html#a3e07e846c7a161eab0f128fe90f9e8da" />
-      <keyword name="m_maker" id="maker::GUI::MapWindow::m_maker" ref="classmaker_1_1_g_u_i_1_1_map_window.html#aecc954c77d924d048960f8c025264415" />
-      <keyword name="m_edit" id="maker::GUI::MapWindow::m_edit" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a08ce07336f6e885a589c2021e316c427" />
-      <keyword name="m_current" id="maker::GUI::MapWindow::m_current" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a0429b5f57a9efa4fd17cc778ab4a1b2a" />
-      <keyword name="m_list" id="maker::GUI::MapWindow::m_list" ref="classmaker_1_1_g_u_i_1_1_map_window.html#af700fc7a050276f846463fadb3e23885" />
-      <keyword name="m_selected" id="maker::GUI::MapWindow::m_selected" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a05fd2eae753fdd431489ed39ed97f379" />
-      <keyword name="m_loaded" id="maker::GUI::MapWindow::m_loaded" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a9f095408e82a111c9cba026b41d5dad8" />
-      <keyword name="m_newOne" id="maker::GUI::MapWindow::m_newOne" ref="classmaker_1_1_g_u_i_1_1_map_window.html#a4ae0cb58828785674f9b912463182896" />
-      <keyword name="maker::GUI::MoneyWindow" id="maker::GUI::MoneyWindow" ref="classmaker_1_1_g_u_i_1_1_money_window.html" />
-      <keyword name="MoneyWindow" id="maker::GUI::MoneyWindow::MoneyWindow" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a9102c3af0c260ceb4884a8b5fa395b1f" />
+      <keyword name="maker::gui::MoneyWindow" id="maker::gui::MoneyWindow" ref="classmaker_1_1gui_1_1_money_window.html" />
+      <keyword name="MoneyWindow" id="maker::gui::MoneyWindow::MoneyWindow" ref="classmaker_1_1gui_1_1_money_window.html#aea19ea254a140cfe42f08850ea9a74c3" />
       <keyword name="Window" id="ImGui::Window::Window" ref="class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc" />
       <keyword name="~Window" id="ImGui::Window::~Window" ref="class_im_gui_1_1_window.html#ae28775306b7cb06759f78de7cdf4f611" />
       <keyword name="prepare" id="ImGui::Window::prepare" ref="class_im_gui_1_1_window.html#ad19a52d068f70272a25e7ff05b3e8f40" />
@@ -1672,13 +1495,9 @@
       <keyword name="active" id="ImGui::Window::active" ref="class_im_gui_1_1_window.html#a2f5cc0996323c3130d4ca5edb4262e93" />
       <keyword name="title" id="ImGui::Window::title" ref="class_im_gui_1_1_window.html#ad10c2af3f9818ad3b12bbbea1d2371f5" />
       <keyword name="setTitle" id="ImGui::Window::setTitle" ref="class_im_gui_1_1_window.html#accf422802f1274d129c2fe9ce33afdf4" />
-      <keyword name="doPrepare" id="maker::GUI::MoneyWindow::doPrepare" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a35668a468a4f0401ecfd599dcd5b5f9d" />
-      <keyword name="doSaveMoney" id="maker::GUI::MoneyWindow::doSaveMoney" ref="classmaker_1_1_g_u_i_1_1_money_window.html#aa3ef29c9bc66c56a8fef575f00540312" />
+      <keyword name="doPrepare" id="maker::gui::MoneyWindow::doPrepare" ref="classmaker_1_1gui_1_1_money_window.html#ac552f2183edc3c75b37ea24b8dbd6330" />
+      <keyword name="doSaveMoney" id="maker::gui::MoneyWindow::doSaveMoney" ref="classmaker_1_1gui_1_1_money_window.html#a5062874d57595993704b6ca064d9732a" />
       <keyword name="doCollapsedState" id="ImGui::Window::doCollapsedState" ref="class_im_gui_1_1_window.html#a3e07e846c7a161eab0f128fe90f9e8da" />
-      <keyword name="m_maker" id="maker::GUI::MoneyWindow::m_maker" ref="classmaker_1_1_g_u_i_1_1_money_window.html#aca5543745cd29c3ac5ccd7186dbbba92" />
-      <keyword name="m_infos" id="maker::GUI::MoneyWindow::m_infos" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a7a71f502275b129a6d13fb7f493b5546" />
-      <keyword name="m_nameList" id="maker::GUI::MoneyWindow::m_nameList" ref="classmaker_1_1_g_u_i_1_1_money_window.html#aa3bfac00156e46072b163fcea5aaad53" />
-      <keyword name="m_moneyLoaded" id="maker::GUI::MoneyWindow::m_moneyLoaded" ref="classmaker_1_1_g_u_i_1_1_money_window.html#a65693a61431533238c738c2a37ad7c5c" />
       <keyword name="map" id="map" ref="namespacemap.html" />
       <keyword name="operator&lt;&lt;" id="map::operator&lt;&lt;" ref="namespacemap.html#a9c02a32ed72096896d23b72a005d9b45" />
       <keyword name="operator&lt;&lt;" id="map::operator&lt;&lt;" ref="namespacemap.html#a04e778c70357780d4f0c72cbd8cb4269" />
@@ -1711,12 +1530,12 @@
       <keyword name="collision" id="map::Map::collision" ref="classmap_1_1_map.html#aadc36342b1355b524362f7be44f9d0e1" />
       <keyword name="addTeleportArea" id="map::Map::addTeleportArea" ref="classmap_1_1_map.html#a0e13f936128d560ec4aa42e2b3d9a142" />
       <keyword name="doITeleport" id="map::Map::doITeleport" ref="classmap_1_1_map.html#a18c96bf822e279c36f2839dbd3663f2d" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="loadCollisionLayer" id="map::Map::loadCollisionLayer" ref="classmap_1_1_map.html#a0210f0aedc56d7330948c3cef3a400be" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="m_name" id="map::Map::m_name" ref="classmap_1_1_map.html#a4095f759d7ebc30a403158a00e5e1ef1" />
       <keyword name="m_context" id="map::Map::m_context" ref="classmap_1_1_map.html#a4bfbc6f9b8596a02e1e670a32406d9be" />
       <keyword name="map::Position" id="map::Position" ref="classmap_1_1_position.html" />
@@ -1746,13 +1565,13 @@
       <keyword name="operator+=" id="map::Position::operator+=" ref="classmap_1_1_position.html#ad6ba783cfad6e7b49eb68ef298e944b2" />
       <keyword name="operator==" id="map::Position::operator==" ref="classmap_1_1_position.html#a2beefe1e3f100901d35bed24d573e883" />
       <keyword name="operator!=" id="map::Position::operator!=" ref="classmap_1_1_position.html#a039cfd64c733608651da50da62f69dbc" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="verifyDatabaseModel" id="map::Position::verifyDatabaseModel" ref="classmap_1_1_position.html#a5ec06ccab47fc4ca607337d2870a8b30" />
       <keyword name="createDatabaseModel" id="map::Position::createDatabaseModel" ref="classmap_1_1_position.html#aab6adfc798fa42981fa0d747580fc6c8" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="map::Vector" id="map::Vector" ref="classmap_1_1_vector.html" />
       <keyword name="Vector" id="map::Vector::Vector" ref="classmap_1_1_vector.html#afe662765d2d80f15969e17da71ed3f61" />
       <keyword name="Vector" id="map::Vector::Vector" ref="classmap_1_1_vector.html#a72cd62d51331ec560930f75896caffde" />
@@ -1778,32 +1597,32 @@
       <keyword name="operator/" id="map::Vector::operator/" ref="classmap_1_1_vector.html#abe71ec3ac8cc7979eba96bf28d8d08d3" />
       <keyword name="operator==" id="map::Vector::operator==" ref="classmap_1_1_vector.html#a07a64ff87bc62379517ec2034ed2c946" />
       <keyword name="operator!=" id="map::Vector::operator!=" ref="classmap_1_1_vector.html#a33f3e1912e60fdb6d01f89704feee686" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="m_vector" id="map::Vector::m_vector" ref="classmap_1_1_vector.html#a81e94ab6a51f917b006e3bf5da8639b6" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="map::GUI::MapGUI" id="map::GUI::MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html" />
-      <keyword name="MapGUI" id="map::GUI::MapGUI::MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a6592c13c2e63f699117d06e641258575" />
-      <keyword name="~MapGUI" id="map::GUI::MapGUI::~MapGUI" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#ae43365ab0bc667baad5b97f5ad28ab6f" />
-      <keyword name="move" id="map::GUI::MapGUI::move" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a13912b56c9dc363a2f954df60ef237bb" />
-      <keyword name="setCenterOfView" id="map::GUI::MapGUI::setCenterOfView" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a1879082e7b74d37aa1fe0179ff633a36" />
-      <keyword name="load" id="map::GUI::MapGUI::load" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a113cae831ae57b674c4de3ea0cbe86d4" />
-      <keyword name="prepare" id="map::GUI::MapGUI::prepare" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a14bcff4fa003e4d56583506dba4ece23" />
-      <keyword name="forcePrepare" id="map::GUI::MapGUI::forcePrepare" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a31d9b1def51431f86556e5ab8e6edc49" />
-      <keyword name="setOnScreenPosition" id="map::GUI::MapGUI::setOnScreenPosition" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#acb515df1d6e7b91c71a43fb9f814dbb3" />
-      <keyword name="positionOnScreenFrom" id="map::GUI::MapGUI::positionOnScreenFrom" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a20a4e491443626806e8a94a19f87dc0a" />
-      <keyword name="draw" id="map::GUI::MapGUI::draw" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a2f6e04836faf7cef20a1712fdd4305f2" />
-      <keyword name="setCurrentMap" id="BaseGUIObject::setCurrentMap" ref="class_base_g_u_i_object.html#aa05189a0f513b9edeefeae0c8246eeab" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="map::gui::MapGUI" id="map::gui::MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html" />
+      <keyword name="MapGUI" id="map::gui::MapGUI::MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html#ab18b19306a3d6ef1ac3dda321bdf8153" />
+      <keyword name="~MapGUI" id="map::gui::MapGUI::~MapGUI" ref="classmap_1_1gui_1_1_map_g_u_i.html#ada12f70a7e7486e7d6781f4418e07d54" />
+      <keyword name="move" id="map::gui::MapGUI::move" ref="classmap_1_1gui_1_1_map_g_u_i.html#a2441dde7f603959f341feed8d62f2210" />
+      <keyword name="setCenterOfView" id="map::gui::MapGUI::setCenterOfView" ref="classmap_1_1gui_1_1_map_g_u_i.html#a0ac3977b93d2788ff277cd73234586e5" />
+      <keyword name="load" id="map::gui::MapGUI::load" ref="classmap_1_1gui_1_1_map_g_u_i.html#a32c2796222ea8cf54cd66dbab6052bbd" />
+      <keyword name="prepare" id="map::gui::MapGUI::prepare" ref="classmap_1_1gui_1_1_map_g_u_i.html#a4e8284686d5f8bdbabf218b386b960fb" />
+      <keyword name="forcePrepare" id="map::gui::MapGUI::forcePrepare" ref="classmap_1_1gui_1_1_map_g_u_i.html#a9062fcea57a672beb3121e2fdff23d5b" />
+      <keyword name="setOnScreenPosition" id="map::gui::MapGUI::setOnScreenPosition" ref="classmap_1_1gui_1_1_map_g_u_i.html#a6a79391d3e066e4b08a44ccfd38bd8da" />
+      <keyword name="positionOnScreenFrom" id="map::gui::MapGUI::positionOnScreenFrom" ref="classmap_1_1gui_1_1_map_g_u_i.html#aca25ee42be8589b58363880cc27fde7a" />
+      <keyword name="draw" id="map::gui::MapGUI::draw" ref="classmap_1_1gui_1_1_map_g_u_i.html#ae1dd6f5d7220ab133b0367e2b4c40f1d" />
+      <keyword name="setCurrentMap" id="BaseGUIObject::setCurrentMap" ref="class_base_g_u_i_object.html#a6f84433f9c61ae882c14844504686203" />
+      <keyword name="currentMap" id="BaseGUIObject::currentMap" ref="class_base_g_u_i_object.html#a09950ddc57a3d334ea2c9013ddf2d802" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="loadTiles" id="map::GUI::MapGUI::loadTiles" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#a2b0cc63b642537f381351e8745a99441" />
-      <keyword name="loadTilesets" id="map::GUI::MapGUI::loadTilesets" ref="classmap_1_1_g_u_i_1_1_map_g_u_i.html#abe9989802997c1b1a151aa6e87269a69" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
-      <keyword name="m_map" id="BaseGUIObject::m_map" ref="class_base_g_u_i_object.html#af2aa74e8645b07455ae5813845ea60d2" />
+      <keyword name="loadTiles" id="map::gui::MapGUI::loadTiles" ref="classmap_1_1gui_1_1_map_g_u_i.html#a37ddb588a8c92c8467f3e25dd10486da" />
+      <keyword name="loadTilesets" id="map::gui::MapGUI::loadTilesets" ref="classmap_1_1gui_1_1_map_g_u_i.html#aafde80325ee627592e4773c804338824" />
       <keyword name="Model" id="Model" ref="namespace_model.html" />
       <keyword name="object" id="object" ref="namespaceobject.html" />
       <keyword name="operator&lt;&lt;" id="object::operator&lt;&lt;" ref="namespaceobject.html#aed1d178e968b4771a51e55805ed248d8" />
@@ -1821,13 +1640,13 @@
       <keyword name="addMoney" id="object::Inventory::addMoney" ref="classobject_1_1_inventory.html#a9177debd19929c7f19559ce82f33ce12" />
       <keyword name="pullMoney" id="object::Inventory::pullMoney" ref="classobject_1_1_inventory.html#a065de6525b3c652d1e1251bd427d3b4c" />
       <keyword name="size" id="object::Inventory::size" ref="classobject_1_1_inventory.html#a7b5223df4ea2f17d9a5fcb81d09cdf28" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="verifyDatabaseModel" id="object::Inventory::verifyDatabaseModel" ref="classobject_1_1_inventory.html#a90276a192fb1d8e93eb6eb4d558c0b05" />
       <keyword name="createDatabaseModel" id="object::Inventory::createDatabaseModel" ref="classobject_1_1_inventory.html#a306db56969d1bbccfae287beeb4bbf52" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="object::Money" id="object::Money" ref="classobject_1_1_money.html" />
       <keyword name="Money" id="object::Money::Money" ref="classobject_1_1_money.html#af2573241a84169cfb5624a6bfe35e664" />
       <keyword name="Money" id="object::Money::Money" ref="classobject_1_1_money.html#a1bdb3ecd3c8cce2299d1a76e14a0f361" />
@@ -1856,9 +1675,10 @@
       <keyword name="convertToBaseMoney" id="object::Money::convertToBaseMoney" ref="classobject_1_1_money.html#a2bb194b877c32456fc1cfae91bf10518" />
       <keyword name="add" id="object::Money::add" ref="classobject_1_1_money.html#a9aa3f7e9e2d3c98183eb869311c7f656" />
       <keyword name="sub" id="object::Money::sub" ref="classobject_1_1_money.html#ae243d7ba91342ec2e02b074124720bf8" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
       <keyword name="initialize" id="object::Money::initialize" ref="classobject_1_1_money.html#ab7a5a26e9c8e39f49c5a25e351b7f930" />
       <keyword name="initializeFromDatabase" id="object::Money::initializeFromDatabase" ref="classobject_1_1_money.html#a0470654e18e79b7d7a64dd2e97427f78" />
@@ -1868,7 +1688,6 @@
       <keyword name="verifyDatabaseModel" id="object::Money::verifyDatabaseModel" ref="classobject_1_1_money.html#a0bb6bd7448444bbc549988172886f111" />
       <keyword name="createDatabaseModel" id="object::Money::createDatabaseModel" ref="classobject_1_1_money.html#ae7f05acf825c9d66ada54c6e893117c4" />
       <keyword name="spread" id="object::Money::spread" ref="classobject_1_1_money.html#a5e75fe7f3190e28fff54b60ab94f78b8" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="initializeAdditionnalValues" id="object::Money::initializeAdditionnalValues" ref="classobject_1_1_money.html#a26c23a05b9112186f6e54516391a87fe" />
       <keyword name="initializeAdditionnalValues" id="object::Money::initializeAdditionnalValues" ref="classobject_1_1_money.html#a2d52c3a6e94536f0ad3154c1d3d0f7d6" />
       <keyword name="m_values" id="object::Money::m_values" ref="classobject_1_1_money.html#acee94022dc4a17eef45cab90ae2af799" />
@@ -1876,23 +1695,23 @@
       <keyword name="m_moneyNames" id="object::Money::m_moneyNames" ref="classobject_1_1_money.html#af469cbcfbf03343a38deafcf261f6d73" />
       <keyword name="preferences" id="preferences" ref="namespacepreferences.html" />
       <keyword name="quest::Dialogue" id="quest::Dialogue" ref="classquest_1_1_dialogue.html" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="quest::Quest" id="quest::Quest" ref="classquest_1_1_quest.html" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="quest::QuestJournal" id="quest::QuestJournal" ref="classquest_1_1_quest_journal.html" />
-      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a265931229d0512303964cb82f80fb5e8" />
-      <keyword name="~BaseObject" id="BaseObject::~BaseObject" ref="class_base_object.html#a9180320475c0f8ff35536d51b0f0c514" />
-      <keyword name="parent" id="BaseObject::parent" ref="class_base_object.html#a4d06a3afa683063c2781d8776aaf65b0" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a8fac307914ef9e394e141b58ed78e09b" />
+      <keyword name="BaseObject" id="BaseObject::BaseObject" ref="class_base_object.html#a0e593d1d4fff17cb70e006e6aed391c5" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a608cd8a46a11aef2a9bbeacad8c68917" />
+      <keyword name="operator=" id="BaseObject::operator=" ref="class_base_object.html#a3274a0f81941ab3a3fb92b09a9b0444e" />
       <keyword name="className" id="BaseObject::className" ref="class_base_object.html#ab8681d8b58e1f1bc2c0a6efc08e4c796" />
-      <keyword name="setParent" id="BaseObject::setParent" ref="class_base_object.html#ad15bf239cd9e8c2f2f1139d39487f5f8" />
       <keyword name="ressources" id="ressources" ref="namespaceressources.html" />
       <keyword name="structure" id="structure" ref="namespacestructure.html" />
       <keyword name="verbosityLevel" id="verbosityLevel" ref="namespaceverbosity_level.html" />
@@ -2066,9 +1885,9 @@
       <file>classcharacter_1_1_vendor.html</file>
       <file>classcharacter_1_1_vendor.png</file>
       <file>classcharacter_1_1_vendor-members.html</file>
-      <file>classcharacter_1_1_g_u_i_1_1_character_g_u_i.html</file>
-      <file>classcharacter_1_1_g_u_i_1_1_character_g_u_i.png</file>
-      <file>classcharacter_1_1_g_u_i_1_1_character_g_u_i-members.html</file>
+      <file>classcharacter_1_1gui_1_1_character_g_u_i.html</file>
+      <file>classcharacter_1_1gui_1_1_character_g_u_i.png</file>
+      <file>classcharacter_1_1gui_1_1_character_g_u_i-members.html</file>
       <file>namespaceconfig.html</file>
       <file>classconfig_1_1_context.html</file>
       <file>classconfig_1_1_context.png</file>
@@ -2127,19 +1946,17 @@
       <file>classgame_1_1_game_loader.html</file>
       <file>classgame_1_1_game_loader.png</file>
       <file>classgame_1_1_game_loader-members.html</file>
-      <file>classgame_1_1_g_u_i_1_1_character_window.html</file>
-      <file>classgame_1_1_g_u_i_1_1_character_window.png</file>
-      <file>classgame_1_1_g_u_i_1_1_character_window-members.html</file>
-      <file>classgame_1_1_g_u_i_1_1_game_g_u_i.html</file>
-      <file>classgame_1_1_g_u_i_1_1_game_g_u_i.png</file>
-      <file>classgame_1_1_g_u_i_1_1_game_g_u_i-members.html</file>
-      <file>structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html</file>
-      <file>structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i-members.html</file>
-      <file>structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html</file>
-      <file>structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings-members.html</file>
-      <file>classgame_1_1_g_u_i_1_1_inventory_window.html</file>
-      <file>classgame_1_1_g_u_i_1_1_inventory_window.png</file>
-      <file>classgame_1_1_g_u_i_1_1_inventory_window-members.html</file>
+      <file>classgame_1_1gui_1_1_character_window.html</file>
+      <file>classgame_1_1gui_1_1_character_window.png</file>
+      <file>classgame_1_1gui_1_1_character_window-members.html</file>
+      <file>classgame_1_1gui_1_1_game_g_u_i.html</file>
+      <file>classgame_1_1gui_1_1_game_g_u_i.png</file>
+      <file>classgame_1_1gui_1_1_game_g_u_i-members.html</file>
+      <file>structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html</file>
+      <file>structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings-members.html</file>
+      <file>classgame_1_1gui_1_1_inventory_window.html</file>
+      <file>classgame_1_1gui_1_1_inventory_window.png</file>
+      <file>classgame_1_1gui_1_1_inventory_window-members.html</file>
       <file>namespaceglobal_file.html</file>
       <file>class_im_gui_1_1_file_browser.html</file>
       <file>class_im_gui_1_1_file_browser-members.html</file>
@@ -2150,27 +1967,25 @@
       <file>class_im_gui_1_1_window-members.html</file>
       <file>class_im_gui_1_1_windows_manager.html</file>
       <file>class_im_gui_1_1_windows_manager-members.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_character_window.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_character_window.png</file>
-      <file>classmaker_1_1_g_u_i_1_1_character_window-members.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_console_window.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_console_window.png</file>
-      <file>classmaker_1_1_g_u_i_1_1_console_window-members.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_maker_g_u_i.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_maker_g_u_i.png</file>
-      <file>classmaker_1_1_g_u_i_1_1_maker_g_u_i-members.html</file>
-      <file>structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html</file>
-      <file>structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i-members.html</file>
-      <file>structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html</file>
-      <file>structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game-members.html</file>
-      <file>structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html</file>
-      <file>structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game-members.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_map_window.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_map_window.png</file>
-      <file>classmaker_1_1_g_u_i_1_1_map_window-members.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_money_window.html</file>
-      <file>classmaker_1_1_g_u_i_1_1_money_window.png</file>
-      <file>classmaker_1_1_g_u_i_1_1_money_window-members.html</file>
+      <file>classmaker_1_1gui_1_1_character_window.html</file>
+      <file>classmaker_1_1gui_1_1_character_window.png</file>
+      <file>classmaker_1_1gui_1_1_character_window-members.html</file>
+      <file>classmaker_1_1gui_1_1_console_window.html</file>
+      <file>classmaker_1_1gui_1_1_console_window.png</file>
+      <file>classmaker_1_1gui_1_1_console_window-members.html</file>
+      <file>classmaker_1_1gui_1_1_maker_g_u_i.html</file>
+      <file>classmaker_1_1gui_1_1_maker_g_u_i.png</file>
+      <file>classmaker_1_1gui_1_1_maker_g_u_i-members.html</file>
+      <file>structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html</file>
+      <file>structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game-members.html</file>
+      <file>structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html</file>
+      <file>structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game-members.html</file>
+      <file>classmaker_1_1gui_1_1_map_window.html</file>
+      <file>classmaker_1_1gui_1_1_map_window.png</file>
+      <file>classmaker_1_1gui_1_1_map_window-members.html</file>
+      <file>classmaker_1_1gui_1_1_money_window.html</file>
+      <file>classmaker_1_1gui_1_1_money_window.png</file>
+      <file>classmaker_1_1gui_1_1_money_window-members.html</file>
       <file>namespacemap.html</file>
       <file>classmap_1_1_area.html</file>
       <file>classmap_1_1_area-members.html</file>
@@ -2183,9 +1998,9 @@
       <file>classmap_1_1_vector.html</file>
       <file>classmap_1_1_vector.png</file>
       <file>classmap_1_1_vector-members.html</file>
-      <file>classmap_1_1_g_u_i_1_1_map_g_u_i.html</file>
-      <file>classmap_1_1_g_u_i_1_1_map_g_u_i.png</file>
-      <file>classmap_1_1_g_u_i_1_1_map_g_u_i-members.html</file>
+      <file>classmap_1_1gui_1_1_map_g_u_i.html</file>
+      <file>classmap_1_1gui_1_1_map_g_u_i.png</file>
+      <file>classmap_1_1gui_1_1_map_g_u_i-members.html</file>
       <file>namespace_model.html</file>
       <file>namespaceobject.html</file>
       <file>classobject_1_1_inventory.html</file>
@@ -2232,6 +2047,8 @@
       <file>namespaces.html</file>
       <file>namespacemembers.html</file>
       <file>namespacemembers.html</file>
+      <file>namespacemembers.html</file>
+      <file>namespacemembers_func.html</file>
       <file>namespacemembers_func.html</file>
       <file>namespacemembers_enum.html</file>
       <file>annotated.html</file>
@@ -2289,11 +2106,6 @@
       <file>functions_func_y.html</file>
       <file>functions_func_z.html</file>
       <file>functions_func_0x7e.html</file>
-      <file>functions_vars.html</file>
-      <file>functions_vars.html</file>
-      <file>functions_vars.html</file>
-      <file>functions_vars.html</file>
-      <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>
       <file>functions_vars.html</file>

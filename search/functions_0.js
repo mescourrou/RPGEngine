@@ -6,7 +6,7 @@ var searchData=
   ['addcollisionarea',['addCollisionArea',['../classmap_1_1_map.html#a9c14e9e952f8d1ec3d6349d24f85a262',1,'map::Map']]],
   ['addentrystateaction',['addEntryStateAction',['../class_state_machine.html#a4cb6aecc5806bc63bca899d10ea0a8b5',1,'StateMachine']]],
   ['addexitstateaction',['addExitStateAction',['../class_state_machine.html#a1242eae5349d28f6565fec9c0e4dc1eb',1,'StateMachine']]],
-  ['addguiobject',['addGUIObject',['../classgame_1_1_g_u_i_1_1_game_g_u_i.html#a8317fdcd6889f142a47a29f960ffce0a',1,'game::GUI::GameGUI']]],
+  ['addguiobject',['addGUIObject',['../classgame_1_1gui_1_1_game_g_u_i.html#a58d1ab3abb4897af6395f9ed9f1b5a9e',1,'game::gui::GameGUI']]],
   ['addmoney',['addMoney',['../classobject_1_1_inventory.html#a9177debd19929c7f19559ce82f33ce12',1,'object::Inventory']]],
   ['addpoint',['addPoint',['../classmap_1_1_area.html#a5d9ed735450c560ce8525a4ac299df68',1,'map::Area']]],
   ['addteleportarea',['addTeleportArea',['../classmap_1_1_map.html#a0e13f936128d560ec4aa42e2b3d9a142',1,'map::Map']]],

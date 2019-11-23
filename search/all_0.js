@@ -8,7 +8,7 @@ var searchData=
   ['addcollisionarea',['addCollisionArea',['../classmap_1_1_map.html#a9c14e9e952f8d1ec3d6349d24f85a262',1,'map::Map']]],
   ['addentrystateaction',['addEntryStateAction',['../class_state_machine.html#a4cb6aecc5806bc63bca899d10ea0a8b5',1,'StateMachine']]],
   ['addexitstateaction',['addExitStateAction',['../class_state_machine.html#a1242eae5349d28f6565fec9c0e4dc1eb',1,'StateMachine']]],
-  ['addguiobject',['addGUIObject',['../classgame_1_1_g_u_i_1_1_game_g_u_i.html#a8317fdcd6889f142a47a29f960ffce0a',1,'game::GUI::GameGUI']]],
+  ['addguiobject',['addGUIObject',['../classgame_1_1gui_1_1_game_g_u_i.html#a58d1ab3abb4897af6395f9ed9f1b5a9e',1,'game::gui::GameGUI']]],
   ['addmoney',['addMoney',['../classobject_1_1_inventory.html#a9177debd19929c7f19559ce82f33ce12',1,'object::Inventory']]],
   ['addpoint',['addPoint',['../classmap_1_1_area.html#a5d9ed735450c560ce8525a4ac299df68',1,'map::Area']]],
   ['addteleportarea',['addTeleportArea',['../classmap_1_1_map.html#a0e13f936128d560ec4aa42e2b3d9a142',1,'map::Map']]],
@@ -17,5 +17,5 @@ var searchData=
   ['area',['Area',['../classmap_1_1_area.html#aa6568986b617e14c8a9425252ee75f38',1,'map::Area::Area()=default'],['../classmap_1_1_area.html#aa497f8a02ffdc7e54f480544e7dc20a6',1,'map::Area::Area(std::initializer_list&lt; Vector&lt; 2 &gt;&gt; list)']]],
   ['area',['Area',['../classmap_1_1_area.html',1,'map']]],
   ['at',['at',['../classmap_1_1_vector.html#aaa6edac34e73f3a7d1195c62a239ffbb',1,'map::Vector::at(unsigned int index)'],['../classmap_1_1_vector.html#a338ad50718e31577dd57bf439f0b6a0a',1,'map::Vector::at(unsigned int index) const ']]],
-  ['availableresolutions',['availableResolutions',['../structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a9df1fa7836d473644132fab02d65b254',1,'game::GUI::GameGUI::UI::Settings']]]
+  ['availableresolutions',['availableResolutions',['../structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html#a1d851064488c820ff9c789426073104d',1,'game::gui::GameGUI::UI::Settings']]]
 ];

@@ -1,9 +1,7 @@
 var searchData=
 [
   ['object',['object',['../namespaceobject.html',1,'']]],
-  ['onpause',['onPause',['../structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#af0cda369653b9a99d25d76fa03cb9220',1,'game::GUI::GameGUI::UI']]],
-  ['opengame',['OpenGame',['../structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html',1,'maker::GUI::MakerGUI::UI']]],
-  ['opengame',['openGame',['../structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html#aed322e4039b57bf7d1caa9428a4429bc',1,'maker::GUI::MakerGUI::UI']]],
+  ['opengame',['OpenGame',['../structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html',1,'maker::gui::MakerGUI::UI']]],
   ['operator_21_3d',['operator!=',['../classmap_1_1_vector.html#a33f3e1912e60fdb6d01f89704feee686',1,'map::Vector']]],
   ['operator_2b_3d',['operator+=',['../classmap_1_1_position.html#ad6ba783cfad6e7b49eb68ef298e944b2',1,'map::Position']]],
   ['operator_2d',['operator-',['../classmap_1_1_position.html#acf44f26612cef83d626257261ecc73c6',1,'map::Position']]],

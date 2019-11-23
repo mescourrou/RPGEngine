@@ -122,12 +122,12 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_event_3_01void_01_4.html#a8011b8fa69254b049f948e746c494fc4">trigger</a> () const </td></tr>
 <tr class="memdesc:a8011b8fa69254b049f948e746c494fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Trigger all the function which have subscribe. <br /></td></tr>
 <tr class="separator:a8011b8fa69254b049f948e746c494fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a332c03170818fb03bca2661150de33e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_event_3_01void_01_4.html#a332c03170818fb03bca2661150de33e8">subscribeAsync</a> (std::function&lt; void(void)&gt; func)</td></tr>
-<tr class="memdesc:a332c03170818fb03bca2661150de33e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribe the function to the <a class="el" href="classevents_1_1_event.html" title="Handle subsciption to an event and triggering it. ">Event</a>.  <a href="#a332c03170818fb03bca2661150de33e8">More...</a><br /></td></tr>
-<tr class="separator:a332c03170818fb03bca2661150de33e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0fc3316023f621ca3c0bd856d39afa51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_event_3_01void_01_4.html#a0fc3316023f621ca3c0bd856d39afa51">subscribeSync</a> (std::function&lt; void(void)&gt; func)</td></tr>
-<tr class="memdesc:a0fc3316023f621ca3c0bd856d39afa51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribe the function to the <a class="el" href="classevents_1_1_event.html" title="Handle subsciption to an event and triggering it. ">Event</a>.  <a href="#a0fc3316023f621ca3c0bd856d39afa51">More...</a><br /></td></tr>
-<tr class="separator:a0fc3316023f621ca3c0bd856d39afa51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b81923cbcc773430847608a5bbe242b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_event_3_01void_01_4.html#a0b81923cbcc773430847608a5bbe242b">subscribeAsync</a> (const std::function&lt; void(void)&gt; &amp;func)</td></tr>
+<tr class="memdesc:a0b81923cbcc773430847608a5bbe242b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribe the function to the <a class="el" href="classevents_1_1_event.html" title="Handle subsciption to an event and triggering it. ">Event</a>.  <a href="#a0b81923cbcc773430847608a5bbe242b">More...</a><br /></td></tr>
+<tr class="separator:a0b81923cbcc773430847608a5bbe242b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5678ce9ef395836cdd2a2a33e17e7da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_event_3_01void_01_4.html#ab5678ce9ef395836cdd2a2a33e17e7da">subscribeSync</a> (const std::function&lt; void(void)&gt; &amp;func)</td></tr>
+<tr class="memdesc:ab5678ce9ef395836cdd2a2a33e17e7da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribe the function to the <a class="el" href="classevents_1_1_event.html" title="Handle subsciption to an event and triggering it. ">Event</a>.  <a href="#ab5678ce9ef395836cdd2a2a33e17e7da">More...</a><br /></td></tr>
+<tr class="separator:ab5678ce9ef395836cdd2a2a33e17e7da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bb7e9b32937345e9b742a70ddc2392c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename M &gt; </td></tr>
 <tr class="memitem:a7bb7e9b32937345e9b742a70ddc2392c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classevents_1_1_event_3_01void_01_4.html#a7bb7e9b32937345e9b742a70ddc2392c">subscribeAsync</a> (T *instance, M func)</td></tr>
 <tr class="memdesc:a7bb7e9b32937345e9b742a70ddc2392c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Subscribe the function to the <a class="el" href="classevents_1_1_event.html" title="Handle subsciption to an event and triggering it. ">Event</a>.  <a href="#a7bb7e9b32937345e9b742a70ddc2392c">More...</a><br /></td></tr>
@@ -144,7 +144,7 @@ class events::Event&lt; void &gt;</h3>
 <div class="fragment"><div class="line">Event&lt;void&gt; event;</div><div class="line"><span class="keywordtype">bool</span> noArgCb = <span class="keyword">false</span>;</div><div class="line"><span class="keyword">auto</span> cb = [&amp;noArgCb] () {</div><div class="line">    noArgCb = <span class="keyword">true</span>;</div><div class="line">};</div><div class="line"></div><div class="line"><span class="keyword">event</span>.subscribe(cb);</div><div class="line"></div><div class="line"><span class="keyword">event</span>.trigger();</div></div><!-- fragment --> 
 <p>Definition at line <a class="el" href="_event_8hpp_source.html#l00161">161</a> of file <a class="el" href="_event_8hpp_source.html">Event.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a332c03170818fb03bca2661150de33e8"></a>
+<a class="anchor" id="a0b81923cbcc773430847608a5bbe242b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -154,7 +154,7 @@ class events::Event&lt; void &gt;</h3>
         <tr>
           <td class="memname">void <a class="el" href="classevents_1_1_event.html">events::Event</a>&lt; void &gt;::subscribeAsync </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; void(void)&gt;&#160;</td>
+          <td class="paramtype">const std::function&lt; void(void)&gt; &amp;&#160;</td>
           <td class="paramname"><em>func</em></td><td>)</td>
           <td></td>
         </tr>
@@ -225,7 +225,7 @@ template&lt;typename T , typename M &gt; </div>
 
 </div>
 </div>
-<a class="anchor" id="a0fc3316023f621ca3c0bd856d39afa51"></a>
+<a class="anchor" id="ab5678ce9ef395836cdd2a2a33e17e7da"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -235,7 +235,7 @@ template&lt;typename T , typename M &gt; </div>
         <tr>
           <td class="memname">void <a class="el" href="classevents_1_1_event.html">events::Event</a>&lt; void &gt;::subscribeSync </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; void(void)&gt;&#160;</td>
+          <td class="paramtype">const std::function&lt; void(void)&gt; &amp;&#160;</td>
           <td class="paramname"><em>func</em></td><td>)</td>
           <td></td>
         </tr>

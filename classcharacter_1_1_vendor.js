@@ -1,7 +1,7 @@
 var classcharacter_1_1_vendor =
 [
     [ "Vendor", "classcharacter_1_1_vendor.html#aefbb90b28cd3ec7f1c3f4e34d6723b82", null ],
-    [ "Vendor", "classcharacter_1_1_vendor.html#a4f43625a95e4c2ac07d73572aef374f8", null ],
+    [ "Vendor", "classcharacter_1_1_vendor.html#a16f3d880aceb03553cc29bca98a1edc4", null ],
     [ "~Vendor", "classcharacter_1_1_vendor.html#af580215030b4094c71c1d42b9222600d", null ],
     [ "buy", "classcharacter_1_1_vendor.html#ad685435500cbb784cff1ec262437f547", null ],
     [ "buy", "classcharacter_1_1_vendor.html#ad4dd9ff57be0fd71f6cd16efb59e4433", null ],

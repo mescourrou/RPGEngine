@@ -130,9 +130,9 @@ Inheritance diagram for events::Work&lt; Args &gt;:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2a1014572a9b87894822b9805c759205"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_work.html#a2a1014572a9b87894822b9805c759205">Work</a> (std::function&lt; void(Args...)&gt; func, Args...arguments)</td></tr>
-<tr class="memdesc:a2a1014572a9b87894822b9805c759205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a work with the given function.  <a href="#a2a1014572a9b87894822b9805c759205">More...</a><br /></td></tr>
-<tr class="separator:a2a1014572a9b87894822b9805c759205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93c6f95acaf506a501c30dbdd129b2b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b">Work</a> (const std::function&lt; void(Args...)&gt; &amp;func, Args...arguments)</td></tr>
+<tr class="memdesc:ae93c6f95acaf506a501c30dbdd129b2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Construct a work with the given function.  <a href="#ae93c6f95acaf506a501c30dbdd129b2b">More...</a><br /></td></tr>
+<tr class="separator:ae93c6f95acaf506a501c30dbdd129b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a39480faf4c1b597da1df0e50e251c0af"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a39480faf4c1b597da1df0e50e251c0af"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_work.html#a39480faf4c1b597da1df0e50e251c0af">run</a> () override</td></tr>
 <tr class="memdesc:a39480faf4c1b597da1df0e50e251c0af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Run the job. <br /></td></tr>
@@ -156,7 +156,7 @@ class events::Work&lt; Args &gt;</h3>
 <p>Example: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> callback = [](std::string word, <span class="keywordtype">double</span> number) {</div><div class="line">    std::cout &lt;&lt; word &lt;&lt; <span class="stringliteral">&quot; =&gt; &quot;</span> &lt;&lt; number &lt;&lt; std::endl;</div><div class="line">};</div><div class="line">Work&lt;std::string, double&gt; myWork(callback, <span class="stringliteral">&quot;bla&quot;</span>, 4.2);</div><div class="line">myWork.run();</div></div><!-- fragment --><p>Output: </p><div class="fragment"><div class="line">bla =&gt; 4.2</div></div><!-- fragment --> 
 <p>Definition at line <a class="el" href="_work_8hpp_source.html#l00059">59</a> of file <a class="el" href="_work_8hpp_source.html">Work.hpp</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a class="anchor" id="a2a1014572a9b87894822b9805c759205"></a>
+<a class="anchor" id="ae93c6f95acaf506a501c30dbdd129b2b"></a>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
@@ -168,7 +168,7 @@ template&lt;typename... Args&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classevents_1_1_work.html">events::Work</a>&lt; Args &gt;::<a class="el" href="classevents_1_1_work.html">Work</a> </td>
           <td>(</td>
-          <td class="paramtype">std::function&lt; void(Args...)&gt;&#160;</td>
+          <td class="paramtype">const std::function&lt; void(Args...)&gt; &amp;&#160;</td>
           <td class="paramname"><em>func</em>, </td>
         </tr>
         <tr>
@@ -185,7 +185,7 @@ template&lt;typename... Args&gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

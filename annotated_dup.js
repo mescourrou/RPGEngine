@@ -12,12 +12,12 @@ var annotated_dup =
       [ "WindowsManager", "class_im_gui_1_1_windows_manager.html", "class_im_gui_1_1_windows_manager" ]
     ] ],
     [ "maker", null, [
-      [ "GUI", null, [
-        [ "CharacterWindow", "classmaker_1_1_g_u_i_1_1_character_window.html", "classmaker_1_1_g_u_i_1_1_character_window" ],
-        [ "ConsoleWindow", "classmaker_1_1_g_u_i_1_1_console_window.html", "classmaker_1_1_g_u_i_1_1_console_window" ],
-        [ "MakerGUI", "classmaker_1_1_g_u_i_1_1_maker_g_u_i.html", "classmaker_1_1_g_u_i_1_1_maker_g_u_i" ],
-        [ "MapWindow", "classmaker_1_1_g_u_i_1_1_map_window.html", "classmaker_1_1_g_u_i_1_1_map_window" ],
-        [ "MoneyWindow", "classmaker_1_1_g_u_i_1_1_money_window.html", "classmaker_1_1_g_u_i_1_1_money_window" ]
+      [ "gui", null, [
+        [ "CharacterWindow", "classmaker_1_1gui_1_1_character_window.html", "classmaker_1_1gui_1_1_character_window" ],
+        [ "ConsoleWindow", "classmaker_1_1gui_1_1_console_window.html", "classmaker_1_1gui_1_1_console_window" ],
+        [ "MakerGUI", "classmaker_1_1gui_1_1_maker_g_u_i.html", "classmaker_1_1gui_1_1_maker_g_u_i" ],
+        [ "MapWindow", "classmaker_1_1gui_1_1_map_window.html", "classmaker_1_1gui_1_1_map_window" ],
+        [ "MoneyWindow", "classmaker_1_1gui_1_1_money_window.html", "classmaker_1_1gui_1_1_money_window" ]
       ] ]
     ] ],
     [ "map", "namespacemap.html", "namespacemap" ],

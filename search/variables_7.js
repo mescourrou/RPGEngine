@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['newgame',['newGame',['../structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html#a3cd5768e99e917a9a26d04bda6c0f9cd',1,'maker::GUI::MakerGUI::UI']]]
+  ['window',['window',['../structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html#a0eea72ac1ee8bf68fd492a2f46dcd318',1,'maker::gui::MakerGUI::UI::OpenGame']]]
 ];

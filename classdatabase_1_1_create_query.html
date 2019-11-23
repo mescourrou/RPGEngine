@@ -108,7 +108,6 @@ $(document).ready(function(){initNavTree('classdatabase_1_1_create_query.html','
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classdatabase_1_1_create_query-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">database::CreateQuery Class Reference</div>  </div>
@@ -147,37 +146,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abb0abbdf485c5fa8e969edd92ba38261"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#abb0abbdf485c5fa8e969edd92ba38261">str</a> () const override</td></tr>
 <tr class="memdesc:abb0abbdf485c5fa8e969edd92ba38261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate the string corresponding of the Query.  <a href="#abb0abbdf485c5fa8e969edd92ba38261">More...</a><br /></td></tr>
 <tr class="separator:abb0abbdf485c5fa8e969edd92ba38261"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a4cf10b8ef16226fd3d7467b82fd15bfd"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4cf10b8ef16226fd3d7467b82fd15bfd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#a4cf10b8ef16226fd3d7467b82fd15bfd">m_ifNotExists</a> = false</td></tr>
-<tr class="memdesc:a4cf10b8ef16226fd3d7467b82fd15bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">"IF NOT EXISTS" statement add <br /></td></tr>
-<tr class="separator:a4cf10b8ef16226fd3d7467b82fd15bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a767adc7520134ed3e81fe36b64ae7cdb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::tuple&lt; std::string, <a class="el" href="namespacedatabase.html#a6343550c4534b5b1e70515689288b6d7">DataType</a>, std::string, std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#a767adc7520134ed3e81fe36b64ae7cdb">m_columns</a></td></tr>
-<tr class="memdesc:a767adc7520134ed3e81fe36b64ae7cdb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Columns to create.  <a href="#a767adc7520134ed3e81fe36b64ae7cdb">More...</a><br /></td></tr>
-<tr class="separator:a767adc7520134ed3e81fe36b64ae7cdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac734a9080748b8195066a79b2a96f57e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac734a9080748b8195066a79b2a96f57e"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#ac734a9080748b8195066a79b2a96f57e">m_primaryKeyColumns</a></td></tr>
-<tr class="memdesc:ac734a9080748b8195066a79b2a96f57e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Columns with Primary Key constraint. <br /></td></tr>
-<tr class="separator:ac734a9080748b8195066a79b2a96f57e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8a3ad419ff2a28d5065399e009110b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ae8a3ad419ff2a28d5065399e009110b5"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#ae8a3ad419ff2a28d5065399e009110b5">m_uniqueColumns</a></td></tr>
-<tr class="memdesc:ae8a3ad419ff2a28d5065399e009110b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Columns with Unique constraint. <br /></td></tr>
-<tr class="separator:ae8a3ad419ff2a28d5065399e009110b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a389a49057d2dfcf82ffde306a8841d0c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a389a49057d2dfcf82ffde306a8841d0c"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#a389a49057d2dfcf82ffde306a8841d0c">m_autoincrementColumns</a></td></tr>
-<tr class="memdesc:a389a49057d2dfcf82ffde306a8841d0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Columns with Auto increment constraint. <br /></td></tr>
-<tr class="separator:a389a49057d2dfcf82ffde306a8841d0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a1c2c90ff04cd89dbdb635a719c0f8a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2a1c2c90ff04cd89dbdb635a719c0f8a"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdatabase_1_1_create_query.html#a2a1c2c90ff04cd89dbdb635a719c0f8a">m_notNullColumns</a></td></tr>
-<tr class="memdesc:a2a1c2c90ff04cd89dbdb635a719c0f8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Columns with Not null constraint. <br /></td></tr>
-<tr class="separator:a2a1c2c90ff04cd89dbdb635a719c0f8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Create an CREATE TABLE Query. </p>
 
-<p>Definition at line <a class="el" href="_query_8hpp_source.html#l00297">297</a> of file <a class="el" href="_query_8hpp_source.html">Query.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_query_8hpp_source.html#l00331">331</a> of file <a class="el" href="_query_8hpp_source.html">Query.hpp</a>.</p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ab8cf256eaf7b4c83406399d977869beb"></a>
 <div class="memitem">
@@ -227,7 +200,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>New Query </dd></dl>
 
-<p>Definition at line <a class="el" href="_query_8cpp_source.html#l00313">313</a> of file <a class="el" href="_query_8cpp_source.html">Query.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_query_8cpp_source.html#l00314">314</a> of file <a class="el" href="_query_8cpp_source.html">Query.cpp</a>.</p>
 
 </div>
 </div>
@@ -266,7 +239,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Return the new Query </dd></dl>
 
-<p>Definition at line <a class="el" href="_query_8cpp_source.html#l00356">356</a> of file <a class="el" href="_query_8cpp_source.html">Query.cpp</a>.</p>
+<p>Definition at line <a class="el" href="_query_8cpp_source.html#l00357">357</a> of file <a class="el" href="_query_8cpp_source.html">Query.cpp</a>.</p>
 
 </div>
 </div>
@@ -294,38 +267,7 @@ std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bott
 <p>Generate the string corresponding of the Query. </p>
 <dl class="section return"><dt>Returns</dt><dd>std::string corresponding to the Query </dd></dl>
 
-<p>Definition at line <a class="el" href="_query_8cpp_source.html#l00404">404</a> of file <a class="el" href="_query_8cpp_source.html">Query.cpp</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a class="anchor" id="a767adc7520134ed3e81fe36b64ae7cdb"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::tuple&lt;std::string, <a class="el" href="namespacedatabase.html#a6343550c4534b5b1e70515689288b6d7">DataType</a>, std::string, std::string&gt; &gt; database::CreateQuery::m_columns</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Columns to create. </p>
-<p>The tuple contains :</p><ul>
-<li>the column name</li>
-<li>the type of the column</li>
-<li>table for primary key</li>
-<li>fields for the primary key </li>
-</ul>
-
-<p>Definition at line <a class="el" href="_query_8hpp_source.html#l00334">334</a> of file <a class="el" href="_query_8hpp_source.html">Query.hpp</a>.</p>
+<p>Definition at line <a class="el" href="_query_8cpp_source.html#l00407">407</a> of file <a class="el" href="_query_8cpp_source.html">Query.cpp</a>.</p>
 
 </div>
 </div>

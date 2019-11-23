@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['characteropen',['characterOpen',['../structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html#a611d058e0def1a172dd7f99337c8e9a3',1,'game::GUI::GameGUI::UI']]]
+  ['directory',['directory',['../structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html#a186e4d5e8fc61bd111d1c9ba6a0b2375',1,'maker::gui::MakerGUI::UI::NewGame']]]
 ];

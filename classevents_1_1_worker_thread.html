@@ -126,6 +126,18 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_worker_thread.html#abd69bf18d984127d9b7406a6cd9f314c">~WorkerThread</a> ()</td></tr>
 <tr class="memdesc:abd69bf18d984127d9b7406a6cd9f314c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor : wait for all threads to finish. <br /></td></tr>
 <tr class="separator:abd69bf18d984127d9b7406a6cd9f314c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a209207f8c7c6d4cbab0e57582b8e018a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a209207f8c7c6d4cbab0e57582b8e018a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>WorkerThread</b> (const <a class="el" href="classevents_1_1_worker_thread.html">WorkerThread</a> &amp;)=delete</td></tr>
+<tr class="separator:a209207f8c7c6d4cbab0e57582b8e018a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a200b04f67d7b0346c34fa190cace8b19"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a200b04f67d7b0346c34fa190cace8b19"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>WorkerThread</b> (<a class="el" href="classevents_1_1_worker_thread.html">WorkerThread</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:a200b04f67d7b0346c34fa190cace8b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac742ba93aaaa4586cac89cf878771cc4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac742ba93aaaa4586cac89cf878771cc4"></a>
+<a class="el" href="classevents_1_1_worker_thread.html">WorkerThread</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classevents_1_1_worker_thread.html">WorkerThread</a> &amp;)=delete</td></tr>
+<tr class="separator:ac742ba93aaaa4586cac89cf878771cc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6e2a217229344078c9bca2e13c06886"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac6e2a217229344078c9bca2e13c06886"></a>
+<a class="el" href="classevents_1_1_worker_thread.html">WorkerThread</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (<a class="el" href="classevents_1_1_worker_thread.html">WorkerThread</a> &amp;&amp;)=delete</td></tr>
+<tr class="separator:ac6e2a217229344078c9bca2e13c06886"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -136,14 +148,14 @@ template&lt;typename... Args&gt; </td></tr>
 <tr class="memitem:a4c0ae7ce65f3ff769b1ea7956884375e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_worker_thread.html#a4c0ae7ce65f3ff769b1ea7956884375e">newWork</a> (const std::function&lt; void()&gt; &amp;work)</td></tr>
 <tr class="memdesc:a4c0ae7ce65f3ff769b1ea7956884375e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a new work to the working list. Start it immedialty if it is possible.  <a href="#a4c0ae7ce65f3ff769b1ea7956884375e">More...</a><br /></td></tr>
 <tr class="separator:a4c0ae7ce65f3ff769b1ea7956884375e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a03ba4d0defacd2ac8f47f9d46ea70e"><td class="memTemplParams" colspan="2"><a class="anchor" id="a6a03ba4d0defacd2ac8f47f9d46ea70e"></a>
+<tr class="memitem:a80b3580f9effa9b6c11b4af4e4200d33"><td class="memTemplParams" colspan="2"><a class="anchor" id="a80b3580f9effa9b6c11b4af4e4200d33"></a>
 template&lt;typename I , typename M , typename... Args&gt; </td></tr>
-<tr class="memitem:a6a03ba4d0defacd2ac8f47f9d46ea70e"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>newWork</b> (I *instance, M func, Args...arguments)</td></tr>
-<tr class="separator:a6a03ba4d0defacd2ac8f47f9d46ea70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a676a3ad06501aefe326081a9f5693f14"><td class="memTemplParams" colspan="2"><a class="anchor" id="a676a3ad06501aefe326081a9f5693f14"></a>
+<tr class="memitem:a80b3580f9effa9b6c11b4af4e4200d33"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>newWork</b> (I *s_instance, M func, Args...arguments)</td></tr>
+<tr class="separator:a80b3580f9effa9b6c11b4af4e4200d33"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1885f40b69bbf9f19d5e1822f7b0c770"><td class="memTemplParams" colspan="2"><a class="anchor" id="a1885f40b69bbf9f19d5e1822f7b0c770"></a>
 template&lt;typename I , typename M &gt; </td></tr>
-<tr class="memitem:a676a3ad06501aefe326081a9f5693f14"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>newWork</b> (I *instance, M func)</td></tr>
-<tr class="separator:a676a3ad06501aefe326081a9f5693f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1885f40b69bbf9f19d5e1822f7b0c770"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>newWork</b> (I *s_instance, M func)</td></tr>
+<tr class="separator:a1885f40b69bbf9f19d5e1822f7b0c770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2525de4c2edaeeb40329d52e8f98b37a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a2525de4c2edaeeb40329d52e8f98b37a"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classevents_1_1_worker_thread.html#a2525de4c2edaeeb40329d52e8f98b37a">waitForJoin</a> ()</td></tr>
 <tr class="memdesc:a2525de4c2edaeeb40329d52e8f98b37a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for all threads to finish. <br /></td></tr>

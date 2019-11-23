@@ -7,8 +7,8 @@ var hierarchy =
     [ "map::Area", "classmap_1_1_area.html", null ],
     [ "BaseObject", "class_base_object.html", [
       [ "BaseGUIObject", "class_base_g_u_i_object.html", [
-        [ "character::GUI::CharacterGUI", "classcharacter_1_1_g_u_i_1_1_character_g_u_i.html", null ],
-        [ "map::GUI::MapGUI", "classmap_1_1_g_u_i_1_1_map_g_u_i.html", null ]
+        [ "character::gui::CharacterGUI", "classcharacter_1_1gui_1_1_character_g_u_i.html", null ],
+        [ "map::gui::MapGUI", "classmap_1_1gui_1_1_map_g_u_i.html", null ]
       ] ],
       [ "character::Character", "classcharacter_1_1_character.html", [
         [ "character::NPC", "classcharacter_1_1_n_p_c.html", [
@@ -19,8 +19,8 @@ var hierarchy =
       [ "database::Database", "classdatabase_1_1_database.html", null ],
       [ "events::EventLoop", "classevents_1_1_event_loop.html", null ],
       [ "game::GameLoader", "classgame_1_1_game_loader.html", null ],
-      [ "game::GUI::GameGUI", "classgame_1_1_g_u_i_1_1_game_g_u_i.html", null ],
-      [ "maker::GUI::MakerGUI", "classmaker_1_1_g_u_i_1_1_maker_g_u_i.html", null ],
+      [ "game::gui::GameGUI", "classgame_1_1gui_1_1_game_g_u_i.html", null ],
+      [ "maker::gui::MakerGUI", "classmaker_1_1gui_1_1_maker_g_u_i.html", null ],
       [ "map::Map", "classmap_1_1_map.html", null ],
       [ "map::Position", "classmap_1_1_position.html", null ],
       [ "map::Vector< m_kSize >", "classmap_1_1_vector.html", null ],
@@ -56,8 +56,8 @@ var hierarchy =
     [ "LogSink", null, [
       [ "Logger", "class_logger.html", null ]
     ] ],
-    [ "maker::GUI::MakerGUI::UI::NewGame", "structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html", null ],
-    [ "maker::GUI::MakerGUI::UI::OpenGame", "structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html", null ],
+    [ "maker::gui::MakerGUI::UI::NewGame", "structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_new_game.html", null ],
+    [ "maker::gui::MakerGUI::UI::OpenGame", "structmaker_1_1gui_1_1_maker_g_u_i_1_1_u_i_1_1_open_game.html", null ],
     [ "PerformanceTimer", "class_performance_timer.html", null ],
     [ "ImGui::Popups", "class_im_gui_1_1_popups.html", null ],
     [ "Query", null, [
@@ -67,7 +67,7 @@ var hierarchy =
       [ "database::SelectQuery", "classdatabase_1_1_select_query.html", null ],
       [ "database::UpdateQuery", "classdatabase_1_1_update_query.html", null ]
     ] ],
-    [ "game::GUI::GameGUI::UI::Settings", "structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i_1_1_settings.html", null ],
+    [ "game::gui::GameGUI::UI::Settings", "structgame_1_1gui_1_1_game_g_u_i_1_1_u_i_1_1_settings.html", null ],
     [ "StateMachine< T >", "class_state_machine.html", null ],
     [ "stringlist_batch< BATCH >", "classstringlist__batch.html", null ],
     [ "stringlist_batch< 5 >", "classstringlist__batch.html", null ],
@@ -75,15 +75,13 @@ var hierarchy =
     [ "Transformable", null, [
       [ "BaseGUIObject", "class_base_g_u_i_object.html", null ]
     ] ],
-    [ "maker::GUI::MakerGUI::UI", "structmaker_1_1_g_u_i_1_1_maker_g_u_i_1_1_u_i.html", null ],
-    [ "game::GUI::GameGUI::UI", "structgame_1_1_g_u_i_1_1_game_g_u_i_1_1_u_i.html", null ],
     [ "ImGui::Window", "class_im_gui_1_1_window.html", [
-      [ "game::GUI::CharacterWindow", "classgame_1_1_g_u_i_1_1_character_window.html", null ],
-      [ "game::GUI::InventoryWindow", "classgame_1_1_g_u_i_1_1_inventory_window.html", null ],
-      [ "maker::GUI::CharacterWindow", "classmaker_1_1_g_u_i_1_1_character_window.html", null ],
-      [ "maker::GUI::ConsoleWindow", "classmaker_1_1_g_u_i_1_1_console_window.html", null ],
-      [ "maker::GUI::MapWindow", "classmaker_1_1_g_u_i_1_1_map_window.html", null ],
-      [ "maker::GUI::MoneyWindow", "classmaker_1_1_g_u_i_1_1_money_window.html", null ]
+      [ "game::gui::CharacterWindow", "classgame_1_1gui_1_1_character_window.html", null ],
+      [ "game::gui::InventoryWindow", "classgame_1_1gui_1_1_inventory_window.html", null ],
+      [ "maker::gui::CharacterWindow", "classmaker_1_1gui_1_1_character_window.html", null ],
+      [ "maker::gui::ConsoleWindow", "classmaker_1_1gui_1_1_console_window.html", null ],
+      [ "maker::gui::MapWindow", "classmaker_1_1gui_1_1_map_window.html", null ],
+      [ "maker::gui::MoneyWindow", "classmaker_1_1gui_1_1_money_window.html", null ]
     ] ],
     [ "ImGui::WindowsManager", "class_im_gui_1_1_windows_manager.html", null ],
     [ "events::WorkerThread", "classevents_1_1_worker_thread.html", null ]

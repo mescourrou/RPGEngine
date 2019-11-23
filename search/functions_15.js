@@ -7,5 +7,5 @@ var searchData=
   ['window',['Window',['../class_im_gui_1_1_window.html#a67e849515ff5e3b4824183ba9704d6bc',1,'ImGui::Window']]],
   ['windowslist',['windowsList',['../class_im_gui_1_1_windows_manager.html#a87a27506a47a97abaa42655af9e258fd',1,'ImGui::WindowsManager']]],
   ['windowsmanager',['WindowsManager',['../class_im_gui_1_1_windows_manager.html#a71af026699a96c962c579e259455f069',1,'ImGui::WindowsManager']]],
-  ['work',['Work',['../classevents_1_1_work.html#a2a1014572a9b87894822b9805c759205',1,'events::Work::Work()'],['../classevents_1_1_work_3_01void_01_4.html#a71a71f904996af3314d39ff8acb98888',1,'events::Work&lt; void &gt;::Work()']]]
+  ['work',['Work',['../classevents_1_1_work.html#ae93c6f95acaf506a501c30dbdd129b2b',1,'events::Work::Work()'],['../classevents_1_1_work_3_01void_01_4.html#ab1afb76ef8d0c5707a3bdf5609957844',1,'events::Work&lt; void &gt;::Work()']]]
 ];
