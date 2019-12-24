@@ -13,6 +13,19 @@ To build the project, you will need:
 - g++ (>= 8, needed for c++17 features)
 - doxygen (documentation)
 
+Packages to install:
+```
+dnf install \
+	    libX11-devel \
+	    glfw-devel freeglut-devel \
+	    libudev-devel \
+	    openal-soft-devel \
+	    libvorbis-devel flac-devel \
+	    libXrandr-devel \
+	    freetype-devel 
+```
+
+
 To build the project, you need to pull the third-parties libraries. They are in git submodules:
 ```
 git submodule update --init --recursive
