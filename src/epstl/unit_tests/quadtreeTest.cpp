@@ -74,3 +74,36 @@ TEST_F(quadtreeTest, ReplaceBehaviour)
     EXPECT_EQ(tree.insert(-5, 5, 10), 2);
     EXPECT_EQ(*tree.at(-5, 5), 100);
 }
+
+TEST_F(quadtreeTest, Find)
+{
+    epstl::quadtree<int, int> tree(20, 20);
+    tree.insert(5, 5, 100);
+    tree.insert(-5, 5, 20);
+    tree.insert(2, 3, 300);
+    tree.insert(8, 3, 310);
+    tree.insert(1, 2, 400);
+
+    epstl::pair<int> keys;
+    ASSERT_TRUE(tree.find(400, keys));
+    EXPECT_EQ(keys.first, 1);
+    EXPECT_EQ(keys.second, 2);
+
+    ASSERT_TRUE(tree.find(310, keys));
+    EXPECT_EQ(keys.first, 8);
+    EXPECT_EQ(keys.second, 3);
+
+    ASSERT_TRUE(tree.find(300, keys));
+    EXPECT_EQ(keys.first, 2);
+    EXPECT_EQ(keys.second, 3);
+
+    ASSERT_TRUE(tree.find(20, keys));
+    EXPECT_EQ(keys.first, -5);
+    EXPECT_EQ(keys.second, 5);
+
+    ASSERT_TRUE(tree.find(100, keys));
+    EXPECT_EQ(keys.first, 5);
+    EXPECT_EQ(keys.second, 5);
+
+    EXPECT_FALSE(tree.find(110, keys));
+}

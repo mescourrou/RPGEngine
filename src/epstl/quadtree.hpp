@@ -2,17 +2,20 @@
 
 #include <initializer_list>
 #include <ostream>
+#include <functional>
 
 #include "container.hpp"
 #include "exception.hpp"
 #include "math.hpp"
+#include "pair.hpp"
 
 namespace epstl
 {
 
 enum behaviour_t
 {
-    quadtree_no_replace = 1
+    quadtree_no_replace = 1,
+    quadtree_multithread = 1 << 1
 };
 
 template<typename key_t, typename item_t>
@@ -99,6 +102,10 @@ class quadtree : public container
         print_quadrant(stream, m_root, 0);
     }
 
+    bool find(const item_t& item, epstl::pair<key_t>& keys,
+                            std::function<bool(const item_t&, const item_t&)> criterion
+                            = [](const item_t& i1, const item_t& i2){return i1 == i2;}) const;
+
   private:
     static quadrant_t* clone_quadrant(const quadrant_t* quadrant);
     static void free_quadrant(quadrant_t* quadrant);
@@ -111,6 +118,9 @@ class quadtree : public container
                                uint32_t shifts);
     static void shift_stream(std::ostream& stream, uint32_t shifts,
                              const char* separator);
+
+    bool find_quadrant(quadrant_t* quadrant, const item_t& item, epstl::pair<key_t>& keys,
+                                   std::function<bool(const item_t&, const item_t&)> criterion) const;
 
     quadrant_t* m_root = nullptr;
     size_t m_size = 0;
@@ -212,6 +222,12 @@ bool quadtree<key_t, item_t>::get(key_t x, key_t y, item_t& ret)
         return false;
     ret = *value;
     return true;
+}
+
+template<typename key_t, typename item_t>
+bool quadtree<key_t, item_t>::find(const item_t& item, epstl::pair<key_t>& keys, std::function<bool (const item_t&, const item_t&)> criterion) const
+{
+    return find_quadrant(m_root, item, keys, criterion);
 }
 
 template<typename key_t, typename item_t>
@@ -456,6 +472,42 @@ void quadtree<key_t, item_t>::shift_stream(std::ostream& stream,
     for (uint32_t i = 0; i < shifts; i++)
     {
         stream << separator;
+    }
+}
+
+template<typename key_t, typename item_t>
+bool quadtree<key_t, item_t>::find_quadrant(quadrant_t* quadrant, const item_t& item, epstl::pair<key_t>& keys,
+                                            std::function<bool (const item_t&, const item_t&)> criterion) const
+{
+    if (!quadrant)
+        return false;
+    if (quadrant->ne)
+    {
+        if (m_behaviour_flag & epstl::quadtree_multithread)
+        {
+            // TODO
+            return find_quadrant(quadrant->ne, item, keys, criterion) ||
+                    find_quadrant(quadrant->nw, item, keys, criterion) ||
+                    find_quadrant(quadrant->sw, item, keys, criterion) ||
+                    find_quadrant(quadrant->se, item, keys, criterion);
+        }
+        else
+        {
+            return find_quadrant(quadrant->ne, item, keys, criterion) ||
+                    find_quadrant(quadrant->nw, item, keys, criterion) ||
+                    find_quadrant(quadrant->sw, item, keys, criterion) ||
+                    find_quadrant(quadrant->se, item, keys, criterion);
+        }
+    }
+    else if (quadrant->data == item)
+    {
+        keys.first = quadrant->data_position.x;
+        keys.second = quadrant->data_position.y;
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
