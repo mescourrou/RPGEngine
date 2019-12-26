@@ -1,7 +1,8 @@
 #include <map.hpp>
 #include "mapTest.hpp"
 
-namespace epstl {
+namespace epstl
+{
 
 TEST_F(mapTest, insert)
 {

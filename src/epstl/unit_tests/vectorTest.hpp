@@ -2,11 +2,12 @@
 
 #include <gtest/gtest.h>
 
-namespace epstl {
+namespace epstl
+{
 
 class vectorTest : public ::testing::Test
 {
-public:
+  public:
 };
 
 } // namespace epstl
