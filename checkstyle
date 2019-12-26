@@ -36,6 +36,7 @@ astyle --style=allman \
         --convert-tabs \
         --close-templates \
         --max-code-length=80 \
+	--lineend=linux \
         --recursive src/*.cpp src/*.hpp \
         $dry_run -Q 
 #echo "$ret"
