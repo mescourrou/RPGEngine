@@ -3,6 +3,7 @@
 #include <initializer_list>
 #include <ostream>
 #include <functional>
+#include <iostream>
 
 #include "container.hpp"
 #include "exception.hpp"
@@ -106,6 +107,13 @@ class quadtree : public container
                             std::function<bool(const item_t&, const item_t&)> criterion
                             = [](const item_t& i1, const item_t& i2){return i1 == i2;}) const;
 
+    bool find(const item_t& item,
+                            std::function<bool(const item_t&, const item_t&)> criterion
+                            = [](const item_t& i1, const item_t& i2){return i1 == i2;}) const;
+
+    void remove(key_t x, key_t y);
+    void remove_all(const item_t& item);
+
   private:
     static quadrant_t* clone_quadrant(const quadrant_t* quadrant);
     static void free_quadrant(quadrant_t* quadrant);
@@ -121,6 +129,10 @@ class quadtree : public container
 
     bool find_quadrant(quadrant_t* quadrant, const item_t& item, epstl::pair<key_t>& keys,
                                    std::function<bool(const item_t&, const item_t&)> criterion) const;
+
+    bool remove_quadrant(quadrant_t* quadrant, key_t x, key_t y);
+    bool remove_all_quadrant(quadrant_t* quadrant, const item_t& item);
+    size_t compute_depth(quadrant_t* quadrant) const;
 
     quadrant_t* m_root = nullptr;
     size_t m_size = 0;
@@ -231,8 +243,29 @@ bool quadtree<key_t, item_t>::find(const item_t& item, epstl::pair<key_t>& keys,
 }
 
 template<typename key_t, typename item_t>
-quadtree<key_t, item_t>& quadtree<key_t, item_t>::operator=
-(quadtree<key_t, item_t>&& move)
+bool quadtree<key_t, item_t>::find(const item_t& item, std::function<bool (const item_t&, const item_t&)> criterion) const
+{
+    epstl::pair<int> keys;
+    return find(item, keys, criterion);
+}
+
+template<typename key_t, typename item_t>
+void quadtree<key_t, item_t>::remove(key_t x, key_t y)
+{
+    remove_quadrant(m_root, x, y);
+    m_depth = compute_depth(m_root);
+}
+
+template<typename key_t, typename item_t>
+void quadtree<key_t, item_t>::remove_all(const item_t& item)
+{
+    remove_all_quadrant(m_root, item);
+    m_depth = compute_depth(m_root);
+}
+
+template<typename key_t, typename item_t>
+quadtree<key_t, item_t>&
+quadtree<key_t, item_t>::operator=(quadtree<key_t, item_t>&& move)
 {
     m_root = move.m_root;
     m_size = move.m_size;
@@ -509,6 +542,148 @@ bool quadtree<key_t, item_t>::find_quadrant(quadrant_t* quadrant, const item_t& 
     {
         return false;
     }
+}
+
+template<typename key_t, typename item_t>
+bool quadtree<key_t, item_t>::remove_quadrant(quadrant_t* quadrant, key_t x, key_t y)
+{
+    if (!quadrant)
+        return true;
+    if (quadrant->ne)
+    {
+        bool ne_empty = remove_quadrant(quadrant->ne, x, y);
+        bool nw_empty = remove_quadrant(quadrant->nw, x, y);
+        bool sw_empty = remove_quadrant(quadrant->sw, x, y);
+        bool se_empty = remove_quadrant(quadrant->se, x, y);
+
+        if (ne_empty || nw_empty || sw_empty || se_empty)
+        {
+            // If all quadrants are empty, the parent is empty too
+            if (ne_empty && nw_empty && sw_empty && se_empty)
+            {
+                quadrant->ne = nullptr;
+                quadrant->nw = nullptr;
+                quadrant->sw = nullptr;
+                quadrant->se = nullptr;
+                quadrant->data = m_default_value;
+                quadrant->data_position = {};
+                return true;
+            }
+            // Else, if only 1 quadrant is not empty, we bring up the data and delete the 4 quadrants
+            else if (ne_empty + nw_empty + sw_empty + se_empty == 3)
+            {
+                quadrant_t* not_empty_one = nullptr;
+                if (!ne_empty)
+                    not_empty_one = quadrant->ne;
+                else if (!nw_empty)
+                    not_empty_one = quadrant->nw;
+                else if (!sw_empty)
+                    not_empty_one = quadrant->sw;
+                else
+                    not_empty_one = quadrant->se;
+
+                quadrant->data = not_empty_one->data;
+                quadrant->data_position = not_empty_one->data_position;
+
+                quadrant->ne = nullptr;
+                quadrant->nw = nullptr;
+                quadrant->sw = nullptr;
+                quadrant->se = nullptr;
+                return false;
+            }
+        }
+        return false;
+    }
+    else if (quadrant->data_position.x == x && quadrant->data_position.y == y)
+    {
+        quadrant->data = m_default_value;
+        quadrant->data_position = {};
+        m_size--;
+        return true;
+    }
+    else if (quadrant->data == m_default_value)
+    {
+        return true;
+    }
+    return false;
+}
+
+template<typename key_t, typename item_t>
+bool quadtree<key_t, item_t>::remove_all_quadrant(quadrant_t* quadrant, const item_t& item)
+{
+    if (!quadrant)
+        return true;
+    if (quadrant->ne)
+    {
+        bool ne_empty = remove_all_quadrant(quadrant->ne, item);
+        bool nw_empty = remove_all_quadrant(quadrant->nw, item);
+        bool sw_empty = remove_all_quadrant(quadrant->sw, item);
+        bool se_empty = remove_all_quadrant(quadrant->se, item);
+
+        if (ne_empty || nw_empty || sw_empty || se_empty)
+        {
+            // If all quadrants are empty, the parent is empty too
+            if (ne_empty && nw_empty && sw_empty && se_empty)
+            {
+                quadrant->ne = nullptr;
+                quadrant->nw = nullptr;
+                quadrant->sw = nullptr;
+                quadrant->se = nullptr;
+                quadrant->data = m_default_value;
+                quadrant->data_position = {};
+                return true;
+            }
+            // Else, if only 1 quadrant is not empty, we bring up the data and delete the 4 quadrants
+            else if (ne_empty + nw_empty + sw_empty + se_empty == 3)
+            {
+                quadrant_t* not_empty_one = nullptr;
+                if (!ne_empty)
+                    not_empty_one = quadrant->ne;
+                else if (!nw_empty)
+                    not_empty_one = quadrant->nw;
+                else if (!sw_empty)
+                    not_empty_one = quadrant->sw;
+                else
+                    not_empty_one = quadrant->se;
+
+                quadrant->data = not_empty_one->data;
+                quadrant->data_position = not_empty_one->data_position;
+
+                quadrant->ne = nullptr;
+                quadrant->nw = nullptr;
+                quadrant->sw = nullptr;
+                quadrant->se = nullptr;
+                return false;
+            }
+        }
+        return false;
+    }
+    else if (quadrant->data == item)
+    {
+        quadrant->data = m_default_value;
+        quadrant->data_position = {};
+        m_size--;
+        return true;
+    }
+    else if (quadrant->data == m_default_value)
+    {
+        return true;
+    }
+    return false;
+}
+
+template<typename key_t, typename item_t>
+size_t quadtree<key_t, item_t>::compute_depth(quadrant_t* quadrant) const
+{
+    if (!quadrant)
+        return 0;
+    if (quadrant->ne)
+        return epstl::max(compute_depth(quadrant->ne),
+                          compute_depth(quadrant->nw),
+                          compute_depth(quadrant->sw),
+                          compute_depth(quadrant->se)) + 1;
+
+    return 0;
 }
 
 

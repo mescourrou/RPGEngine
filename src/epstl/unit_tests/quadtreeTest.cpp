@@ -107,3 +107,38 @@ TEST_F(quadtreeTest, Find)
 
     EXPECT_FALSE(tree.find(110, keys));
 }
+
+TEST_F(quadtreeTest, RemoveByKey)
+{
+    epstl::quadtree<int, int> tree(20,20);
+    tree.insert(5, 5, 100);
+    tree.insert(2, 3, 300);
+    EXPECT_EQ(tree.size(), 2);
+    EXPECT_EQ(tree.depth(), 2);
+
+    tree.remove(5, 5);
+    EXPECT_EQ(tree.size(), 1);
+    EXPECT_EQ(tree.depth(), 0);
+    EXPECT_FALSE(tree.find(100));
+    EXPECT_TRUE(tree.find(300));
+
+}
+
+TEST_F(quadtreeTest, RemoveByItem)
+{
+    epstl::quadtree<int, int> tree(20,20);
+    tree.insert(5, 5, 100);
+    tree.insert(-5, 5, 300);
+    tree.insert(2, 3, 300);
+
+    EXPECT_EQ(tree.size(), 3);
+    EXPECT_EQ(tree.depth(), 2);
+
+    tree.print(std::cout);
+    tree.remove_all(300);
+    EXPECT_EQ(tree.size(), 1);
+    EXPECT_EQ(tree.depth(), 0);
+    EXPECT_FALSE(tree.find(300));
+    EXPECT_TRUE(tree.find(100));
+    tree.print(std::cout);
+}
