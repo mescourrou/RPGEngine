@@ -55,7 +55,7 @@ TEST_F(quadtreeTest, GettingValue)
 {
     epstl::quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
-    EXPECT_EQ(*tree.at(5, 5), 100);
+    EXPECT_EQ(tree.at(5, 5), 100);
 
     int value;
     ASSERT_TRUE(tree.get(5, 5, value));
@@ -67,12 +67,12 @@ TEST_F(quadtreeTest, ReplaceBehaviour)
     epstl::quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
     EXPECT_EQ(tree.insert(5, 5, 10), 1);
-    EXPECT_EQ(*tree.at(5, 5), 10);
+    EXPECT_EQ(tree.at(5, 5), 10);
 
     tree.set_behaviour_flag(epstl::quadtree_no_replace);
     EXPECT_EQ(tree.insert(-5, 5, 100), 2);
     EXPECT_EQ(tree.insert(-5, 5, 10), 2);
-    EXPECT_EQ(*tree.at(-5, 5), 100);
+    EXPECT_EQ(tree.at(-5, 5), 100);
 }
 
 TEST_F(quadtreeTest, Find)

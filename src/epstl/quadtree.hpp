@@ -86,8 +86,8 @@ class quadtree : public container
 
     size_t insert(key_t x, key_t y, const item_t& item);
 
-    const item_t* at(key_t x, key_t y) const;
-    item_t* at(key_t x, key_t y);
+    const item_t& at(key_t x, key_t y) const;
+    item_t& at(key_t x, key_t y);
 
     bool get(key_t x, key_t y, item_t& ret) const;
     bool get(key_t x, key_t y, item_t& ret);
@@ -121,7 +121,8 @@ class quadtree : public container
                            const item_t& item);
     static quadrant_t** select_quadrant(quadrant_t* quadrant, key_t x, key_t y);
     void create_quadrants(quadrant_t* parent);
-    static item_t* get_value(quadrant_t* quadrant, key_t x, key_t y);
+    const item_t& get_value(quadrant_t* quadrant, key_t x, key_t y) const;
+    item_t& get_value(quadrant_t* quadrant, key_t x, key_t y);
     static void print_quadrant(std::ostream& stream, quadrant_t* quadrant,
                                uint32_t shifts);
     static void shift_stream(std::ostream& stream, uint32_t shifts,
@@ -204,14 +205,13 @@ size_t quadtree<key_t, item_t>::insert(key_t x, key_t y, const item_t& item)
 }
 
 template<typename key_t, typename item_t>
-const item_t* quadtree<key_t, item_t>::at(key_t x, key_t y) const
+const item_t& quadtree<key_t, item_t>::at(key_t x, key_t y) const
 {
     return get_value(m_root, x, y);
-
 }
 
 template<typename key_t, typename item_t>
-item_t* quadtree<key_t, item_t>::at(key_t x, key_t y)
+item_t& quadtree<key_t, item_t>::at(key_t x, key_t y)
 {
     return get_value(m_root, x, y);
 }
@@ -219,20 +219,20 @@ item_t* quadtree<key_t, item_t>::at(key_t x, key_t y)
 template<typename key_t, typename item_t>
 bool quadtree<key_t, item_t>::get(key_t x, key_t y, item_t& ret) const
 {
-    const item_t* value = get_value(m_root, x, y);
-    if (!value)
+    const item_t& value = get_value(m_root, x, y);
+    if (value == m_default_value)
         return false;
-    ret = *value;
+    ret = value;
     return true;
 }
 
 template<typename key_t, typename item_t>
 bool quadtree<key_t, item_t>::get(key_t x, key_t y, item_t& ret)
 {
-    item_t* value = get_value(m_root, x, y);
-    if (!value)
+    item_t& value = get_value(m_root, x, y);
+    if (value == m_default_value)
         return false;
-    ret = *value;
+    ret = value;
     return true;
 }
 
@@ -442,21 +442,40 @@ void quadtree<key_t, item_t>::create_quadrants(quadrant_t* parent)
 }
 
 template<typename key_t, typename item_t>
-item_t* quadtree<key_t, item_t>::get_value(quadrant_t* quadrant, key_t x,
-        key_t y)
+const item_t& quadtree<key_t, item_t>::get_value(quadrant_t* quadrant, key_t x,
+        key_t y) const
 {
     if (!quadrant->bound.isInside(x, y))
-        return nullptr;
+        return m_default_value;
     if (quadrant->ne)
     {
         quadrant_t** selected_quadrant = select_quadrant(quadrant, x, y);
         if (!selected_quadrant)
-            return nullptr;
+            return m_default_value;
         return get_value(*selected_quadrant, x, y);
     }
     else
     {
-        return &quadrant->data;
+        return quadrant->data;
+    }
+}
+
+template<typename key_t, typename item_t>
+item_t& quadtree<key_t, item_t>::get_value(quadrant_t* quadrant, key_t x,
+        key_t y)
+{
+    if (!quadrant->bound.isInside(x, y))
+        return m_default_value;
+    if (quadrant->ne)
+    {
+        quadrant_t** selected_quadrant = select_quadrant(quadrant, x, y);
+        if (!selected_quadrant)
+            return m_default_value;
+        return get_value(*selected_quadrant, x, y);
+    }
+    else
+    {
+        return quadrant->data;
     }
 }
 
