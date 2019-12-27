@@ -1,6 +1,7 @@
 #pragma once
 
-namespace epstl {
+namespace epstl
+{
 
 template <typename T1, typename T2 = T1>
 struct pair

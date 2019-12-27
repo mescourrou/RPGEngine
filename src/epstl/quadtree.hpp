@@ -104,12 +104,18 @@ class quadtree : public container
     }
 
     bool find(const item_t& item, epstl::pair<key_t>& keys,
-                            std::function<bool(const item_t&, const item_t&)> criterion
-                            = [](const item_t& i1, const item_t& i2){return i1 == i2;}) const;
+              std::function<bool(const item_t&, const item_t&)> criterion
+              = [](const item_t& i1, const item_t& i2)
+    {
+        return i1 == i2;
+    }) const;
 
     bool find(const item_t& item,
-                            std::function<bool(const item_t&, const item_t&)> criterion
-                            = [](const item_t& i1, const item_t& i2){return i1 == i2;}) const;
+              std::function<bool(const item_t&, const item_t&)> criterion
+              = [](const item_t& i1, const item_t& i2)
+    {
+        return i1 == i2;
+    }) const;
 
     void remove(key_t x, key_t y);
     void remove_all(const item_t& item);
@@ -128,8 +134,9 @@ class quadtree : public container
     static void shift_stream(std::ostream& stream, uint32_t shifts,
                              const char* separator);
 
-    bool find_quadrant(quadrant_t* quadrant, const item_t& item, epstl::pair<key_t>& keys,
-                                   std::function<bool(const item_t&, const item_t&)> criterion) const;
+    bool find_quadrant(quadrant_t* quadrant, const item_t& item,
+                       epstl::pair<key_t>& keys,
+                       std::function<bool(const item_t&, const item_t&)> criterion) const;
 
     bool remove_quadrant(quadrant_t* quadrant, key_t x, key_t y);
     bool remove_all_quadrant(quadrant_t* quadrant, const item_t& item);
@@ -237,13 +244,15 @@ bool quadtree<key_t, item_t>::get(key_t x, key_t y, item_t& ret)
 }
 
 template<typename key_t, typename item_t>
-bool quadtree<key_t, item_t>::find(const item_t& item, epstl::pair<key_t>& keys, std::function<bool (const item_t&, const item_t&)> criterion) const
+bool quadtree<key_t, item_t>::find(const item_t& item, epstl::pair<key_t>& keys,
+                                   std::function<bool (const item_t&, const item_t&)> criterion) const
 {
     return find_quadrant(m_root, item, keys, criterion);
 }
 
 template<typename key_t, typename item_t>
-bool quadtree<key_t, item_t>::find(const item_t& item, std::function<bool (const item_t&, const item_t&)> criterion) const
+bool quadtree<key_t, item_t>::find(const item_t& item,
+                                   std::function<bool (const item_t&, const item_t&)> criterion) const
 {
     epstl::pair<int> keys;
     return find(item, keys, criterion);
@@ -528,8 +537,9 @@ void quadtree<key_t, item_t>::shift_stream(std::ostream& stream,
 }
 
 template<typename key_t, typename item_t>
-bool quadtree<key_t, item_t>::find_quadrant(quadrant_t* quadrant, const item_t& item, epstl::pair<key_t>& keys,
-                                            std::function<bool (const item_t&, const item_t&)> criterion) const
+bool quadtree<key_t, item_t>::find_quadrant(quadrant_t* quadrant,
+        const item_t& item, epstl::pair<key_t>& keys,
+        std::function<bool (const item_t&, const item_t&)> criterion) const
 {
     if (!quadrant)
         return false;
@@ -539,16 +549,16 @@ bool quadtree<key_t, item_t>::find_quadrant(quadrant_t* quadrant, const item_t& 
         {
             // TODO
             return find_quadrant(quadrant->ne, item, keys, criterion) ||
-                    find_quadrant(quadrant->nw, item, keys, criterion) ||
-                    find_quadrant(quadrant->sw, item, keys, criterion) ||
-                    find_quadrant(quadrant->se, item, keys, criterion);
+                   find_quadrant(quadrant->nw, item, keys, criterion) ||
+                   find_quadrant(quadrant->sw, item, keys, criterion) ||
+                   find_quadrant(quadrant->se, item, keys, criterion);
         }
         else
         {
             return find_quadrant(quadrant->ne, item, keys, criterion) ||
-                    find_quadrant(quadrant->nw, item, keys, criterion) ||
-                    find_quadrant(quadrant->sw, item, keys, criterion) ||
-                    find_quadrant(quadrant->se, item, keys, criterion);
+                   find_quadrant(quadrant->nw, item, keys, criterion) ||
+                   find_quadrant(quadrant->sw, item, keys, criterion) ||
+                   find_quadrant(quadrant->se, item, keys, criterion);
         }
     }
     else if (quadrant->data == item)
@@ -564,7 +574,8 @@ bool quadtree<key_t, item_t>::find_quadrant(quadrant_t* quadrant, const item_t& 
 }
 
 template<typename key_t, typename item_t>
-bool quadtree<key_t, item_t>::remove_quadrant(quadrant_t* quadrant, key_t x, key_t y)
+bool quadtree<key_t, item_t>::remove_quadrant(quadrant_t* quadrant, key_t x,
+        key_t y)
 {
     if (!quadrant)
         return true;
@@ -588,7 +599,8 @@ bool quadtree<key_t, item_t>::remove_quadrant(quadrant_t* quadrant, key_t x, key
                 quadrant->data_position = {};
                 return true;
             }
-            // Else, if only 1 quadrant is not empty, we bring up the data and delete the 4 quadrants
+            // Else, if only 1 quadrant is not empty, we bring up the data and
+            // delete the 4 quadrants
             else if (ne_empty + nw_empty + sw_empty + se_empty == 3)
             {
                 quadrant_t* not_empty_one = nullptr;
@@ -628,7 +640,8 @@ bool quadtree<key_t, item_t>::remove_quadrant(quadrant_t* quadrant, key_t x, key
 }
 
 template<typename key_t, typename item_t>
-bool quadtree<key_t, item_t>::remove_all_quadrant(quadrant_t* quadrant, const item_t& item)
+bool quadtree<key_t, item_t>::remove_all_quadrant(quadrant_t* quadrant,
+        const item_t& item)
 {
     if (!quadrant)
         return true;
@@ -652,7 +665,8 @@ bool quadtree<key_t, item_t>::remove_all_quadrant(quadrant_t* quadrant, const it
                 quadrant->data_position = {};
                 return true;
             }
-            // Else, if only 1 quadrant is not empty, we bring up the data and delete the 4 quadrants
+            // Else, if only 1 quadrant is not empty, we bring up the data and
+            // delete the 4 quadrants
             else if (ne_empty + nw_empty + sw_empty + se_empty == 3)
             {
                 quadrant_t* not_empty_one = nullptr;

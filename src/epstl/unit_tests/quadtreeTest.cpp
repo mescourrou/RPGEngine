@@ -110,7 +110,7 @@ TEST_F(quadtreeTest, Find)
 
 TEST_F(quadtreeTest, RemoveByKey)
 {
-    epstl::quadtree<int, int> tree(20,20);
+    epstl::quadtree<int, int> tree(20, 20);
     tree.insert(5, 5, 100);
     tree.insert(2, 3, 300);
     EXPECT_EQ(tree.size(), 2);
@@ -126,7 +126,7 @@ TEST_F(quadtreeTest, RemoveByKey)
 
 TEST_F(quadtreeTest, RemoveByItem)
 {
-    epstl::quadtree<int, int> tree(20,20);
+    epstl::quadtree<int, int> tree(20, 20);
     tree.insert(5, 5, 100);
     tree.insert(-5, 5, 300);
     tree.insert(2, 3, 300);
