@@ -57,7 +57,7 @@ enum behaviour_t
 template<typename key_t, typename item_t>
 class quadtree : public container
 {
-  private:
+  protected:
     /**
      * @brief Carthesian position
      */
@@ -114,6 +114,7 @@ class quadtree : public container
      * @param center_y Y coordinate of the center
      * @param width Width of the root
      * @param height Height of the root
+     * @todo Size problem
      */
     explicit quadtree(key_t center_x, key_t center_y, key_t width, key_t height) :
         m_width(width), m_height(height), m_center{center_x, center_y}, m_default_value{} {}
@@ -165,7 +166,7 @@ class quadtree : public container
      * The depth is the number of subdivision. If there is only the root, the
      * depth is 0. If the quadrant is only divided by 4 once, the depth is 1.
      */
-    size_t depth() const noexcept
+    virtual size_t depth() const noexcept final
     {
         return m_depth;
     }
@@ -173,15 +174,15 @@ class quadtree : public container
     /**
      * @brief Get the current default value of the tree
      */
-    const item_t& default_value() const noexcept
+    virtual const item_t& default_value() const noexcept final
     {
         return m_default_value;
     }
 
-    size_t insert(key_t x, key_t y, const item_t& item);
+    virtual size_t insert(key_t x, key_t y, const item_t& item);
 
-    const item_t& at(key_t x, key_t y) const;
-    item_t& at(key_t x, key_t y);
+    virtual const item_t& at(key_t x, key_t y) const;
+    virtual item_t& at(key_t x, key_t y);
 
     /**
      * @brief Set the behaviour flags
@@ -193,7 +194,7 @@ class quadtree : public container
      * @endcode
      * @param flag Combinaison of behaviour_t
      */
-    void set_behaviour_flag(uint8_t flag)
+    virtual void set_behaviour_flag(uint8_t flag) final
     {
         m_behaviour_flag = flag;
     }
@@ -202,56 +203,56 @@ class quadtree : public container
      * @brief Print the quadtree in the given stream
      * @param stream Stream to print inside
      */
-    void print(std::ostream& stream) const
+    virtual void print(std::ostream& stream) const
     {
         stream << "Root:\n";
         print_quadrant(stream, m_root, 0);
     }
 
-    bool find(const item_t& item, epstl::pair<key_t>& keys,
+    virtual bool find(const item_t& item, epstl::pair<key_t>& keys,
               std::function<bool(const item_t&, const item_t&)> criterion
               = [](const item_t& i1, const item_t& i2)
     {
         return i1 == i2;
     }) const;
 
-    bool find(const item_t& item,
+    virtual bool find(const item_t& item,
               std::function<bool(const item_t&, const item_t&)> criterion
               = [](const item_t& i1, const item_t& i2)
     {
         return i1 == i2;
     }) const;
 
-    void remove(key_t x, key_t y);
-    void remove_all(const item_t& item,
+    virtual void remove(key_t x, key_t y);
+    virtual void remove_all(const item_t& item,
                     std::function<bool(const item_t&, const item_t&)> criterion
                     = [](const item_t& i1, const item_t& i2)
     {
         return i1 == i2;
     });
 
-  private:
-    static quadrant_t* clone_quadrant(const quadrant_t* quadrant);
-    static void free_quadrant(quadrant_t* quadrant);
-    size_t insert_quadrant(quadrant_t* quadrant, key_t x, key_t y,
+  protected:
+    virtual quadrant_t* clone_quadrant(const quadrant_t* quadrant) const;
+    virtual void free_quadrant(quadrant_t* quadrant);
+    virtual size_t insert_quadrant(quadrant_t* quadrant, key_t x, key_t y,
                            const item_t& item);
-    static quadrant_t** select_quadrant(quadrant_t* quadrant, key_t x, key_t y);
-    void create_quadrants(quadrant_t* parent);
-    const item_t& get_value(quadrant_t* quadrant, key_t x, key_t y) const;
-    item_t& get_value(quadrant_t* quadrant, key_t x, key_t y);
-    static void print_quadrant(std::ostream& stream, quadrant_t* quadrant,
-                               uint32_t shifts);
-    static void shift_stream(std::ostream& stream, uint32_t shifts,
-                             const char* separator);
+    virtual quadrant_t** select_quadrant(quadrant_t* quadrant, key_t x, key_t y) const;
+    virtual void create_quadrants(quadrant_t* parent);
+    virtual const item_t& get_value(quadrant_t* quadrant, key_t x, key_t y) const;
+    virtual item_t& get_value(quadrant_t* quadrant, key_t x, key_t y);
+    virtual void print_quadrant(std::ostream& stream, quadrant_t* quadrant,
+                               uint32_t shifts) const;
+    virtual void shift_stream(std::ostream& stream, uint32_t shifts,
+                             const char* separator) const final;
 
-    bool find_quadrant(quadrant_t* quadrant, const item_t& item,
+    virtual bool find_quadrant(quadrant_t* quadrant, const item_t& item,
                        epstl::pair<key_t>& keys,
                        std::function<bool(const item_t&, const item_t&)> criterion) const;
 
-    bool remove_quadrant(quadrant_t* quadrant, key_t x, key_t y);
-    bool remove_all_quadrant(quadrant_t* quadrant, const item_t& item,
+    virtual bool remove_quadrant(quadrant_t* quadrant, key_t x, key_t y);
+    virtual bool remove_all_quadrant(quadrant_t* quadrant, const item_t& item,
                              std::function<bool (const item_t&, const item_t&)> criterion);
-    size_t compute_depth(quadrant_t* quadrant) const;
+    virtual size_t compute_depth(quadrant_t* quadrant) const;
 
 
 
@@ -438,7 +439,7 @@ template<typename key_t, typename item_t>
 bool quadtree<key_t, item_t>::find(const item_t& item,
                                    std::function<bool (const item_t&, const item_t&)> criterion) const
 {
-    epstl::pair<int> keys;
+    epstl::pair<key_t> keys;
     return find(item, keys, criterion);
 }
 
@@ -475,7 +476,7 @@ void quadtree<key_t, item_t>::remove_all(const item_t& item,
  */
 template<typename key_t, typename item_t>
 typename quadtree<key_t, item_t>::quadrant_t*
-quadtree<key_t, item_t>::clone_quadrant(const quadrant_t* quadrant)
+quadtree<key_t, item_t>::clone_quadrant(const quadrant_t* quadrant) const
 {
     if (quadrant)
     {
@@ -592,7 +593,7 @@ size_t quadtree<key_t, item_t>::insert_quadrant(quadrant_t* quadrant, key_t x,
  */
 template<typename key_t, typename item_t>
 typename quadtree<key_t, item_t>::quadrant_t**
-quadtree<key_t, item_t>::select_quadrant(quadrant_t* quadrant, key_t x, key_t y)
+quadtree<key_t, item_t>::select_quadrant(quadrant_t* quadrant, key_t x, key_t y) const
 {
     if (!quadrant->bound.isInside(x, y))
         return nullptr;
@@ -738,7 +739,7 @@ quadtree<key_t, item_t>::get_value(quadrant_t* quadrant, key_t x, key_t y)
  */
 template<typename key_t, typename item_t>
 void quadtree<key_t, item_t>::print_quadrant(std::ostream& stream,
-        quadrant_t* quadrant, uint32_t shifts)
+        quadrant_t* quadrant, uint32_t shifts) const
 {
     if (quadrant)
     {
@@ -783,7 +784,7 @@ void quadtree<key_t, item_t>::print_quadrant(std::ostream& stream,
  */
 template<typename key_t, typename item_t>
 void quadtree<key_t, item_t>::shift_stream(std::ostream& stream,
-        uint32_t shifts, const char* separator)
+        uint32_t shifts, const char* separator) const
 {
     for (uint32_t i = 0; i < shifts; i++)
     {

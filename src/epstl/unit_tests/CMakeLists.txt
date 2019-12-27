@@ -3,7 +3,8 @@ find_package(gtest REQUIRED)
 add_executable(Epstl_test main.cpp
 	vectorTest.cpp vectorTest.hpp
     mapTest.cpp mapTest.hpp
-    quadtreeTest.cpp quadtreeTest.hpp)
+    quadtreeTest.cpp quadtreeTest.hpp
+    quadtreeRegionTest.cpp quadtreeRegionTest.hpp)
 target_link_libraries(Epstl_test gtest epstl Tools)
 
 if(EXISTS /data AND IS_DIRECTORY /data)

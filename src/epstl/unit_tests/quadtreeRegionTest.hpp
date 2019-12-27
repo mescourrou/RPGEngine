@@ -4,9 +4,9 @@
 
 namespace epstl {
 
-class quadtreeTest : public ::testing::Test
+class quadtreeRegionTest : public ::testing::Test
 {
-  public:
+public:
 };
 
 } // namespace epstl

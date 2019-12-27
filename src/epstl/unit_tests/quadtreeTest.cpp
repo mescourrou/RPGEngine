@@ -3,12 +3,14 @@
 #include <iostream>
 #include "quadtreeTest.hpp"
 
+namespace epstl {
+
 /*
  * Test the good insertion of items
  */
 TEST_F(quadtreeTest, Insertion)
 {
-    epstl::quadtree<float, int> tree(20, 20);
+    quadtree<float, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
     EXPECT_EQ(tree.depth(), 0);
 
@@ -42,7 +44,7 @@ TEST_F(quadtreeTest, Insertion)
  */
 TEST_F(quadtreeTest, InsertionCoherence)
 {
-    epstl::quadtree<int, int> tree(20, 20);
+    quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
 
     EXPECT_EQ(tree.at(5, 5), 100);
@@ -60,7 +62,7 @@ TEST_F(quadtreeTest, InsertionCoherence)
  */
 TEST_F(quadtreeTest, GettingValue)
 {
-    epstl::quadtree<int, int> tree(20, 20);
+    quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
     EXPECT_EQ(tree.at(5, 5), 100);
     EXPECT_EQ(tree.at(1,1), tree.default_value());
@@ -87,7 +89,7 @@ TEST_F(quadtreeTest, ReplaceBehaviour)
  */
 TEST_F(quadtreeTest, Find)
 {
-    epstl::quadtree<int, int> tree(20, 20);
+    quadtree<int, int> tree(20, 20);
     tree.insert(5, 5, 100);
     tree.insert(-5, 5, 20);
     tree.insert(2, 3, 300);
@@ -123,7 +125,7 @@ TEST_F(quadtreeTest, Find)
  */
 TEST_F(quadtreeTest, RemoveByKey)
 {
-    epstl::quadtree<int, int> tree(20, 20);
+    quadtree<int, int> tree(20, 20);
     tree.insert(5, 5, 100);
     tree.insert(2, 3, 300);
     EXPECT_EQ(tree.size(), 2);
@@ -142,7 +144,7 @@ TEST_F(quadtreeTest, RemoveByKey)
  */
 TEST_F(quadtreeTest, RemoveByItem)
 {
-    epstl::quadtree<int, int> tree(20, 20);
+    quadtree<int, int> tree(20, 20);
     tree.insert(5, 5, 100);
     tree.insert(-5, 5, 300);
     tree.insert(2, 3, 300);
@@ -156,3 +158,5 @@ TEST_F(quadtreeTest, RemoveByItem)
     EXPECT_FALSE(tree.find(300));
     EXPECT_TRUE(tree.find(100));
 }
+
+} // namespace epstl
