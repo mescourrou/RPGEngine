@@ -1,15 +1,22 @@
 #pragma once
 
 #include "container.hpp"
+#include "math.hpp"
 
 #include <stdexcept>
 
 namespace epstl
 {
 
+/**
+ * @brief Key based map
+ */
 template <typename key_t, typename item_t>
 class map : public container
 {
+    /**
+     * @brief Map tree node
+     */
     struct node_t
     {
         key_t key;
@@ -21,15 +28,28 @@ class map : public container
     };
 
   public:
+    /**
+     * @brief Default constructor
+     */
     map() = default;
+    /**
+     * @brief Create a map with the given less operator
+     * @param less_operator Less (<) operator to use
+     */
     map(bool (*less_operator)(const key_t& k1, const key_t& k2)) :
         m_less_operator(less_operator) {}
+
     ~map() override;
 
     size_t size() const noexcept override;
 
     item_t& operator[](const key_t& key);
     bool insert(key_t key, item_t item);
+
+    /**
+     * @brief Get the height of the map tree
+     * @return
+     */
     epstl::size_t height() const noexcept
     {
         return height(m_root);
@@ -47,30 +67,49 @@ class map : public container
 
     void leftRotate(node_t* node) noexcept;
     void rightRotate(node_t* node) noexcept;
-    bool (*m_less_operator)(const key_t& k1, const key_t& k2) = &less<key_t, key_t>;
-    epstl::size_t m_size = 0;
 
-    node_t* m_root = nullptr;
+    /// Less (<) operator to use
+    bool (*m_less_operator)(const key_t& k1, const key_t& k2) = &less<key_t, key_t>;
+    epstl::size_t m_size = 0; ///< Size of the map
+
+    node_t* m_root = nullptr; ///< Root node of the tree
 };
 
+/**
+ * @brief Destructor which free the contained values
+ * @todo Destructor to implement
+ */
 template<typename key_t, typename item_t>
 map<key_t, item_t>::~map()
 {
 
 }
 
+/**
+ * @brief Get the size of the map : number of items inside
+ */
 template <typename key_t, typename item_t>
 size_t map<key_t, item_t>::size() const noexcept
 {
     return m_size;
 }
 
+/**
+ * @brief Get the value at the given key
+ * @todo To implement
+ */
 template<typename key_t, typename item_t>
 item_t& map<key_t, item_t>::operator[](const key_t& key)
 {
 
 }
 
+/**
+ * @brief Insert the item at the given key
+ * @param key Key of the item
+ * @param item Item to insert
+ * @return Return true if the insertion was successful
+ */
 template<typename key_t, typename item_t>
 bool map<key_t, item_t>::insert(key_t key, item_t item)
 {
@@ -85,6 +124,7 @@ bool map<key_t, item_t>::insert(key_t key, item_t item)
 
     if (!insert_recursive(m_root, key, item))
         return false;
+    // Equilibrate the tree
     short diff = height(m_root->left_node) - height(m_root->right_node);
     if (diff < -1)
         leftRotate(m_root);
@@ -93,6 +133,11 @@ bool map<key_t, item_t>::insert(key_t key, item_t item)
     return true;
 }
 
+/**
+ * @brief Get a const pointer on the item at the given key
+ * @param key Key to look for
+ * @return Const pointer on the value or nullptr if the key was not found
+ */
 template<typename key_t, typename item_t>
 const item_t* map<key_t, item_t>::at(const key_t& key) const noexcept
 {
@@ -103,6 +148,11 @@ const item_t* map<key_t, item_t>::at(const key_t& key) const noexcept
     return nullptr;
 }
 
+/**
+ * @brief Get a mutable pointer on the item at the given key
+ * @param key Key to look for
+ * @return Mutable pointer on the value or nullptr if the key was not found
+ */
 template<typename key_t, typename item_t>
 item_t* map<key_t, item_t>::at(const key_t& key) noexcept
 {
@@ -113,14 +163,25 @@ item_t* map<key_t, item_t>::at(const key_t& key) noexcept
     return nullptr;
 }
 
+/**
+ * @brief Compute the height of the tree with the given root
+ * @param root Root of the tree where to compute the height
+ */
 template<typename key_t, typename item_t>
 size_t map<key_t, item_t>::height(node_t* root) const noexcept
 {
     if (!root)
         return 0;
-    return std::max(height(root->left_node), height(root->right_node)) + 1;
+    return epstl::max(height(root->left_node), height(root->right_node)) + 1;
 }
 
+/**
+ * @brief Recusive version of insert
+ * @param current_node Root of the tree to insert into
+ * @param key Key of the item
+ * @param item Item to insert
+ * @return Return true if the item was inserted
+ */
 template<typename key_t, typename item_t>
 bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
         item_t& item) noexcept
@@ -167,6 +228,11 @@ bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
 
 }
 
+/**
+ * @brief Search for the key and return the node found
+ * @param key Key to look for
+ * @return Pointer on the note. Null if not found
+ */
 template<typename key_t, typename item_t>
 auto map<key_t, item_t>::search(const key_t& key) const noexcept ->
 map<key_t, item_t>::node_t*
@@ -184,6 +250,10 @@ map<key_t, item_t>::node_t*
     return nullptr;
 }
 
+/**
+ * @brief Do a left rotation on the given node
+ * @param node Node to rotate
+ */
 template<typename key_t, typename item_t>
 void map<key_t, item_t>::leftRotate(map::node_t* node) noexcept
 {
@@ -211,6 +281,10 @@ void map<key_t, item_t>::leftRotate(map::node_t* node) noexcept
     pivot->parent = node_parent;
 }
 
+/**
+ * @brief Do a right rotation on the given node
+ * @param node Node to rotate
+ */
 template<typename key_t, typename item_t>
 void map<key_t, item_t>::rightRotate(map::node_t* node) noexcept
 {

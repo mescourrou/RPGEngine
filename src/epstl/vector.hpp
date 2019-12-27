@@ -8,9 +8,17 @@
 namespace epstl
 {
 
+/**
+ * @brief Memory continuous dynamic array
+ *
+ * The ALLOCATION_BATCH is the size of allocations batches
+ */
 template <typename T, epstl::size_t ALLOCATION_BATCH = 5>
 class vector : public linear_container<T>
 {
+    /**
+     * @brief Vector iterator template class
+     */
     template<typename IT_TYPE, bool ASCENDING>
     class iteratorT
     {
@@ -43,32 +51,70 @@ class vector : public linear_container<T>
       private:
         IT_TYPE* m_data;
     };
+
   public:
-    typedef iteratorT<T, true> iterator;
-    typedef iteratorT<const T, true> const_iterator;
-    typedef iteratorT<T, false> reverse_iterator;
-    typedef iteratorT<const T, false> const_reverse_iterator;
+
+    typedef iteratorT<T, true> iterator; ///< Standard iterator
+    typedef iteratorT<const T, true> const_iterator; ///< Constant iterator
+    typedef iteratorT<T, false> reverse_iterator;   ///< Reverse iterator
+    typedef iteratorT<const T, false> const_reverse_iterator; ///< Constant reverse iterator
+
+    /**
+     * @brief Default constructor
+     */
     vector() = default;
+
     vector(std::initializer_list<T> list);
     ~vector() override;
 
     epstl::size_t push_back(T e) override;
     epstl::size_t pop_back() override;
-    epstl::size_t size() const noexcept override;
+
+    /**
+     * @brief Get the number of items in the vector
+     */
+    epstl::size_t size() const noexcept override
+    {
+        return m_size;
+    }
 
     const T* at(int index) const noexcept override;
     T* at(int index) noexcept override;
 
+    /**
+     * @brief Get the value at the given index
+     *
+     * @warning No control about the index is done
+     *
+     * @param index Index where to take the value
+     * @return Constant value
+     */
     const T& operator[](int index) const
     {
         m_data[index];
     }
+
+    /**
+     * @brief Get the value at the given index
+     *
+     * @warning No control about the index is done
+     *
+     * @param index Index where to take the value
+     * @return Mutable value
+     */
     T& operator[](int index)
     {
         m_data[index];
     }
 
-    epstl::size_t allocated() const noexcept;
+    /**
+     * @brief Return the number of allocated slots
+     * @return
+     */
+    epstl::size_t allocated() const noexcept
+    {
+        return m_allocated;
+    }
 
     iterator begin() const
     {
@@ -102,9 +148,9 @@ class vector : public linear_container<T>
     void swap(epstl::size_t a, epstl::size_t b) override;
 
   private:
-    epstl::size_t m_allocated = 0;
-    epstl::size_t m_size = 0;
-    T* m_data = nullptr;
+    epstl::size_t m_allocated = 0;  ///< Allocated slots
+    epstl::size_t m_size = 0;       ///< Used slots
+    T* m_data = nullptr;            ///< C array
 
     void quick_sort(epstl::size_t begin, epstl::size_t end, bool ascending,
                     bool (*less_operator)(const T&, const T&) = &less);
@@ -112,6 +158,11 @@ class vector : public linear_container<T>
                             bool (*less_operator)(const T&, const T&) = &less);
 };
 
+/**
+ * @brief Get the value at the given index
+ * @param index Index to get. If the index is negative, the size-index value is taken
+ * @return Constant pointer on the value. Null if out of bound
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 const T* vector<T, ALLOCATION_BATCH>::at(int index) const noexcept
 {
@@ -124,6 +175,11 @@ const T* vector<T, ALLOCATION_BATCH>::at(int index) const noexcept
 
 }
 
+/**
+ * @brief Get the value at the given index
+ * @param index Index to get. If the index is negative, the size-index value is taken
+ * @return Mutable pointer on the value. Null if out of bound
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 T* vector<T, ALLOCATION_BATCH>::at(int index) noexcept
 {
@@ -135,12 +191,10 @@ T* vector<T, ALLOCATION_BATCH>::at(int index) noexcept
     return &m_data[index];
 }
 
-template<typename T, epstl::size_t ALLOCATION_BATCH>
-inline epstl::size_t vector<T, ALLOCATION_BATCH>::allocated() const noexcept
-{
-    return m_allocated;
-}
-
+/**
+ * @brief Constructor from initializer list
+ * @param list List of values to initialize the vector with
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 vector<T, ALLOCATION_BATCH>::vector(std::initializer_list<T> list)
 {
@@ -159,12 +213,20 @@ vector<T, ALLOCATION_BATCH>::vector(std::initializer_list<T> list)
     }
 }
 
+/**
+ * @brief Destructor
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 vector<T, ALLOCATION_BATCH>::~vector()
 {
     delete[] m_data;
 }
 
+/**
+ * @brief Add the item at the end of the vector
+ * @param e Element to add
+ * @return Return the new size of the vector
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 epstl::size_t vector<T, ALLOCATION_BATCH>::push_back(T e)
 {
@@ -185,6 +247,10 @@ epstl::size_t vector<T, ALLOCATION_BATCH>::push_back(T e)
     return ++m_size;
 }
 
+/**
+ * @brief Remove the last item of the vector
+ * @return Return the new size of the vector
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 epstl::size_t vector<T, ALLOCATION_BATCH>::pop_back()
 {
@@ -204,12 +270,11 @@ epstl::size_t vector<T, ALLOCATION_BATCH>::pop_back()
     return m_size;
 }
 
-template<typename T, epstl::size_t ALLOCATION_BATCH>
-inline epstl::size_t vector<T, ALLOCATION_BATCH>::size() const noexcept
-{
-    return m_size;
-}
-
+/**
+ * @brief Sort the vector using quick sort
+ * @param ascending Sort the vector ascendingly
+ * @param less_operator Less (<) operator
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 void vector<T, ALLOCATION_BATCH>::sort(bool ascending,
                                        bool (*less_operator)(const T&, const T&))
@@ -217,6 +282,11 @@ void vector<T, ALLOCATION_BATCH>::sort(bool ascending,
     quick_sort(0, m_size - 1, ascending, less_operator);
 }
 
+/**
+ * @brief Swap the values at the two given indexes
+ * @param a Index of the first value
+ * @param b Index of the second velue
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 void vector<T, ALLOCATION_BATCH>::swap(size_t a, size_t b)
 {
@@ -225,6 +295,13 @@ void vector<T, ALLOCATION_BATCH>::swap(size_t a, size_t b)
     m_data[b] = std::move(tmp);
 }
 
+/**
+ * @brief Apply quick sort algorithm on the vector
+ * @param begin Begin index for the quick sort
+ * @param end End index for the quick sort
+ * @param ascending Sort the vector ascendingly
+ * @param less_operator Less (<) opeartor
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 void vector<T, ALLOCATION_BATCH>::quick_sort(size_t begin, size_t end,
         bool ascending, bool (*less_operator)(const T&, const T&))
@@ -238,6 +315,14 @@ void vector<T, ALLOCATION_BATCH>::quick_sort(size_t begin, size_t end,
     }
 }
 
+/**
+ * @brief Create a partition between the given index, using the last index as pivot
+ * @param begin Begin index of the partition
+ * @param end End index of the partition
+ * @param ascending Put the element higher than the pivot in the upper part of the partition
+ * @param less_operator Less (<) operator
+ * @return Return the index of the pivot
+ */
 template<typename T, epstl::size_t ALLOCATION_BATCH>
 size_t vector<T, ALLOCATION_BATCH>::partition(size_t begin, size_t end,
         bool ascending, bool (*less_operator)(const T&, const T&))

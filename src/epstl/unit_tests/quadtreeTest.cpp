@@ -3,6 +3,9 @@
 #include <iostream>
 #include "quadtreeTest.hpp"
 
+/*
+ * Test the good insertion of items
+ */
 TEST_F(quadtreeTest, Insertion)
 {
     epstl::quadtree<float, int> tree(20, 20);
@@ -34,34 +37,38 @@ TEST_F(quadtreeTest, Insertion)
     EXPECT_EQ(tree.depth(), 4);
 }
 
+/*
+ * Test the coherence of the insertion: keep previous values
+ */
 TEST_F(quadtreeTest, InsertionCoherence)
 {
     epstl::quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
 
-    int value;
-    ASSERT_TRUE(tree.get(5, 5, value));
-    EXPECT_EQ(value, 100);
+    EXPECT_EQ(tree.at(5, 5), 100);
 
     EXPECT_EQ(tree.insert(3, 3, 110), 2);
 
-    ASSERT_TRUE(tree.get(5, 5, value));
-    EXPECT_EQ(value, 100);
-    ASSERT_TRUE(tree.get(3, 3, value));
-    EXPECT_EQ(value, 110);
+    EXPECT_EQ(tree.at(5, 5), 100);
+    EXPECT_EQ(tree.at(3, 3), 110);
 }
 
+/*
+ * Test the return of at
+ * -> Value if found
+ * -> default value if not found
+ */
 TEST_F(quadtreeTest, GettingValue)
 {
     epstl::quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
     EXPECT_EQ(tree.at(5, 5), 100);
-
-    int value;
-    ASSERT_TRUE(tree.get(5, 5, value));
-    EXPECT_EQ(value, 100);
+    EXPECT_EQ(tree.at(1,1), tree.default_value());
 }
 
+/*
+ * Test the replace behavious
+ */
 TEST_F(quadtreeTest, ReplaceBehaviour)
 {
     epstl::quadtree<int, int> tree(20, 20);
@@ -75,6 +82,9 @@ TEST_F(quadtreeTest, ReplaceBehaviour)
     EXPECT_EQ(tree.at(-5, 5), 100);
 }
 
+/*
+ * Test find feature
+ */
 TEST_F(quadtreeTest, Find)
 {
     epstl::quadtree<int, int> tree(20, 20);
@@ -108,6 +118,9 @@ TEST_F(quadtreeTest, Find)
     EXPECT_FALSE(tree.find(110, keys));
 }
 
+/*
+ * Test the remove by keys
+ */
 TEST_F(quadtreeTest, RemoveByKey)
 {
     epstl::quadtree<int, int> tree(20, 20);
@@ -124,6 +137,9 @@ TEST_F(quadtreeTest, RemoveByKey)
 
 }
 
+/*
+ * Test the remove by items
+ */
 TEST_F(quadtreeTest, RemoveByItem)
 {
     epstl::quadtree<int, int> tree(20, 20);
@@ -134,11 +150,9 @@ TEST_F(quadtreeTest, RemoveByItem)
     EXPECT_EQ(tree.size(), 3);
     EXPECT_EQ(tree.depth(), 2);
 
-    tree.print(std::cout);
     tree.remove_all(300);
     EXPECT_EQ(tree.size(), 1);
     EXPECT_EQ(tree.depth(), 0);
     EXPECT_FALSE(tree.find(300));
     EXPECT_TRUE(tree.find(100));
-    tree.print(std::cout);
 }
