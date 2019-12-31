@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+
 namespace epstl
 {
 
@@ -28,7 +30,8 @@ T max(T a, T b)
  * @param others Others elements
  * @return Return the max all elements
  */
-template <typename T, typename ...Args>
+template <typename T, typename ...Args,
+          std::enable_if_t<(std::is_same_v<T, Args> && ...), int> = 0>
 T max(T a, T b, Args... others)
 {
     return max(a, max(b, others...));

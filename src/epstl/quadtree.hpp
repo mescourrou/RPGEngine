@@ -363,9 +363,9 @@ size_t quadtree<key_t, item_t>::insert(key_t x, key_t y, const item_t& item)
     {
         m_root = new quadrant_t;
         m_root->bound.left = m_center.x - m_width / 2.;
-        m_root->bound.right = m_center.x + m_width / 2.;
+        m_root->bound.right = m_root->bound.left + m_width;
         m_root->bound.bottom = m_center.y - m_height / 2.;
-        m_root->bound.top = m_center.y + m_height / 2.;
+        m_root->bound.top = m_root->bound.bottom + m_height;
         m_root->bound.center = m_center;
         m_root->data = item;
         m_root->data_position.x = x;

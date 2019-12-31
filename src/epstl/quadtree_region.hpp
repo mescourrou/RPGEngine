@@ -117,9 +117,9 @@ size_t quadtree_region<key_t>::insert(key_t x, key_t y, const bool& item)
     {
         this->m_root = new typename quadtree<key_t, bool>::quadrant_t;
         this->m_root->bound.left = this->m_center.x - this->m_width / 2.;
-        this->m_root->bound.right = this->m_center.x + this->m_width / 2.;
+        this->m_root->bound.right = this->m_root->bound.left + this->m_width;
         this->m_root->bound.bottom = this->m_center.y - this->m_height / 2.;
-        this->m_root->bound.top = this->m_center.y + this->m_height / 2.;
+        this->m_root->bound.top = this->m_root->bound.bottom + this->m_height;
         this->m_root->bound.center = this->m_center;
         this->m_root->data = this->m_default_value;
     }
@@ -142,7 +142,8 @@ void quadtree_region<key_t>::print(std::ostream& stream) const
     {
         for (key_t col = this->m_root->bound.left; col < this->m_root->bound.right; col++)
         {
-            stream << (this->at(col, row) ? '1' : '0') << " ";
+            bool state = this->at(col, row);
+            stream << (state ? '1' : '0') << " ";
         }
         stream << "\n";
     }
@@ -175,10 +176,10 @@ size_t quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::q
 
     if (quadrant->data != item)
     {
-        if (quadrant->bound.left != quadrant->bound.center.x &&
-                quadrant->bound.bottom != quadrant->bound.center.y &&
-                quadrant->bound.right != quadrant->bound.center.x &&
-                quadrant->bound.top != quadrant->bound.center.y)
+        if ((quadrant->bound.left != quadrant->bound.center.x &&
+                quadrant->bound.right != quadrant->bound.center.x) ||
+                (quadrant->bound.bottom != quadrant->bound.center.y &&
+                quadrant->bound.top != quadrant->bound.center.y))
         {
             // Division
             this->create_quadrants(quadrant);
