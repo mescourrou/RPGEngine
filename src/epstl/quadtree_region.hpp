@@ -94,7 +94,7 @@ class quadtree_region : public quadtree<key_t, bool>
     void print(std::ostream& stream) const override;
 
   protected:
-    size_t insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y,
+    bool insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y,
                            const bool& item) override;
     const bool& get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y) const override;
     bool& get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y) override;
@@ -123,8 +123,8 @@ size_t quadtree_region<key_t>::insert(key_t x, key_t y, const bool& item)
         this->m_root->bound.center = this->m_center;
         this->m_root->data = this->m_default_value;
     }
-    size_t branch_depth = insert_quadrant(this->m_root, x, y, item);
-    this->m_depth = epstl::max(branch_depth, this->m_depth);
+    insert_quadrant(this->m_root, x, y, item);
+    this->m_depth = this->compute_depth(this->m_root);
 
     return this->m_size;
 }
@@ -158,20 +158,41 @@ void quadtree_region<key_t>::print(std::ostream& stream) const
  * @param item Item to copy into the tree
  */
 template<typename key_t>
-size_t quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
+bool quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
         key_t y, const bool& item)
 {
     if (!quadrant)
         throw epstl::implementation_exception("insertion in a null quadrant");
     if (!quadrant->bound.isInside(x, y))
-        return 0;
+        return false;
     if (quadrant->ne) // If there is a quadrant division
     {
-        return insert_quadrant(quadrant->ne, x, y, item)
-               + insert_quadrant(quadrant->nw, x, y, item)
-               + insert_quadrant(quadrant->sw, x, y, item)
-               + insert_quadrant(quadrant->se, x, y, item)
-               + 1;
+        uint8_t modified_quadrants =
+                insert_quadrant(quadrant->ne, x, y, item)
+                + insert_quadrant(quadrant->nw, x, y, item)
+                + insert_quadrant(quadrant->sw, x, y, item)
+                + insert_quadrant(quadrant->se, x, y, item);
+        if (modified_quadrants > 0)
+        {
+            // If all quadrants are the same
+            if (this->compute_depth(quadrant) == 1 &&
+                quadrant->ne->data == quadrant->nw->data &&
+                quadrant->ne->data == quadrant->sw->data &&
+                quadrant->ne->data == quadrant->se->data)
+            {
+                quadrant->data = quadrant->ne->data;
+                this->free_quadrant(quadrant->ne);
+                this->free_quadrant(quadrant->nw);
+                this->free_quadrant(quadrant->sw);
+                this->free_quadrant(quadrant->se);
+                quadrant->ne = nullptr;
+                quadrant->nw = nullptr;
+                quadrant->sw = nullptr;
+                quadrant->se = nullptr;
+                return  true;
+            }
+        }
+        return false;
     }
 
     if (quadrant->data != item)
@@ -192,23 +213,25 @@ size_t quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::q
                             quadrant->sw->bound.center.y, quadrant->data);
             insert_quadrant(quadrant->se, quadrant->se->bound.center.x,
                             quadrant->se->bound.center.y, quadrant->data);
-            this->m_size--;
 
-            return insert_quadrant(quadrant->ne, x, y, item)
-                   + insert_quadrant(quadrant->nw, x, y, item)
-                   + insert_quadrant(quadrant->sw, x, y, item)
-                   + insert_quadrant(quadrant->se, x, y, item)
-                   + 1;
+            insert_quadrant(quadrant->ne, x, y, item);
+            insert_quadrant(quadrant->nw, x, y, item);
+            insert_quadrant(quadrant->sw, x, y, item);
+            insert_quadrant(quadrant->se, x, y, item);
+            return false;
         }
         else
         {
+            if (item)
+                this->m_size++;
+            else
+                this->m_size--;
             quadrant->data = item;
-            this->m_size++;
+            return true;
         }
-        return 0;
     }
 
-    return 0;
+    return false;
 
 }
 

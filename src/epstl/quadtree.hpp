@@ -234,7 +234,7 @@ class quadtree : public container
   protected:
     virtual quadrant_t* clone_quadrant(const quadrant_t* quadrant) const;
     virtual void free_quadrant(quadrant_t* quadrant);
-    virtual size_t insert_quadrant(quadrant_t* quadrant, key_t x, key_t y,
+    virtual bool insert_quadrant(quadrant_t* quadrant, key_t x, key_t y,
                            const item_t& item);
     virtual quadrant_t** select_quadrant(quadrant_t* quadrant, key_t x, key_t y) const;
     virtual void create_quadrants(quadrant_t* parent);
@@ -374,8 +374,8 @@ size_t quadtree<key_t, item_t>::insert(key_t x, key_t y, const item_t& item)
     }
     else
     {
-        size_t branch_depth = insert_quadrant(m_root, x, y, item);
-        m_depth = epstl::max(branch_depth, m_depth);
+        insert_quadrant(m_root, x, y, item);
+        this->m_depth = compute_depth(m_root);
     }
 
     return m_size;
@@ -525,22 +525,22 @@ void quadtree<key_t, item_t>::free_quadrant(quadrant_t* quadrant)
  * @param x X coordinate of the item to insert
  * @param y Y coordinate of the item to insert
  * @param item Item to copy into the tree
+ * @return true if the quadrant has been changed
  */
 template<typename key_t, typename item_t>
-size_t quadtree<key_t, item_t>::insert_quadrant(quadrant_t* quadrant, key_t x,
+bool quadtree<key_t, item_t>::insert_quadrant(quadrant_t* quadrant, key_t x,
         key_t y, const item_t& item)
 {
     if (!quadrant)
         throw epstl::implementation_exception("insertion in a null quadrant");
     if (!quadrant->bound.isInside(x, y))
-        return 0;
+        return false;
     if (quadrant->ne) // If there is a quadrant division
     {
-        return insert_quadrant(quadrant->ne, x, y, item)
-               + insert_quadrant(quadrant->nw, x, y, item)
-               + insert_quadrant(quadrant->sw, x, y, item)
-               + insert_quadrant(quadrant->se, x, y, item)
-               + 1;
+        return insert_quadrant(quadrant->ne, x, y, item) ||
+               insert_quadrant(quadrant->nw, x, y, item) ||
+               insert_quadrant(quadrant->sw, x, y, item) ||
+               insert_quadrant(quadrant->se, x, y, item);
     }
 
     if (quadrant->data == m_default_value)
@@ -549,7 +549,7 @@ size_t quadtree<key_t, item_t>::insert_quadrant(quadrant_t* quadrant, key_t x,
         quadrant->data_position.x = x;
         quadrant->data_position.y = y;
         m_size++;
-        return 0;
+        return true;
     }
 
     if (quadrant->data_position.x != x || quadrant->data_position.y != y)
@@ -567,20 +567,22 @@ size_t quadtree<key_t, item_t>::insert_quadrant(quadrant_t* quadrant, key_t x,
                         quadrant->data_position.y, quadrant->data);
         m_size--;
 
-        return insert_quadrant(quadrant->ne, x, y, item)
-               + insert_quadrant(quadrant->nw, x, y, item)
-               + insert_quadrant(quadrant->sw, x, y, item)
-               + insert_quadrant(quadrant->se, x, y, item)
-               + 1;
+        return insert_quadrant(quadrant->ne, x, y, item) ||
+               insert_quadrant(quadrant->nw, x, y, item) ||
+               insert_quadrant(quadrant->sw, x, y, item) ||
+               insert_quadrant(quadrant->se, x, y, item);
 
     }
     else
     {
         if (!(m_behaviour_flag & quadtree_no_replace))
+        {
             quadrant->data = item;
+            return true;
+        }
     }
 
-    return 0;
+    return false;
 
 }
 
