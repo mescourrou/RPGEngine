@@ -57,16 +57,23 @@ class map : public container
 
     const item_t* at(const key_t& key) const noexcept;
     item_t* at(const key_t& key) noexcept;
+    size_t erase(const key_t& key);
 
 
 
   private:
+    bool free_recursive(node_t* node);
     bool insert_recursive(node_t* current_node, key_t& key, item_t& item) noexcept;
+    bool erase_recursive(node_t* current_node, const key_t& key);
     epstl::size_t height(node_t* root) const noexcept;
+    void balance_node(node_t* node) noexcept;
     auto search(const key_t& key) const noexcept -> map<key_t, item_t>::node_t*;
 
-    void leftRotate(node_t* node) noexcept;
-    void rightRotate(node_t* node) noexcept;
+    void left_rotate(node_t* node) noexcept;
+    void right_rotate(node_t* node) noexcept;
+
+    node_t* min_node(node_t* node);
+    node_t* max_node(node_t* node);
 
     /// Less (<) operator to use
     bool (*m_less_operator)(const key_t& k1, const key_t& k2) = &less<key_t, key_t>;
@@ -119,6 +126,7 @@ bool map<key_t, item_t>::insert(key_t key, item_t item)
         new_node->key = std::move(key);
         new_node->payload = std::move(item);
         m_root = new_node;
+        m_size++;
         return true;
     }
 
@@ -127,9 +135,9 @@ bool map<key_t, item_t>::insert(key_t key, item_t item)
     // Equilibrate the tree
     short diff = height(m_root->left_node) - height(m_root->right_node);
     if (diff < -1)
-        leftRotate(m_root);
+        left_rotate(m_root);
     else if (diff > 1)
-        rightRotate(m_root);
+        right_rotate(m_root);
     return true;
 }
 
@@ -163,6 +171,32 @@ item_t* map<key_t, item_t>::at(const key_t& key) noexcept
     return nullptr;
 }
 
+template<typename key_t, typename item_t>
+size_t map<key_t, item_t>::erase(const key_t& key)
+{
+    if (erase_recursive(m_root, key))
+        balance_node(m_root);
+    return m_size;
+}
+
+template<typename key_t, typename item_t>
+bool map<key_t, item_t>::free_recursive(map::node_t* node)
+{
+    if (!node)
+        return false;
+    free_recursive(node->left_node);
+    free_recursive(node->right_node);
+    if (node->parent)
+    {
+        if (node->parent->left_node == node)
+            node->parent->left_node = nullptr;
+        else if (node->parent->right_node == node)
+            node->parent->right_node = nullptr;
+    }
+    delete node;
+    return true;
+}
+
 /**
  * @brief Compute the height of the tree with the given root
  * @param root Root of the tree where to compute the height
@@ -173,6 +207,18 @@ size_t map<key_t, item_t>::height(node_t* root) const noexcept
     if (!root)
         return 0;
     return epstl::max(height(root->left_node), height(root->right_node)) + 1;
+}
+
+template<typename key_t, typename item_t>
+void map<key_t, item_t>::balance_node(map::node_t* node) noexcept
+{
+    if (!node)
+        return;
+    short diff = height(node->left_node) - height(node->right_node);
+    if (diff < -1)
+        left_rotate(node);
+    else if (diff > 1)
+        right_rotate(node);
 }
 
 /**
@@ -199,6 +245,7 @@ bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
             new_node->payload = std::move(item);
             new_node->parent = current_node;
             current_node->left_node = new_node;
+            m_size++;
             return true;
         }
     }
@@ -213,19 +260,91 @@ bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
             new_node->payload = std::move(item);
             new_node->parent = current_node;
             current_node->right_node = new_node;
+            m_size++;
             return true;
         }
     }
     if (!insert_recursive(current_node, key, item))
         return false;
 
-    short diff = height(current_node->left_node) - height(current_node->right_node);
-    if (diff < -1)
-        leftRotate(current_node);
-    else if (diff > 1)
-        rightRotate(current_node);
+    balance_node(current_node);
     return true;
 
+}
+
+template<typename key_t, typename item_t>
+bool map<key_t, item_t>::erase_recursive(map::node_t* current_node, const key_t& key)
+{
+    if (!current_node)
+        return false;
+
+    if (current_node->key == key)
+    {
+        if (current_node->left_node || current_node->right_node)
+        {
+            if (!current_node->left_node) // Only the right node
+            {
+                // Set parent -> child link
+                if (current_node->parent->left_node == current_node)
+                    current_node->parent->left_node = current_node->right_node;
+                else if (current_node->parent->right_node == current_node)
+                    current_node->parent->right_node = current_node->right_node;
+
+                // Set child -> parent link
+                if (current_node->right_node)
+                    current_node->right_node->parent = current_node->parent;
+            }
+            else if (!current_node->right_node) // Only the left node
+            {
+                // Set parent -> child link
+                if (current_node->parent->left_node == current_node)
+                    current_node->parent->left_node = current_node->left_node;
+                else if (current_node->parent->right_node == current_node)
+                    current_node->parent->right_node = current_node->left_node;
+
+                // Set child -> parent link
+                if (current_node->left_node)
+                    current_node->left_node->parent = current_node->parent;
+            }
+            else // Left and right node
+            {
+                node_t* min = min_node(current_node->right_node);
+                if (min->parent)
+                    min->parent->left_node = nullptr;
+                min->parent = current_node->parent;
+                min->left_node = current_node->left_node;
+
+                if (min->right_node)
+                    max_node(min->right_node)->right_node = current_node->right_node;
+                else
+                    min->right_node = current_node->right_node;
+
+                if (current_node->parent->left_node == current_node)
+                    current_node->parent->left_node = min;
+                else if (current_node->parent->right_node == current_node)
+                    current_node->parent->right_node = min;
+            }
+        }
+        else if (current_node->parent)
+        {
+            if (current_node->parent->left_node == current_node)
+                current_node->parent->left_node = nullptr;
+            else if (current_node->parent->right_node == current_node)
+                current_node->parent->right_node = nullptr;
+        }
+        delete current_node;
+        current_node = nullptr;
+        m_size--;
+        return true;
+    }
+
+    if (erase_recursive(current_node->left_node, key) ||
+            erase_recursive(current_node->right_node, key))
+    {
+        balance_node(current_node);
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -255,7 +374,7 @@ map<key_t, item_t>::node_t*
  * @param node Node to rotate
  */
 template<typename key_t, typename item_t>
-void map<key_t, item_t>::leftRotate(map::node_t* node) noexcept
+void map<key_t, item_t>::left_rotate(map::node_t* node) noexcept
 {
     if (!node || !node->right_node)
         return;
@@ -286,7 +405,7 @@ void map<key_t, item_t>::leftRotate(map::node_t* node) noexcept
  * @param node Node to rotate
  */
 template<typename key_t, typename item_t>
-void map<key_t, item_t>::rightRotate(map::node_t* node) noexcept
+void map<key_t, item_t>::right_rotate(map::node_t* node) noexcept
 {
     if (!node || !node->left_node)
         return;
@@ -310,6 +429,22 @@ void map<key_t, item_t>::rightRotate(map::node_t* node) noexcept
         m_root = pivot;
     node->parent = pivot;
     pivot->parent = node_parent;
+}
+
+template<typename key_t, typename item_t>
+auto map<key_t, item_t>::max_node(map::node_t* node) -> map::node_t*
+{
+    if (node->right_node)
+        return max_node(node->right_node);
+    return node;
+}
+
+template<typename key_t, typename item_t>
+auto map<key_t, item_t>::min_node(map::node_t* node) -> map::node_t*
+{
+    if (node->left_node)
+        return min_node(node->left_node);
+    return node;
 }
 
 } // namespace epstl
