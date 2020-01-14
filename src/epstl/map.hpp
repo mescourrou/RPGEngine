@@ -171,6 +171,11 @@ item_t* map<key_t, item_t>::at(const key_t& key) noexcept
     return nullptr;
 }
 
+/**
+ * @brief Erase the given key
+ * @param key Key to erase
+ * @return Return the new size of the map
+ */
 template<typename key_t, typename item_t>
 size_t map<key_t, item_t>::erase(const key_t& key)
 {
@@ -179,6 +184,11 @@ size_t map<key_t, item_t>::erase(const key_t& key)
     return m_size;
 }
 
+/**
+ * @brief Free the tree behind the given root
+ * @param node Root of the tree to free
+ * @return Return true if the node was free
+ */
 template<typename key_t, typename item_t>
 bool map<key_t, item_t>::free_recursive(map::node_t* node)
 {
@@ -209,6 +219,14 @@ size_t map<key_t, item_t>::height(node_t* root) const noexcept
     return epstl::max(height(root->left_node), height(root->right_node)) + 1;
 }
 
+/**
+ * @brief Balance given node
+ *
+ * Does a left or a right rotation if a branch is heavier than the other.
+ * This method is not recursive, it does not balance the whole tree.
+ *
+ * @param node Node to balance
+ */
 template<typename key_t, typename item_t>
 void map<key_t, item_t>::balance_node(map::node_t* node) noexcept
 {
@@ -272,6 +290,12 @@ bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
 
 }
 
+/**
+ * @brief Erase the given key in the tree with the given root
+ *
+ * @param current_node Root of the tree where to find the key and erase it
+ * @return Return true if the key was found in the tree and was erased
+ */
 template<typename key_t, typename item_t>
 bool map<key_t, item_t>::erase_recursive(map::node_t* current_node, const key_t& key)
 {
@@ -431,6 +455,9 @@ void map<key_t, item_t>::right_rotate(map::node_t* node) noexcept
     pivot->parent = node_parent;
 }
 
+/**
+ * @brief Get the node with the biggest key of the given tree
+ */
 template<typename key_t, typename item_t>
 auto map<key_t, item_t>::max_node(map::node_t* node) -> map::node_t*
 {
@@ -439,6 +466,9 @@ auto map<key_t, item_t>::max_node(map::node_t* node) -> map::node_t*
     return node;
 }
 
+/**
+ * @brief Get the node with the smallest key of the given tree
+ */
 template<typename key_t, typename item_t>
 auto map<key_t, item_t>::min_node(map::node_t* node) -> map::node_t*
 {

@@ -4,6 +4,9 @@
 namespace epstl
 {
 
+/*
+ * Insert values in the map
+ */
 TEST_F(mapTest, insert)
 {
     map<int, int> m;
@@ -19,6 +22,9 @@ TEST_F(mapTest, insert)
     EXPECT_EQ(m.size(), 3);
 }
 
+/*
+ * Test the rotations
+ */
 TEST_F(mapTest, rotation)
 {
     map<char, int> m;
@@ -31,6 +37,9 @@ TEST_F(mapTest, rotation)
 
 }
 
+/*
+ * Erase keys of the map
+ */
 TEST_F(mapTest, erase)
 {
     map<int, int> m;
