@@ -57,7 +57,8 @@ class vector : public linear_container<T>
     typedef iteratorT<T, true> iterator; ///< Standard iterator
     typedef iteratorT<const T, true> const_iterator; ///< Constant iterator
     typedef iteratorT<T, false> reverse_iterator;   ///< Reverse iterator
-    typedef iteratorT<const T, false> const_reverse_iterator; ///< Constant reverse iterator
+    typedef iteratorT<const T, false>
+    const_reverse_iterator; ///< Constant reverse iterator
 
     /**
      * @brief Default constructor

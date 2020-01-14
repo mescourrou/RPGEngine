@@ -28,7 +28,8 @@ class exception
         return m_what;
     }
   private:
-    const char* m_what = ""; ///< String containing the explaination of the exception
+    const char* m_what =
+        ""; ///< String containing the explaination of the exception
 };
 
 /**

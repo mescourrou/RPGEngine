@@ -2,7 +2,8 @@
 
 #include <gtest/gtest.h>
 
-namespace epstl {
+namespace epstl
+{
 
 class quadtreeTest : public ::testing::Test
 {

@@ -3,7 +3,8 @@
 #include <iostream>
 #include "quadtreeTest.hpp"
 
-namespace epstl {
+namespace epstl
+{
 
 /*
  * Test the good insertion of items
@@ -65,7 +66,7 @@ TEST_F(quadtreeTest, GettingValue)
     quadtree<int, int> tree(20, 20);
     EXPECT_EQ(tree.insert(5, 5, 100), 1);
     EXPECT_EQ(tree.at(5, 5), 100);
-    EXPECT_EQ(tree.at(1,1), tree.default_value());
+    EXPECT_EQ(tree.at(1, 1), tree.default_value());
 }
 
 /*

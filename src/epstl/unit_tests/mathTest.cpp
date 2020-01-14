@@ -1,7 +1,8 @@
 #include "mathTest.hpp"
 #include <math.hpp>
 
-namespace epstl {
+namespace epstl
+{
 
 TEST_F(mathTest, Max)
 {

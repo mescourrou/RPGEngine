@@ -297,7 +297,8 @@ bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
  * @return Return true if the key was found in the tree and was erased
  */
 template<typename key_t, typename item_t>
-bool map<key_t, item_t>::erase_recursive(map::node_t* current_node, const key_t& key)
+bool map<key_t, item_t>::erase_recursive(map::node_t* current_node,
+        const key_t& key)
 {
     if (!current_node)
         return false;
