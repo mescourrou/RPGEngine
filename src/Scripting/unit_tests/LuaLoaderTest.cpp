@@ -4,9 +4,11 @@
 #include <LuaManager.hpp>
 #include <typeinfo>
 
-class A
+class A : public BaseObject
 {
+    DECLARE_BASEOBJECT(A)
   public:
+
     A(const int val) : val_(val)
     {
     }
@@ -16,11 +18,19 @@ class A
         std::cout << "f() : val=" << val_ << std::endl;
         return val_;
     }
+
+    int g(int a)
+    {
+        std::cout << "value of a = " << a << std::endl;
+        return a;
+    }
   private:
     int val_;
     LUA_ADD_BINDING(A, f);
 
 };
+
+static A a(90000);
 
 namespace scripting
 {
@@ -38,36 +48,27 @@ class B
         std::cout << "Returning val = " << m_val << std::endl;
         return m_val;
     }
+
+    void setValue(int value)
+    {
+        m_val = value;
+    }
+
   private:
     int m_val;
     LUA_ADD_BINDING(B, getVal);
+    LUA_ADD_BINDING(B, setValue);
 };
 
 
 
-TEST_F(LuaLoaderTest, Lua)
+TEST_F(LuaLoaderTest, LuaBinding)
 {
-
-
-    // Call Lua function
-
-    //        luabridge::LuaRef luafunc = luabridge::getGlobal(L, "luafunc");
-
-    A a(90000);
     B b(919191);
-
-    //        int ret = luafunc(&a);
-
-    //        std::cout << ret << std::endl;
-
-    //        luabridge::LuaRef p = luabridge::getGlobal(L, "p");
-    //        p();
-
-
-    LUA_EXPORT_OBJECT(a);
     LUA_EXPORT_OBJECT(b);
 
-    LuaManager::getManager().runFile("data/test.lua");
+    EXPECT_NO_THROW(LuaManager::getManager().runFile("data/test.lua"));
+    EXPECT_THROW(LuaManager::getManager().runString("a:f()"), LuaException);
 
 
 }

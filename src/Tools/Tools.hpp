@@ -36,6 +36,23 @@ class Tools
     template<typename T>
     static T linearModulo(T number, T div);
 
+    static constexpr unsigned int FRONT_SIZE =
+        sizeof("static constexpr char* Tools::GetTypeNameHelper<T>::getTypeName() [with T = ")
+        - 1u;
+    static constexpr unsigned int BACK_SIZE = sizeof("]") - 1u;
+
+    template <typename T>
+    struct GetTypeNameHelper
+    {
+        static constexpr char* getTypeName(void)
+        {
+            constexpr size_t size = sizeof(__PRETTY_FUNCTION__) - FRONT_SIZE - BACK_SIZE;
+            char* name = new char[size];
+            memcpy(name, __PRETTY_FUNCTION__ + FRONT_SIZE, size - 1u);
+            return name;
+        }
+    };
+
 
 };
 

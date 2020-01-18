@@ -2,28 +2,17 @@
 #pragma comment(lib, "lua52.lib")
 #include <lua.hpp>
 #include <LuaBridge/LuaBridge.h>
+#include <BaseException.hpp>
+#include <Tools.hpp>
+
 
 namespace scripting
 {
+CREATE_EXCEPTION_CLASS(Lua,
+                       ADD_EXCEPTION_CODE(RUNNING));
 
 class LuaManager
 {
-    static constexpr unsigned int FRONT_SIZE =
-        sizeof("static constexpr char* scripting::LuaManager::GetTypeNameHelper<T>::getTypeName() [with T = ")
-        - 1u;
-    static constexpr unsigned int BACK_SIZE = sizeof("]") - 1u;
-
-    template <typename T>
-    struct GetTypeNameHelper
-    {
-        static constexpr char* getTypeName(void)
-        {
-            constexpr size_t size = sizeof(__PRETTY_FUNCTION__) - FRONT_SIZE - BACK_SIZE;
-            char* name = new char[size];
-            memcpy(name, __PRETTY_FUNCTION__ + FRONT_SIZE, size - 1u);
-            return name;
-        }
-    };
   public:
     static LuaManager& getManager()
     {
@@ -32,11 +21,11 @@ class LuaManager
     }
     ~LuaManager();
 
-    template<typename class_t, typename ...Args>
-    void addClassMethod(int (class_t::* method) (Args...), const char* bindingName)
+    template<typename class_t, typename return_t, typename ...Args>
+    void addClassMethod(return_t (class_t::* method) (Args...), const char* bindingName)
     {
         luabridge::getGlobalNamespace(m_luaState)
-        .beginClass<class_t>(GetTypeNameHelper<class_t>::getTypeName())
+        .beginClass<class_t>(Tools::GetTypeNameHelper<class_t>::getTypeName())
         .addFunction(bindingName, method)
         .endClass();
     }
@@ -51,8 +40,15 @@ class LuaManager
     {
         if (luaL_dofile(m_luaState, filename))
         {
-            std::cerr << lua_tostring (m_luaState, -1) << std::endl;
+            throw LuaException(lua_tostring (m_luaState, -1), LuaException::RUNNING);
+        }
+    }
 
+    void runString(const char* str)
+    {
+        if (luaL_dostring(m_luaState, str))
+        {
+            throw LuaException(lua_tostring (m_luaState, -1), LuaException::RUNNING);
         }
     }
   private:
@@ -64,8 +60,8 @@ class LuaManager
 class LuaBinding
 {
   public:
-    template<typename class_t, typename ...Args>
-    LuaBinding(int (class_t::* method) (Args...), const char* bindingName)
+    template<typename class_t, typename return_t, typename ...Args>
+    LuaBinding(return_t (class_t::* method) (Args...), const char* bindingName)
     {
         LuaManager::getManager().addClassMethod(method, bindingName);
     }

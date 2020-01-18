@@ -7,5 +7,8 @@ function p()
 end
 
 print("Hello from the script scope")
-a:f()
-b:getVal()
+b:setValue(10)
+if b:getVal() ~= 10 then
+    return false
+end
+return true
