@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 project(RPG)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 option(RPG_BUILD_TEST "Compile Unit Tests" ON)
 option(RPG_BUILD_GUI "Compile Gui classes" ON)
 option(RPG_COMPILE_THIRDPARTIES "Compile third-party libs" ON)
@@ -17,9 +21,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(BUILD_INCLUDE_GIT_INFOS "Include branch and commit informations on the executable" ON)
 

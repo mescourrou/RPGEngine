@@ -12,6 +12,8 @@ To build the project, you will need:
 - cmake (> 3.10)
 - g++ (>= 8, needed for c++17 features)
 - doxygen (documentation)
+- realine-devel
+- lua-devel
 
 To build the project, you need to pull the third-parties libraries. They are in git submodules:
 ```
