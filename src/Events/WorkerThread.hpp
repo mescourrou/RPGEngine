@@ -29,28 +29,33 @@ class WorkerThreadTest;
 class WorkerThread
 {
 #ifdef RPG_BUILD_TEST
-	friend class events::WorkerThreadTest;
+    friend class events::WorkerThreadTest;
 #endif
-public:
+  public:
     ~WorkerThread();
+    WorkerThread(const WorkerThread&) = delete;
+    WorkerThread(WorkerThread&&) = delete;
+    WorkerThread& operator=(const WorkerThread&) = delete;
+    WorkerThread& operator=(WorkerThread&&) = delete;
 
     template<typename ...Args>
-    static void newWork(const std::function<void(Args...)>& work, Args... arguments);
+    static void newWork(const std::function<void(Args...)>& work,
+                        Args... arguments);
     static void newWork(const std::function<void()>& work);
 
     template<typename I, typename M, typename ...Args>
-    static void newWork(I* instance, M func, Args... arguments);
+    static void newWork(I* s_instance, M func, Args... arguments);
     template<typename I, typename M>
-    static void newWork(I* instance, M func);
+    static void newWork(I* s_instance, M func);
 
     static void waitForJoin();
 
 
-private:
+  private:
     /// @brief Constructor
     WorkerThread() = default;
 
-    static WorkerThread instance; ///< Singleton instance
+    static WorkerThread s_instance; ///< Singleton instance
     static void worker(std::shared_ptr<AbstractWork> firstWork);
 
     /**
@@ -62,9 +67,11 @@ private:
 
     std::vector<std::thread> m_workers; ///< Thread list
     static inline unsigned int m_activeThreads = 0; ///< Number of active threads
-    static const inline unsigned int maxThreads = std::thread::hardware_concurrency(); ///< Maximum number of threads
+    static const inline unsigned int maxThreads =
+        std::thread::hardware_concurrency(); ///< Maximum number of threads
 
-    static const inline unsigned int m_expirationTimeMS = 1000; ///< Time to wait before closing a inactive thread
+    static const inline unsigned int m_expirationTimeMS =
+        1000; ///< Time to wait before closing a inactive thread
 
     static inline std::mutex m_mutex; ///< Mutex
 };
@@ -77,29 +84,41 @@ private:
  * @param arguments Arguments of the function
  */
 template<typename ...Args>
-void WorkerThread::newWork(const std::function<void(Args...)>& work, Args... arguments)
+void WorkerThread::newWork(const std::function<void(Args...)>& work,
+                           Args... arguments)
 {
+    PROFILE_FUNCTION();
     m_mutex.lock();
     if (m_activeThreads >= maxThreads)
-        m_waitingList.push_back(std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...)));
+        m_waitingList.push_back(std::make_shared<Work<Args...>>(Work<Args...>(work,
+                                arguments...)));
     else
     {
         m_activeThreads++;
-        instance.m_workers.push_back(std::thread(worker, std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
+        s_instance.m_workers.push_back(std::thread(worker,
+                                       std::make_shared<Work<Args...>>(Work<Args...>(work, arguments...))));
     }
     m_mutex.unlock();
 }
 
 template<typename I, typename M, typename... Args>
-void WorkerThread::newWork(I *instance, M func, Args ...arguments)
+void WorkerThread::newWork(I* objectInstance, M func, Args ...arguments)
 {
-    newWork([=](){std::bind(func, instance, arguments...)();});
+    PROFILE_FUNCTION();
+    newWork([objectInstance, func, arguments...]()
+    {
+        std::bind(func, objectInstance, arguments...)();
+    });
 }
 
 template<typename I, typename M>
-void WorkerThread::newWork(I *instance, M func)
+void WorkerThread::newWork(I* objectInstance, M func)
 {
-    newWork([=](){std::bind(func, instance)();});
+    PROFILE_FUNCTION();
+    newWork([objectInstance, func]()
+    {
+        std::bind(func, objectInstance)();
+    });
 }
 
 

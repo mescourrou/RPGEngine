@@ -9,18 +9,21 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <VerbosityLevels.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External Lib
 #include <glog/logging.h>
 
-namespace object {
+namespace object
+{
 
 /**
  * @brief Constructor
  */
 Inventory::Inventory()
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
 }
 
 /**
@@ -31,6 +34,7 @@ Inventory::Inventory()
  */
 std::shared_ptr<Object> Inventory::get(unsigned int index) const
 {
+    PROFILE_FUNCTION();
     if (index < m_inventory.size())
     {
         unsigned int i = 0;
@@ -50,8 +54,9 @@ std::shared_ptr<Object> Inventory::get(unsigned int index) const
  * @param objectName Name of the object wanted
  * @return Pointer on the object
  */
-std::shared_ptr<Object> Inventory::get(const std::string &objectName) const
+std::shared_ptr<Object> Inventory::get(const std::string& objectName) const
 {
+    PROFILE_FUNCTION();
     auto objectIt = std::find_if(m_inventory.begin(), m_inventory.end(),
                                  [objectName](std::shared_ptr<Object> object) -> bool { if (object) return object->name() == objectName; return false; });
     if (objectIt != m_inventory.end())
@@ -64,10 +69,12 @@ std::shared_ptr<Object> Inventory::get(const std::string &objectName) const
  * @param objectName Name of the objects to count
  * @return Number of the given object
  */
-unsigned int Inventory::getNumberOf(const std::string &objectName) const
+unsigned int Inventory::getNumberOf(const std::string& objectName) const
 {
+    PROFILE_FUNCTION();
     auto count = std::count_if(m_inventory.begin(), m_inventory.end(),
-                  [objectName](std::shared_ptr<Object> object) -> bool{
+                               [objectName](std::shared_ptr<Object> object) -> bool
+    {
         if (object)
             return object->name() == objectName;
         return false;
@@ -82,6 +89,7 @@ unsigned int Inventory::getNumberOf(const std::string &objectName) const
  */
 std::shared_ptr<Object> Inventory::pop(unsigned int index)
 {
+    PROFILE_FUNCTION();
     std::shared_ptr<Object> ret = get(index);
     if (ret)
     {
@@ -96,8 +104,9 @@ std::shared_ptr<Object> Inventory::pop(unsigned int index)
  * @return Pointer on the removed object
  * @todo Return a std::weak_ptr
  */
-std::shared_ptr<Object> Inventory::pop(const std::string &objectName)
+std::shared_ptr<Object> Inventory::pop(const std::string& objectName)
 {
+    PROFILE_FUNCTION();
     std::shared_ptr<Object> ret = get(objectName);
     if (ret)
     {
@@ -112,6 +121,7 @@ std::shared_ptr<Object> Inventory::pop(const std::string &objectName)
  */
 void Inventory::push(const std::shared_ptr<Object>& newObject)
 {
+    PROFILE_FUNCTION();
     if (newObject)
         m_inventory.emplace_back(newObject);
 }
@@ -124,26 +134,31 @@ void Inventory::push(const std::shared_ptr<Object>& newObject)
  * @param [in] characterName Name of the Character owning the inventory
  * @return Return true if the loading was successfull
  */
-bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName)
+bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db,
+                                 const std::string characterName)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
     using namespace database;
     if (!db)
-        throw InventoryException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw InventoryException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw InventoryException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw InventoryException("The database model is not correct",
+                                 DatabaseException::BAD_MODEL);
 
     // Load information from Model::TABLE => Main inventory table
     {
-    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                            .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
-    if (result.size() <= 1)
-        return false;
-    m_money = Money{static_cast<unsigned int>(std::atoi(result.at(1).at(Model::MONEY).c_str()))};
+        auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
+                                .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
+        if (result.size() <= 1)
+            return false;
+        m_money = Money{static_cast<unsigned int>(std::atoi(result.at(1).at(Model::MONEY).c_str()))};
     }
 
     // Load the objects
-    auto objectsToLoad = db->query(Query::createQuery<Query::SELECT>(Model::InventoryObjects::TABLE, db)
+    auto objectsToLoad = db->query(Query::createQuery<Query::SELECT>
+                                   (Model::InventoryObjects::TABLE, db)
                                    .column(Model::InventoryObjects::QUANTITY)
                                    .column(Model::InventoryObjects::FK_OBJECT)
                                    .where(Model::InventoryObjects::FK_CHARACTER, Query::EQUAL, characterName));
@@ -153,9 +168,12 @@ bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db, const s
 
     for (unsigned int j = 1; j < objectsToLoad.size(); j++)
     {
-        for (unsigned int i = 0; i < static_cast<unsigned int>(std::atoi(objectsToLoad.at(j).at(Model::InventoryObjects::QUANTITY).c_str())); i++)
+        for (unsigned int i = 0;
+                i < static_cast<unsigned int>(std::atoi(objectsToLoad.at(j).at(
+                        Model::InventoryObjects::QUANTITY).c_str())); i++)
         {
-            push(Object::createFromDatabase(objectsToLoad.at(j).at(Model::InventoryObjects::FK_OBJECT), db));
+            push(Object::createFromDatabase(objectsToLoad.at(j).at(
+                                                Model::InventoryObjects::FK_OBJECT), db));
         }
     }
 
@@ -167,8 +185,9 @@ bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db, const s
  * @param m Money to pull
  * @return Return true if the transfert was possible
  */
-bool Inventory::pullMoney(const Money &m)
+bool Inventory::pullMoney(const Money& m)
 {
+    PROFILE_FUNCTION();
     if (m_money >= m)
     {
         m_money -= m;
@@ -184,6 +203,7 @@ bool Inventory::pullMoney(const Money &m)
  */
 bool Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
     using namespace database;
     if (!db->isTable(Model::TABLE))
@@ -232,21 +252,27 @@ bool Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Inventory::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
     using namespace database;
 
     if (!db)
-        throw InventoryException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw InventoryException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
-              .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)
+              .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE,
+                      database::Model::Character::NAME)
               .column(Model::MONEY, DataType::INTEGER)
               .constraint(Model::FK_CHARACTER, Query::PRIMARY_KEY));
 
-    db->query(Query::createQuery<Query::CREATE>(Model::InventoryObjects::TABLE, db).ifNotExists()
-              .column(Model::InventoryObjects::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE, database::Model::Character::NAME)
+    db->query(Query::createQuery<Query::CREATE>(Model::InventoryObjects::TABLE,
+              db).ifNotExists()
+              .column(Model::InventoryObjects::FK_CHARACTER, DataType::BLOB,
+                      database::Model::Character::TABLE, database::Model::Character::NAME)
               .column(Model::InventoryObjects::QUANTITY, DataType::INTEGER)
-              .column(Model::InventoryObjects::FK_OBJECT, DataType::BLOB, database::Model::Object::TABLE, database::Model::Object::NAME)
+              .column(Model::InventoryObjects::FK_OBJECT, DataType::BLOB,
+                      database::Model::Object::TABLE, database::Model::Object::NAME)
               .constraint(Model::InventoryObjects::FK_CHARACTER, Query::PRIMARY_KEY)
               .constraint(Model::InventoryObjects::FK_OBJECT, Query::PRIMARY_KEY));
 

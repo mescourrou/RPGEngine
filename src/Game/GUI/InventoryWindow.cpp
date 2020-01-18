@@ -1,5 +1,6 @@
 #include "InventoryWindow.hpp"
-namespace game::GUI {
+namespace game::gui
+{
 
 /**
  * @brief Prepare the window to be drawn
@@ -14,11 +15,11 @@ bool InventoryWindow::doPrepare()
 /**
  * @brief Collapse button close the window
  */
-bool game::GUI::InventoryWindow::doCollapsedState()
+bool game::gui::InventoryWindow::doCollapsedState()
 {
     ImGui::SetWindowCollapsed(false);
     setActive(false);
     return true;
 }
 
-} // namespace game::GUI
+} // namespace game::gui

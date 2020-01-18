@@ -2,11 +2,12 @@
 
 #include <gtest/gtest.h>
 
-namespace object {
+namespace object
+{
 
 class MoneyTest : public testing::Test
 {
-public:
+  public:
 
     void SetUp() override;
     void TearDown() override;

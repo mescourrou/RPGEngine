@@ -1,22 +1,23 @@
 #pragma once
 
 #include <Window.hpp>
-namespace game::GUI {
+namespace game::gui
+{
 
 /**
  * @brief Character windown
  */
 class CharacterWindow : public ImGui::Window
 {
-public:
+  public:
     /**
      * @brief Constructor
      */
     CharacterWindow() : Window("Character") {}
 
-protected:
+  protected:
     bool doPrepare() override;
     bool doCollapsedState() override;
 };
 
-} // namespace game::GUI
+} // namespace game::gui

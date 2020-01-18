@@ -1,7 +1,9 @@
 #include "KeyBinding.hpp"
 #include <map>
+#include <InstrumentationTimer.hpp>
 
-namespace events {
+namespace events
+{
 
 #ifdef RPG_BUILD_GUI
 /**
@@ -103,6 +105,7 @@ std::string KeyBinding::toString() const
  */
 bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
 {
+    PROFILE_FUNCTION();
     if (m_key == NOT_BINDED)
         return false;
     KeyBinding::LayerKey layer = 0;
@@ -112,11 +115,8 @@ bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
         layer |= KeyBinding::SHIFT;
     if (keyboard.control)
         layer |= KeyBinding::CTRL;
-    if (m_layer == layer)
-    {
-        if (m_key == keyFromSFML(keyboard.code))
-            return true;
-    }
+    if (m_layer == layer && m_key == keyFromSFML(keyboard.code))
+        return true;
     return false;
 }
 
@@ -124,8 +124,9 @@ bool KeyBinding::isKey(sf::Event::KeyEvent keyboard) const
  * @brief Get the keybinding from the SFML KeyEvent
  * @param event SFML KeyEvent to load from
  */
-KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent &event)
+KeyBinding KeyBinding::fromSFML(const sf::Event::KeyEvent& event)
 {
+    PROFILE_FUNCTION();
     short layer = 0;
     if (event.alt)
         layer |= ALT;

@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <Event.hpp>
 
-namespace events {
+namespace events
+{
 
 class EventTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

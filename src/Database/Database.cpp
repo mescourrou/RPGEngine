@@ -11,6 +11,7 @@
 // Project
 #include <Query.hpp>
 #include <VerbosityLevels.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -23,25 +24,26 @@ namespace database
  * @brief Create and open the given database file
  * @param [in] path Path to the database
  */
-Database::Database(const std::string &path)
+Database::Database(const std::string& path)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    PROFILE_FUNCTION();
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
     sqlite3_initialize();
 #ifdef  BUILD_USE_FILESYSTEM
     std::filesystem::path parentPath = std::filesystem::path(path).parent_path();
-    if (!parentPath.string().empty())
-    {
-        if (!std::filesystem::exists(parentPath))
-            std::filesystem::create_directories(parentPath);
-    }
+    if (!parentPath.string().empty() && !std::filesystem::exists(parentPath))
+        std::filesystem::create_directories(parentPath);
 #endif
-    if(sqlite3_open(path.c_str(), &m_sqlite3Handler))
+    if (sqlite3_open(path.c_str(), &m_sqlite3Handler))
     {
-        LOG(ERROR) << "Can't open database " << path << ": " << sqlite3_errmsg(m_sqlite3Handler);
+        LOG(ERROR) << "Can't open database " << path << ": " << sqlite3_errmsg(
+                       m_sqlite3Handler);
         sqlite3_close(m_sqlite3Handler);
         throw DatabaseException("Can't open database", DatabaseException::OPENING);
     }
-    else {
+    else
+    {
         LOG(INFO) << "Open database '" << path << "'";
     }
 
@@ -52,6 +54,7 @@ Database::Database(const std::string &path)
  */
 Database::~Database()
 {
+    PROFILE_FUNCTION();
     if (m_sqlite3Handler)
     {
         sqlite3_close(m_sqlite3Handler);
@@ -63,8 +66,10 @@ Database::~Database()
  * @param [in] dbQuery Query to execute
  * @return Return the list (std::vector) of row (std::map<column, value>)
  */
-std::vector<std::map<std::string, std::string> > Database::query(const Query &dbQuery)
+std::vector<std::map<std::string, std::string>> Database::query(
+            const Query& dbQuery)
 {
+    PROFILE_FUNCTION();
     std::string strQuery = dbQuery.str();
     std::lock_guard<std::mutex> lock(m_queryMutex);
     query(strQuery);
@@ -78,12 +83,14 @@ std::vector<std::map<std::string, std::string> > Database::query(const Query &db
  * @param [in] colName Columns name
  * @return 0
  */
-int Database::callback(int argc, char **argv, char **colName)
+int Database::callback(int argc, char** argv, char** colName)
 {
+    PROFILE_FUNCTION();
     std::map<std::string, std::string> row;
-    for(int i = 0; i < argc ; i++)
+    for (int i = 0; i < argc ; i++)
     {
-        row.insert(std::pair<std::string, std::string>(std::string(colName[i]),argv[i] ? argv[i] : "NULL"));
+        row.insert(std::pair<std::string, std::string>(std::string(colName[i]),
+                   argv[i] ? argv[i] : "NULL"));
     }
     m_result->emplace_back(std::move(row));
     return 0;
@@ -94,12 +101,14 @@ int Database::callback(int argc, char **argv, char **colName)
  * @param [in] query String query
  * @return True if the query successed and false if it failed
  */
-bool Database::query(const std::string &query)
+bool Database::query(const std::string& query)
 {
+    PROFILE_FUNCTION();
     if (m_queryMutex.try_lock())
     {
         m_queryMutex.unlock();
-        throw DatabaseException("Lock the mutex before the Query", BaseException::MUTEX);
+        throw DatabaseException("Lock the mutex before the Query",
+                                BaseException::MUTEX);
     }
     if (m_result)
         delete m_result.release();
@@ -111,15 +120,17 @@ bool Database::query(const std::string &query)
     m_result->emplace_back(std::move(resultRow));
 
     // Error buffer
-    char *zErrMsg;
-    auto cb = [](void *currentDatabase, int argc, char **argv, char **colName) -> int
+    char* zErrMsg;
+    auto cb = [](void* currentDatabase, int argc, char** argv,
+                 char** colName)
     {
         return static_cast<Database*>(currentDatabase)->callback(argc, argv, colName);
     };
 
     VLOG(verbosityLevel::DATABASE_QUERY) << "Execute query : " << query;
     int rc = sqlite3_exec(m_sqlite3Handler, query.c_str(), cb, this, &zErrMsg);
-    if( rc!=SQLITE_OK ){
+    if ( rc != SQLITE_OK )
+    {
         LOG(ERROR) << "SQL error: " << zErrMsg;
         sqlite3_free(zErrMsg);
         return false;
@@ -133,7 +144,8 @@ bool Database::query(const std::string &query)
  * @param [in] result Result of the query to verify
  * @return
  */
-bool Database::isQuerySuccessfull(const std::vector<std::map<std::string, std::string> > &result)
+bool Database::isQuerySuccessfull(const
+                                  std::vector<std::map<std::string, std::string>>& result)
 {
     if (result.front().at("status") != "success")
         return false;
@@ -146,6 +158,7 @@ bool Database::isQuerySuccessfull(const std::vector<std::map<std::string, std::s
  */
 std::vector<std::string> Database::tableList()
 {
+    PROFILE_FUNCTION();
     auto lock = lockGuard();
     if (query("SELECT name FROM sqlite_master WHERE type='table';"))
     {
@@ -168,8 +181,9 @@ std::vector<std::string> Database::tableList()
  * @param [in] table Table to look for
  * @return Return true if the table is in the database
  */
-bool Database::isTable(const std::string &table)
+bool Database::isTable(const std::string& table)
 {
+    PROFILE_FUNCTION();
     auto tables = tableList();
     return std::find(tables.begin(), tables.end(), table) != tables.end();
 }
@@ -181,8 +195,9 @@ bool Database::isTable(const std::string &table)
  */
 std::vector<std::string> Database::columnList(const std::string& table)
 {
+    PROFILE_FUNCTION();
     auto lock = lockGuard();
-    if (query("PRAGMA table_info('"+table+"');"))
+    if (query("PRAGMA table_info('" + table + "');"))
     {
         std::vector<std::string> columnList;
         for (auto& result : *m_result)
@@ -215,8 +230,9 @@ std::vector<std::string> Database::columnList(const std::string& table)
  */
 std::map<std::string, DataType> Database::columnsType(const std::string& table)
 {
+    PROFILE_FUNCTION();
     auto lock = lockGuard();
-    if (query("PRAGMA table_info('"+table+"');"))
+    if (query("PRAGMA table_info('" + table + "');"))
     {
         std::map<std::string, DataType> ret;
         for (auto& result : *m_result)
@@ -237,9 +253,10 @@ std::map<std::string, DataType> Database::columnsType(const std::string& table)
  * @param [in] data DataType to convert
  * @return std::string of the DataType
  */
-std::string Database::dataTypeAsString(const DataType &data)
+std::string Database::dataTypeAsString(const DataType& data)
 {
-    switch (data) {
+    switch (data)
+    {
     case INTEGER:
         return "INTEGER";
     case TEXT:
@@ -250,8 +267,9 @@ std::string Database::dataTypeAsString(const DataType &data)
         return "NUMERIC";
     case BLOB:
         return "BLOB";
+    default:
+        return "BLOB";
     }
-    return "BLOB";
 }
 
 /**
@@ -261,7 +279,7 @@ std::string Database::dataTypeAsString(const DataType &data)
  * @param [in] data Data to convert
  * @return DataType corresponding the data given
  */
-DataType Database::dataTypeFromString(const std::string &data)
+DataType Database::dataTypeFromString(const std::string& data)
 {
     if (data == "INTEGER")
         return INTEGER;

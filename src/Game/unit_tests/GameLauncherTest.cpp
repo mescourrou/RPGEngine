@@ -1,5 +1,6 @@
 #include "GameLauncherTest.hpp"
-namespace game {
+namespace game
+{
 
 }
 

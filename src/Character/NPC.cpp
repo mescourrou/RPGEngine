@@ -2,16 +2,18 @@
 #include <Database.hpp>
 #include <Model.hpp>
 #include <Query.hpp>
+#include <InstrumentationTimer.hpp>
 
-namespace character {
+namespace character
+{
 
 /**
  * @brief Constructor
  * @param name Name of the NPC
  * @param context Context to use
  */
-NPC::NPC(std::string name, std::shared_ptr<config::Context> context):
-    Character (std::move(name), context)
+NPC::NPC(const std::string& name, std::shared_ptr<config::Context> context):
+    Character (name, context)
 {
 
 }
@@ -23,13 +25,15 @@ NPC::NPC(std::string name, std::shared_ptr<config::Context> context):
  */
 bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::NPC;
     using namespace database;
     if (!verifyDatabaseModel(db))
-        throw CharacterException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw CharacterException("The database model is not correct",
+                                 DatabaseException::BAD_MODEL);
     // Verify if the name match a NPC
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                              .where(Model::NAME, Query::EQUAL, m_name));
+                            .where(Model::NAME, Query::EQUAL, name()));
     if (!Database::isQuerySuccessfull(result))
         return false;
     if (result.size() <= 1) // No result
@@ -49,50 +53,13 @@ bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
  */
 bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
-    {
-        namespace Model = database::Model::NPC;
-        if (!db->isTable(Model::TABLE))
-            return false;
-        auto columnList = db->columnList(Model::TABLE);
-
-        unsigned short goodColumns = 0;
-        for (auto& column : columnList)
-        {
-            if (column == Model::NAME)
-                goodColumns++;
-            else if (column == Model::TYPE)
-                goodColumns++;
-        }
-
-        if (goodColumns != 2)
-            return false;
-    }
-    {
-        namespace Model = database::Model::NPCPath;
-        if (!db->isTable(Model::TABLE))
-            return false;
-        auto columnList = db->columnList(Model::TABLE);
-
-        unsigned short goodColumns = 0;
-        for (auto& column : columnList)
-        {
-            if (column == Model::FK_NPC_NAME)
-                goodColumns++;
-            else if (column == Model::X)
-                goodColumns++;
-            else if (column == Model::Y)
-                goodColumns++;
-            else if (column == Model::Z)
-                goodColumns++;
-        }
-
-        if (goodColumns != 4)
-            return false;
-    }
-    return true;
+        throw CharacterException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
+    return  verifyNPCModel(db) &&
+            verifyNPCPathModel(db);
 }
 
 /**
@@ -102,25 +69,26 @@ bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
 
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
-    {
-        namespace Model = database::Model::NPC;
-        db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
-                  .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)
-                  .column(Model::TYPE, DataType::INTEGER));
-    }
-    {
-        namespace Model = database::Model::NPCPath;
-        db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
-                  .column(Model::FK_NPC_NAME, DataType::BLOB, database::Model::NPC::TABLE, database::Model::NPC::NAME)
-                  .constraint(Model::FK_NPC_NAME, Query::PRIMARY_KEY)
-                  .column(Model::X, DataType::INTEGER)
-                  .column(Model::Y, DataType::INTEGER)
-                  .column(Model::Z, DataType::INTEGER));
-    }
+        throw CharacterException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
+    namespace ModelNPC = database::Model::NPC;
+    db->query(Query::createQuery<Query::CREATE>(ModelNPC::TABLE, db).ifNotExists()
+              .column(ModelNPC::NAME).constraint(ModelNPC::NAME, Query::PRIMARY_KEY)
+              .column(ModelNPC::TYPE, DataType::INTEGER));
+
+    namespace ModelNPCPath = database::Model::NPCPath;
+    db->query(Query::createQuery<Query::CREATE>(ModelNPCPath::TABLE,
+              db).ifNotExists()
+              .column(ModelNPCPath::FK_NPC_NAME, DataType::BLOB, database::Model::NPC::TABLE,
+                      database::Model::NPC::NAME)
+              .constraint(ModelNPCPath::FK_NPC_NAME, Query::PRIMARY_KEY)
+              .column(ModelNPCPath::X, DataType::INTEGER)
+              .column(ModelNPCPath::Y, DataType::INTEGER)
+              .column(ModelNPCPath::Z, DataType::INTEGER));
 
     return verifyDatabaseModel(db);
 }
@@ -130,7 +98,68 @@ bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
  */
 void NPC::updatePosition()
 {
+    // Patrol to implement
+}
 
+/**
+ * @brief Verify the model of NPC table
+ * @param db Databasse to check
+ * @return Return true if the model is correct
+ */
+bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
+{
+    PROFILE_FUNCTION();
+    namespace Model = database::Model::NPC;
+    if (!db->isTable(Model::TABLE))
+        return false;
+    auto columnList = db->columnList(Model::TABLE);
+
+    unsigned short goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::NAME)
+            goodColumns++;
+        else if (column == Model::TYPE)
+            goodColumns++;
+    }
+
+    if (goodColumns != 2)
+        return false;
+
+    return  true;
+}
+
+/**
+ * @brief Verify the NPCPath table model
+ * @param db Database to check
+ * @return Return true if the model is correct
+ */
+bool NPC::verifyNPCPathModel(std::shared_ptr<database::Database> db)
+{
+    PROFILE_FUNCTION();
+    namespace Model = database::Model::NPCPath;
+    if (!db->isTable(Model::TABLE))
+        return false;
+    auto columnList = db->columnList(Model::TABLE);
+
+
+    unsigned short goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::FK_NPC_NAME)
+            goodColumns++;
+        else if (column == Model::X)
+            goodColumns++;
+        else if (column == Model::Y)
+            goodColumns++;
+        else if (column == Model::Z)
+            goodColumns++;
+    }
+
+    if (goodColumns != 4)
+        return false;
+
+    return true;
 }
 
 

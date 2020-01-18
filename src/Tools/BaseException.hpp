@@ -23,27 +23,36 @@ class BaseExceptionTest;
 class BaseException : public std::exception
 {
     static constexpr Counter m_errorCounter = Counter();
-public:
+  public:
     /**
      * @brief Create an enum-like error class to identificate errors
      */
-    class Errors {
-    private:
+    class Errors
+    {
+      private:
         unsigned int m_id; ///< Id of the error
-    public:
+      public:
         constexpr Errors(unsigned int id) noexcept : m_id(id) {}
         virtual ~Errors() = default;
-        virtual bool operator==(const Errors& error) noexcept final { return error.m_id == m_id; }
-        virtual bool operator!=(const Errors& error) noexcept final { return error.m_id != m_id; }
+        virtual bool operator==(const Errors& error) noexcept final
+        {
+            return error.m_id == m_id;
+        }
+        virtual bool operator!=(const Errors& error) noexcept final
+        {
+            return error.m_id != m_id;
+        }
     };
     static const inline Errors UNKNOWN = Errors(__COUNTER__);
     static const inline Errors MUTEX = Errors(__COUNTER__);
+    static const inline Errors LOADING = Errors(__COUNTER__);
     /**
      * @brief Construct an exception
      * @param w Description of the error
      * @param errorCode Error code (Errors)
      */
-    BaseException(const std::string& w, const BaseException::Errors& errorCode = UNKNOWN) noexcept :
+    BaseException(const std::string& w,
+                  const BaseException::Errors& errorCode = UNKNOWN) noexcept :
         m_what(w), m_code(errorCode) {}
     /// @brief Default destructor
     ~BaseException() override = default;
@@ -58,8 +67,11 @@ public:
     /**
      * @brief Return the code of the error
      */
-    virtual Errors code() const noexcept final { return m_code; }
-protected:
+    virtual Errors code() const noexcept final
+    {
+        return m_code;
+    }
+  protected:
 
     std::string m_what; ///< Description of the error
     Errors m_code; ///< Error code
@@ -118,13 +130,13 @@ protected:
 #define CREATE_EXCEPTION_CLASS(NAME, ...)                                                               \
     class NAME##Exception : public BaseException                                                        \
     {                                                                                                   \
-    public:                                                                                             \
-    __VA_ARGS__                                                                                         \
-    NAME##Exception(const std::string& w, const Errors& code = BaseException::UNKNOWN):                 \
-        BaseException(w, code) {}                                                                       \
-    ~NAME##Exception() override = default;                                                              \
-    const char* what() const noexcept override                                                          \
-    {                                                                                                   \
-        return m_what.c_str();                                                                          \
-    }                                                                                                   \
-};
+      public:                                                                                             \
+        __VA_ARGS__                                                                                         \
+        NAME##Exception(const std::string& w, const Errors& code = BaseException::UNKNOWN):                 \
+            BaseException(w, code) {}                                                                       \
+        ~NAME##Exception() override = default;                                                              \
+        const char* what() const noexcept override                                                          \
+        {                                                                                                   \
+            return m_what.c_str();                                                                          \
+        }                                                                                                   \
+    };

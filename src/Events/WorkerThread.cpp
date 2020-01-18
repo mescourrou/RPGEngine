@@ -1,11 +1,13 @@
 #include "WorkerThread.hpp"
 
+#include <InstrumentationTimer.hpp>
 // External libs
 #include <glog/logging.h>
 
 
-namespace events {
-WorkerThread WorkerThread::instance;
+namespace events
+{
+WorkerThread WorkerThread::s_instance;
 
 /**
  * @brief Worker main function.
@@ -15,6 +17,7 @@ WorkerThread WorkerThread::instance;
  */
 void WorkerThread::worker(std::shared_ptr<AbstractWork> firstWork)
 {
+    PROFILE_FUNCTION();
     firstWork->run();
     m_mutex.lock();
     while (m_waitingList.size() > 0)
@@ -35,6 +38,7 @@ void WorkerThread::worker(std::shared_ptr<AbstractWork> firstWork)
  */
 WorkerThread::~WorkerThread()
 {
+    PROFILE_FUNCTION();
     waitForJoin();
 }
 
@@ -44,13 +48,15 @@ WorkerThread::~WorkerThread()
  */
 void WorkerThread::newWork(const std::function<void()>& work)
 {
+    PROFILE_FUNCTION();
     m_mutex.lock();
     if (m_activeThreads >= maxThreads)
         m_waitingList.push_back(std::make_shared<Work<void>>(Work<void>(work)));
     else
     {
         m_activeThreads++;
-        instance.m_workers.push_back(std::thread(worker, std::make_shared<Work<void>>(Work<void>(work))));
+        s_instance.m_workers.push_back(std::thread(worker,
+                                       std::make_shared<Work<void>>(Work<void>(work))));
     }
     m_mutex.unlock();
 }
@@ -60,11 +66,11 @@ void WorkerThread::newWork(const std::function<void()>& work)
  */
 void WorkerThread::waitForJoin()
 {
-    //for (size_t i = instance.m_workers.size() -1 ; i >= 0; i--)
-    while(instance.m_workers.size() != 0)
+    PROFILE_FUNCTION();
+    while (s_instance.m_workers.size() != 0)
     {
-        instance.m_workers.back().join();
-        instance.m_workers.pop_back();
+        s_instance.m_workers.back().join();
+        s_instance.m_workers.pop_back();
     }
 }
 

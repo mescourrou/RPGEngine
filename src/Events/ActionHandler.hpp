@@ -14,21 +14,31 @@
 #include <SFML/Window/Event.hpp>
 #endif
 
-namespace events {
+namespace events
+{
 
 CREATE_EXCEPTION_CLASS(ActionHandler,
                        ADD_EXCEPTION_CODE(UNKNOWN_ACTION))
 
+/**
+ * @brief Manage the actions of the engine
+ */
 class ActionHandler
 {
-    struct Action {
+    /**
+     * @brief Action structure
+     */
+    struct Action
+    {
         std::string name;
         KeyBinding keyBinding;
         std::vector<std::function<void(void)>> functionList;
     };
 
-public:
-    static void addAction(std::string name, std::function<void(void)> func, const KeyBinding& keyBinding = {});
+  public:
+    static void addAction(const std::string& name,
+                          const std::function<void()>& func,
+                          const KeyBinding& keyBinding = {});
 
     static KeyBinding getKeyBinding(const std::string& name);
     static void setKeyBinding(const std::string& actionName, const KeyBinding& key);
@@ -37,16 +47,16 @@ public:
     static std::list<std::string> actionList();
 
 #ifdef RPG_BUILD_GUI
-    static void processSFMLEvent(const sf::Event::KeyEvent &event);
+    static void processSFMLEvent(const sf::Event::KeyEvent& event);
 #endif
 
-protected:
-    static ActionHandler instance;
+  protected:
+    static ActionHandler instance; ///< Singleton instance
     ActionHandler() = default;
 
     static void execute(const Action& action);
-
-    std::list<Action> m_actions;
+  private:
+    std::list<Action> m_actions; ///< List of the actions
 };
 
 } // namespace events

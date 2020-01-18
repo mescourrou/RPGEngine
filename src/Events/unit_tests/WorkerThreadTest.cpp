@@ -1,5 +1,6 @@
 #include "WorkerThreadTest.hpp"
-namespace events {
+namespace events
+{
 
 /*
  * Test adding new work to the worker thread
@@ -8,7 +9,11 @@ TEST_F(WorkerThreadTest, NewWork)
 {
     mutex.lock();
     unsigned int cbCalls = 0;
-    auto cb = [&cbCalls]() { cbCalls++; usleep(500); };
+    auto cb = [&cbCalls]()
+    {
+        cbCalls++;
+        usleep(500);
+    };
 
     WorkerThread::newWork(cb); // 1
     WorkerThread::newWork(cb); // 2
@@ -39,7 +44,8 @@ TEST_F(WorkerThreadTest, WaitForJoin)
 {
     mutex.lock();
     bool active = false;
-    auto cb = [&]() {
+    auto cb = [&]()
+    {
         active = true;
         usleep(1000);
         active = false;

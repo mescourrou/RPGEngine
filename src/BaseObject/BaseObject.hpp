@@ -32,7 +32,7 @@ class BaseObjectTest;
  */
 #define DECLARE_BASEOBJECT(name)                                                                    \
     public:                                                                                         \
-        std::string className() const noexcept override { return #name; }                           \
+    std::string className() const noexcept override { return #name; }                           \
     private:                                                                                        \
 
 
@@ -41,29 +41,20 @@ class BaseObjectTest;
  */
 class BaseObject
 {
-#ifdef RPG_BUILD_TEST
-    // Test class
-    friend class BaseObjectTest;
-    FRIEND_TEST(BaseObjectTest, SetParentAfter);
-#endif
+  public:
+    explicit BaseObject() = default ;
+    virtual ~BaseObject() = default;
 
-public:
-    BaseObject(BaseObject* parent = nullptr) noexcept ;
-    virtual ~BaseObject() noexcept ;
+    BaseObject(const BaseObject& copy) = default;
+    BaseObject(BaseObject&& move) = default;
 
-    virtual BaseObject *parent() const noexcept final;
+    BaseObject& operator=(const BaseObject& copy) = default;
+    BaseObject& operator=(BaseObject&& move) = default;
+
     /**
      * @brief Get the class name
      */
     virtual std::string className() const noexcept = 0;
-protected:
-    virtual void setParent(BaseObject* parent) noexcept final;
-
-private:
-    void addChild(BaseObject* child) noexcept ;
-    void removeChild(BaseObject* child) noexcept ;
-    BaseObject* m_parent; ///< Parent of the object
-    std::list<BaseObject*> m_children; ///< Children of the object
 };
 
 

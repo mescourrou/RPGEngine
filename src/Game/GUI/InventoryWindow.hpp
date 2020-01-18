@@ -2,20 +2,21 @@
 
 #include <Window.hpp>
 
-namespace game::GUI {
+namespace game::gui
+{
 
 /**
  * @brief Inventory window
  */
 class InventoryWindow : public ImGui::Window
 {
-public:
+  public:
     /// @brief Constructor
     InventoryWindow() : Window("Inventory") {}
 
-protected:
+  protected:
     bool doPrepare() override;
     bool doCollapsedState() override;
 };
 
-} // namespace game::GUI
+} // namespace game::gui

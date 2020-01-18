@@ -13,7 +13,8 @@
 #include <filesystem>
 #endif
 
-namespace character {
+namespace character
+{
 
 #ifdef BUILD_USE_FILESYSTEM
 /*
@@ -32,7 +33,8 @@ TEST_F(CharacterTest, LoadingCharacterFromDatabase)
     using ::testing::Return;
     config::ContextMock* context = new config::ContextMock;
     EXPECT_CALL((*context), kMapPath()).WillRepeatedly(Return("data"));
-    auto contextPtr = std::shared_ptr<config::Context>(static_cast<config::Context*>(context));
+    auto contextPtr = std::shared_ptr<config::Context>
+                      (static_cast<config::Context*>(context));
     Character ch("Brian", contextPtr);
 
     // Load from the database
@@ -73,18 +75,20 @@ TEST_F(CharacterTest, CreatingDatabaseModel)
 void CharacterTest::SetUp()
 {
     object::Money::initialize("bronze",
-                      std::pair<std::string, unsigned int>("argent", 100),
-                      std::pair<std::string, unsigned int>("or", 50000));
+                              std::pair<std::string, unsigned int>("argent", 100),
+                              std::pair<std::string, unsigned int>("or", 50000));
     std::filesystem::path usedFile = "data/sample1.db";
     std::filesystem::path modelFile = "data/sample1.sqlite";
-    std::filesystem::copy(modelFile, usedFile, std::filesystem::copy_options::overwrite_existing);
+    std::filesystem::copy(modelFile, usedFile,
+                          std::filesystem::copy_options::overwrite_existing);
 
-    database = std::shared_ptr<database::Database>(new database::Database(usedFile));
+    database = std::shared_ptr<database::Database>(new database::Database(
+                   usedFile));
 }
 #endif
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     ::testing::InitGoogleTest(&argc, argv);
     google::InitGoogleLogging(argv[0]);

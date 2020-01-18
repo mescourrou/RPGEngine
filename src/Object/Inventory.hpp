@@ -11,7 +11,8 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
@@ -36,7 +37,7 @@ class Inventory : public BaseObject
     friend class object::InventoryTest;
     FRIEND_TEST(InventoryTest, Push);
 #endif
-public:
+  public:
     /// @brief Constructor
     Inventory();
     /// @brief Destructor
@@ -47,22 +48,32 @@ public:
     unsigned int getNumberOf(const std::string& objectName) const;
     std::shared_ptr<Object> pop(unsigned int index);
     std::shared_ptr<Object> pop(const std::string& objectName);
-    void push(const std::shared_ptr<Object> &newObject);
+    void push(const std::shared_ptr<Object>& newObject);
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db, const std::string characterName);
+    bool loadFromDatabase(std::shared_ptr<database::Database> db,
+                          const std::string characterName);
 
     /// @brief Get the money contained in the inventory
-    const Money& money() const { return m_money; }
+    const Money& money() const
+    {
+        return m_money;
+    }
     /// @brief Add money to the inventory
-    void addMoney(const Money& m) { m_money += m; }
+    void addMoney(const Money& m)
+    {
+        m_money += m;
+    }
     bool pullMoney(const Money& m);
 
     /// @brief Return the size of the inventory
-    unsigned int size() const { return m_inventory.size(); }
+    unsigned int size() const
+    {
+        return m_inventory.size();
+    }
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-private:
+  private:
 
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 

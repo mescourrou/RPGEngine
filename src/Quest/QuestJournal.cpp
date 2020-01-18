@@ -1,5 +1,6 @@
 #include "QuestJournal.hpp"
-namespace quest {
+namespace quest
+{
 
 QuestJournal::QuestJournal()
 {

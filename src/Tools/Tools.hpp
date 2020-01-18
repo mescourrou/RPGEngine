@@ -25,7 +25,7 @@ class Tools
 #ifdef RPG_BUILD_TEST
     friend class ToolsTest;
 #endif
-public:
+  public:
     Tools() = delete;
     ~Tools() = delete;
 
@@ -48,7 +48,7 @@ public:
 template<typename T>
 T Tools::linearModulo(T number, T div)
 {
-    return (number/ div - std::floor(number / div)) * div;
+    return (number / div - std::floor(number / div)) * div;
 }
 
 /**
@@ -57,7 +57,7 @@ T Tools::linearModulo(T number, T div)
  * Use strinstream >> and << operators
  */
 template<typename T, typename U>
-T Tools::convertTo(const U &a)
+T Tools::convertTo(const U& a)
 {
     std::stringstream ss;
     ss << a;

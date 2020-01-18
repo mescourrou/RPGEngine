@@ -17,20 +17,24 @@
 #include <SFML/Window/Event.hpp>
 #include <imgui.h>
 
-namespace sf {
+namespace sf
+{
 class RenderWindow;
 }
 
-namespace character::GUI {
+namespace character::gui
+{
 class CharacterGUI;
 }
 
 
-namespace game {
+namespace game
+{
 
 class Game;
 
-namespace GUI {
+namespace gui
+{
 
 CREATE_EXCEPTION_CLASS(GameGUI)
 
@@ -40,8 +44,8 @@ CREATE_EXCEPTION_CLASS(GameGUI)
 class GameGUI : public BaseObject
 {
     DECLARE_BASEOBJECT(GameGUI)
-public:
-    GameGUI(std::shared_ptr<config::Context> context, Game *game);
+  public:
+    GameGUI(std::shared_ptr<config::Context> context, Game* game);
     ~GameGUI() override;
 
     bool initialize(std::shared_ptr<database::Database> db);
@@ -49,14 +53,21 @@ public:
 
     void draw();
 
-    events::Event<sf::Event::KeyEvent> signalKeyPressed;    ///< Signal when a key is pressed
-    events::Event<sf::Event::KeyEvent> signalKeyReleased;   ///< Signal when a key is released
-    events::Event<sf::Keyboard::Key> signalArroyIsPressed;  ///< Signal when a arrow is pressed (no security to get only one event)
-    events::Event<bool> signalPause;                        ///< Signal when the pause is activated or not
+    events::Event<sf::Event::KeyEvent>
+    signalKeyPressed;    ///< Signal when a key is pressed
+    events::Event<sf::Event::KeyEvent>
+    signalKeyReleased;   ///< Signal when a key is released
+    events::Event<sf::Keyboard::Key>
+    signalArroyIsPressed;  ///< Signal when a arrow is pressed (no security to get only one event)
+    events::Event<bool>
+    signalPause;                        ///< Signal when the pause is activated or not
     /**
      * @brief Get the event triggered when the user close the game
      */
-    void subscribeOnClose(std::function<void(void)> func) { m_signalOnClose.subscribeAsync(func); }
+    void subscribeOnClose(const std::function<void(void)>& func)
+    {
+        m_signalOnClose.subscribeAsync(func);
+    }
 
     /**
      * @brief Add a BaseGUIObject to the list
@@ -64,17 +75,30 @@ public:
      * @return Weak_ptr on the created object
      */
     template<typename BaseGUIObject_T, typename... Args, typename = std::enable_if<std::is_base_of_v<BaseGUIObject, BaseGUIObject_T>>>
-    std::weak_ptr<BaseGUIObject_T> addGUIObject(Args... args)
+             std::weak_ptr<BaseGUIObject_T> addGUIObject(Args... args)
     {
-        return std::dynamic_pointer_cast<BaseGUIObject_T>(m_guiObjects.emplace_back(std::make_shared<BaseGUIObject_T>(args...)));
+        return std::dynamic_pointer_cast<BaseGUIObject_T>(m_guiObjects.emplace_back(
+                    std::make_shared<BaseGUIObject_T>(args...)));
     }
 
-protected:
+  protected:
     void loadFromConfig();
-    std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
-    std::weak_ptr<character::GUI::CharacterGUI> m_player;       ///< Pointer on the GUI object linked to the player
 
-    std::shared_ptr<map::GUI::MapGUI> m_mapGUI;     ///< Current mapGUI
+    void makeUI();
+    void uiPauseMenu();
+    void uiLoadSettingsPopup();
+    void uiInformationPopup();
+    void uiSettingsPopup();
+    void managePressingKeyEvent(const sf::Event::KeyEvent& key);
+    void manageReleasingKeyEven(const sf::Event::KeyEvent& key);
+    void checkKeyPressed();
+  private:
+    std::vector<std::shared_ptr<BaseGUIObject>>
+            m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
+    std::weak_ptr<character::gui::CharacterGUI>
+    m_player;       ///< Pointer on the GUI object linked to the player
+
+    std::shared_ptr<map::gui::MapGUI> m_mapGUI;     ///< Current mapGUI
 
     std::shared_ptr<config::Context> m_context;     ///< Context to use
 
@@ -82,7 +106,8 @@ protected:
 
     std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
 
-    events::Event<void> m_signalOnClose;            ///< Event when the user close the game
+    events::Event<void>
+    m_signalOnClose;            ///< Event when the user close the game
 
     ImGui::WindowsManager m_windowsManager;         ///< Window manager
     std::unique_ptr<CharacterWindow> m_characterWindow; ///< Character window
@@ -90,7 +115,8 @@ protected:
     std::unique_ptr<InventoryWindow> m_inventoryWindow; ///< Inventory window
     static constexpr char INVENTORY_WINDOW_ACTION[] = "Toggle inventory window";
 
-    std::string m_actionWaitingForKeybinding = "";  ///< Contains the action name waiting to associate a keybinding
+    std::string m_actionWaitingForKeybinding =
+        "";  ///< Contains the action name waiting to associate a keybinding
 
     sf::Event m_event;                              ///< Event, created once
 
@@ -99,7 +125,8 @@ protected:
     /**
      * @brief Informations necessary for the UI
      */
-    struct UI {
+    struct UI
+    {
         static constexpr char MAIN_UI[] = "mainUi";
         static constexpr char PAUSE_POPUP[] = "Pause";
         static constexpr char INFOS_POPUP[] = "Infos";
@@ -109,7 +136,8 @@ protected:
         static constexpr char BOTTON_AREA[] = "##Character";
         static constexpr char CHARACTER_BUTTON[] = "Character";
         static constexpr char INVENTORY_BUTTON[] = "Inventory";
-        static constexpr ImGuiWindowFlags FIXED = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize;
+        static constexpr ImGuiWindowFlags FIXED = ImGuiWindowFlags_NoMove |
+                ImGuiWindowFlags_NoResize;
         bool onPause = false;                       ///< If the system is on pause
         bool uiActivated = true;                    ///< If the global ui is activated
         bool inventoryOpen = false;                 ///< If the inventory window is open
@@ -118,20 +146,20 @@ protected:
         /**
          * @brief Settings selected
          */
-        struct Settings {
+        struct Settings
+        {
             bool fullscreen = false;                        ///< Is fullscreen on ?
             std::string resolution = "";                    ///< Currrent resolution
             int resolutionItemSelected = 0;                 ///< Selected resolution index
             std::vector<const char*> availableResolutions;  ///< Available resolutions
-        } settings;                                         ///< Seleted settings
-    } m_ui;                                         ///< UI structure containing the ui linked variable
+        };
+        Settings settings;                                         ///< Seleted settings
+    };
+    UI m_ui;                                         ///< UI structure containing the ui linked variable
 
-    void makeUI();
-    void uiPauseMenu();
-    void uiLoadSettingsPopup();
 
 };
 
-} // namespace GUI
+} // namespace gui
 
 } // namespace map

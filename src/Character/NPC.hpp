@@ -4,7 +4,8 @@
 #include <Character.hpp>
 #include <BaseObject.hpp>
 
-namespace character {
+namespace character
+{
 
 /**
  * @brief Class managing all Non Playable Character
@@ -12,9 +13,9 @@ namespace character {
 class NPC : public Character
 {
     DECLARE_BASEOBJECT(NPC)
-public:
+  public:
     NPC() = delete;
-    NPC(std::string name, std::shared_ptr<config::Context> context);
+    NPC(const std::string& name, std::shared_ptr<config::Context> context);
     /// @brief Default constructor
     ~NPC() override = default;
 
@@ -24,9 +25,12 @@ public:
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 
     virtual void updatePosition();
-protected:
-    std::list<map::Position> m_path;                    ///< List of points to follow
-    map::Position* m_targettedPosition = nullptr;       ///< Current point targetted
+
+  private:
+    static bool verifyNPCModel(std::shared_ptr<database::Database> db);
+    static bool verifyNPCPathModel(std::shared_ptr<database::Database> db);
+    std::list<map::Position> m_path; ///< List of points to follow
+    map::Position* m_targettedPosition = nullptr; ///< Current point targetted
 
 };
 

@@ -2,15 +2,17 @@
 
 #include <gtest/gtest.h>
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
-namespace character {
+namespace character
+{
 
 class CharacterTest : public testing::Test
 {
-public:
+  public:
     void SetUp() override;
 
     std::shared_ptr<database::Database> database;

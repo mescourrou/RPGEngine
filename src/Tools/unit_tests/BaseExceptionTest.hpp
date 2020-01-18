@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <BaseException.hpp>
 
-namespace tools {
+namespace tools
+{
 
 class BaseExceptionTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

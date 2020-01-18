@@ -3,15 +3,17 @@
 
 #include <PerformanceTimer.hpp>
 
-namespace epstl {
+namespace epstl
+{
 
-struct testStruct {
+struct testStruct
+{
     double x, y;
 };
 
 TEST_F(vectorTest, Creation)
 {
-    vector<int> v{1,2,3};
+    vector<int> v{1, 2, 3};
 
     EXPECT_EQ(*v.at(0), 1);
     EXPECT_EQ(*v.at(1), 2);
@@ -20,15 +22,16 @@ TEST_F(vectorTest, Creation)
 
 TEST_F(vectorTest, pushBack)
 {
-    vector<testStruct, 5> v{{0,0},{1,1},{2,2},{3,3}};
+    vector<testStruct, 5> v{{0, 0}, {1, 1}, {2, 2}, {3, 3}};
 
     EXPECT_EQ(v.size(), 4);
     EXPECT_EQ(v.allocated(), 5);
 
-    EXPECT_EQ(v.push_back({4,4}), 5);
+    EXPECT_EQ(v.push_back({4, 4}), 5);
     EXPECT_EQ(v.allocated(), 5);
 
-    v.push_back({5,5});
+    v.push_back({5, 5});
+
     EXPECT_EQ(v.size(), 6);
     EXPECT_EQ(v.allocated(), 10);
 
@@ -36,7 +39,7 @@ TEST_F(vectorTest, pushBack)
 
 TEST_F(vectorTest, popBack)
 {
-    vector<testStruct, 5> v{{0,0},{1,1},{2,2},{3,3}, {4,4}, {5,5}};
+    vector<testStruct, 5> v{{0, 0}, {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}};
 
     EXPECT_EQ(v.size(), 6);
     EXPECT_EQ(v.allocated(), 10);
@@ -50,7 +53,7 @@ TEST_F(vectorTest, popBack)
 
 TEST_F(vectorTest, iterator)
 {
-    vector<testStruct, 5> v{{0,0},{1,1},{2,2}};
+    vector<testStruct, 5> v{{0, 0}, {1, 1}, {2, 2}};
 
     double count = 0;
     for (auto i : v)
@@ -65,7 +68,7 @@ TEST_F(vectorTest, iterator)
 
 TEST_F(vectorTest, constIterator)
 {
-    vector<testStruct, 5> v{{0,0},{1,1},{2,2}};
+    vector<testStruct, 5> v{{0, 0}, {1, 1}, {2, 2}};
 
     double count = 0;
     for (auto itr = v.cbegin(); itr != v.cend(); ++itr)
@@ -80,7 +83,7 @@ TEST_F(vectorTest, constIterator)
 
 TEST_F(vectorTest, reverseIterator)
 {
-    vector<testStruct, 5> v{{0,0},{1,1},{2,2}};
+    vector<testStruct, 5> v{{0, 0}, {1, 1}, {2, 2}};
 
     double count = 2;
     for (auto itr = v.rbegin(); itr != v.rend(); ++itr)

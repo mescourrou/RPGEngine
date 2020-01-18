@@ -8,6 +8,7 @@
 #include <ConfigFiles.hpp>
 #include <Tools.hpp>
 #include <PerformanceTimer.hpp>
+#include <InstrumentationTimer.hpp>
 
 // External library
 #include <tinyxml2.h>
@@ -18,9 +19,11 @@
 
 #include <glog/logging.h>
 
-namespace map {
+namespace map
+{
 
-namespace GUI {
+namespace gui
+{
 
 /**
  * @brief Destructor
@@ -40,6 +43,7 @@ MapGUI::MapGUI(std::weak_ptr<Map> map) :
  */
 void MapGUI::move(double offsetX, double offsetY)
 {
+    PROFILE_FUNCTION();
     m_centerOfView.x() += offsetX;
     m_centerOfView.y() += offsetY;
     saturateCenterOfView();
@@ -49,8 +53,9 @@ void MapGUI::move(double offsetX, double offsetY)
 /**
  * @brief m_centerOfView setter
  */
-void MapGUI::setCenterOfView(const Position &centralPosition)
+void MapGUI::setCenterOfView(const Position& centralPosition)
 {
+    PROFILE_FUNCTION();
     m_centerOfView.x() = centralPosition.x();
     m_centerOfView.y() = centralPosition.y();
     saturateCenterOfView();
@@ -62,9 +67,11 @@ void MapGUI::setCenterOfView(const Position &centralPosition)
  * @param mapDirPath Directory where are the map elements
  * @return Return true if all went well
  */
-bool MapGUI::load(const std::string &mapDirPath)
+bool MapGUI::load(const std::string& mapDirPath)
 {
-    std::ifstream file(mapDirPath + "/" + Tools::snakeCase(m_map.lock()->name()) + ".json");
+    PROFILE_FUNCTION();
+    std::ifstream file(mapDirPath + "/" + Tools::snakeCase(m_map.lock()->name()) +
+                       ".json");
     if (file.is_open())
     {
         json json;
@@ -91,8 +98,9 @@ bool MapGUI::load(const std::string &mapDirPath)
 /**
  * @brief Prepare the drawing
  */
-void MapGUI::prepare(const sf::Vector2f &targetSize)
+void MapGUI::prepare(const sf::Vector2f& targetSize)
 {
+    PROFILE_FUNCTION();
     if (m_mapMoved) // We compute the parameters only if the map moved since last time
     {
         // Position on the map of the top left corner of the screen
@@ -100,19 +108,23 @@ void MapGUI::prepare(const sf::Vector2f &targetSize)
         m_topLeftPosition.x = m_centerOfView.x() - targetSize.x / 2.0;
         m_topLeftPosition.y = m_centerOfView.y() - targetSize.y / 2.0;
         // Coordinates of the tile of the top left corner
-        m_firstTileCoordinates.x = std::floor(m_topLeftPosition.x / m_chunksWidthPixels);
-        m_firstTileCoordinates.y = std::floor(m_topLeftPosition.y / m_chunksHeightPixels);
+        m_firstTileCoordinates.x = std::floor(m_topLeftPosition.x /
+                                              m_chunksWidthPixels);
+        m_firstTileCoordinates.y = std::floor(m_topLeftPosition.y /
+                                              m_chunksHeightPixels);
 
         // Position on the screen of the top left displayed tile
         // It's negative to cover all the screen
         int sign = -1;
         if (m_topLeftPosition.x > 0)
             sign = 1;
-        m_origin.x = - Tools::linearModulo(m_topLeftPosition.x, static_cast<float>(m_chunksWidthPixels));
+        m_origin.x = - Tools::linearModulo(m_topLeftPosition.x,
+                                           static_cast<float>(m_chunksWidthPixels));
         sign = -1;
         if (m_topLeftPosition.y > 0)
             sign = 1;
-        m_origin.y = - Tools::linearModulo(m_topLeftPosition.y, static_cast<float>(m_chunksHeightPixels));
+        m_origin.y = - Tools::linearModulo(m_topLeftPosition.y,
+                                           static_cast<float>(m_chunksHeightPixels));
 
         m_mapMoved = false;
     }
@@ -122,8 +134,9 @@ void MapGUI::prepare(const sf::Vector2f &targetSize)
  * @brief Force the preparation of the map even if it didn't moved
  * @param targetSize Size of the target
  */
-void MapGUI::forcePrepare(const sf::Vector2f &targetSize)
+void MapGUI::forcePrepare(const sf::Vector2f& targetSize)
 {
+    PROFILE_FUNCTION();
     m_mapMoved = true;
     prepare(targetSize);
 }
@@ -133,9 +146,10 @@ void MapGUI::forcePrepare(const sf::Vector2f &targetSize)
  * @param position Position on the map
  * @return Position on the screen
  */
-sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
+sf::Vector2f MapGUI::positionOnScreenFrom(const Position& position)
 {
-    return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x, static_cast<float>(position.y()) - m_topLeftPosition.y);
+    return sf::Vector2f(static_cast<float>(position.x()) - m_topLeftPosition.x,
+                        static_cast<float>(position.y()) - m_topLeftPosition.y);
 }
 
 /**
@@ -143,8 +157,10 @@ sf::Vector2f MapGUI::positionOnScreenFrom(const Position &position)
  * @param target Target to draw on
  * @param states Render states to use
  */
-void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void map::gui::MapGUI::draw(sf::RenderTarget& target,
+                            sf::RenderStates states) const
 {
+    PROFILE_FUNCTION();
     int i = m_firstTileCoordinates.x;
     int j = m_firstTileCoordinates.y;
     // Copy to iterate without modify the origin
@@ -152,7 +168,7 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
 
     while (tilePosition.y < target.getSize().y)
     {
-        while(tilePosition.x < target.getSize().x)
+        while (tilePosition.x < target.getSize().x)
         {
             if (i >= 0 && j >= 0 && i < m_nbChunksWidth && j < m_nbChunksHeight)
             {
@@ -178,8 +194,9 @@ void map::GUI::MapGUI::draw(sf::RenderTarget &target, sf::RenderStates states) c
  * @param layer Layer to use
  * @return Return true if all went well
  */
-bool MapGUI::loadTiles(const json &layer)
+bool MapGUI::loadTiles(const json& layer)
 {
+    PROFILE_FUNCTION();
     namespace mapFile = config::structure::mapFile;
     if (!layer.contains(mapFile::KEY_TILE_DATA))
         return false;
@@ -205,23 +222,27 @@ bool MapGUI::loadTiles(const json &layer)
     {
         for (unsigned int bigJ = 0; bigJ < std::ceil(m_nbChunksHeight); bigJ++)
         {
-            auto& chunkTexture = m_chunksTextures.emplace_back(std::make_shared<sf::RenderTexture>());
-            unsigned int currentWidth = std::min(CHUNK_WIDTH, (m_width - bigI*CHUNK_WIDTH));
-            unsigned int currentHeight = std::min(CHUNK_HEIGHT, (m_height - bigJ*CHUNK_HEIGHT));
-            chunkTexture->create(currentWidth*m_tileWidth, currentHeight*m_tileHeight);
+            auto& chunkTexture = m_chunksTextures.emplace_back(
+                                     std::make_shared<sf::RenderTexture>());
+            unsigned int currentWidth = std::min(CHUNK_WIDTH,
+                                                 (m_width - bigI * CHUNK_WIDTH));
+            unsigned int currentHeight = std::min(CHUNK_HEIGHT,
+                                                  (m_height - bigJ * CHUNK_HEIGHT));
+            chunkTexture->create(currentWidth * m_tileWidth, currentHeight * m_tileHeight);
 
             for (i = 0; i < currentWidth; i++)
             {
                 for (j = 0; j < currentHeight; j++)
                 {
-                    sf::Sprite sprite(m_tiles.at(map[bigI*CHUNK_WIDTH + i][bigJ*CHUNK_HEIGHT + j]));
-                    sprite.setPosition(i*m_tileWidth, j*m_tileHeight);
+                    sf::Sprite sprite(m_tiles.at(map[bigI * CHUNK_WIDTH + i][bigJ * CHUNK_HEIGHT +
+                                                 j]));
+                    sprite.setPosition(i * m_tileWidth, j * m_tileHeight);
                     chunkTexture->draw(sprite);
                 }
             }
             sf::Sprite sprite(chunkTexture->getTexture());
             sprite.setOrigin(0, sprite.getGlobalBounds().height);
-            sprite.setScale(1,-1);
+            sprite.setScale(1, -1);
             m_chunks[bigJ][bigI] = std::move(sprite);
         }
     }
@@ -237,28 +258,34 @@ bool MapGUI::loadTiles(const json &layer)
  * @param mapDirPath Directory where are stored the map elements
  * @return Return true if all went well
  */
-bool MapGUI::loadTilesets(const std::string& mapDirPath, const json &json)
+bool MapGUI::loadTilesets(const std::string& mapDirPath, const json& json)
 {
+    PROFILE_FUNCTION();
     namespace mapFile = config::structure::mapFile;
-    if (!json.contains(mapFile::KEY_WIDTH) || !json[mapFile::KEY_WIDTH].is_number_integer())
+    if (!json.contains(mapFile::KEY_WIDTH)
+            || !json[mapFile::KEY_WIDTH].is_number_integer())
         return false;
     m_width = json[mapFile::KEY_WIDTH].get<unsigned int>();
-    m_nbChunksWidth = m_width/CHUNK_WIDTH;
-    if (!json.contains(mapFile::KEY_HEIGHT) || !json[mapFile::KEY_HEIGHT].is_number_integer())
+    m_nbChunksWidth = m_width / CHUNK_WIDTH;
+    if (!json.contains(mapFile::KEY_HEIGHT)
+            || !json[mapFile::KEY_HEIGHT].is_number_integer())
         return false;
     m_height = json[mapFile::KEY_HEIGHT].get<unsigned int>();
     m_nbChunksHeight = m_height / CHUNK_HEIGHT;
 
-    if (!json.contains(mapFile::KEY_TILE_WIDTH) || !json[mapFile::KEY_TILE_WIDTH].is_number_integer())
+    if (!json.contains(mapFile::KEY_TILE_WIDTH)
+            || !json[mapFile::KEY_TILE_WIDTH].is_number_integer())
         return false;
     m_tileWidth = json[mapFile::KEY_TILE_WIDTH].get<unsigned int>();
     m_chunksWidthPixels = CHUNK_WIDTH * m_tileWidth;
-    if (!json.contains(mapFile::KEY_TILE_HEIGHT) || !json[mapFile::KEY_TILE_HEIGHT].is_number_integer())
+    if (!json.contains(mapFile::KEY_TILE_HEIGHT)
+            || !json[mapFile::KEY_TILE_HEIGHT].is_number_integer())
         return false;
     m_tileHeight = json[mapFile::KEY_TILE_HEIGHT].get<unsigned int>();
     m_chunksHeightPixels = CHUNK_HEIGHT * m_tileHeight;
 
-    if (!json.contains(mapFile::KEY_TILESETS) || !json[mapFile::KEY_TILESETS].is_array())
+    if (!json.contains(mapFile::KEY_TILESETS)
+            || !json[mapFile::KEY_TILESETS].is_array())
         return false;
     auto& tilesets = json[mapFile::KEY_TILESETS];
 
@@ -275,15 +302,16 @@ bool MapGUI::loadTilesets(const std::string& mapDirPath, const json &json)
  */
 void MapGUI::saturateCenterOfView()
 {
+    PROFILE_FUNCTION();
     if (m_centerOfView.x() < 0)
         m_centerOfView.x() = 0;
     if (m_centerOfView.y() < 0)
         m_centerOfView.y() = 0;
 
-    if (m_centerOfView.x() >= (m_width-1)*m_tileWidth)
-        m_centerOfView.x() = (m_width-1)*m_tileWidth;
-    if (m_centerOfView.y() >= (m_height-1)*m_tileHeight)
-        m_centerOfView.y() = (m_height-1)*m_tileHeight;
+    if (m_centerOfView.x() >= (m_width - 1)*m_tileWidth)
+        m_centerOfView.x() = (m_width - 1) * m_tileWidth;
+    if (m_centerOfView.y() >= (m_height - 1)*m_tileHeight)
+        m_centerOfView.y() = (m_height - 1) * m_tileHeight;
 }
 
 /**
@@ -293,63 +321,78 @@ void MapGUI::saturateCenterOfView()
  * @param tileset Tileset to use
  * @return Return true if all went well
  */
-bool MapGUI::loadTileset(const std::string& mapDirPath, const json &tileset)
+bool MapGUI::loadTileset(const std::string& mapDirPath, const json& tileset)
 {
+    PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "loadTileset";
     namespace mapFile = config::structure::mapFile;
     if (!tileset.is_object())
         return false;
-    if (!tileset.contains(mapFile::KEY_TILESET_FIRST_ID) || !tileset[mapFile::KEY_TILESET_FIRST_ID].is_number_integer())
+    if (!tileset.contains(mapFile::KEY_TILESET_FIRST_ID)
+            || !tileset[mapFile::KEY_TILESET_FIRST_ID].is_number_integer())
         return false;
     unsigned int id = tileset[mapFile::KEY_TILESET_FIRST_ID].get<unsigned int>();
 
-    if (!tileset.contains(mapFile::KEY_TILESET_SOURCE) || !tileset[mapFile::KEY_TILESET_SOURCE].is_string())
+    if (!tileset.contains(mapFile::KEY_TILESET_SOURCE)
+            || !tileset[mapFile::KEY_TILESET_SOURCE].is_string())
         return false;
 
     namespace tilesetFile = config::structure::tilesetFile;
     tinyxml2::XMLDocument doc;
-    tinyxml2::XMLError err = doc.LoadFile(std::string(mapDirPath + '/' + tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>()).c_str());
+    tinyxml2::XMLError err = doc.LoadFile(std::string(mapDirPath + '/' +
+                                          tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>()).c_str());
     if (err)
     {
-        LOG(ERROR) << "Error during loading file " << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>().c_str();
+        LOG(ERROR) << "Error during loading file " <<
+                   tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>().c_str();
     }
 
     auto xmlTileset = doc.FirstChildElement(tilesetFile::ELEMENT_TILESET);
     if (!xmlTileset)
     {
-        LOG(ERROR) << "No " << tilesetFile::ELEMENT_TILESET << " in the Tileset " << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << tilesetFile::ELEMENT_TILESET << " in the Tileset " <<
+                   mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
     if (!xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_WIDTH))
     {
-        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_WIDTH << " in the Tileset " << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_WIDTH << " in the Tileset " <<
+                   mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
-    unsigned int width = xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_WIDTH)->IntValue();
+    unsigned int width = xmlTileset->FindAttribute(
+                             tilesetFile::PROPERTY_TILE_WIDTH)->IntValue();
 
     if (!xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_HEIGHT))
     {
-        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_HEIGHT << " in the Tileset " << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_HEIGHT << " in the Tileset "
+                   << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
-    unsigned int height = xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_HEIGHT)->IntValue();
+    unsigned int height = xmlTileset->FindAttribute(
+                              tilesetFile::PROPERTY_TILE_HEIGHT)->IntValue();
 
     if (!xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_COUNT))
     {
-        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_COUNT << " in the Tileset " << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_COUNT << " in the Tileset " <<
+                   mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
-    unsigned int tilecount = xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_COUNT)->IntValue();
+    unsigned int tilecount = xmlTileset->FindAttribute(
+                                 tilesetFile::PROPERTY_TILE_COUNT)->IntValue();
 
     if (!xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_COLUMNS))
     {
-        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_COLUMNS << " in the Tileset " << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
+        LOG(ERROR) << "No " << tilesetFile::PROPERTY_TILE_COLUMNS << " in the Tileset "
+                   << mapDirPath << '/' << tileset[mapFile::KEY_TILESET_SOURCE].get<std::string>();
         return false;
     }
-    unsigned int columns = xmlTileset->FindAttribute(tilesetFile::PROPERTY_TILE_COLUMNS)->IntValue();
+    unsigned int columns = xmlTileset->FindAttribute(
+                               tilesetFile::PROPERTY_TILE_COLUMNS)->IntValue();
 
     auto xmlImage = xmlTileset->FirstChildElement(tilesetFile::ELEMENT_IMAGE);
-    std::string imageFilename = xmlImage->FindAttribute(tilesetFile::PROPERTY_IMAGE_SOURCE)->Value();
+    std::string imageFilename = xmlImage->FindAttribute(
+                                    tilesetFile::PROPERTY_IMAGE_SOURCE)->Value();
     imageFilename = mapDirPath + '/' + imageFilename;
 
     m_textures.emplace_back(std::make_shared<sf::Texture>());
@@ -360,8 +403,10 @@ bool MapGUI::loadTileset(const std::string& mapDirPath, const json &tileset)
     {
         for (unsigned int col = 0; col < columns; col++)
         {
-            sf::Sprite tile(*m_textures.back(), sf::IntRect(col*width, line*height, width, height));
-            m_tiles.insert(std::pair<unsigned int, sf::Sprite>((const unsigned int)id, tile));
+            sf::Sprite tile(*m_textures.back(), sf::IntRect(col * width, line * height,
+                            width, height));
+            m_tiles.insert(std::pair<unsigned int, sf::Sprite>((const unsigned int)id,
+                           tile));
 
             id++;
             if (id > tilecount)
@@ -376,7 +421,7 @@ bool MapGUI::loadTileset(const std::string& mapDirPath, const json &tileset)
     return true;
 }
 
-} // namespace GUI
+} // namespace gui
 
 } // namespace map
 

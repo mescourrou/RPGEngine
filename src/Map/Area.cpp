@@ -1,6 +1,8 @@
 #include "Area.hpp"
+#include <InstrumentationTimer.hpp>
 
-namespace map {
+namespace map
+{
 
 /**
  * @brief Construct an non empty area
@@ -19,8 +21,9 @@ Area::Area(std::initializer_list<Vector<2>> list) : m_points{list}
  * @param point Point to add
  * @param index Index where adding the point
  */
-void Area::addPoint(const Vector<2> &point, int index)
+void Area::addPoint(const Vector<2>& point, int index)
 {
+    PROFILE_FUNCTION();
     if (std::abs(index) >= m_points.size() && index != -1)
         return;
     if (index < 0)
@@ -40,15 +43,18 @@ void Area::addPoint(const Vector<2> &point, int index)
  * @param point Point to test
  * @return Return true if the point is inside the area
  */
-bool Area::isInside(const Vector<2> &point) const
+bool Area::isInside(const Vector<2>& point) const
 {
+    PROFILE_FUNCTION();
     unsigned int nbIntersections = 0;
 
     for (unsigned int i = 0; i < m_points.size(); i++)
     {
-        const auto& pt0 = (i == 0) ? m_points.at(m_points.size()-1) : m_points.at(i-1);
+        const auto& pt0 = (i == 0) ? m_points.at(m_points.size() - 1) : m_points.at(
+                              i - 1);
         const auto& pt1 = m_points.at(i);
-        const auto& pt2 = (i == m_points.size() - 1) ? m_points.at(0) : m_points.at(i+1);
+        const auto& pt2 = (i == m_points.size() - 1) ? m_points.at(0) : m_points.at(
+                              i + 1);
 
         if (intersectYHalfLine(pt1, pt2, point))
         {
@@ -76,11 +82,12 @@ bool Area::isInside(const Vector<2> &point) const
  */
 bool Area::onSegment(const Vector<2>& p, const Vector<2>& q, const Vector<2>& r)
 {
+    PROFILE_FUNCTION();
     // Use of https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
     if (q.x() <= std::max(p.x(), r.x()) && q.x() >= std::min(p.x(), r.x()) &&
-        q.y() <= std::max(p.y(), r.y()) && q.y() >= std::min(p.y(), r.y()))
-       return true;
+            q.y() <= std::max(p.y(), r.y()) && q.y() >= std::min(p.y(), r.y()))
+        return true;
 
     return false;
 }
@@ -94,18 +101,20 @@ bool Area::onSegment(const Vector<2>& p, const Vector<2>& q, const Vector<2>& r)
  * @return 1 --> Clockwise
  * @return 2 --> Counterclockwise
  */
-int Area::orientation(const Vector<2>& p, const Vector<2>& q, const Vector<2>& r)
+int Area::orientation(const Vector<2>& p, const Vector<2>& q,
+                      const Vector<2>& r)
 {
+    PROFILE_FUNCTION();
     // Use of https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
 
     // See https://www.geeksforgeeks.org/orientation-3-ordered-points/
     // for details of below formula.
     double val = (q.y() - p.y()) * (r.x() - q.x()) -
-              (q.x() - p.x()) * (r.y( )- q.y());
+                 (q.x() - p.x()) * (r.y( ) - q.y());
 
     if (std::abs(val) < ZERO_EPSILON) return 0;  // colinear
 
-    return (val > 0)? 1: 2; // clock or counterclock wise
+    return (val > 0) ? 1 : 2; // clock or counterclock wise
 }
 
 /**
@@ -116,8 +125,10 @@ int Area::orientation(const Vector<2>& p, const Vector<2>& q, const Vector<2>& r
  * @param q2 2nd point of the 2nd segment
  * @return True if the segments intersect
  */
-bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1, const Vector<2>& p2, const Vector<2>& q2)
+bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1,
+                       const Vector<2>& p2, const Vector<2>& q2)
 {
+    PROFILE_FUNCTION();
     // Use of https://www.geeksforgeeks.org/check-if-two-given-line-segments-intersect/
     // Find the four orientations needed for general and special cases
     int o1 = orientation(p1, q1, p2);
@@ -139,7 +150,7 @@ bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1, const Vector<2>
     // p2, q2 and p1 are colinear and p1 lies on segment p2q2
     if (o3 == 0 && onSegment(p2, p1, q2)) return true;
 
-     // p2, q2 and q1 are colinear and q1 lies on segment p2q2
+    // p2, q2 and q1 are colinear and q1 lies on segment p2q2
     if (o4 == 0 && onSegment(p2, q1, q2)) return true;
 
     return false; // Doesn't fall in any of the above cases
@@ -152,10 +163,12 @@ bool Area::doIntersect(const Vector<2>& p1, const Vector<2>& q1, const Vector<2>
  * @param [out] outIntersect Output of the intersection
  * @return True if there is an intersection
  */
-bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>& outIntersect) const
+bool Area::intersect(const Vector<2>& origin, const Vector<2>& vector,
+                     Vector<2>& outIntersect) const
 {
-    auto destination = origin+vector;
-    if (vector == Vector<2>{0,0})
+    PROFILE_FUNCTION();
+    auto destination = origin + vector;
+    if (vector == Vector<2> {0, 0})
         return false;
 
     // Parametrize vectors as
@@ -172,9 +185,10 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>
     {
         //const auto& pt0 = (i == 0) ? m_points.at(m_points.size()-1) : m_points.at(i-1);
         const auto& pt1 = m_points.at(i);
-        const auto& pt2 = (i == m_points.size() - 1) ? m_points.at(0) : m_points.at(i+1);
+        const auto& pt2 = (i == m_points.size() - 1) ? m_points.at(0) : m_points.at(
+                              i + 1);
         const auto vector2 = pt2 - pt1;
-        if (vector2 == Vector<2>{0,0})
+        if (vector2 == Vector<2> {0, 0})
             continue;
         auto vect1Normalized = vector / vector.norm();
         auto vect2Normalized = vector2 / vector2.norm();
@@ -205,17 +219,19 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>
 
         if (!solved && std::abs(b1) > ZERO_EPSILON)
         {
-            double denominator = a2 - b2/b1 * a1;
+            double denominator = a2 - b2 / b1 * a1;
             if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
             {
-                double alpha2 = ((pt1.y() - origin.y())/b1 * a1 + origin.x() - pt1.x()) / denominator;
+                double alpha2 = ((pt1.y() - origin.y()) / b1 * a1 + origin.x() - pt1.x()) /
+                                denominator;
                 if (alpha2 >= 0 && alpha2 <= 1)
                 {
-                    double alpha1 = (alpha2*b2 + pt1.y() - origin.y())/b1;
+                    double alpha1 = (alpha2 * b2 + pt1.y() - origin.y()) / b1;
                     if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
                     {
-                        candidate = {alpha1 * a1 + origin.x(),
-                                     alpha1 * b1 + origin.y()};
+                        candidate = {alpha1* a1 + origin.x(),
+                                     alpha1* b1 + origin.y()
+                                    };
                         isCandidate = true;
 
                     }
@@ -226,17 +242,19 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>
 
         if (!solved && std::abs(b2) > ZERO_EPSILON)
         {
-            double denominator = a1 - b1/b2 * a2;
+            double denominator = a1 - b1 / b2 * a2;
             if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
             {
-                double alpha1 = ((origin.y() - pt1.y())/b2 * a2 + pt1.x() - origin.x()) / denominator;
+                double alpha1 = ((origin.y() - pt1.y()) / b2 * a2 + pt1.x() - origin.x()) /
+                                denominator;
                 if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
                 {
-                    double alpha2 = (alpha1*b1 + origin.y() - pt1.y()) / b2;
+                    double alpha2 = (alpha1 * b1 + origin.y() - pt1.y()) / b2;
                     if (alpha2 >= 0 && alpha2 <= 1)
                     {
-                        candidate = {alpha1 * a1 + origin.x(),
-                                     alpha1 * b1 + origin.y()};
+                        candidate = {alpha1* a1 + origin.x(),
+                                     alpha1* b1 + origin.y()
+                                    };
                         isCandidate = true;
                     }
                 }
@@ -246,17 +264,19 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>
 
         if (!solved && std::abs(a1) > ZERO_EPSILON)
         {
-            double denominator = b2 - a2/a1 * b1;
+            double denominator = b2 - a2 / a1 * b1;
             if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
             {
-                double alpha2 = ((pt1.x() - origin.x())/a1 * b1 + origin.y() - pt1.y()) / denominator;
+                double alpha2 = ((pt1.x() - origin.x()) / a1 * b1 + origin.y() - pt1.y()) /
+                                denominator;
                 if (alpha2 >= 0 && alpha2 <= 1)
                 {
-                    double alpha1 = (alpha2*a2 + pt1.x() - origin.x())/a1;
+                    double alpha1 = (alpha2 * a2 + pt1.x() - origin.x()) / a1;
                     if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
                     {
-                        candidate = {alpha1 * a1 + origin.x(),
-                                     alpha1 * b1 + origin.y()};
+                        candidate = {alpha1* a1 + origin.x(),
+                                     alpha1* b1 + origin.y()
+                                    };
                         isCandidate = true;
                     }
                 }
@@ -266,17 +286,19 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>
 
         if (!solved && std::abs(a2) > ZERO_EPSILON)
         {
-            double denominator = b1 - a1/a2 * b2;
+            double denominator = b1 - a1 / a2 * b2;
             if (std::abs(denominator) > ZERO_EPSILON) // Denominator not null
             {
-                double alpha1 = ((origin.x() - pt1.x())/a2 * b2 + pt1.y() - origin.y()) / denominator;
+                double alpha1 = ((origin.x() - pt1.x()) / a2 * b2 + pt1.y() - origin.y()) /
+                                denominator;
                 if (alpha1 >= 0 && alpha1 <= 1) // Vectors intersects
                 {
-                    double alpha2 = (alpha1*a1 + origin.x() - pt1.x()) / a2;
+                    double alpha2 = (alpha1 * a1 + origin.x() - pt1.x()) / a2;
                     if (alpha2 >= 0 && alpha2 <= 1)
                     {
-                        candidate = {alpha1 * a1 + origin.x(),
-                                     alpha1 * b1 + origin.y()};
+                        candidate = {alpha1* a1 + origin.x(),
+                                     alpha1* b1 + origin.y()
+                                    };
                         isCandidate = true;
                     }
                 }
@@ -304,8 +326,9 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2> &vector, Vector<2>
  * @brief Move the area following the vector
  * @param vector Vector to follow
  */
-void Area::move(const Vector<2> &vector)
+void Area::move(const Vector<2>& vector)
 {
+    PROFILE_FUNCTION();
     for (auto& pt : m_points)
     {
         pt += vector;
@@ -336,10 +359,20 @@ size_t Area::pointCount() const
  * @param dir Direction to take
  * @return Return true if there is an intersection
  */
-bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const Vector<2> &origin, Direction dir)
+bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2,
+                              const Vector<2>& origin, Direction dir)
 {
-    const auto& highPt = std::max(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.y() < p2.y();});
-    const auto& lowPt = std::min(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.y() <= p2.y();});
+    PROFILE_FUNCTION();
+    const auto& highPt = std::max(pt1, pt2, [](const Vector<2>& p1,
+                                  const Vector<2>& p2)
+    {
+        return p1.y() < p2.y();
+    });
+    const auto& lowPt = std::min(pt1, pt2, [](const Vector<2>& p1,
+                                 const Vector<2>& p2)
+    {
+        return p1.y() <= p2.y();
+    });
 
     if (highPt.y() >= origin.y() && lowPt.y() <= origin.y())
     {
@@ -348,9 +381,18 @@ bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const 
             intersect.x() = pt1.x();
         else
         {
-            double relativePosition = 1 - (highPt.y() - origin.y()) / (highPt.y() - lowPt.y());
-            const auto& rightyPt = std::max(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.x() < p2.x();});
-            const auto& leftyPt = std::min(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.x() <= p2.x();});
+            double relativePosition = 1 - (highPt.y() - origin.y()) /
+                                      (highPt.y() - lowPt.y());
+            const auto& rightyPt = std::max(pt1, pt2, [](const Vector<2>& p1,
+                                            const Vector<2>& p2)
+            {
+                return p1.x() < p2.x();
+            });
+            const auto& leftyPt = std::min(pt1, pt2, [](const Vector<2>& p1,
+                                           const Vector<2>& p2)
+            {
+                return p1.x() <= p2.x();
+            });
             intersect.x() = leftyPt.x() + relativePosition * (rightyPt.x() - leftyPt.x());
         }
 
@@ -371,10 +413,20 @@ bool Area::intersectYHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const 
  * @param dir Direction to take
  * @return Return true if there is an intersection
  */
-bool Area::intersectXHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const Vector<2> &origin, Direction dir)
+bool Area::intersectXHalfLine(const Vector<2>& pt1, const Vector<2>& pt2,
+                              const Vector<2>& origin, Direction dir)
 {
-    const auto& leftPt = std::max(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.x() < p2.x();});
-    const auto& rightPt = std::min(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.x() <= p2.x();});
+    PROFILE_FUNCTION();
+    const auto& leftPt = std::max(pt1, pt2, [](const Vector<2>& p1,
+                                  const Vector<2>& p2)
+    {
+        return p1.x() < p2.x();
+    });
+    const auto& rightPt = std::min(pt1, pt2, [](const Vector<2>& p1,
+                                   const Vector<2>& p2)
+    {
+        return p1.x() <= p2.x();
+    });
 
     if (leftPt.x() >= origin.x() && rightPt.x() <= origin.x())
     {
@@ -383,9 +435,18 @@ bool Area::intersectXHalfLine(const Vector<2>& pt1, const Vector<2>& pt2, const 
             intersect.y() = pt1.y();
         else
         {
-            double relativePosition = 1 - (leftPt.x() - origin.x()) / (leftPt.y() - rightPt.y());
-            const auto& downyPt = std::max(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.y() < p2.y();});
-            const auto& hightyPt = std::min(pt1, pt2, [](const Vector<2>& p1, const Vector<2>& p2){ return p1.y() <= p2.y();});
+            double relativePosition = 1 - (leftPt.x() - origin.x()) /
+                                      (leftPt.y() - rightPt.y());
+            const auto& downyPt = std::max(pt1, pt2, [](const Vector<2>& p1,
+                                           const Vector<2>& p2)
+            {
+                return p1.y() < p2.y();
+            });
+            const auto& hightyPt = std::min(pt1, pt2, [](const Vector<2>& p1,
+                                            const Vector<2>& p2)
+            {
+                return p1.y() <= p2.y();
+            });
             intersect.y() = hightyPt.y() + relativePosition * (downyPt.y() - hightyPt.y());
         }
 

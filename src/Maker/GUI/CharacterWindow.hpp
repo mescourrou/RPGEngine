@@ -5,22 +5,23 @@
 #include <memory>
 #include <Maker.hpp>
 
-namespace maker::GUI {
+namespace maker::gui
+{
 
 /**
  * @brief Character window
  */
 class CharacterWindow : public ImGui::Window
 {
-public:
-    CharacterWindow(Maker* maker);
+  public:
+    explicit CharacterWindow(Maker* maker);
 
-protected:
+  protected:
     bool doPrepare() override;
 
     void doNewCharacter();
     void doDeleteCharacter();
-
+  private:
     Maker* m_maker;                             ///< Pointer on the maker backend
     stringlist m_list;                          ///< Character list
     int m_currentCharacter = -1;                ///< Current character
@@ -30,4 +31,4 @@ protected:
     bool m_newOne = true;                       ///< Is there a new character showed
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui

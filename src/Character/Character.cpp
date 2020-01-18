@@ -7,11 +7,13 @@
 #include <Inventory.hpp>
 #include <VerbosityLevels.hpp>
 #include <Map.hpp>
+#include <InstrumentationTimer.hpp>
 
 // Extern libs
 #include <glog/logging.h>
 
-namespace character {
+namespace character
+{
 
 /**
  * @brief Construct a character from the database given
@@ -21,10 +23,15 @@ namespace character {
  * @param[in] name Name of the character, must match a name in the database
  * @param[in] context Context to use
  */
-Character::Character(std::string name, std::shared_ptr<config::Context> context) :
-    m_name(std::move(name)), m_context(context), m_inventory(std::make_unique<object::Inventory>())
+Character::Character(const std::string& name,
+                     std::shared_ptr<config::Context> context) :
+    BaseObject(),
+    m_context(context), m_name(name),
+    m_inventory(std::make_unique<object::Inventory>())
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    PROFILE_FUNCTION();
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
     setPosition(m_position);
 }
 
@@ -36,14 +43,17 @@ Character::Character(std::string name, std::shared_ptr<config::Context> context)
  */
 bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw CharacterException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
-        throw CharacterException("The database model is not correct", DatabaseException::BAD_MODEL);
+        throw CharacterException("The database model is not correct",
+                                 DatabaseException::BAD_MODEL);
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                              .where(Model::NAME, Query::EQUAL, m_name));
+                            .where(Model::NAME, Query::EQUAL, m_name));
     if (!Database::isQuerySuccessfull(result))
         return false;
     if (result.size() <= 1) // No result
@@ -64,10 +74,12 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
  */
 bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw CharacterException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
@@ -93,10 +105,12 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  */
 bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
 {
+    PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
     using namespace database;
     if (!db)
-        throw CharacterException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw CharacterException("No database given.",
+                                 DatabaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY));
@@ -117,7 +131,7 @@ const std::string& Character::name() const noexcept
  * @brief Set the position of the Character on the map
  * @param position
  */
-void Character::setPosition(const map::Position &position)
+void Character::setPosition(const map::Position& position)
 {
     m_position = position;
 }
@@ -137,9 +151,11 @@ map::Position Character::position() const
  */
 void Character::move(const map::Vector<2>& move)
 {
+    PROFILE_FUNCTION();
     map::Vector<2> intersection;
 
-    if (m_position.map()->collision({m_position.x(), m_position.y()}, move, intersection))
+    if (m_position.map()->collision({m_position.x(), m_position.y()}, move,
+                                    intersection))
     {
         map::Vector<2> newMove{intersection.x() - m_position.x(), intersection.y() - m_position.y()};
         if (newMove.x() >= 1)

@@ -13,9 +13,11 @@
  * @param argc Number of arguments in argv
  * @param argv Main function arguments
  */
-config::Context::Context(int argc, char **argv)
+config::Context::Context(int argc, char** argv)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
+    PROFILE_FUNCTION();
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
     if (!argv)
     {
         LOG(ERROR) << "Error : argv pointer is null";
@@ -29,7 +31,8 @@ config::Context::Context(int argc, char **argv)
         m_runtimeDirectory = argv[0];
         auto lastSeparator = m_runtimeDirectory.find_last_of('/');
         m_runtimeDirectory = m_runtimeDirectory.substr(0, lastSeparator);
-        VLOG(verbosityLevel::VERIFICATION_LOG) << "Runtime directory = " << m_runtimeDirectory;
+        VLOG(verbosityLevel::VERIFICATION_LOG) << "Runtime directory = " <<
+                                               m_runtimeDirectory;
 #endif
     }
     if (argc > 1)

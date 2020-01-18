@@ -10,7 +10,7 @@
 template <typename T>
 class StateMachine
 {
-public:
+  public:
     StateMachine(std::initializer_list<T> list);
 
     void addEntryStateAction(const T& state, const std::function<void(void)>& func);
@@ -20,11 +20,15 @@ public:
     /**
      * @brief Get the current state
      */
-    const T& state() const { return m_currentState; }
+    const T& state() const
+    {
+        return m_currentState;
+    }
 
-private:
+  private:
     T m_currentState;                       ///< Current state
-    using actionPair = std::pair<std::vector<std::function<void(void)>>, std::vector<std::function<void(void)>>>;
+    using actionPair =
+        std::pair<std::vector<std::function<void(void)>>, std::vector<std::function<void(void)>>>;
     std::map<T, actionPair> m_states;       ///< States
 };
 
@@ -53,7 +57,8 @@ StateMachine<T>::StateMachine(std::initializer_list<T> list)
  * @param func Action
  */
 template<typename T>
-void StateMachine<T>::addEntryStateAction(const T &state, const std::function<void ()> &func)
+void StateMachine<T>::addEntryStateAction(const T& state,
+        const std::function<void ()>& func)
 {
     if (m_states.find(state) != m_states.end())
     {
@@ -67,7 +72,8 @@ void StateMachine<T>::addEntryStateAction(const T &state, const std::function<vo
  * @param func Action
  */
 template<typename T>
-void StateMachine<T>::addExitStateAction(const T &state, const std::function<void ()> &func)
+void StateMachine<T>::addExitStateAction(const T& state,
+        const std::function<void ()>& func)
 {
     if (m_states.find(state) != m_states.end())
     {
@@ -80,7 +86,7 @@ void StateMachine<T>::addExitStateAction(const T &state, const std::function<voi
  * @param newState State to set
  */
 template<typename T>
-void StateMachine<T>::changeState(const T &newState)
+void StateMachine<T>::changeState(const T& newState)
 {
     if (newState != m_currentState && m_states.find(newState) != m_states.end())
     {

@@ -8,7 +8,8 @@
 #include <filesystem>
 #endif
 
-namespace object {
+namespace object
+{
 
 using MoneyDeathTest = MoneyTest;
 
@@ -20,7 +21,7 @@ TEST_F(MoneyTest, ReorderInitialize)
     Money::initialize("bronze",
                       std::pair<std::string, unsigned int>("or", 50000),
                       std::pair<std::string, unsigned int>("argent", 100)
-                      );
+                     );
     auto names = Money::moneyNames();
     ASSERT_EQ(names.size(), 3);
     EXPECT_EQ(names.at(0), "bronze");
@@ -41,7 +42,8 @@ TEST_F(MoneyTest, InitializeFromDatabase)
 {
     std::filesystem::path modelFile = "data/sample1.sqlite";
     std::filesystem::path useFile = "data/sample1.db";
-    std::filesystem::copy(modelFile, useFile, std::filesystem::copy_options::overwrite_existing);
+    std::filesystem::copy(modelFile, useFile,
+                          std::filesystem::copy_options::overwrite_existing);
 
     std::shared_ptr<database::Database> db(new database::Database(useFile));
     Money::initializeFromDatabase(db);
@@ -352,11 +354,11 @@ TEST_F(MoneyTest, ArithmeticSubOperators)
 {
     // ----- SUBSTRACT -------
 
-    Money easy{90,50,30};
-    Money critical{10,11,40};
+    Money easy{90, 50, 30};
+    Money critical{10, 11, 40};
 
     Money sub = easy - 10;
-    Money expected{80,50,30};
+    Money expected{80, 50, 30};
     EXPECT_EQ(sub, expected);
 
     sub = critical - 20;
@@ -364,7 +366,7 @@ TEST_F(MoneyTest, ArithmeticSubOperators)
     EXPECT_EQ(sub, expected);
 
     sub = easy - Money{10, 11, 20};
-    expected = Money{80,39,10};
+    expected = Money{80, 39, 10};
     EXPECT_EQ(sub, expected);
 
     easy -= 40;
@@ -424,10 +426,12 @@ void MoneyTest::SetUp()
     Money::m_initialized = false;
     Money::m_moneyNames.clear();
 
-    const ::testing::TestInfo* const test_info = ::testing::UnitTest::GetInstance()->current_test_info();
+    const ::testing::TestInfo* const test_info
+        = ::testing::UnitTest::GetInstance()->current_test_info();
     auto testName = std::string(test_info->name());
 
-    if (testName != "NotInitialized" && testName != "ReorderInitialize" && testName != "InitializeFromDatabase")
+    if (testName != "NotInitialized" && testName != "ReorderInitialize"
+            && testName != "InitializeFromDatabase")
     {
         Money::initialize("bronze",
                           std::pair<std::string, unsigned int>("argent", 100),

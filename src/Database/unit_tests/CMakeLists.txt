@@ -1,9 +1,11 @@
 find_package(gtest REQUIRED)
+include(GoogleTest)
 
 add_executable(Database_test
     DatabaseTest.cpp DatabaseTest.hpp
     QueryTest.cpp QueryTest.hpp)
 target_link_libraries(Database_test gtest Database ${FILESYSTEM_LIB})
+gtest_discover_tests(Database_test)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")
 add_custom_command(TARGET Database_test POST_BUILD

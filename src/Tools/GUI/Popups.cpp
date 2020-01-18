@@ -1,6 +1,8 @@
 #include "Popups.hpp"
+#include <InstrumentationTimer.hpp>
 
-namespace ImGui {
+namespace ImGui
+{
 
 Popups Popups::instance;
 
@@ -26,7 +28,7 @@ void Popups::Warning(const std::string& message)
  * @brief Add an information message
  * @param message Message to add
  */
-void Popups::Info(const std::string &message)
+void Popups::Info(const std::string& message)
 {
     instance.m_infoList.push_back(message);
 }
@@ -36,6 +38,7 @@ void Popups::Info(const std::string &message)
  */
 void Popups::Draw()
 {
+    PROFILE_FUNCTION();
     if (!instance.m_popupOpen)
     {
         if (!instance.m_errorList.empty())

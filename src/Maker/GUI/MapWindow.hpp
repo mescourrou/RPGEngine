@@ -4,19 +4,20 @@
 #include <Stringlist.hpp>
 #include <Maker.hpp>
 
-namespace maker::GUI {
+namespace maker::gui
+{
 
 /**
  * @brief Map window
  */
 class MapWindow : public ImGui::Window
 {
-public:
-    MapWindow(Maker* maker);
+  public:
+    explicit MapWindow(Maker* maker);
 
-protected:
+  protected:
     bool doPrepare() override;
-
+  private:
     Maker* m_maker;                     ///< Pointer on the maker
 
     Maker::MapInformations m_edit;      ///< Editted informations
@@ -27,4 +28,4 @@ protected:
     bool m_newOne = false;              ///< Is there a new map
 };
 
-} // namespace maker::GUI
+} // namespace maker::gui

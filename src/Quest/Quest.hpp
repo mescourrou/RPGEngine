@@ -22,11 +22,11 @@ class Quest : public BaseObject
 {
     DECLARE_BASEOBJECT(Quest)
 #ifdef RPG_BUILD_TEST
-	friend class quest::QuestTest;
+    friend class quest::QuestTest;
 #endif
-public:
-	Quest();
-	~Quest() override = default;
+  public:
+    Quest();
+    ~Quest() override = default;
 };
 
 } // namespace quest

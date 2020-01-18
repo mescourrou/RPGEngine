@@ -1,5 +1,6 @@
 #include "GameLoaderTest.hpp"
-namespace game {
+namespace game
+{
 
 }
 

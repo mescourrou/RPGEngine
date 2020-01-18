@@ -1,12 +1,14 @@
 #include "Window.hpp"
+#include <InstrumentationTimer.hpp>
 
-namespace ImGui {
+namespace ImGui
+{
 
 /**
  * @brief Constructor
  * @param title Title of the window
  */
-Window::Window(const std::string &title) :
+Window::Window(const std::string& title) :
     m_title(title)
 {
 
@@ -18,6 +20,7 @@ Window::Window(const std::string &title) :
  */
 bool Window::prepare()
 {
+    PROFILE_FUNCTION();
     if (!m_active)
         return false;
     if (ImGui::Begin(m_title.c_str()))

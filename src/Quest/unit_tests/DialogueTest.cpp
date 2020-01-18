@@ -1,5 +1,6 @@
 #include "DialogueTest.hpp"
-namespace quest {
+namespace quest
+{
 
 }
 

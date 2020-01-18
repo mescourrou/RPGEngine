@@ -2,11 +2,12 @@
 
 #include <gtest/gtest.h>
 
-namespace events {
+namespace events
+{
 
 class ActionTest : public ::testing::Test
 {
-public:
+  public:
 };
 
 } // namespace events

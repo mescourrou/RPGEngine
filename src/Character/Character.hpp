@@ -11,11 +11,13 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
-namespace object {
+namespace object
+{
 class Inventory;
 }
 
@@ -48,9 +50,9 @@ class Character : public BaseObject
     FRIEND_TEST(VendorTest, Buying);
     FRIEND_TEST(VendorTest, Selling);
 #endif
-public:
+  public:
     Character() = delete;
-    Character(std::string name, std::shared_ptr<config::Context> context);
+    Character(const std::string& name, std::shared_ptr<config::Context> context);
     /// @brief Default constructor
     ~Character() override = default;
 
@@ -74,7 +76,10 @@ public:
     /**
      * @brief Get the inventory of the character
      */
-    const std::weak_ptr<object::Inventory> inventory() const { return m_inventory; }
+    const std::weak_ptr<object::Inventory> inventory() const
+    {
+        return m_inventory;
+    }
 
     // Setters
     /**
@@ -83,14 +88,25 @@ public:
      * The name must match the database name during the call of loadFromDatabase
      * @param[in] name New name of the Character
      */
-    void setName(std::string name) { m_name = std::move(name); }
-    void move(const map::Vector<2> &move);
+    void setName(const std::string& name)
+    {
+        m_name = name;
+    }
+    void move(const map::Vector<2>& move);
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
 
-    events::Event<map::Position> signalPositionChanged;      ///< Signal when the player position changed
-protected:
+    events::Event<map::Position>
+    signalPositionChanged;      ///< Signal when the player position changed
+
+  protected:
+    std::shared_ptr<object::Inventory> privateInventory()
+    {
+        return m_inventory;
+    }
+
+  private:
     std::shared_ptr<config::Context> m_context;     ///< Context used
 
     std::string m_name;         ///< Name of the Character

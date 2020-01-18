@@ -1,40 +1,76 @@
 #include "ActionHandler.hpp"
+#include <InstrumentationTimer.hpp>
 
-namespace events {
+namespace events
+{
 ActionHandler ActionHandler::instance;
 
-KeyBinding ActionHandler::getKeyBinding(const std::string &name)
+/**
+ * @brief Get the keybinding of the named action
+ * @param name Name of the action
+ * @return KeyBinding
+ */
+KeyBinding ActionHandler::getKeyBinding(const std::string& name)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
-                           [&name](const Action& a){return a.name == name;});
+                           [&name](const Action & a)
+    {
+        return a.name == name;
+    });
     if (it != instance.m_actions.end())
         return it->keyBinding;
     return {};
 }
 
-void ActionHandler::setKeyBinding(const std::string &actionName, const KeyBinding &key)
+/**
+ * @brief Set the KeyBinding of the given action
+ * @param actionName Name of the action
+ * @param key KeyBinding to apply
+ */
+void ActionHandler::setKeyBinding(const std::string& actionName,
+                                  const KeyBinding& key)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
-                           [&actionName](const Action& a){return a.name == actionName;});
+                           [&actionName](const Action & a)
+    {
+        return a.name == actionName;
+    });
     if (it != instance.m_actions.end())
         it->keyBinding = key;
 }
 
-void ActionHandler::execute(const std::string &actionName)
+/**
+ * @brief Execute the given action
+ * @param actionName Name of the action to execute
+ */
+void ActionHandler::execute(const std::string& actionName)
 {
-    const auto& it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
-                                  [&actionName](const Action& a){return a.name == actionName;});
+    PROFILE_FUNCTION();
+    const auto& it = std::find_if(instance.m_actions.begin(),
+                                  instance.m_actions.end(),
+                                  [&actionName](const Action & a)
+    {
+        return a.name == actionName;
+    });
     if (it != instance.m_actions.end())
     {
         execute(*it);
     }
-    else {
-        throw ActionHandlerException("Action "+actionName+" unknown", ActionHandlerException::UNKNOWN_ACTION);
+    else
+    {
+        throw ActionHandlerException("Action " + actionName + " unknown",
+                                     ActionHandlerException::UNKNOWN_ACTION);
     }
 }
 
+/**
+ * @brief Get the list of actions
+ */
 std::list<std::string> ActionHandler::actionList()
 {
+    PROFILE_FUNCTION();
     std::list<std::string> ret;
     for (const auto& a : instance.m_actions)
     {
@@ -45,10 +81,22 @@ std::list<std::string> ActionHandler::actionList()
 }
 
 #ifdef RPG_BUILD_GUI
-void ActionHandler::addAction(std::string name, std::function<void ()> func, const KeyBinding &keyBinding)
+/**
+ * @brief Add an action
+ * @param name Name of the action
+ * @param func Function to execute when the action is triggered
+ * @param keyBinding KeyBinding of the action
+ */
+void ActionHandler::addAction(const std::string& name,
+                              const std::function<void ()>& func,
+                              const KeyBinding& keyBinding)
 {
+    PROFILE_FUNCTION();
     auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(),
-                           [&name](const Action& a){return a.name == name;});
+                           [&name](const Action & a)
+    {
+        return a.name == name;
+    });
     if (it == instance.m_actions.end())
         instance.m_actions.push_back(Action{name, keyBinding, std::vector<std::function<void(void)>>{func}});
     else
@@ -59,9 +107,16 @@ void ActionHandler::addAction(std::string name, std::function<void ()> func, con
     }
 }
 
-void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent &event)
+/**
+ * @brief Trigger the actions corresponding to the SFML event given
+ * @param event Event to process
+ */
+void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent& event)
 {
-    auto it = std::find_if(instance.m_actions.begin(), instance.m_actions.end(), [&event](const Action& a){
+    PROFILE_FUNCTION();
+    auto it = std::find_if(instance.m_actions.begin(),
+                           instance.m_actions.end(), [&event](const Action & a)
+    {
         return a.keyBinding.isKey(event);
     });
     if (it != instance.m_actions.end())
@@ -69,8 +124,13 @@ void ActionHandler::processSFMLEvent(const sf::Event::KeyEvent &event)
 }
 #endif
 
-void ActionHandler::execute(const ActionHandler::Action &action)
+/**
+ * @brief Execute the action
+ * @param action Action to execute
+ */
+void ActionHandler::execute(const ActionHandler::Action& action)
 {
+    PROFILE_FUNCTION();
     for (const auto& a : action.functionList)
     {
         WorkerThread::newWork(a);

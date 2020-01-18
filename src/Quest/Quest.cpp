@@ -1,6 +1,7 @@
 #include "Quest.hpp"
-namespace quest {
-	
+namespace quest
+{
+
 Quest::Quest()
 {
 

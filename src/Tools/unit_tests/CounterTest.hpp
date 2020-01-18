@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <Counter.hpp>
 
-namespace tools {
+namespace tools
+{
 
 class CounterTest : public testing::Test
 {
-public:
+  public:
 };
 
 }

@@ -9,6 +9,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <WorkerThread.hpp>
+#include <InstrumentationTimer.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -61,7 +62,7 @@ class Event
 #ifdef RPG_BUILD_TEST
     friend class events::EventTest;
 #endif
-public:
+  public:
     /**
      * @fn Event()
      * @brief Default constructor
@@ -80,6 +81,7 @@ public:
      */
     void subscribeAsync(std::function<void(Args...)> func)
     {
+        PROFILE_FUNCTION();
         m_asyncCallList.push_back(func);
     }
     /**
@@ -88,6 +90,7 @@ public:
      */
     void subscribeSync(std::function<void(Args...)> func)
     {
+        PROFILE_FUNCTION();
         m_syncCallList.push_back(func);
     }
 
@@ -99,7 +102,9 @@ public:
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
-        m_asyncCallList.push_back([=](Args... args){
+        PROFILE_FUNCTION();
+        m_asyncCallList.push_back([instance, func](Args... args)
+        {
             std::bind(func, instance, args...)();
         });
     }
@@ -111,14 +116,18 @@ public:
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
-        m_syncCallList.push_back([=](Args... args){
+        PROFILE_FUNCTION();
+        m_syncCallList.push_back([instance, func](Args... args)
+        {
             std::bind(func, instance, args...)();
         });
     }
 
-private:
-    std::vector<std::function<void(Args...)>> m_asyncCallList; ///< List of functions to call
-    std::vector<std::function<void(Args...)>> m_syncCallList; ///< List of functions to call
+  private:
+    std::vector<std::function<void(Args...)>>
+                                           m_asyncCallList; ///< List of functions to call
+    std::vector<std::function<void(Args...)>>
+                                           m_syncCallList; ///< List of functions to call
 };
 
 /**
@@ -128,6 +137,7 @@ private:
 template<typename... Args>
 void Event<Args...>::trigger(Args... arguments) const
 {
+    PROFILE_FUNCTION();
     for (auto& call : m_asyncCallList)
     {
         WorkerThread::newWork(call, arguments...);
@@ -159,7 +169,7 @@ class Event<void>
 #ifdef RPG_BUILD_TEST
     friend class events::EventTest;
 #endif
-public:
+  public:
     Event() = default;
     ~Event() = default;
 
@@ -168,6 +178,7 @@ public:
      */
     void trigger() const
     {
+        PROFILE_FUNCTION();
         for (auto& call : m_asyncCallList)
         {
             WorkerThread::newWork(call);
@@ -181,7 +192,7 @@ public:
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
      */
-    void subscribeAsync(std::function<void(void)> func)
+    void subscribeAsync(const std::function<void(void)>& func)
     {
         m_asyncCallList.push_back(func);
     }
@@ -189,8 +200,9 @@ public:
      * @brief Subscribe the function to the Event
      * @param [in] func Function to subscribe
      */
-    void subscribeSync(std::function<void(void)> func)
+    void subscribeSync(const std::function<void(void)>& func)
     {
+        PROFILE_FUNCTION();
         m_syncCallList.push_back(func);
     }
 
@@ -202,7 +214,9 @@ public:
     template<typename T, typename M>
     void subscribeAsync(T* instance, M func)
     {
-        m_asyncCallList.push_back([=](){
+        PROFILE_FUNCTION();
+        m_asyncCallList.push_back([instance, func]()
+        {
             std::bind(func, instance)();
         });
     }
@@ -214,14 +228,18 @@ public:
     template<typename T, typename M>
     void subscribeSync(T* instance, M func)
     {
-        m_syncCallList.push_back([=](){
+        PROFILE_FUNCTION();
+        m_syncCallList.push_back([instance, func]()
+        {
             std::bind(func, instance)();
         });
     }
 
-private:
-    std::vector<std::function<void(void)>> m_asyncCallList; ///< List of functions to call
-    std::vector<std::function<void(void)>> m_syncCallList; ///< List of functions to call
+  private:
+    std::vector<std::function<void(void)>>
+                                        m_asyncCallList; ///< List of functions to call
+    std::vector<std::function<void(void)>>
+                                        m_syncCallList; ///< List of functions to call
 };
 
 

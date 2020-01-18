@@ -8,10 +8,12 @@
 #include <ConfigFiles.hpp>
 #include <memory>
 #include <Character.hpp>
+#include <InstrumentationTimer.hpp>
 
 #include <glog/logging.h>
 
-namespace game {
+namespace game
+{
 
 /**
  * @brief Create a GameLoader
@@ -20,8 +22,10 @@ namespace game {
 GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
     m_context(context)
 {
-    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " << this;
-    m_config.reset(new config::Config(context->gameLocation() + "/" + config::structure::globalFile::FILE_NAME));
+    VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
+                                          this;
+    m_config.reset(new config::Config(context->gameLocation() + "/" +
+                                      config::structure::globalFile::FILE_NAME));
 }
 
 /**
@@ -31,19 +35,27 @@ GameLoader::GameLoader(std::shared_ptr<config::Context> context) :
  */
 bool GameLoader::load(const std::string& name)
 {
+    PROFILE_FUNCTION();
     namespace structure = config::structure::globalFile;
     std::string databasePath = m_config->getValue(structure::ressources::SECTION,
-                                                  structure::ressources::DATABASE);
+                               structure::ressources::DATABASE);
     if (databasePath.empty())
     {
-        LOG(ERROR) << "'" << structure::ressources::SECTION << ":" << structure::ressources::DATABASE << "' field in configuration file not found";
-        return false;
+        LOG(ERROR) << "'" << structure::ressources::SECTION << ":" <<
+                   structure::ressources::DATABASE << "' field in configuration file not found";
+        throw config::ConfigException(std::string() + "'" +
+                                      structure::ressources::SECTION + ":" +
+                                      structure::ressources::DATABASE + "' field in configuration file not found",
+                                      config::ConfigException::LOADING);
     }
     databasePath = m_context->gameLocation() + "/" + databasePath;
-    try {
+    try
+    {
         m_db.reset(new database::Database(databasePath));
-    } catch (const database::DatabaseException& e) {
-        throw e;
+    }
+    catch (const database::DatabaseException&)
+    {
+        throw;
     }
 
     m_game = std::make_shared<Game>(name, m_context);
@@ -57,6 +69,7 @@ bool GameLoader::load(const std::string& name)
  */
 bool GameLoader::run()
 {
+    PROFILE_FUNCTION();
     return m_game->run();
 }
 

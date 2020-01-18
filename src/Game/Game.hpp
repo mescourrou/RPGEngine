@@ -14,15 +14,18 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace config {
+namespace config
+{
 class Context;
 }
 
-namespace database {
+namespace database
+{
 class Database;
 }
 
-namespace character {
+namespace character
+{
 class Character;
 }
 
@@ -33,7 +36,8 @@ class Character;
 namespace game
 {
 #ifdef RPG_BUILD_GUI
-namespace GUI {
+namespace gui
+{
 class GameGUI;
 }
 #endif
@@ -58,11 +62,11 @@ class Game : public BaseObject
     friend class game::GameTest;
 #endif
 #ifdef RPG_BUILD_GUI
-    friend class GUI::GameGUI;
+    friend class gui::GameGUI;
 #endif
-public:
+  public:
 
-    Game(std::string name, std::shared_ptr<config::Context> gameContext);
+    Game(const std::string& name, std::shared_ptr<config::Context> gameContext);
     /// @brief Destructor
     ~Game() override = default;
 
@@ -73,22 +77,29 @@ public:
     void loadMapContents(const std::string& mapName);
     void unloadCurrentMap();
 
-    const std::string& name() const { return m_name; }
+    const std::string& name() const
+    {
+        return m_name;
+    }
 
     static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
     static bool createDatabaseModel(std::shared_ptr<database::Database> db);
-protected:
+  private:
 
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
-    std::shared_ptr<database::Database> m_db;               ///< Database of the Game
-    std::shared_ptr<character::Character> m_playerCharacter;  ///< The character played by the player
-    std::weak_ptr<map::Map> m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
+    std::shared_ptr<database::Database>
+    m_db;               ///< Database of the Game
+    std::shared_ptr<character::Character>
+    m_playerCharacter;  ///< The character played by the player
+    std::weak_ptr<map::Map>
+    m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
 
     std::string m_name;                                     ///< Name of the game
 
-    std::list<std::shared_ptr<character::Character>> m_characterList;        ///< List of characters, excepted the character of the player
+    std::list<std::shared_ptr<character::Character>>
+            m_characterList;        ///< List of characters, excepted the character of the player
 #ifdef RPG_BUILD_GUI
-    std::shared_ptr<game::GUI::GameGUI> m_gui;              ///< GUI pointer
+    std::shared_ptr<game::gui::GameGUI> m_gui;              ///< GUI pointer
 #endif
     bool m_running = true;                                  ///< Main loop condition
 
