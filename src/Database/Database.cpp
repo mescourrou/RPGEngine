@@ -46,7 +46,7 @@ Database::Database(const std::string& path)
     {
         LOG(INFO) << "Open database '" << path << "'";
     }
-
+    LUA_EXPORT_OBJECT_WITH_NAME(*this, "database")
 }
 
 /**

@@ -32,7 +32,8 @@ TEST_F(CharacterTest, LoadingCharacterFromDatabase)
 {
     using ::testing::Return;
     config::ContextMock* context = new config::ContextMock;
-    EXPECT_CALL((*context), kMapPath()).WillRepeatedly(Return("data"));
+    std::string mapPath = "data";
+    EXPECT_CALL((*context), kMapPath()).WillRepeatedly(Return(mapPath));
     auto contextPtr = std::shared_ptr<config::Context>
                       (static_cast<config::Context*>(context));
     Character ch("Brian", contextPtr);

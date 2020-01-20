@@ -1,11 +1,18 @@
-find_package(LuaBridge REQUIRED)
-find_library(lua REQUIRED)
+if (RPG_GENERATE_LUA_BINDINGS)
+    find_package(LuaBridge REQUIRED)
+    find_library(lua REQUIRED)
+endif()
+
 
 
 add_library(Scripting
-    LuaLoader.cpp LuaLoader.hpp
     LuaManager.cpp LuaManager.hpp)
-target_link_libraries(Scripting BaseObject LuaBridge lua)
+
+target_link_libraries(Scripting BaseObject)
+if (RPG_GENERATE_LUA_BINDINGS)
+    target_link_libraries(Scripting LuaBridge lua)
+endif()
+
 target_include_directories(Scripting PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Scripting PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 

@@ -5,6 +5,7 @@
 #include <BaseObject.hpp>
 #include <Money.hpp>
 #include <BaseException.hpp>
+#include <LuaManager.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -22,7 +23,7 @@ namespace object
 {
 
 CREATE_EXCEPTION_CLASS(Object,
-                       ADD_EXCEPTION_CODE(UNKNOWN_OBJECT_TYPE))
+                       ADD_EXCEPTION_CODE(UNKNOWN_OBJECT_TYPE));
 
 #ifdef RPG_BUILD_TEST
 class ObjectTest;
@@ -32,7 +33,7 @@ class ObjectTest;
  */
 class Object : public BaseObject
 {
-    DECLARE_BASEOBJECT(Object)
+    DECLARE_BASEOBJECT(Object);
 #ifdef RPG_BUILD_TEST
     friend class object::ObjectTest;
 #endif
@@ -105,6 +106,14 @@ class Object : public BaseObject
     std::string m_description;              ///< Description of the object
     Money m_value;                          ///< Value of the object
 
+    LUA_BIND_DEFAULT_CONSTRUCTOR(Object);
+    LUA_BIND_CONSTRUCTOR(Object, std::string);
+    LUA_ADD_BINDING(Object, name);
+    LUA_ADD_BINDING(Object, description);
+    LUA_ADD_BINDING(Object, value);
+    LUA_ADD_BINDING(Object, setName);
+    LUA_ADD_BINDING(Object, setDescription);
+    LUA_ADD_BINDING(Object, setValue);
 };
 
 // I/O

@@ -6,6 +6,7 @@
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 #include <Money.hpp>
+#include <LuaManager.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -78,6 +79,21 @@ class Inventory : public BaseObject
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 
     Money m_money;  ///< Money contained in the inventory
+
+    LUA_ADD_BINDING_FOR_OVERLOAD(Inventory, get, get_by_id, std::shared_ptr<Object>,
+                                 unsigned int)
+    LUA_ADD_BINDING_FOR_OVERLOAD(Inventory, get, get_by_name,
+                                 std::shared_ptr<Object>, const std::string&)
+    LUA_ADD_BINDING_FOR_OVERLOAD(Inventory, pop, pop_by_id, std::shared_ptr<Object>,
+                                 unsigned int)
+    LUA_ADD_BINDING_FOR_OVERLOAD(Inventory, pop, pop_by_name,
+                                 std::shared_ptr<Object>, unsigned int)
+    LUA_ADD_BINDING(Inventory, getNumberOf)
+    LUA_ADD_BINDING(Inventory, push)
+    LUA_ADD_BINDING(Inventory, money)
+    LUA_ADD_BINDING(Inventory, addMoney)
+    LUA_ADD_BINDING(Inventory, pullMoney)
+    LUA_ADD_BINDING(Inventory, size)
 };
 
 } // namespace object

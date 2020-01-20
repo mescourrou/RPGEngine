@@ -1,7 +1,6 @@
 find_package(gtest REQUIRED)
 
-add_executable(Scripting_test ScriptingTest.cpp
-    LuaLoaderTest.cpp LuaLoaderTest.hpp)
+add_executable(Scripting_test ScriptingTest.cpp)
 target_link_libraries(Scripting_test gtest Scripting)
 
 if(EXISTS /data AND IS_DIRECTORY /data)

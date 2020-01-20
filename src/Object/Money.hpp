@@ -11,6 +11,7 @@
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
 #include <InstrumentationTimer.hpp>
+#include <LuaManager.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -116,7 +117,15 @@ class Money : public BaseObject
     std::shared_ptr<std::vector<unsigned int>>
                                             m_values; ///< Values of the instanced money
 
-
+    LUA_BIND_DEFAULT_CONSTRUCTOR(Money)
+    LUA_BIND_CONSTRUCTOR(Money, std::initializer_list<unsigned int>)
+    LUA_ADD_BINDING(Money, convertToBaseMoney)
+    LUA_ADD_BINDING(Money, add)
+    LUA_ADD_BINDING(Money, sub)
+    LUA_ADD_BINDING(Money, value)
+    LUA_ADD_STATIC_BINDING(Money, numberOfMoney)
+    LUA_ADD_STATIC_BINDING(Money, moneyValue)
+    LUA_ADD_STATIC_BINDING(Money, moneyNames)
 };
 
 /** @fn void Money::initialize(const std::string &baseValueName, Args... values)

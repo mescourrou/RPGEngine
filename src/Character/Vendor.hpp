@@ -29,6 +29,16 @@ class Vendor : public NPC
     bool buy(const std::string& objectName, Character& seller);
     bool buy(unsigned int objectInventoryId, Character& seller);
 
+  private:
+    LUA_ADD_BINDING_FOR_OVERLOAD(Vendor, sell, sell_by_name, bool,
+                                 const std::string&, Character&)
+    LUA_ADD_BINDING_FOR_OVERLOAD(Vendor, sell, sell_by_id, bool, unsigned int,
+                                 Character&)
+    LUA_ADD_BINDING_FOR_OVERLOAD(Vendor, buy, buy_by_name, bool, const std::string&,
+                                 Character&)
+    LUA_ADD_BINDING_FOR_OVERLOAD(Vendor, buy, buy_by_id, bool, unsigned int,
+                                 Character&)
+
 };
 
 } // namespace character

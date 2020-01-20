@@ -11,6 +11,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <LuaManager.hpp>
 
 // Libs
 #ifdef RPG_BUILD_TEST
@@ -95,6 +96,13 @@ class Database : public BaseObject
     std::unique_ptr<std::vector<std::map<std::string, std::string>>>
     m_result; ///< Saving results temporary
 
+    const std::vector<std::map<std::string, std::string>>* result() const
+    {
+        return m_result.get();
+    }
+
+    LUA_ADD_BINDING_FOR_OVERLOAD(Database, query, query, bool, const std::string&)
+    LUA_ADD_BINDING(Database, result)
 };
 
 

@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 option(RPG_BUILD_TEST "Compile Unit Tests" ON)
 option(RPG_BUILD_GUI "Compile Gui classes" ON)
 option(RPG_COMPILE_THIRDPARTIES "Compile third-party libs" ON)
+option(RPG_GENERATE_LUA_BINDINGS "Generate Lua bindigs" ON)
 
 set(RPG_THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/thirdparty")
 
@@ -20,7 +21,6 @@ set(SOURCES "")
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
-
 
 option(BUILD_INCLUDE_GIT_INFOS "Include branch and commit informations on the executable" ON)
 

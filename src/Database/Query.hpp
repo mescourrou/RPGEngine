@@ -22,14 +22,14 @@ class Database;
 
 CREATE_EXCEPTION_CLASS(Query,
                        ADD_EXCEPTION_CODE(INVALID_COLUMN_NAME) \
-                       ADD_EXCEPTION_CODE(INEXISTANT_COLUMN_NAME))
+                       ADD_EXCEPTION_CODE(INEXISTANT_COLUMN_NAME));
 
 /**
  * @brief Abstract class for Query generation
  */
 class Query : public BaseObject
 {
-    DECLARE_BASEOBJECT(Query)
+    DECLARE_BASEOBJECT(Query);
 #ifdef RPG_BUILD_TEST
     friend class database::QueryTest;
 #endif

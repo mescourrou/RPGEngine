@@ -1,5 +1,5 @@
 #include "LuaManager.hpp"
-
+#ifdef RPG_GENERATE_LUA_BINDINGS
 namespace scripting
 {
 
@@ -17,4 +17,4 @@ LuaManager::LuaManager()
 
 
 } // namespace scripting
-
+#endif

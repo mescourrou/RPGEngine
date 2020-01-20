@@ -20,3 +20,5 @@ constexpr char GAME_DEFAULT_RESOLUTION[] = "@GAME_DEFAULT_RESOLUTION@";
 #cmakedefine GAME_AUTO_CHOOSE
 
 #cmakedefine PROFILING
+
+#cmakedefine RPG_GENERATE_LUA_BINDINGS

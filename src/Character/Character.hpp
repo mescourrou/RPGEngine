@@ -6,6 +6,7 @@
 #include <BaseException.hpp>
 #include <Position.hpp>
 #include <Event.hpp>
+#include <LuaManager.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -114,6 +115,13 @@ class Character : public BaseObject
     map::Position m_position;   ///< Position of the Character
 
     std::shared_ptr<object::Inventory> m_inventory; ///< Inventory of the Character
+
+    LUA_ADD_BINDING(Character, name)
+    LUA_ADD_BINDING(Character, setName)
+    LUA_ADD_BINDING(Character, setPosition)
+    LUA_ADD_BINDING(Character, position)
+    LUA_ADD_BINDING_WITH_NAME(Character, privateInventory, inventory)
+    LUA_ADD_BINDING(Character, move)
 
 };
 

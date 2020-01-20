@@ -33,6 +33,7 @@ class MapTest;
 
 CREATE_EXCEPTION_CLASS(Map)
 
+// TODO blablabla
 /**
  * @brief Manage the core map
  */
@@ -89,7 +90,7 @@ class Map : public BaseObject
   private:
 
     std::vector<Area> m_collisionLayer; ///< List of the collisions areas
-    // std::vector<NPC> m_npcLayer; ///< TODO: Add this when NPC created
+    // std::vector<NPC> m_npcLayer; ///< @todo : Add this when NPC created
     std::map<Area, Position> m_teleportArea; ///< List of the teleports areas
 };
 

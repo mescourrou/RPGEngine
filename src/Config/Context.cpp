@@ -48,5 +48,6 @@ config::Context::Context(int argc, char** argv)
                            .append(m_kGlobalConfigFilename)))
         LOG(WARNING) << "Error during loading the configuration";
 
+    LUA_EXPORT_OBJECT_WITH_NAME(*this, "context");
 }
 

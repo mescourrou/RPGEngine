@@ -21,7 +21,7 @@ class ContextMock : public Context
 {
   public:
     ContextMock() {}
-    MOCK_CONST_METHOD0(kMapPath, const std::string());
+    MOCK_CONST_METHOD0(kMapPath, std::string());
 };
 
 }

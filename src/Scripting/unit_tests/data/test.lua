@@ -1,13 +1,6 @@
-function luafunc(e)
-    return e:f()
-end
-
-function p()
-    print("Hello World")
-end
-
 print("Hello from the script scope")
 b:setValue(10)
+print(b.m_val)
 if b:getVal() ~= 10 then
     return false
 end

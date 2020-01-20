@@ -8,6 +8,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <VerbosityLevels.hpp>
+#include <LuaManager.hpp>
 
 // External libs
 #include <glog/logging.h>
@@ -50,23 +51,23 @@ class Context : public BaseObject
         return  m_config;
     }
     /// @brief Access the config directory (from runtime directory)
-    virtual const std::string kConfigPath() const
+    virtual std::string kConfigPath() const
     {
         return m_kConfigPath;
     }
     /// @brief Get the name of the global config file
-    virtual const std::string kGlobalConfigFilename() const
+    virtual std::string kGlobalConfigFilename() const
     {
         return m_kGlobalConfigFilename;
     }
     /// @brief Get the full path to the map directory
-    virtual const std::string kMapPath() const
+    virtual std::string kMapPath() const
     {
         return std::string(m_gameLocation).append("/")
                .append(m_kRessourcesDirPath).append("/").append(m_kMapDirPath);
     }
     /// @brief Get the full path to the character directory
-    virtual const std::string kCharacterPath() const
+    virtual std::string kCharacterPath() const
     {
         return std::string(m_gameLocation).append("/")
                .append(m_kRessourcesDirPath).append("/").append(m_kCharacterDirPath);
@@ -84,34 +85,40 @@ class Context : public BaseObject
         return m_gameLocation;
     }
 
-    std::time_t
-    framePeriod;                                    ///< Period since the last frame
+    std::time_t framePeriod; ///< Period since the last frame
 
   protected:
     Context() = default; // For mocking
   private:
     std::vector<std::string>
-    m_programArguments;                ///< List of program arguments (from argv)
+    m_programArguments; ///< List of program arguments (from argv)
 
     // Constants
     const std::string m_kConfigPath =
-        "config";                 ///< Directory where are the config files
+        "config"; ///< Directory where are the config files
     const std::string m_kGlobalConfigFilename =
-        "global.ini";   ///< Main config filename
+        "global.ini"; ///< Main config filename
 
     const std::string m_kRessourcesDirPath =
-        "ressources";      ///< Path of the ressource directory
-    const std::string m_kMapDirPath =
-        "map";                    ///< Name of the map directory
+        "ressources"; ///< Path of the ressource directory
+    const std::string m_kMapDirPath = "map"; ///< Name of the map directory
     const std::string m_kCharacterDirPath =
-        "character";        ///< Name of the character directory
+        "character"; ///< Name of the character directory
 
     // Global variables
-    std::string m_runtimeDirectory =
-        "";                        ///< Path to the runtime directory
-    std::shared_ptr<Config> m_config;                           ///< Configuration
-    std::string m_gameLocation =
-        "";                            ///< Path the directory containing the game
+    std::string m_runtimeDirectory = ""; ///< Path to the runtime directory
+    std::shared_ptr<Config> m_config; ///< Configuration
+    std::string m_gameLocation = ""; ///< Path the directory containing the game
+
+    LUA_ADD_BINDING(Context, runtimeDirectory)
+    LUA_ADD_BINDING(Context, config)
+    LUA_ADD_BINDING(Context, kConfigPath)
+    LUA_ADD_BINDING(Context, kGlobalConfigFilename)
+    LUA_ADD_BINDING(Context, kMapPath)
+    LUA_ADD_BINDING(Context, kCharacterPath)
+    LUA_ADD_BINDING(Context, kProgramArguments)
+    LUA_ADD_BINDING(Context, gameLocation)
+
 };
 
 } // namespace config
