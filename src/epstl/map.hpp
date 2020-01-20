@@ -27,6 +27,64 @@ class map : public container
         item_t payload;
     };
 
+    enum iterator_types
+    {
+        KEY_ORDER,
+        KEY_REVERSE_ORDER
+    };
+
+    template<typename ret_t, typename it_node_t, iterator_types it_type = KEY_ORDER>
+    class iterator_t
+    {
+    public:
+        iterator_t(it_node_t* start_node) :
+            m_current_node(start_node)
+        {
+        }
+
+        iterator_t& operator++()
+        {
+            if constexpr (it_type == KEY_ORDER)
+            {
+                bool done = false;
+                // Climb the tree
+                while(!done)
+                {
+                    if (m_current_node->right_node)
+                        done = true;
+                    else if (m_current_node->parent)
+                        m_current_node = m_current_node->parent;
+                }
+                if (m_current_node->right_node)
+                    m_current_node = min(m_current_node->right_node);
+                else
+                    m_current_node = nullptr;
+            }
+            return *this;
+        }
+        iterator_t& operator--()
+        {
+
+        }
+
+        ret_t& operator*()
+        {
+            return m_current_node->key;
+        }
+
+        ret_t* operator->()
+        {
+            return &m_current_node->key;
+        }
+
+        bool operator!=(const iterator_t& it) const
+        {
+            return m_current_node == it.m_current_node;
+        }
+    private:
+        it_node_t* m_current_node;
+    };
+
   public:
     /**
      * @brief Default constructor
@@ -73,7 +131,9 @@ class map : public container
     void right_rotate(node_t* node) noexcept;
 
     node_t* min_node(node_t* node);
+    const node_t* min_node(node_t* node) const;
     node_t* max_node(node_t* node);
+    const node_t* max_node(node_t* node) const;
 
     /// Less (<) operator to use
     bool (*m_less_operator)(const key_t& k1, const key_t& k2) = &less<key_t, key_t>;
@@ -468,10 +528,32 @@ auto map<key_t, item_t>::max_node(map::node_t* node) -> map::node_t*
 }
 
 /**
+ * @brief Get the node with the biggest key of the given tree
+ */
+template<typename key_t, typename item_t>
+auto map<key_t, item_t>::max_node(map::node_t* node) const -> const map::node_t*
+{
+    if (node->right_node)
+        return max_node(node->right_node);
+    return node;
+}
+
+/**
  * @brief Get the node with the smallest key of the given tree
  */
 template<typename key_t, typename item_t>
 auto map<key_t, item_t>::min_node(map::node_t* node) -> map::node_t*
+{
+    if (node->left_node)
+        return min_node(node->left_node);
+    return node;
+}
+
+/**
+ * @brief Get the node with the smallest key of the given tree
+ */
+template<typename key_t, typename item_t>
+auto map<key_t, item_t>::min_node(map::node_t* node) const -> const map::node_t*
 {
     if (node->left_node)
         return min_node(node->left_node);
