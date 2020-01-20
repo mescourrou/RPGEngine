@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <QtHelpProject version="1.0">
-  <namespace>org.doxygen.Project</namespace>
-  <virtualFolder>doc</virtualFolder>
+  <namespace>org.RPGEngine</namespace>
+  <virtualFolder>docs</virtualFolder>
   <filterSection>
     <filterAttribute>doxygen</filterAttribute>
     <toc>
