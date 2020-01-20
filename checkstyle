@@ -22,22 +22,6 @@ else
     echo "Dry-run"
 fi
 #Checkstyle
-astyle --style=allman \
-        --align-pointer=type \
-        --indent=spaces=4 \
-        --attach-closing-while \
-        --indent-modifiers \
-        --indent-preproc-define \
-        --indent-col1-comments \
-        --pad-oper \
-        --pad-comma \
-        --pad-header \
-        --align-reference=type \
-        --convert-tabs \
-        --close-templates \
-        --max-code-length=80 \
-	--lineend=linux \
-        --recursive src/*.cpp src/*.hpp \
-        $dry_run -Q 
-#echo "$ret"
-#exit $(echo "$ret" | grep -c Format)
+astyle --project=style.astylerc \
+       --recursive src/*.cpp src/*.hpp \
+       $dry_run 
