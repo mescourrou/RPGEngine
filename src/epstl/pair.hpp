@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 namespace epstl
 {
 
@@ -20,9 +22,47 @@ struct pair
      */
     pair(T1 first, T2 second) : first(first), second(second) {}
 
+    template<std::size_t I>
+    auto& get()
+    {
+        if constexpr (I == 0)
+            return first;
+        if constexpr (I == 1)
+            return second;
+    }
+
+    template<std::size_t I>
+    auto get() const
+    {
+        if constexpr (I == 0)
+            return first;
+        if constexpr (I == 1)
+            return second;
+    }
+
     T1 first;   ///< First value
     T2 second;  ///< Second value
 
 };
 
 } // namespace epstl
+
+namespace std
+{
+
+template <class T1, class T2>
+struct tuple_size<::epstl::pair<T1, T2>> : integral_constant<std::size_t, 2> {};
+
+template<class T1, class T2>
+struct tuple_element<0, ::epstl::pair<T1, T2>>
+{
+    using type = T1;
+};
+
+template<class T1, class T2>
+struct tuple_element<1, ::epstl::pair<T1, T2>>
+{
+    using type = T2;
+};
+
+}

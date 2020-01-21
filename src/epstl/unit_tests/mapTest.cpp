@@ -64,4 +64,31 @@ TEST_F(mapTest, erase)
     EXPECT_EQ(m.erase(8), 1);
 }
 
+TEST_F(mapTest, iterator)
+{
+    map<int, int> m;
+
+    m.insert(10, 1);
+    m.insert(13, 2);
+    m.insert(12, 3);
+    m.insert(8, 4);
+
+    std::vector<int> item_expectations{4, 1, 3, 2};
+    std::vector<int> key_expectation{8, 10, 12, 13};
+
+    short i = 0;
+    for (auto& item : m)
+    {
+        EXPECT_EQ(item.second, item_expectations.at(i));
+        i++;
+    }
+    i = 0;
+    for (auto& [k, item] : m)
+    {
+        EXPECT_EQ(k, key_expectation.at(i));
+        EXPECT_EQ(item, item_expectations.at(i));
+        i++;
+    }
+}
+
 } // namespace epstl

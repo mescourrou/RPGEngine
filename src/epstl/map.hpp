@@ -2,11 +2,16 @@
 
 #include "container.hpp"
 #include "math.hpp"
+#include "pair.hpp"
 
 #include <stdexcept>
+#include <utility>
 
 namespace epstl
 {
+
+template<class k, class i>
+struct get_map_iterator;
 
 /**
  * @brief Key based map
@@ -14,17 +19,21 @@ namespace epstl
 template <typename key_t, typename item_t>
 class map : public container
 {
+  protected:
+    using key_type = key_t;
+    using item_type = item_t;
+  private:
+  public:
     /**
      * @brief Map tree node
      */
     struct node_t
     {
-        key_t key;
         node_t* left_node = nullptr;
         node_t* right_node = nullptr;
         node_t* parent = nullptr;
 
-        item_t payload;
+        epstl::pair<key_t, item_t> content;
     };
 
     enum iterator_types
@@ -36,7 +45,7 @@ class map : public container
     template<typename ret_t, typename it_node_t, iterator_types it_type = KEY_ORDER>
     class iterator_t
     {
-    public:
+      public:
         iterator_t(it_node_t* start_node) :
             m_current_node(start_node)
         {
@@ -44,21 +53,17 @@ class map : public container
 
         iterator_t& operator++()
         {
-            if constexpr (it_type == KEY_ORDER)
+            if (it_type == KEY_ORDER)
             {
-                bool done = false;
                 // Climb the tree
-                while(!done)
-                {
-                    if (m_current_node->right_node)
-                        done = true;
-                    else if (m_current_node->parent)
-                        m_current_node = m_current_node->parent;
-                }
-                if (m_current_node->right_node)
-                    m_current_node = min(m_current_node->right_node);
+                if (!m_current_node->right_node && m_current_node->parent
+                        && m_current_node == m_current_node->parent->left_node)
+                    m_current_node = m_current_node->parent;
+                else if (m_current_node->right_node)
+                    m_current_node = min_node(m_current_node->right_node);
                 else
                     m_current_node = nullptr;
+
             }
             return *this;
         }
@@ -69,23 +74,42 @@ class map : public container
 
         ret_t& operator*()
         {
-            return m_current_node->key;
+            return m_current_node->content;
         }
 
-        ret_t* operator->()
+        ret_t& operator->()
         {
-            return &m_current_node->key;
+            return m_current_node->content;
+        }
+        template <size_t I>
+        auto& get()
+        {
+            if constexpr (I == 0)
+                return m_current_node->key;
+            else if constexpr (I == 1)
+                return m_current_node->payload;
+        }
+
+        template <size_t I>
+        auto get() const
+        {
+            if constexpr (I == 0)
+                return m_current_node->key;
+            else if constexpr (I == 1)
+                return m_current_node->payload;
         }
 
         bool operator!=(const iterator_t& it) const
         {
-            return m_current_node == it.m_current_node;
+            return m_current_node != it.m_current_node;
         }
-    private:
+      private:
         it_node_t* m_current_node;
+
     };
 
-  public:
+    using iterator = iterator_t<epstl::pair<key_t, item_t>, node_t, KEY_ORDER>;
+
     /**
      * @brief Default constructor
      */
@@ -117,7 +141,15 @@ class map : public container
     item_t* at(const key_t& key) noexcept;
     size_t erase(const key_t& key);
 
+    iterator begin()
+    {
+        return iterator(min_node(m_root));
+    }
 
+    iterator end()
+    {
+        return iterator(nullptr);
+    }
 
   private:
     bool free_recursive(node_t* node);
@@ -130,10 +162,10 @@ class map : public container
     void left_rotate(node_t* node) noexcept;
     void right_rotate(node_t* node) noexcept;
 
-    node_t* min_node(node_t* node);
-    const node_t* min_node(node_t* node) const;
-    node_t* max_node(node_t* node);
-    const node_t* max_node(node_t* node) const;
+    static node_t* min_node(node_t* node);
+    static const node_t* min_node(const node_t* node);
+    static node_t* max_node(node_t* node);
+    static const node_t* max_node(const node_t* node);
 
     /// Less (<) operator to use
     bool (*m_less_operator)(const key_t& k1, const key_t& k2) = &less<key_t, key_t>;
@@ -183,8 +215,8 @@ bool map<key_t, item_t>::insert(key_t key, item_t item)
     if (!m_root)
     {
         node_t* new_node = new node_t;
-        new_node->key = std::move(key);
-        new_node->payload = std::move(item);
+        new_node->content.first = std::move(key);
+        new_node->content.second = std::move(item);
         m_root = new_node;
         m_size++;
         return true;
@@ -226,7 +258,7 @@ item_t* map<key_t, item_t>::at(const key_t& key) noexcept
 {
     node_t* node = search(key);
     if (node)
-        return &node->payload;
+        return &node->content.second;
 
     return nullptr;
 }
@@ -310,17 +342,17 @@ template<typename key_t, typename item_t>
 bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
         item_t& item) noexcept
 {
-    if (current_node->key == key)
+    if (current_node->content.first == key)
         return false;
-    if (m_less_operator(key, current_node->key))
+    if (m_less_operator(key, current_node->content.first))
     {
         if (current_node->left_node)
             current_node = current_node->left_node;
         else
         {
             node_t* new_node = new node_t;
-            new_node->key = std::move(key);
-            new_node->payload = std::move(item);
+            new_node->content.first = std::move(key);
+            new_node->content.second = std::move(item);
             new_node->parent = current_node;
             current_node->left_node = new_node;
             m_size++;
@@ -334,8 +366,8 @@ bool map<key_t, item_t>::insert_recursive(node_t* current_node, key_t& key,
         else
         {
             node_t* new_node = new node_t;
-            new_node->key = std::move(key);
-            new_node->payload = std::move(item);
+            new_node->content.first = std::move(key);
+            new_node->content.second = std::move(item);
             new_node->parent = current_node;
             current_node->right_node = new_node;
             m_size++;
@@ -363,7 +395,7 @@ bool map<key_t, item_t>::erase_recursive(map::node_t* current_node,
     if (!current_node)
         return false;
 
-    if (current_node->key == key)
+    if (current_node->content.first == key)
     {
         if (current_node->left_node || current_node->right_node)
         {
@@ -444,9 +476,9 @@ map<key_t, item_t>::node_t*
     node_t* current_node = m_root;
     while (current_node)
     {
-        if (current_node->key == key)
+        if (current_node->content.first == key)
             return current_node;
-        if (m_less_operator(key, current_node->key))
+        if (m_less_operator(key, current_node->content.first))
             current_node = current_node->left_node;
         else
             current_node = current_node->right_node;
@@ -531,7 +563,7 @@ auto map<key_t, item_t>::max_node(map::node_t* node) -> map::node_t*
  * @brief Get the node with the biggest key of the given tree
  */
 template<typename key_t, typename item_t>
-auto map<key_t, item_t>::max_node(map::node_t* node) const -> const map::node_t*
+auto map<key_t, item_t>::max_node(const map::node_t* node) -> const map::node_t*
 {
     if (node->right_node)
         return max_node(node->right_node);
@@ -553,11 +585,18 @@ auto map<key_t, item_t>::min_node(map::node_t* node) -> map::node_t*
  * @brief Get the node with the smallest key of the given tree
  */
 template<typename key_t, typename item_t>
-auto map<key_t, item_t>::min_node(map::node_t* node) const -> const map::node_t*
+auto map<key_t, item_t>::min_node(const map::node_t* node) -> const map::node_t*
 {
     if (node->left_node)
         return min_node(node->left_node);
     return node;
 }
+
+template<class k, class i>
+struct get_map_iterator : public map<k, i>::iterator
+{
+    get_map_iterator(typename map<k, i>::node_t* node) : map<k, i>::iterator(
+            node) {}
+};
 
 } // namespace epstl
