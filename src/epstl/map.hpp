@@ -9,10 +9,6 @@
 
 namespace epstl
 {
-
-template<class k, class i>
-struct get_map_iterator;
-
 /**
  * @brief Key based map
  */
@@ -25,28 +21,43 @@ class map : public container
      */
     struct node_t
     {
-        node_t* left_node = nullptr;
-        node_t* right_node = nullptr;
-        node_t* parent = nullptr;
+        node_t* left_node = nullptr; ///< Left subtree
+        node_t* right_node = nullptr; ///< Right subtree
+        node_t* parent = nullptr; ///< Parent (nullptr for the root)
 
-        epstl::pair<key_t, item_t> content;
+        epstl::pair<key_t, item_t> content; ///< Key-value storage
     };
 
+    /**
+     * @brief Types of iterators, for template specialization
+     */
     enum iterator_types
     {
-        KEY_ORDER,
-        KEY_REVERSE_ORDER
+        KEY_ORDER,  ///< A -> Z order
+        KEY_REVERSE_ORDER ///< Z -> A order
     };
 
+    /**
+     * @brief Template of the iterator
+     *
+     * @tparam ret_t Type of return (epstl::pair<key_t, item_t> constant or not)
+     * @tparam it_node_t Type of node (constant or not)
+     * @tparam it_type Type of iterator (cf iterator_types enum)
+     */
     template<typename ret_t, typename it_node_t, iterator_types it_type = KEY_ORDER>
     class iterator_t
     {
       public:
-        iterator_t(it_node_t* start_node) :
-            m_current_node(start_node)
-        {
-        }
+        /**
+         * @brief Constructor
+         * @param start_node First node to start with
+         */
+        iterator_t(it_node_t* start_node) : m_current_node(start_node) {}
 
+        /**
+         * @brief Pre-increment operator
+         * @return Return the incremented iterator
+         */
         iterator_t& operator++()
         {
             if constexpr (it_type == KEY_ORDER)
@@ -74,74 +85,90 @@ class map : public container
             }
             return *this;
         }
+
+        /**
+         * @brief Decrement operator
+         * @todo Map decrement operator to implement
+         * @return Return the decremented iterator
+         */
         iterator_t& operator--()
         {
 
         }
 
+        /**
+         * @brief Star access operator
+         * @return Reference on the current element
+         */
         ret_t& operator*()
         {
             return m_current_node->content;
         }
 
+        /**
+         * @brief Pointer access operator
+         * @return Return a pointer on the current element
+         */
         ret_t* operator->()
         {
             return &m_current_node->content;
         }
 
+        /**
+         * @brief Star access operator
+         * @return Reference on the current element
+         */
         ret_t& operator*() const
         {
             return m_current_node->content;
         }
 
+        /**
+         * @brief Pointer access operator
+         * @return Return a pointer on the current element
+         */
         ret_t* operator->() const
         {
             return &m_current_node->content;
         }
-        template <size_t I>
-        auto& get()
-        {
-            if constexpr (I == 0)
-                return m_current_node->key;
-            else if constexpr (I == 1)
-                return m_current_node->payload;
-        }
 
-        template <size_t I>
-        auto get() const
-        {
-            if constexpr (I == 0)
-                return m_current_node->key;
-            else if constexpr (I == 1)
-                return m_current_node->payload;
-        }
-
+        /**
+         * @brief Comparison operator
+         * @param it Iterator to compare with
+         * @return Return true if the two are differents
+         */
         bool operator!=(const iterator_t& it) const
         {
             return m_current_node != it.m_current_node;
         }
 
+        /**
+         * @brief Bool operator to test if a map node is accessible
+         */
         operator bool()
         {
             return m_current_node;
         }
       private:
-        it_node_t* m_current_node;
+        it_node_t* m_current_node; ///< Current used node
 
     };
   public:
+    /// Standard iterator
     using iterator = iterator_t<epstl::pair<key_t, item_t>, node_t, KEY_ORDER>;
+    /// Standard constant iterator
     using const_iterator =
         iterator_t<const epstl::pair<key_t, item_t>, const node_t, KEY_ORDER>;
-
+    /// Reverse iterator
     using reverse_iterator =
         iterator_t<epstl::pair<key_t, item_t>, node_t, KEY_REVERSE_ORDER>;
+    /// Constant reverse iterator
     using const_reverse_iterator =
         iterator_t<const epstl::pair<key_t, item_t>, const node_t, KEY_REVERSE_ORDER>;
 
     /**
-     * @brief Default constructor
-     */
+    * @brief Default constructor
+    */
     map() = default;
     /**
      * @brief Create a map with the given less operator
@@ -170,41 +197,65 @@ class map : public container
     item_t* at(const key_t& key) noexcept;
     size_t erase(const key_t& key);
 
+    /**
+     * @brief Get the standard begin iterator
+     */
     iterator begin()
     {
         return iterator(min_node(m_root));
     }
 
+    /**
+     * @brief Get the standard end iterator
+     */
     iterator end()
     {
         return iterator(nullptr);
     }
 
+    /**
+     * @brief Get the standard begin constant iterator
+     */
     const_iterator begin() const
     {
         return const_iterator(min_node(m_root));
     }
 
+    /**
+     * @brief Get the standard end constant iterator
+     */
     const_iterator end() const
     {
         return const_iterator(nullptr);
     }
 
+    /**
+     * @brief Get the reverse begin iterator
+     */
     reverse_iterator rbegin()
     {
         return reverse_iterator(max_node(m_root));
     }
 
+    /**
+     * @brief Get the reverse end iterator
+     */
     reverse_iterator rend()
     {
         return reverse_iterator(nullptr);
     }
 
+    /**
+     * @brief Get the reverse begin constant iterator
+     */
     const_reverse_iterator rbegin() const
     {
         return const_reverse_iterator(max_node(m_root));
     }
 
+    /**
+     * @brief Get the reverse begin constant iterator
+     */
     const_reverse_iterator rend() const
     {
         return const_reverse_iterator(nullptr);
@@ -650,12 +701,5 @@ auto map<key_t, item_t>::min_node(const map::node_t* node) -> const map::node_t*
         return min_node(node->left_node);
     return node;
 }
-
-template<class k, class i>
-struct get_map_iterator : public map<k, i>::iterator
-{
-    get_map_iterator(typename map<k, i>::node_t* node) : map<k, i>::iterator(
-            node) {}
-};
 
 } // namespace epstl

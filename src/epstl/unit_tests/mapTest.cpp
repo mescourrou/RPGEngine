@@ -64,6 +64,9 @@ TEST_F(mapTest, erase)
     EXPECT_EQ(m.erase(8), 1);
 }
 
+/*
+ * Test standard iterator
+ */
 TEST_F(mapTest, iterator)
 {
     map<int, int> m;
@@ -91,6 +94,9 @@ TEST_F(mapTest, iterator)
     }
 }
 
+/*
+ * Test constant iterator
+ */
 TEST_F(mapTest, const_iterator)
 {
     map<int, int> m;
@@ -118,6 +124,9 @@ TEST_F(mapTest, const_iterator)
     }
 }
 
+/*
+ * Test reverse iterator
+ */
 TEST_F(mapTest, reverse_iterator)
 {
     map<int, int> m;
@@ -138,6 +147,9 @@ TEST_F(mapTest, reverse_iterator)
     }
 }
 
+/*
+ * Test constant reverse iterator
+ */
 TEST_F(mapTest, reverse_const_iterator)
 {
     map<int, int> m;
