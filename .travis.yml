@@ -28,6 +28,11 @@ addons:
   sources:
     - ubuntu-toolchain-r-test
 
+branches:
+  only:
+  - master
+  - develop
+
 before_install:
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update
