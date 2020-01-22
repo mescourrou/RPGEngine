@@ -19,11 +19,7 @@ struct get_map_iterator;
 template <typename key_t, typename item_t>
 class map : public container
 {
-  protected:
-    using key_type = key_t;
-    using item_type = item_t;
   private:
-  public:
     /**
      * @brief Map tree node
      */
@@ -53,7 +49,7 @@ class map : public container
 
         iterator_t& operator++()
         {
-            if (it_type == KEY_ORDER)
+            if constexpr (it_type == KEY_ORDER)
             {
                 // Climb the tree
                 if (!m_current_node->right_node && m_current_node->parent
@@ -64,6 +60,17 @@ class map : public container
                 else
                     m_current_node = nullptr;
 
+            }
+            else if constexpr (it_type == KEY_REVERSE_ORDER)
+            {
+                // Climb the tree
+                if (!m_current_node->left_node && m_current_node->parent
+                        && m_current_node == m_current_node->parent->right_node)
+                    m_current_node = m_current_node->parent;
+                else if (m_current_node->left_node)
+                    m_current_node = max_node(m_current_node->left_node);
+                else
+                    m_current_node = nullptr;
             }
             return *this;
         }
@@ -77,9 +84,19 @@ class map : public container
             return m_current_node->content;
         }
 
-        ret_t& operator->()
+        ret_t* operator->()
+        {
+            return &m_current_node->content;
+        }
+
+        ret_t& operator*() const
         {
             return m_current_node->content;
+        }
+
+        ret_t* operator->() const
+        {
+            return &m_current_node->content;
         }
         template <size_t I>
         auto& get()
@@ -103,12 +120,24 @@ class map : public container
         {
             return m_current_node != it.m_current_node;
         }
+
+        operator bool()
+        {
+            return m_current_node;
+        }
       private:
         it_node_t* m_current_node;
 
     };
-
+  public:
     using iterator = iterator_t<epstl::pair<key_t, item_t>, node_t, KEY_ORDER>;
+    using const_iterator =
+        iterator_t<const epstl::pair<key_t, item_t>, const node_t, KEY_ORDER>;
+
+    using reverse_iterator =
+        iterator_t<epstl::pair<key_t, item_t>, node_t, KEY_REVERSE_ORDER>;
+    using const_reverse_iterator =
+        iterator_t<const epstl::pair<key_t, item_t>, const node_t, KEY_REVERSE_ORDER>;
 
     /**
      * @brief Default constructor
@@ -149,6 +178,36 @@ class map : public container
     iterator end()
     {
         return iterator(nullptr);
+    }
+
+    const_iterator begin() const
+    {
+        return const_iterator(min_node(m_root));
+    }
+
+    const_iterator end() const
+    {
+        return const_iterator(nullptr);
+    }
+
+    reverse_iterator rbegin()
+    {
+        return reverse_iterator(max_node(m_root));
+    }
+
+    reverse_iterator rend()
+    {
+        return reverse_iterator(nullptr);
+    }
+
+    const_reverse_iterator rbegin() const
+    {
+        return const_reverse_iterator(max_node(m_root));
+    }
+
+    const_reverse_iterator rend() const
+    {
+        return const_reverse_iterator(nullptr);
     }
 
   private:

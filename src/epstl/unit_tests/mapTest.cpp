@@ -91,4 +91,72 @@ TEST_F(mapTest, iterator)
     }
 }
 
+TEST_F(mapTest, const_iterator)
+{
+    map<int, int> m;
+
+    m.insert(10, 1);
+    m.insert(13, 2);
+    m.insert(12, 3);
+    m.insert(8, 4);
+
+    std::vector<int> item_expectations{4, 1, 3, 2};
+    std::vector<int> key_expectation{8, 10, 12, 13};
+
+    short i = 0;
+    for (const auto& item : (const map<int, int>)m)
+    {
+        EXPECT_EQ(item.second, item_expectations.at(i));
+        i++;
+    }
+    i = 0;
+    for (const auto& [k, item] : (const map<int, int>)m)
+    {
+        EXPECT_EQ(k, key_expectation.at(i));
+        EXPECT_EQ(item, item_expectations.at(i));
+        i++;
+    }
+}
+
+TEST_F(mapTest, reverse_iterator)
+{
+    map<int, int> m;
+
+    m.insert(10, 1);
+    m.insert(13, 2);
+    m.insert(12, 3);
+    m.insert(8, 4);
+
+    std::vector<int> item_expectations{2, 3, 1, 4};
+    std::vector<int> key_expectation{13, 12, 10, 8};
+
+    short i = 0;
+    for (auto item = m.rbegin(); item != m.rend(); ++item)
+    {
+        EXPECT_EQ(item->second, item_expectations.at(i));
+        i++;
+    }
+}
+
+TEST_F(mapTest, reverse_const_iterator)
+{
+    map<int, int> m;
+
+    m.insert(10, 1);
+    m.insert(13, 2);
+    m.insert(12, 3);
+    m.insert(8, 4);
+
+    std::vector<int> item_expectations{2, 3, 1, 4};
+    std::vector<int> key_expectation{13, 12, 10, 8};
+
+    short i = 0;
+    for (auto item = ((const map<int, int>)m).rbegin();
+            item != ((const map<int, int>)m).rend(); ++item)
+    {
+        EXPECT_EQ(item->second, item_expectations.at(i));
+        i++;
+    }
+}
+
 } // namespace epstl
