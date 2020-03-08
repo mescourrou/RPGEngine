@@ -6,11 +6,12 @@
 #include <vector>
 #include <gtest/gtest.h>
 
-namespace epstl {
+namespace epstl
+{
 
 class quadtreeRegionTest : public ::testing::TestWithParam<std::pair<int, int>>
 {
-public:
+  public:
     void SetUp() override
     {
         tree = new quadtree_region<int>(GetParam().first, GetParam().second);
@@ -22,7 +23,8 @@ public:
         y_max = y_min + GetParam().second;
 
         points.resize(GetParam().first * GetParam().second * 0.2);
-        std::generate(points.begin(), points.end(), [&](){
+        std::generate(points.begin(), points.end(), [&]()
+        {
             std::pair<int, int> pt;
             do
             {
@@ -45,7 +47,7 @@ public:
         delete tree;
         points.clear();
     }
-protected:
+  protected:
     typedef quadtree_region<int> tree_type;
     tree_type* tree;
     std::vector<std::pair<int, int>> points;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <type_traits>
-#include <cstdint>
+#include <_types.hpp>
 
 /**
  * @namespace epstl
@@ -10,8 +10,6 @@
 namespace epstl
 {
 
-typedef uint32_t size_t; ///< Standard size
-typedef uint64_t ssize_t; ///< Extended size
 
 /**
  * @brief Main container class

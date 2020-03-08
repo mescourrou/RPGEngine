@@ -1,7 +1,8 @@
 #include "quadtreeRegionTest.hpp"
 #include <quadtree_region.hpp>
 
-namespace epstl {
+namespace epstl
+{
 
 
 using ::testing::Values;
@@ -15,7 +16,8 @@ TEST_P(quadtreeRegionTest, SetAPixel)
         for (int col = x_min ; col < x_max; col++)
         {
             SCOPED_TRACE(std::string("col : ") + std::to_string(col));
-            if (std::find(points.begin(), points.end(), std::pair<int, int>{col, row}) != points.end())
+            if (std::find(points.begin(), points.end(), std::pair<int, int> {col, row}) !=
+                    points.end())
             {
                 EXPECT_TRUE(tree->at(col, row));
             }
@@ -43,13 +45,14 @@ TEST_P(quadtreeRegionTest, UnsetPixel)
 static const std::vector<std::pair<int, int>> dimensionValues{{7, 7}, {8, 8}, {10, 4}, {12, 5}, {7, 11}};
 
 INSTANTIATE_TEST_CASE_P(QuadtreeRegionDimensions,
-                         quadtreeRegionTest,
-                         ::testing::ValuesIn(dimensionValues),
-                        [](const testing::TestParamInfo<std::pair<int, int>>& info){
-                            std::stringstream ss;
-                            ss << info.param.first << "x" << info.param.second;
-                            return ss.str();
-                        });
+                        quadtreeRegionTest,
+                        ::testing::ValuesIn(dimensionValues),
+                        [](const testing::TestParamInfo<std::pair<int, int>>& info)
+{
+    std::stringstream ss;
+    ss << info.param.first << "x" << info.param.second;
+    return ss.str();
+});
 
 
 } // namespace epstl

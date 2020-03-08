@@ -1,6 +1,7 @@
 #pragma once
 
 #include "quadtree.hpp"
+#include "vector.hpp"
 
 namespace epstl
 {
@@ -39,6 +40,7 @@ namespace epstl
 template<typename key_t = int>
 class quadtree_region : public quadtree<key_t, bool>
 {
+    bool isIndide(const vector<key_t>& polygon, key_t x, key_t y) const;
   public:
     /**
      * @brief Construct a quadtree with the given center and width/height
@@ -47,7 +49,8 @@ class quadtree_region : public quadtree<key_t, bool>
      * @param width Width of the root
      * @param height Height of the root
      */
-    explicit quadtree_region(key_t center_x, key_t center_y, key_t width, key_t height) :
+    explicit quadtree_region(key_t center_x, key_t center_y, key_t width,
+                             key_t height) :
         quadtree<key_t, bool>(center_x, center_y, width, height, false) {}
 
     /**
@@ -66,15 +69,16 @@ class quadtree_region : public quadtree<key_t, bool>
      * @param height Height of the root
      * @param default_value Default value to use
      */
-    explicit quadtree_region(key_t center_x, key_t center_y, key_t width, key_t height,
-                      bool default_value) :
+    explicit quadtree_region(key_t center_x, key_t center_y, key_t width,
+                             key_t height,
+                             bool default_value) :
         quadtree<key_t, bool>(center_x, center_y, width, height, default_value) {}
 
     explicit quadtree_region(const quadtree_region& copy)  :
         quadtree<key_t, bool> (copy) {}
 
     explicit quadtree_region(quadtree_region&& move) :
-        quadtree<key_t, bool> (move){}
+        quadtree<key_t, bool> (move) {}
     ~quadtree_region() override = default;
 
     quadtree_region& operator=(const quadtree_region& copy)
@@ -87,17 +91,36 @@ class quadtree_region : public quadtree<key_t, bool>
     }
 
     size_t insert(key_t x, key_t y, const bool& item) override;
+    size_t insert_region(const vector<key_t>& polygon_points, const bool& item);
 
-    void set(key_t x, key_t y) { insert(x, y, true); }
-    void unset(key_t x, key_t y) { insert(x, y, false); }
+    void set(key_t x, key_t y)
+    {
+        insert(x, y, true);
+    }
+    void unset(key_t x, key_t y)
+    {
+        insert(x, y, false);
+    }
+
+    void set_region(const vector<key_t>& polygon_points)
+    {
+        insert_region(polygon_points, true);
+    }
+    void unset_region(const vector<key_t>& polygon_points)
+    {
+        insert_region(polygon_points, false);
+    }
 
     void print(std::ostream& stream) const override;
 
   protected:
-    bool insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y,
-                           const bool& item) override;
-    const bool& get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y) const override;
-    bool& get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y) override;
+    bool insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant,
+                         key_t x, key_t y,
+                         const bool& item) override;
+    const bool& get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant,
+                          key_t x, key_t y) const override;
+    bool& get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
+                    key_t y) override;
 };
 
 /**
@@ -130,6 +153,23 @@ size_t quadtree_region<key_t>::insert(key_t x, key_t y, const bool& item)
 }
 
 template<typename key_t>
+size_t quadtree_region<key_t>::insert_region(const vector<key_t>&
+        polygon_points, const bool& item)
+{
+    if (!this->m_root)
+    {
+        this->m_root = new typename quadtree<key_t, bool>::quadrant_t;
+        this->m_root->bound.left = this->m_center.x - this->m_width / 2.;
+        this->m_root->bound.right = this->m_root->bound.left + this->m_width;
+        this->m_root->bound.bottom = this->m_center.y - this->m_height / 2.;
+        this->m_root->bound.top = this->m_root->bound.bottom + this->m_height;
+        this->m_root->bound.center = this->m_center;
+        this->m_root->data = this->m_default_value;
+    }
+
+}
+
+template<typename key_t>
 void quadtree_region<key_t>::print(std::ostream& stream) const
 {
     if (!this->m_root)
@@ -138,9 +178,11 @@ void quadtree_region<key_t>::print(std::ostream& stream) const
         return;
     }
     stream << "Tree:\n";
-    for (key_t row = this->m_root->bound.top; row > this->m_root->bound.bottom; row--)
+    for (key_t row = this->m_root->bound.top; row > this->m_root->bound.bottom;
+            row--)
     {
-        for (key_t col = this->m_root->bound.left; col < this->m_root->bound.right; col++)
+        for (key_t col = this->m_root->bound.left; col < this->m_root->bound.right;
+                col++)
         {
             bool state = this->at(col, row);
             stream << (state ? '1' : '0') << " ";
@@ -158,7 +200,8 @@ void quadtree_region<key_t>::print(std::ostream& stream) const
  * @param item Item to copy into the tree
  */
 template<typename key_t>
-bool quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
+bool quadtree_region<key_t>::insert_quadrant(typename
+        quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
         key_t y, const bool& item)
 {
     if (!quadrant)
@@ -168,17 +211,17 @@ bool quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::qua
     if (quadrant->ne) // If there is a quadrant division
     {
         uint8_t modified_quadrants =
-                insert_quadrant(quadrant->ne, x, y, item)
-                + insert_quadrant(quadrant->nw, x, y, item)
-                + insert_quadrant(quadrant->sw, x, y, item)
-                + insert_quadrant(quadrant->se, x, y, item);
+            insert_quadrant(quadrant->ne, x, y, item)
+            + insert_quadrant(quadrant->nw, x, y, item)
+            + insert_quadrant(quadrant->sw, x, y, item)
+            + insert_quadrant(quadrant->se, x, y, item);
         if (modified_quadrants > 0)
         {
             // If all quadrants are the same
             if (this->compute_depth(quadrant) == 1 &&
-                quadrant->ne->data == quadrant->nw->data &&
-                quadrant->ne->data == quadrant->sw->data &&
-                quadrant->ne->data == quadrant->se->data)
+                    quadrant->ne->data == quadrant->nw->data &&
+                    quadrant->ne->data == quadrant->sw->data &&
+                    quadrant->ne->data == quadrant->se->data)
             {
                 quadrant->data = quadrant->ne->data;
                 this->free_quadrant(quadrant->ne);
@@ -200,7 +243,7 @@ bool quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::qua
         if ((quadrant->bound.left != quadrant->bound.center.x &&
                 quadrant->bound.right != quadrant->bound.center.x) ||
                 (quadrant->bound.bottom != quadrant->bound.center.y &&
-                quadrant->bound.top != quadrant->bound.center.y))
+                 quadrant->bound.top != quadrant->bound.center.y))
         {
             // Division
             this->create_quadrants(quadrant);
@@ -245,7 +288,8 @@ bool quadtree_region<key_t>::insert_quadrant(typename quadtree<key_t, bool>::qua
  * @return Constant reference on the value
  */
 template<typename key_t>
-const bool& quadtree_region<key_t>::get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
+const bool& quadtree_region<key_t>::get_value(typename
+        quadtree<key_t, bool>::quadrant_t* quadrant, key_t x,
         key_t y) const
 {
     if (!quadrant->bound.isInside(x, y))
@@ -277,7 +321,8 @@ const bool& quadtree_region<key_t>::get_value(typename quadtree<key_t, bool>::qu
  */
 template<typename key_t>
 bool&
-quadtree_region<key_t>::get_value(typename quadtree<key_t, bool>::quadrant_t* quadrant, key_t x, key_t y)
+quadtree_region<key_t>::get_value(typename quadtree<key_t, bool>::quadrant_t*
+                                  quadrant, key_t x, key_t y)
 {
     if (!quadrant->bound.isInside(x, y))
         return this->m_exposed_default_value;
