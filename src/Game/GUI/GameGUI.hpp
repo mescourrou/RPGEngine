@@ -53,14 +53,14 @@ class GameGUI : public BaseObject
 
     void draw();
 
-    events::Event<sf::Event::KeyEvent>
-    signalKeyPressed;    ///< Signal when a key is pressed
-    events::Event<sf::Event::KeyEvent>
-    signalKeyReleased;   ///< Signal when a key is released
-    events::Event<sf::Keyboard::Key>
-    signalArroyIsPressed;  ///< Signal when a arrow is pressed (no security to get only one event)
-    events::Event<bool>
-    signalPause;                        ///< Signal when the pause is activated or not
+    /// Signal when a key is pressed
+    events::Event<sf::Event::KeyEvent> signalKeyPressed;
+    /// Signal when a key is released
+    events::Event<sf::Event::KeyEvent> signalKeyReleased;
+    /// Signal when a arrow is pressed (no security to get only one event)
+    events::Event<sf::Keyboard::Key> signalArroyIsPressed;
+    /// Signal when the pause is activated or not
+    events::Event<bool> signalPause;
     /**
      * @brief Get the event triggered when the user close the game
      */
@@ -93,35 +93,48 @@ class GameGUI : public BaseObject
     void manageReleasingKeyEven(const sf::Event::KeyEvent& key);
     void checkKeyPressed();
   private:
-    std::vector<std::shared_ptr<BaseGUIObject>>
-            m_guiObjects;   ///< List of BaseGUIObjects to manage and draw
-    std::weak_ptr<character::gui::CharacterGUI>
-    m_player;       ///< Pointer on the GUI object linked to the player
+    /// List of BaseGUIObjects to manage and draw
+    std::vector<std::shared_ptr<BaseGUIObject>> m_guiObjects;
+    /// Pointer on the GUI object linked to the player
+    std::weak_ptr<character::gui::CharacterGUI> m_player;
+    /// Current mapGUI
+    std::shared_ptr<map::gui::MapGUI> m_mapGUI;
+    /// Context to use
+    std::shared_ptr<config::Context> m_context;
+    /// Database to use
+    std::shared_ptr<database::Database> m_db;
+    /// SFML render window
+    std::shared_ptr<sf::RenderWindow> m_window;
 
-    std::shared_ptr<map::gui::MapGUI> m_mapGUI;     ///< Current mapGUI
+    /// Event when the user close the game
+    events::Event<void> m_signalOnClose;
 
-    std::shared_ptr<config::Context> m_context;     ///< Context to use
-
-    std::shared_ptr<database::Database> m_db;       ///< Database to use
-
-    std::shared_ptr<sf::RenderWindow> m_window;     ///< SFML render window
-
-    events::Event<void>
-    m_signalOnClose;            ///< Event when the user close the game
-
-    ImGui::WindowsManager m_windowsManager;         ///< Window manager
-    std::unique_ptr<CharacterWindow> m_characterWindow; ///< Character window
+    /// Window manager
+    ImGui::WindowsManager m_windowsManager;
+    /// Character window
+    std::unique_ptr<CharacterWindow> m_characterWindow;
+    /// Character window toggle action identifyer
     static constexpr char CHARACTER_WINDOW_ACTION[] = "Toggle character window";
     std::unique_ptr<InventoryWindow> m_inventoryWindow; ///< Inventory window
+    /// Inventory window toggle action identifyer
     static constexpr char INVENTORY_WINDOW_ACTION[] = "Toggle inventory window";
 
-    std::string m_actionWaitingForKeybinding =
-        "";  ///< Contains the action name waiting to associate a keybinding
+    /// Contains the action name waiting to associate a keybinding
+    std::string m_actionWaitingForKeybinding = "";
 
-    sf::Event m_event;                              ///< Event, created once
+    /// Event, created once
+    sf::Event m_event;
 
-    Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
+    /// Pointer on the game to facilitate the interaction
+    Game* m_game;
 
+    /// Timer of the last window draw
+    std::chrono::time_point<std::chrono::system_clock> m_drawingTimer;
+    /// Frame period. 60 fps by default
+    std::chrono::duration<unsigned int, std::micro>
+    m_drawingPeriod =
+        std::chrono::duration<unsigned int, std::micro>
+        ((unsigned int)(1000000. / 60.)); // 60 fps
     /**
      * @brief Informations necessary for the UI
      */
@@ -138,24 +151,34 @@ class GameGUI : public BaseObject
         static constexpr char INVENTORY_BUTTON[] = "Inventory";
         static constexpr ImGuiWindowFlags FIXED = ImGuiWindowFlags_NoMove |
                 ImGuiWindowFlags_NoResize;
-        bool onPause = false;                       ///< If the system is on pause
-        bool uiActivated = true;                    ///< If the global ui is activated
-        bool inventoryOpen = false;                 ///< If the inventory window is open
-        bool characterOpen = false;                 ///< If the character window is open
+        /// If the system is on pause
+        bool onPause = false;
+        /// If the global ui is activated
+        bool uiActivated = true;
+        /// If the inventory window is open
+        bool inventoryOpen = false;
+        /// If the character window is open
+        bool characterOpen = false;
 
         /**
          * @brief Settings selected
          */
         struct Settings
         {
-            bool fullscreen = false;                        ///< Is fullscreen on ?
-            std::string resolution = "";                    ///< Currrent resolution
-            int resolutionItemSelected = 0;                 ///< Selected resolution index
-            std::vector<const char*> availableResolutions;  ///< Available resolutions
+            /// Is fullscreen on ?
+            bool fullscreen = false;
+            /// Currrent resolution
+            std::string resolution = "";
+            /// Selected resolution index
+            int resolutionItemSelected = 0;
+            /// Available resolutions
+            std::vector<const char*> availableResolutions;
         };
-        Settings settings;                                         ///< Seleted settings
+        /// Seleted settings
+        Settings settings;
     };
-    UI m_ui;                                         ///< UI structure containing the ui linked variable
+    /// UI structure containing the ui linked variable
+    UI m_ui;
 
 
 };

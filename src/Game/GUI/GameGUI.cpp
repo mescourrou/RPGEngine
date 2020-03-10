@@ -66,6 +66,7 @@ bool GameGUI::initialize(std::shared_ptr<database::Database> db)
 {
     PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
+    m_drawingTimer = std::chrono::high_resolution_clock::now();
 
     m_mapGUI = std::make_shared<map::gui::MapGUI>(m_game->m_currentMap);
 
@@ -165,6 +166,7 @@ void GameGUI::draw()
             obj->prepare(m_window->getView().getSize());
         }
     }
+    std::this_thread::sleep_until(m_drawingTimer + m_drawingPeriod);
     m_window->clear();
     m_window->draw(*m_mapGUI);
 
@@ -176,6 +178,7 @@ void GameGUI::draw()
 
     ImGui::SFML::Render(*m_window);
     m_window->display();
+    m_drawingTimer = std::chrono::high_resolution_clock::now();
 }
 
 /**
