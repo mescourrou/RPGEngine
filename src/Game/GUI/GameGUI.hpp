@@ -122,6 +122,11 @@ class GameGUI : public BaseObject
 
     Game* m_game;                                   ///< Pointer on the game to facilitate the interaction
 
+    std::chrono::time_point<std::chrono::system_clock> m_drawingTimer;
+    std::chrono::duration<unsigned int, std::micro>
+    m_drawingPeriod =
+        std::chrono::duration<unsigned int, std::micro>
+        ((unsigned int)(1000000. / 60.)); // 60 fps
     /**
      * @brief Informations necessary for the UI
      */
