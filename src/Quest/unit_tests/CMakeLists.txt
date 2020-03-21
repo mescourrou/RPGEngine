@@ -4,7 +4,9 @@ include(GoogleTest)
 add_executable(Quest_test
     QuestTest.cpp QuestTest.hpp
     QuestJournalTest.cpp QuestJournalTest.hpp
-    DialogueTest.cpp DialogueTest.hpp)
+    DialogueTest.cpp DialogueTest.hpp
+    DialogueLineTest.cpp DialogueLineTest.hpp
+    DialogueActionTest.cpp DialogueActionTest.hpp)
 target_link_libraries(Quest_test gtest Quest)
 gtest_discover_tests(Quest_test)
 
