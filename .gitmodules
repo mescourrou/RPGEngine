@@ -31,3 +31,6 @@
 [submodule "thirdparty/imgui"]
 	path = thirdparty/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "thirdparty/epstl"]
+	path = thirdparty/epstl
+	url = https://github.com/mescourrou/epstl.git
