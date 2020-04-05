@@ -126,7 +126,7 @@ VendorTest::VendorTest()
     object::Money::initialize("bronze",
                               std::pair<std::string, unsigned int>("argent", 100),
                               std::pair<std::string, unsigned int>("or", 50000));
-    db = std::make_shared<database::Database>("data/sample1.sqlite");
+    db = std::make_shared<databaseTools::Database>("data/sample1.sqlite");
 }
 
 } // namespace character

@@ -11,7 +11,7 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -66,7 +66,7 @@ class Character : public BaseObject
     /// @brief Default move operator
     Character& operator=(Character&&) = default;
 
-    virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
+    virtual bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db);
 
     // Getters
     const std::string& name() const noexcept;
@@ -94,8 +94,8 @@ class Character : public BaseObject
     }
     void move(const map::Vector<2>& move);
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
 
     events::Event<map::Position>
     signalPositionChanged;      ///< Signal when the player position changed

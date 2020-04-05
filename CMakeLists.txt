@@ -83,6 +83,8 @@ add_doc_target()
 #		"INTERFACE_INCLUDE_DIRECTORIES" "${RPG_THIRDPARTY_DIR}/imgui/")
 #endif()
 
+find_package(DatabaseTools REQUIRED)
+
 add_subdirectory(${RPG_CONFIG_FILE_DIR})
 add_subdirectory(${SOURCE_DIR} bin)
 

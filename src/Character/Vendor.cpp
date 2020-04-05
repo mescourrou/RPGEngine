@@ -21,13 +21,13 @@ Vendor::Vendor(const std::string& name,
 }
 
 
-bool Vendor::loadFromDatabase(std::shared_ptr<database::Database> db)
+bool Vendor::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     if (!NPC::loadFromDatabase(db))
         return false;
-    using namespace database;
-    namespace Model = Model::NPC;
+    using namespace databaseTools;
+    namespace Model = database::Model::NPC;
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .where(Model::NAME, Query::EQUAL, name())
                             .column(Model::TYPE));

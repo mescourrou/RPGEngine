@@ -134,18 +134,18 @@ void Inventory::push(const std::shared_ptr<Object>& newObject)
  * @param [in] characterName Name of the Character owning the inventory
  * @return Return true if the loading was successfull
  */
-bool Inventory::loadFromDatabase(std::shared_ptr<database::Database> db,
+bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
                                  const std::string characterName)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw InventoryException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw InventoryException("The database model is not correct",
-                                 DatabaseException::BAD_MODEL);
+                                 BaseException::BAD_MODEL);
 
     // Load information from Model::TABLE => Main inventory table
     {
@@ -201,7 +201,7 @@ bool Inventory::pullMoney(const Money& m)
  * @param [in] db Database to verify
  * @return Return true if the database is valid
  */
-bool Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Inventory::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
@@ -250,15 +250,15 @@ bool Inventory::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param db Database to populate
  * @return Return true if all went well
  */
-bool Inventory::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool Inventory::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
-    using namespace database;
+    using namespace databaseTools;
 
     if (!db)
         throw InventoryException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE,

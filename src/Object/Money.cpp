@@ -53,16 +53,16 @@ Money::Money(std::initializer_list<unsigned int> values) : Money()
  * @param [in] db Database to use
  * @return Return true if the initialization is done correctly
  */
-bool Money::initializeFromDatabase(std::shared_ptr<database::Database> db)
+bool Money::initializeFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Money;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
-        throw MoneyException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw MoneyException("No database given.", BaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw MoneyException("The database model is not correct",
-                             DatabaseException::BAD_MODEL);
+                             BaseException::BAD_MODEL);
     if (m_initialized)
     {
         m_moneyNames.clear();
@@ -214,11 +214,11 @@ void Money::initializeAdditionnalValues(const
  * @param db Database to verify
  * @return Return true if the database contains the good tables
  */
-bool Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Money::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Money;
-    using namespace database;
+    using namespace databaseTools;
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
@@ -243,13 +243,13 @@ bool Money::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param db Database to populate
  * @return Return true if the database was well populated
  */
-bool Money::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool Money::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Money;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
-        throw MoneyException("No database given.", DatabaseException::MISSING_DATABASE);
+        throw MoneyException("No database given.", BaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY)

@@ -41,17 +41,17 @@ Character::Character(const std::string& name,
  * @param [in] db (Not null) Database to use for loading
  * @return Return true if the loading was successfull
  */
-bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
+bool Character::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw CharacterException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw CharacterException("The database model is not correct",
-                                 DatabaseException::BAD_MODEL);
+                                 BaseException::BAD_MODEL);
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .where(Model::NAME, Query::EQUAL, m_name));
     if (!Database::isQuerySuccessfull(result))
@@ -72,14 +72,14 @@ bool Character::loadFromDatabase(std::shared_ptr<database::Database> db)
  * @param[in] db Database to modify
  * @return True if the model is correct
  */
-bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Character::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw CharacterException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
@@ -103,14 +103,14 @@ bool Character::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param[in] db Database to populate
  * @return Return true if the database was well populated
  */
-bool Character::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool Character::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Character;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw CharacterException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME).constraint(Model::NAME, Query::PRIMARY_KEY));

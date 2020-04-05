@@ -5,7 +5,7 @@ find_package(glog REQUIRED)
 add_library(Maker
     Maker.cpp Maker.hpp)
 target_link_libraries(Maker
-    Database
+    DatabaseTools
     Events
     Character Map Game Config Object Tools
     glog

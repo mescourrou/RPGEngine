@@ -1,14 +1,15 @@
 find_library(glog REQUIRED)
+find_package(DatabaseTools REQUIRED)
 add_library(Object
 	Object.cpp Object.hpp
 	Money.cpp Money.hpp
 	Inventory.cpp Inventory.hpp
 	)
 
-
+message("DATABASE libs = ${DATABASE_LIBS}")
 target_link_libraries(Object
 	BaseObject
-	Database
+    DatabaseTools
 	Tools
 	glog)
 target_include_directories(Object PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

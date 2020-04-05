@@ -32,18 +32,18 @@ Position::Position(std::shared_ptr<Map> map, double x, double y, double z) :
  * @param characterName Character from whom loading the position
  * @return Return true if all went well
  */
-bool Position::loadFromDatabase(std::shared_ptr<database::Database> db,
+bool Position::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
                                 std::shared_ptr<config::Context> context, const std::string& characterName)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Position;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw PositionException("No database given.",
-                                DatabaseException::MISSING_DATABASE);
+                                BaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw PositionException("The database model is not correct",
-                                DatabaseException::BAD_MODEL);
+                                BaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE,
                             db).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
@@ -137,11 +137,11 @@ bool Position::operator!=(const Position& other)
  * @param db Database to verify
  * @return Return true if the model is good
  */
-bool Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Position::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Position;
-    using namespace database;
+    using namespace databaseTools;
     if (!db->isTable(Model::TABLE))
         return false;
     auto columnList = db->columnList(Model::TABLE);
@@ -173,14 +173,14 @@ bool Position::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param db Database to populate
  * @return Return true if all went well
  */
-bool Position::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool Position::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Position;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw PositionException("No database given.",
-                                DatabaseException::MISSING_DATABASE);
+                                BaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::FK_CHARACTER, DataType::BLOB, database::Model::Character::TABLE,

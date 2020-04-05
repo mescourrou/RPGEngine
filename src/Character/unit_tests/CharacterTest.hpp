@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -15,7 +15,7 @@ class CharacterTest : public testing::Test
   public:
     void SetUp() override;
 
-    std::shared_ptr<database::Database> database;
+    std::shared_ptr<databaseTools::Database> database;
 };
 
 }

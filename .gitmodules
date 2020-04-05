@@ -7,9 +7,6 @@
 [submodule "thirdparty/glog"]
 	path = thirdparty/glog
 	url = https://github.com/google/glog.git
-[submodule "thirdparty/sqlite3"]
-	path = thirdparty/sqlite3
-	url = https://github.com/LuaDist/libsqlite3.git
 [submodule "thirdparty/sfml"]
 	path = thirdparty/sfml
 	url = https://github.com/SFML/SFML.git
@@ -34,3 +31,6 @@
 [submodule "thirdparty/epstl"]
 	path = thirdparty/epstl
 	url = https://github.com/mescourrou/epstl.git
+[submodule "thirdparty/DatabaseTools"]
+	path = thirdparty/DatabaseTools
+	url = https://github.com/mescourrou/DatabaseTools.git

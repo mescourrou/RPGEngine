@@ -132,7 +132,8 @@ TEST_F(PositionTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
-    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                usedFile));
 
     character::Character::createDatabaseModel(db);
 

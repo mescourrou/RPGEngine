@@ -45,7 +45,8 @@ TEST_F(MoneyTest, InitializeFromDatabase)
     std::filesystem::copy(modelFile, useFile,
                           std::filesystem::copy_options::overwrite_existing);
 
-    std::shared_ptr<database::Database> db(new database::Database(useFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                useFile));
     Money::initializeFromDatabase(db);
     EXPECT_EQ(Money::moneyValue("nonValidMoneyName"), 0);
     EXPECT_EQ(Money::moneyValue("bronze"), 1);
@@ -409,7 +410,8 @@ TEST_F(MoneyTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
-    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                usedFile));
 
     EXPECT_TRUE(Money::createDatabaseModel(db));
 

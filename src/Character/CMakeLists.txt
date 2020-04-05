@@ -6,7 +6,7 @@ add_library(Character
     Vendor.cpp Vendor.hpp)
 target_link_libraries(Character
     glog BaseObject
-    Database
+    DatabaseTools
     Object
     Tools
     Events

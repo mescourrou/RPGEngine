@@ -48,7 +48,7 @@ class GameGUI : public BaseObject
     GameGUI(std::shared_ptr<config::Context> context, Game* game);
     ~GameGUI() override;
 
-    bool initialize(std::shared_ptr<database::Database> db);
+    bool initialize(std::shared_ptr<databaseTools::Database> db);
     void eventManager();
 
     void draw();
@@ -102,7 +102,7 @@ class GameGUI : public BaseObject
     /// Context to use
     std::shared_ptr<config::Context> m_context;
     /// Database to use
-    std::shared_ptr<database::Database> m_db;
+    std::shared_ptr<databaseTools::Database> m_db;
     /// SFML render window
     std::shared_ptr<sf::RenderWindow> m_window;
 

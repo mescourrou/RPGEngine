@@ -268,7 +268,7 @@ bool Maker::createDatabaseModel()
 {
     if (!m_db)
         throw MakerException("No database loaded.",
-                             database::DatabaseException::MISSING_DATABASE);
+                             database::BaseException::MISSING_DATABASE);
     return
         character::Character::createDatabaseModel(m_db) &&
         character::NPC::createDatabaseModel(m_db) &&

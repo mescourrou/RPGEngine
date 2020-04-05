@@ -30,7 +30,8 @@ TEST_F(ObjectTest, LoadFromDatabase)
     std::filesystem::copy(modelFile, useFile,
                           std::filesystem::copy_options::overwrite_existing);
 
-    std::shared_ptr<database::Database> db(new database::Database(useFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                useFile));
 
     Object myObject("myObject");
     ASSERT_TRUE(myObject.loadFromDatabase(db));
@@ -49,7 +50,8 @@ TEST_F(ObjectTest, CreateFromDatabaseObject)
     std::filesystem::copy(modelFile, useFile,
                           std::filesystem::copy_options::overwrite_existing);
 
-    std::shared_ptr<database::Database> db(new database::Database(useFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                useFile));
 
     std::shared_ptr<Object> object = Object::createFromDatabase("myObject", db);
 
@@ -95,7 +97,8 @@ TEST_F(ObjectTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
-    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                usedFile));
 
     EXPECT_TRUE(Object::createDatabaseModel(db));
 

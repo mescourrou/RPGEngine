@@ -19,16 +19,16 @@ class NPC : public Character
     /// @brief Default constructor
     ~NPC() override = default;
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db) override;
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
 
     virtual void updatePosition();
 
   private:
-    static bool verifyNPCModel(std::shared_ptr<database::Database> db);
-    static bool verifyNPCPathModel(std::shared_ptr<database::Database> db);
+    static bool verifyNPCModel(std::shared_ptr<databaseTools::Database> db);
+    static bool verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db);
     std::list<map::Position> m_path; ///< List of points to follow
     map::Position* m_targettedPosition = nullptr; ///< Current point targetted
 
