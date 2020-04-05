@@ -13,7 +13,7 @@ set(RPG_VERBOSE 10 CACHE STRING "Default level of verbosity")
 
 set(SOURCES "")
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 

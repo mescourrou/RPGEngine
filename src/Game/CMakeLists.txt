@@ -9,7 +9,7 @@ target_link_libraries(Game BaseObject
     Config
     Character
     Tools
-    Database
+    DatabaseTools
     Events
     glog
     gflags

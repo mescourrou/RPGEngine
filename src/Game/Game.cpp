@@ -48,12 +48,12 @@ Game::Game(const std::string& name,
  * @param[in] db Database to use for initialization
  * @return Return true if the initialization went well
  */
-bool Game::initialize(std::shared_ptr<database::Database> db)
+bool Game::initialize(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     // Database verification
     LOG(INFO) << "Verify database";
-    using namespace database;
+    using namespace databaseTools;
     namespace Model = database::Model::Game;
     if (!db)
         throw GameException("No database given.", BaseException::MISSING_DATABASE);
@@ -154,13 +154,13 @@ bool Game::run()
 void Game::loadMapContents(const std::string& mapName)
 {
     PROFILE_FUNCTION();
-    using namespace database;
+    using namespace databaseTools;
 
     // Loading the NPCs of the current map
     auto result = m_db->query(Query::createQuery<Query::SELECT>
-                              (Model::Position::TABLE, m_db)
-                              .where(Model::Position::FK_MAP, Query::EQUAL, mapName)
-                              .column(Model::Position::FK_CHARACTER));
+                              (database::Model::Position::TABLE, m_db)
+                              .where(database::Model::Position::FK_MAP, Query::EQUAL, mapName)
+                              .column(database::Model::Position::FK_CHARACTER));
     if (!Database::isQuerySuccessfull(result))
     {
         LOG(WARNING) << "Warning : abort loading contents of map " << mapName;
@@ -169,7 +169,7 @@ void Game::loadMapContents(const std::string& mapName)
 
     for (unsigned int i = 1; i < result.size(); i++)
     {
-        auto& characterName = result.at(i).at(Model::Position::FK_CHARACTER);
+        auto& characterName = result.at(i).at(database::Model::Position::FK_CHARACTER);
         if (characterName != m_playerCharacter->name())
         {
             auto& newOne = m_characterList.emplace_back(
@@ -201,11 +201,11 @@ void Game::unloadCurrentMap()
  * @param [in] db Database to verify
  * @return Returns true if the database is valid
  */
-bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Game::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Game;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw GameException("No database given.", BaseException::MISSING_DATABASE);
     if (!db->isTable(Model::TABLE))
@@ -239,11 +239,11 @@ bool Game::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param[in] db Database to populate
  * @return Return true if the database was well populated
  */
-bool Game::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool Game::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Game;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw GameException("No database given.", BaseException::MISSING_DATABASE);
 

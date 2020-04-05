@@ -7,6 +7,7 @@ add_executable(Map_test
     VectorTest.cpp VectorTest.hpp
     AreaTest.cpp AreaTest.hpp)
 target_link_libraries(Map_test gtest gmock Map Character
+    DatabaseTools
     ${FILESYSTEM_LIB})
 gtest_discover_tests(Map_test)
 

@@ -62,7 +62,7 @@ GameGUI::~GameGUI()
  * @param db Database to use
  * @return Return true if the initialization went well
  */
-bool GameGUI::initialize(std::shared_ptr<database::Database> db)
+bool GameGUI::initialize(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";

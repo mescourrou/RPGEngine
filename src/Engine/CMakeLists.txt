@@ -1,8 +1,9 @@
 set(EngineName "${PROJECT_NAME}Engine")
 
+find_package(DatabaseTools REQUIRED)
 add_executable(${EngineName} main.cpp)
 target_link_libraries(${EngineName}
-	Game)
+    Game DatabaseTools)
 target_include_directories(${EngineName} PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/config" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/config")
