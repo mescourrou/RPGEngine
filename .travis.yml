@@ -16,8 +16,7 @@ git:
 addons:
   sonarcloud:
     organization: "mescourrou-github"
-    token:
-      secure: "${SONAR_TOKEN}"
+    token: "${SONAR_TOKEN}"
   apt:
     update: true
   git:
@@ -62,7 +61,7 @@ script:
 after_script:
   - cd ${REPO}
   - ls -la build/bin/Database
-  - sonar-scanner -X
+  - sonar-scanner -X -Dsonar.cfamily.build-wrapper-output=bw-output
 
 before_deploy:
   - cd ${REPO}/build
