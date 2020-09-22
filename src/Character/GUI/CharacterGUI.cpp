@@ -74,10 +74,17 @@ CharacterGUI::CharacterGUI(std::weak_ptr<Character> character,
 void CharacterGUI::prepare(const sf::Vector2f&)
 {
     PROFILE_FUNCTION();
-    if (m_tics == 0)
+    auto sinceLastSprite = std::chrono::duration_cast<std::chrono::milliseconds>
+                           (std::chrono::high_resolution_clock::now() - m_spriteTimer).count();
+    if (sinceLastSprite >= m_spritePeriod)
     {
-        auto actualiseCurrentSprite = [this](const std::vector<unsigned int>& action)
+        unsigned int missedSprites = std::floor(sinceLastSprite / (m_spritePeriod + 1));
+        auto actualiseCurrentSprite = [this,
+                                       &missedSprites](const std::vector<unsigned int>& action)
         {
+            m_spriteCinematicIndex += missedSprites;
+            if (m_spriteCinematicIndex >= action.size())
+                m_spriteCinematicIndex = 0;
             m_currentSprite = &(m_sprites[action.at(m_spriteCinematicIndex)]);
             m_spriteCinematicIndex++;
             if (m_spriteCinematicIndex >= action.size())
@@ -113,13 +120,11 @@ void CharacterGUI::prepare(const sf::Vector2f&)
                 break;
             }
         }
+        m_spriteTimer = std::chrono::high_resolution_clock::now();
     }
 
     setOnScreenPosition(currentMap().lock()->positionOnScreenFrom(
                             m_character.lock()->position()));
-    m_tics++;
-    if (m_tics >= m_spriteChangeTics)
-        m_tics = 0;
 }
 
 /**
@@ -326,7 +331,7 @@ bool CharacterGUI::load(const std::string& characterRessourcesDir)
         if (!verifyJSONTopStructure(json))
             return false;
 
-        m_spriteChangeTics = json[characterFile::SPRITE_PERIOD].get<unsigned int>();
+        m_spritePeriod = json[characterFile::SPRITE_PERIOD].get<unsigned int>();
 
         if (!loadSets(json, characterRessourcesDir))
             return false;
@@ -390,7 +395,6 @@ void CharacterGUI::slotKeyReleased(sf::Event::KeyEvent key)
             (key.code == sf::Keyboard::Down && m_currentDirection == Down))
     {
         m_moving = false;
-        m_tics = 0;
         m_spriteCinematicIndex = 0;
     }
 }

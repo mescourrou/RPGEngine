@@ -1,6 +1,7 @@
 #pragma once
 
 #include <memory>
+#include <chrono>
 
 #include <BaseException.hpp>
 #include <Vector.hpp>
@@ -75,34 +76,28 @@ class CharacterGUI : public BaseGUIObject
     bool loadSets(const json& json, const std::string& characterRessourcesDir);
     bool loadActions(const json& json);
 
-    std::weak_ptr<Character>
-    m_character;                       ///< Pointer on the backend character
+    std::weak_ptr<Character> m_character; ///< Pointer on the backend character
     std::shared_ptr<config::Context> m_context;
 
     std::map<unsigned int, sf::Sprite>
-    m_sprites;               ///< Sprites of the Character, assigned by id
+    m_sprites; ///< Sprites of the Character, assigned by id
     std::vector<std::shared_ptr<sf::Texture>>
-                                           m_textures;       ///< List of the textures to keep the ownership
+                                           m_textures; ///< List of the textures to keep the ownership
     std::map<std::string, std::vector<unsigned int>>
             m_actions; ///< List of sprites associated with the actions
 
-    sf::Sprite* m_currentSprite =
-        nullptr;                      ///< Current sprite pointer
+    sf::Sprite* m_currentSprite = nullptr; ///< Current sprite pointer
     unsigned int m_spriteCinematicIndex =
-        0;                    ///< Current index on the current action sprite list
+        0; ///< Current index on the curren^t action sprite list
 
-    unsigned int
-    m_spriteChangeTics;                            ///< Number of image refreshing before changing the sprite
-    unsigned int m_tics =
-        0;                                    ///< Image counter, see m_spriteChangeTics
+    unsigned int m_spritePeriod; ///< Sprite refresh period (millisecond)
+    std::chrono::time_point<std::chrono::system_clock> m_spriteTimer;
 
-    Direction m_currentDirection =
-        Down;                        ///< Current player direction
-    bool m_moving =
-        false;                                      ///< Is the player moving ?
+    Direction m_currentDirection = Down; ///< Current player direction
+    bool m_moving = false; ///< Is the player moving ?
 
     std::vector<std::string>
-    m_requiredActions;                 ///< Actions wich need to be found in the loaded file
+    m_requiredActions; ///< Actions wich need to be found in the loaded file
 
     /**
      * @brief Differents actions names
