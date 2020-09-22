@@ -8,6 +8,7 @@ target_link_libraries(Maker
     DatabaseTools
     Events
     Character Map Game Config Object Tools
+    InstrumentationTools
     glog
     ${FILESYSTEM_LIB})
 target_include_directories(Maker PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

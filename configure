@@ -7,3 +7,5 @@ cd thirdparty/epstl && sh configure.sh
 cd $ROOT
 cd thirdparty/DatabaseTools && sh configure.sh
 cd $ROOT
+cd thirdparty/InstrumentationTools && sh configure
+cd $ROOT

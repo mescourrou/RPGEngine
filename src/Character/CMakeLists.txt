@@ -7,6 +7,7 @@ add_library(Character
 target_link_libraries(Character
     glog BaseObject
     DatabaseTools
+    InstrumentationTools
     Object
     Tools
     Events

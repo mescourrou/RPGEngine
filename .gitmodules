@@ -34,3 +34,6 @@
 [submodule "thirdparty/DatabaseTools"]
 	path = thirdparty/DatabaseTools
 	url = https://github.com/mescourrou/DatabaseTools.git
+[submodule "thirdparty/InstrumentationTools"]
+	path = thirdparty/InstrumentationTools
+	url = https://github.com/mescourrou/InstrumentationTools.git

@@ -7,7 +7,7 @@ add_library(Events
 	Work.cpp Work.hpp
 	ActionHandler.cpp ActionHandler.hpp
 	KeyBinding.cpp KeyBinding.hpp)
-target_link_libraries(Events BaseObject glog)
+target_link_libraries(Events BaseObject glog InstrumentationTools)
 target_include_directories(Events PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Events PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 

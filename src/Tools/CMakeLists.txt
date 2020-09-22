@@ -1,4 +1,5 @@
 find_library(glog REQUIRED)
+find_package(InstrumentationTools REQUIRED)
 
 add_library(Tools
         Tools.cpp Tools.hpp
@@ -6,11 +7,8 @@ add_library(Tools
         Logger.cpp Logger.hpp
         Stringlist.cpp Stringlist.hpp
         StateMachine.cpp StateMachine.hpp
-        PerformanceTimer.cpp PerformanceTimer.hpp
-        InstrumentationTimer.cpp InstrumentationTimer.hpp
-        Instrumentor.cpp Instrumentor.hpp
         )
-target_link_libraries(Tools glog BaseObject)
+target_link_libraries(Tools glog BaseObject InstrumentationTools)
 target_include_directories(Tools PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(Tools PUBLIC "${CMAKE_BINARY_DIR}/${RPG_CONFIG_FILE_DIR}")
 
