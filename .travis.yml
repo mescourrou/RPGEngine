@@ -6,9 +6,6 @@ compiler:
   - gcc
 
 cache: ccache
-cache:
-    directories:
-     - /home/travis/build/mescourrou/RPGEngine/build/
 
 env:
   global:
@@ -19,8 +16,7 @@ git:
 addons:
   sonarcloud:
     organization: "mescourrou-github"
-    token:
-      secure: "${SONAR_TOKEN}"
+    token: "${SONAR_TOKEN}"
   apt:
     update: true
   git:
@@ -46,11 +42,13 @@ install:
   - sudo apt-get install -y libflac++-dev libvorbis-dev 
   - sudo apt-get install -y libxrandr-dev
   - sudo apt-get install -y doxygen
+  - sudo apt-get install -y ggcov
+  - sudo ln -s /usr/bin/gcov-8 /usr/local/bin/gcov
+  - gcov --version
 
 before_script:
   - export REPO=`pwd`
   - ./configure
-  # create a build folder for the out-of-source build
   - mkdir -p build
   # switch to build directory
   - cd build
@@ -58,13 +56,12 @@ before_script:
   - cmake ..
 
 script:
-  - build-wrapper-linux-x86-64 --out-dir ../bw-output make clean all
-  - make test
+  - build-wrapper-linux-x86-64 --out-dir ../bw-output make clean all test
 
 after_script:
   - cd ${REPO}
-  - ls -la
-  - sonar-scanner -X
+  - ls -la build/bin/Database
+  - sonar-scanner -X -Dsonar.cfamily.build-wrapper-output=bw-output
 
 before_deploy:
   - cd ${REPO}/build
