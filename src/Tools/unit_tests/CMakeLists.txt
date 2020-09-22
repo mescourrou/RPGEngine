@@ -16,3 +16,10 @@ add_custom_command(TARGET Tools_test POST_BUILD
   COMMENT "Copying test data output directory")
 endif()
 
+add_custom_command(TARGET Tools_test
+    POST_BUILD
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/..
+    COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/..
+    COMMAND find . -name "*.gcda" -or -name "*.gcno" -exec gcov {}  \\\;
+#    COMMAND mv *.gcov ${CMAKE_CURRENT_SOURCE_DIR}/../gcov
+)

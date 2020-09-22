@@ -62,7 +62,7 @@ void Popups::Draw()
     {
         if (ImGui::BeginPopupModal("Error"))
         {
-            ImGui::Text(instance.m_errorList.front().c_str());
+            ImGui::Text("%s", instance.m_errorList.front().c_str());
 
             if (ImGui::Button("OK"))
             {
@@ -74,7 +74,7 @@ void Popups::Draw()
         }
         if (ImGui::BeginPopupModal("Warning"))
         {
-            ImGui::Text(instance.m_warningList.front().c_str());
+            ImGui::Text("%s", instance.m_warningList.front().c_str());
 
             if (ImGui::Button("OK"))
             {
@@ -86,7 +86,7 @@ void Popups::Draw()
         }
         if (ImGui::BeginPopup("Informations"))
         {
-            ImGui::Text(instance.m_infoList.front().c_str());
+            ImGui::Text("%s", instance.m_infoList.front().c_str());
 
             if (ImGui::Button("OK"))
             {
