@@ -13,7 +13,7 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -67,7 +67,7 @@ class Position : public BaseObject
     /// @brief Destructor
     ~Position() override = default;
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db,
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
                           std::shared_ptr<config::Context> context, const std::string& characterName);
 
     /// @brief Get the map
@@ -130,8 +130,8 @@ class Position : public BaseObject
     bool operator==(const Position& other);
     bool operator!=(const Position& other);
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
   private:
 
     std::shared_ptr<Map> m_map; ///< Map where we are on

@@ -19,7 +19,7 @@ namespace config
 class Context;
 }
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -70,7 +70,7 @@ class Game : public BaseObject
     /// @brief Destructor
     ~Game() override = default;
 
-    bool initialize(std::shared_ptr<database::Database> db);
+    bool initialize(std::shared_ptr<databaseTools::Database> db);
 
     bool run();
 
@@ -82,12 +82,12 @@ class Game : public BaseObject
         return m_name;
     }
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
   private:
 
     std::shared_ptr<config::Context> m_context;             ///< Context of the Game
-    std::shared_ptr<database::Database>
+    std::shared_ptr<databaseTools::Database>
     m_db;               ///< Database of the Game
     std::shared_ptr<character::Character>
     m_playerCharacter;  ///< The character played by the player

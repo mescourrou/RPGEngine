@@ -19,7 +19,7 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -54,7 +54,7 @@ class Money : public BaseObject
 
     template<typename ...Args>
     static void initialize(const std::string& baseValueName, Args...);
-    static bool initializeFromDatabase(std::shared_ptr<database::Database> db);
+    static bool initializeFromDatabase(std::shared_ptr<databaseTools::Database> db);
 
     // --------- Getters ----------------
     // Static
@@ -97,8 +97,8 @@ class Money : public BaseObject
     bool sub(const std::string& moneyName, unsigned int quantity);
 
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
   protected:
     static bool m_initialized; ///< Say if the money system is initialized
     /// Contains the name of the moneys and their values from the base value

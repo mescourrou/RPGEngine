@@ -85,7 +85,8 @@ TEST_F(InventoryTest, LoadFromDatabase)
     std::filesystem::copy(modelFile, useFile,
                           std::filesystem::copy_options::overwrite_existing);
 
-    std::shared_ptr<database::Database> db(new database::Database(useFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                useFile));
 
     Inventory myInventory;
 
@@ -105,7 +106,8 @@ TEST_F(InventoryTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
-    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                usedFile));
 
     character::Character::createDatabaseModel(db);
     object::Object::createDatabaseModel(db);

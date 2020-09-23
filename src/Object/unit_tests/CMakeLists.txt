@@ -1,4 +1,5 @@
 find_package(gtest REQUIRED)
+find_package(DatabaseTools REQUIRED)
 include(GoogleTest)
 
 add_executable(Object_test
@@ -8,6 +9,7 @@ add_executable(Object_test
     )
 
 target_link_libraries(Object_test gtest Object Character
+    DatabaseTools
     ${FILESYSTEM_LIB})
 gtest_discover_tests(Object_test)
 

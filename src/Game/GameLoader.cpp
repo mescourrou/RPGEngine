@@ -51,9 +51,9 @@ bool GameLoader::load(const std::string& name)
     databasePath = m_context->gameLocation() + "/" + databasePath;
     try
     {
-        m_db.reset(new database::Database(databasePath));
+        m_db.reset(new databaseTools::Database(databasePath));
     }
-    catch (const database::DatabaseException&)
+    catch (const databaseTools::DatabaseException&)
     {
         throw;
     }

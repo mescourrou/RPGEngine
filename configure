@@ -1,3 +1,11 @@
 #!/bin/bash
 git submodule init
 git submodule update --recursive
+
+ROOT=`pwd`
+cd thirdparty/epstl && sh configure.sh
+cd $ROOT
+cd thirdparty/DatabaseTools && sh configure.sh
+cd $ROOT
+cd thirdparty/InstrumentationTools && sh configure
+cd $ROOT

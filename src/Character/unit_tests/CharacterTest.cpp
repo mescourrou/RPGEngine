@@ -63,7 +63,8 @@ TEST_F(CharacterTest, CreatingDatabaseModel)
 {
     std::filesystem::path usedFile = "data/sample0.db";
     std::filesystem::remove(usedFile);
-    std::shared_ptr<database::Database> db(new database::Database(usedFile));
+    std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
+                usedFile));
 
     EXPECT_TRUE(Character::createDatabaseModel(db));
 
@@ -82,7 +83,7 @@ void CharacterTest::SetUp()
     std::filesystem::copy(modelFile, usedFile,
                           std::filesystem::copy_options::overwrite_existing);
 
-    database = std::shared_ptr<database::Database>(new database::Database(
+    database = std::shared_ptr<databaseTools::Database>(new databaseTools::Database(
                    usedFile));
 }
 #endif

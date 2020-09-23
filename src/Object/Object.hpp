@@ -10,7 +10,7 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -48,9 +48,9 @@ class Object : public BaseObject
     virtual Object& operator=(const Object& copy) = default;
     virtual Object& operator=(Object&& moved) = default;
 
-    virtual bool loadFromDatabase(std::shared_ptr<database::Database> db);
+    virtual bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db);
     static std::shared_ptr<Object> createFromDatabase(const std::string& name,
-            std::shared_ptr<database::Database> db);
+            std::shared_ptr<databaseTools::Database> db);
 
     // Getters
     /// @brief Get the object name
@@ -97,8 +97,8 @@ class Object : public BaseObject
     }
 
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
   protected:
 
     std::string m_name = "Unkown object";   ///< Name of the object

@@ -167,7 +167,8 @@ bool Maker::doOpenGame(const std::string& gameName)
 
     if (m_db)
         m_db.reset();
-    m_db = std::make_shared<database::Database>(m_context->gameLocation() + "/" +
+    m_db = std::make_shared<databaseTools::Database>(m_context->gameLocation() + "/"
+            +
             m_dbFile);
     if (!m_db)
     {
@@ -188,7 +189,7 @@ bool Maker::doOpenGame(const std::string& gameName)
  */
 void Maker::loadDatabase(const std::string& filename)
 {
-    m_db = std::make_shared<database::Database>(filename);
+    m_db = std::make_shared<databaseTools::Database>(filename);
 }
 
 /**
@@ -196,7 +197,7 @@ void Maker::loadDatabase(const std::string& filename)
  * @param db Database to verify
  * @return Return true if the database is correct
  */
-bool Maker::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Maker::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     return
         character::Character::verifyDatabaseModel(db) &&
@@ -213,7 +214,8 @@ void Maker::updateCharacterList()
     if (!m_currentMap)
         return;
     m_characterList.clear();
-    using namespace database;
+    using namespace databaseTools;
+    namespace Model = database::Model;
     auto result = m_db->query(Query::createQuery<Query::SELECT>
                               (Model::Character::TABLE, m_db)
                               .column(Model::Character::NAME)
@@ -251,7 +253,8 @@ bool Maker::populateDirectory()
         return false;
     }
 
-    using namespace database;
+    using namespace databaseTools;
+    namespace Model = database::Model;
     m_db->query(Query::createQuery<Query::INSERT>(Model::Game::TABLE, m_db)
                 .value(Model::Game::NAME, m_name)
                 .value(Model::Game::VERSION, "1")
@@ -267,8 +270,7 @@ bool Maker::populateDirectory()
 bool Maker::createDatabaseModel()
 {
     if (!m_db)
-        throw MakerException("No database loaded.",
-                             database::DatabaseException::MISSING_DATABASE);
+        throw MakerException("No database loaded.", BaseException::MISSING_DATABASE);
     return
         character::Character::createDatabaseModel(m_db) &&
         character::NPC::createDatabaseModel(m_db) &&
@@ -281,7 +283,8 @@ bool Maker::createDatabaseModel()
 
 bool Maker::saveCharacter(const Maker::CharacterInformations& infos)
 {
-    using namespace database;
+    using namespace databaseTools;
+    namespace Model = database::Model;
     m_db->query(Query::createQuery<Query::INSERT>(Model::Character::TABLE, m_db)
                 .value(Model::Character::NAME, infos.name));
     if (infos.type == CharacterInformations::NPC
@@ -321,7 +324,8 @@ bool Maker::saveCharacter(const Maker::CharacterInformations& infos)
 bool Maker::saveCharacter(const Maker::CharacterInformations& current,
                           const Maker::CharacterInformations& previous)
 {
-    using namespace database;
+    using namespace databaseTools;
+    namespace Model = database::Model;
     if (current.name != previous.name)
     {
         m_db->query(Query::createQuery<Query::UPDATE>(Model::Character::TABLE, m_db)
@@ -393,9 +397,10 @@ bool Maker::getCharacterInformations(const std::string& name,
                                      Maker::CharacterInformations& out)
 {
     CharacterInformations ret;
-    using namespace database;
+    using namespace databaseTools;
+    namespace Model = database::Model;
     auto result = m_db->query(Query::createQuery<Query::SELECT>
-                              (Model::Character::TABLE, m_db)
+                              (database::Model::Character::TABLE, m_db)
                               .where(Model::Character::NAME, Query::EQUAL, name));
     if (!Database::isQuerySuccessfull(result))
         return false;
@@ -404,7 +409,8 @@ bool Maker::getCharacterInformations(const std::string& name,
 
     out.name = name;
 
-    result = m_db->query(Query::createQuery<Query::SELECT>(Model::NPC::TABLE, m_db)
+    result = m_db->query(Query::createQuery<Query::SELECT>
+                         (database::Model::NPC::TABLE, m_db)
                          .where(Model::NPC::NAME, Query::EQUAL, name)
                          .column(Model::NPC::TYPE));
     if (result.size() > 1)
@@ -422,8 +428,9 @@ bool Maker::getCharacterInformations(const std::string& name,
         }
     }
 
-    result = m_db->query(Query::createQuery<Query::SELECT>(Model::Position::TABLE,
-                         m_db)
+    result = m_db->query(Query::createQuery<Query::SELECT>
+                         (database::Model::Position::TABLE,
+                          m_db)
                          .where(Model::Position::FK_CHARACTER, Query::EQUAL, name));
     if (!Database::isQuerySuccessfull(result))
         return false;
@@ -440,14 +447,15 @@ bool Maker::getCharacterInformations(const std::string& name,
 
 bool Maker::deleteCharacter(const std::string& name)
 {
-    using namespace database;
-    m_db->query(Query::createQuery<Query::DELETE>(Model::NPC::TABLE, m_db)
-                .where(Model::NPC::NAME, Query::EQUAL, name));
-    m_db->query(Query::createQuery<Query::DELETE>(Model::Position::TABLE, m_db)
-                .where(Model::Position::FK_CHARACTER, Query::EQUAL, name));
+    using namespace databaseTools;
+    m_db->query(Query::createQuery<Query::DELETE>(database::Model::NPC::TABLE, m_db)
+                .where(database::Model::NPC::NAME, Query::EQUAL, name));
+    m_db->query(Query::createQuery<Query::DELETE>(database::Model::Position::TABLE,
+                m_db)
+                .where(database::Model::Position::FK_CHARACTER, Query::EQUAL, name));
     if (Database::isQuerySuccessfull(m_db->query(Query::createQuery<Query::DELETE>
-                                     (Model::Character::TABLE, m_db)
-                                     .where(Model::Character::NAME, Query::EQUAL, name))))
+                                     (database::Model::Character::TABLE, m_db)
+                                     .where(database::Model::Character::NAME, Query::EQUAL, name))))
     {
         events::WorkerThread::newWork(this, &Maker::updateCharacterList);
         return true;
@@ -458,29 +466,31 @@ bool Maker::deleteCharacter(const std::string& name)
 
 bool Maker::saveMoney(const Maker::MoneyInformations& infos)
 {
-    using namespace database;
+    using namespace databaseTools;
+    namespace Model = database::Model::Money;
     if (infos.values.at(infos.baseMoney) != 1)
         return false;
     // Delete all values
-    m_db->query(Query::createQuery<Query::DELETE>(Model::Money::TABLE, m_db));
+    m_db->query(Query::createQuery<Query::DELETE>(Model::TABLE, m_db));
 
     for (unsigned int i = 0; i < infos.moneyList.size(); i++)
     {
         if (i != infos.baseMoney && infos.values.at(i) == 1)
             return false;
-        m_db->query(Query::createQuery<Query::INSERT>(Model::Money::TABLE, m_db)
-                    .value(Model::Money::NAME, infos.moneyList.at(i))
-                    .value(Model::Money::VALUE, std::to_string(infos.values.at(i))));
+        m_db->query(Query::createQuery<Query::INSERT>(Model::TABLE, m_db)
+                    .value(Model::NAME, infos.moneyList.at(i))
+                    .value(Model::VALUE, std::to_string(infos.values.at(i))));
     }
     return true;
 }
 
 bool Maker::getMoneyInformations(Maker::MoneyInformations& out)
 {
-    using namespace database;
-    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::Money::TABLE,
+    using namespace databaseTools;
+    namespace Model = database::Model::Money;
+    auto result = m_db->query(Query::createQuery<Query::SELECT>(Model::TABLE,
                               m_db)
-                              .sort(Model::Money::VALUE));
+                              .sort(Model::VALUE));
     if (!Database::isQuerySuccessfull(result))
         return false;
     if (result.size() <= 1)
@@ -491,8 +501,8 @@ bool Maker::getMoneyInformations(Maker::MoneyInformations& out)
     out.baseMoney = -1;
     for (unsigned int i = 1; i < result.size(); i++)
     {
-        out.values.push_back(std::stoi(result.at(i).at(Model::Money::VALUE)));
-        out.moneyList.push_back(result.at(i).at(Model::Money::NAME));
+        out.values.push_back(std::stoi(result.at(i).at(Model::VALUE)));
+        out.moneyList.push_back(result.at(i).at(Model::NAME));
         if (out.values.back() == 1)
             out.baseMoney = i - 1;
 
@@ -510,10 +520,11 @@ Maker::MapInformations Maker::getMapInformations(const std::string& name)
 
 std::set<std::string> Maker::getMapList()
 {
-    using namespace database;
+    using namespace databaseTools;
     auto result = m_db->query(Query::createQuery<Query::SELECT>
-                              (Model::Position::TABLE, m_db)
-                              .column(Model::Position::FK_MAP).sort(Model::Position::FK_MAP));
+                              (database::Model::Position::TABLE, m_db)
+                              .column(database::Model::Position::FK_MAP).sort(
+                                  database::Model::Position::FK_MAP));
     if (!Database::isQuerySuccessfull(result))
         return {};
     if (result.size() <= 1)
@@ -521,7 +532,7 @@ std::set<std::string> Maker::getMapList()
     std::set<std::string> ret;
     for (unsigned int i = 1; i < result.size(); i++)
     {
-        ret.insert(result.at(i).at(Model::Position::FK_MAP));
+        ret.insert(result.at(i).at(database::Model::Position::FK_MAP));
     }
 
     return ret;
@@ -544,12 +555,13 @@ void Maker::saveMap(const Maker::MapInformations& current)
 void Maker::saveMap(const Maker::MapInformations& current,
                     const Maker::MapInformations& previous)
 {
-    using namespace database;
+    using namespace databaseTools;
     if (current.name != previous.name)
     {
-        m_db->query(Query::createQuery<Query::UPDATE>(Model::Position::TABLE, m_db)
-                    .set(Model::Position::FK_MAP, current.name)
-                    .where(Model::Position::FK_MAP, Query::EQUAL, previous.name));
+        m_db->query(Query::createQuery<Query::UPDATE>(database::Model::Position::TABLE,
+                    m_db)
+                    .set(database::Model::Position::FK_MAP, current.name)
+                    .where(database::Model::Position::FK_MAP, Query::EQUAL, previous.name));
         updateCharacterList();
     }
 }

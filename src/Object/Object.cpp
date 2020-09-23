@@ -27,17 +27,17 @@ Object::Object(std::string name) : m_name(std::move(name))
  * @param [in] db Database to use
  * @return Return true if the loading was successfull
  */
-bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
+bool Object::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw ObjectException("No database given.",
-                              DatabaseException::MISSING_DATABASE);
+                              BaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw ObjectException("The database model is not correct",
-                              DatabaseException::BAD_MODEL);
+                              BaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .where(Model::NAME, Query::EQUAL, m_name));
@@ -54,17 +54,17 @@ bool Object::loadFromDatabase(std::shared_ptr<database::Database> db)
  * @return Return a object, or a derived type
  */
 std::shared_ptr<Object> Object::createFromDatabase(const std::string& name,
-        std::shared_ptr<database::Database> db)
+        std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw ObjectException("No database given.",
-                              DatabaseException::MISSING_DATABASE);
+                              BaseException::MISSING_DATABASE);
     if (!verifyDatabaseModel(db))
         throw ObjectException("The database model is not correct",
-                              DatabaseException::BAD_MODEL);
+                              BaseException::BAD_MODEL);
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .column(Model::TYPE)
@@ -90,7 +90,7 @@ std::shared_ptr<Object> Object::createFromDatabase(const std::string& name,
  * @param [in] db Database to verify
  * @return Return true if the database if valid
  */
-bool Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool Object::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
@@ -121,15 +121,15 @@ bool Object::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param db Database to populate
  * @return Return true if the database was well populated
  */
-bool Object::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool Object::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Object;
-    using namespace database;
+    using namespace databaseTools;
 
     if (!db)
         throw ObjectException("No database given.",
-                              DatabaseException::MISSING_DATABASE);
+                              BaseException::MISSING_DATABASE);
 
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db).ifNotExists()
               .column(Model::NAME, DataType::BLOB).constraint(Model::NAME, Query::PRIMARY_KEY)

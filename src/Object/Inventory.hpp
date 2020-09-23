@@ -11,7 +11,7 @@
 #include <gtest/gtest.h>
 #endif
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -50,7 +50,7 @@ class Inventory : public BaseObject
     std::shared_ptr<Object> pop(const std::string& objectName);
     void push(const std::shared_ptr<Object>& newObject);
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db,
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
                           const std::string characterName);
 
     /// @brief Get the money contained in the inventory
@@ -71,8 +71,8 @@ class Inventory : public BaseObject
         return m_inventory.size();
     }
 
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
-    static bool createDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+    static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
   private:
 
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects

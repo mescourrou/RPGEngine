@@ -2,6 +2,7 @@
 
 // Stl
 #include <memory>
+#include <set>
 
 // Project
 #include "general_config.hpp"
@@ -25,7 +26,7 @@ class MakerGUI;
 #endif
 
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -130,11 +131,11 @@ class Maker : public BaseObject
     StateMachine<States> stateMachine{PROJECT_LOADING, WORKBENCH};
 
   private:
-    static bool verifyDatabaseModel(std::shared_ptr<database::Database> db);
+    static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     void updateCharacterList();
     bool populateDirectory();
 
-    std::shared_ptr<database::Database> m_db; ///< Database to use
+    std::shared_ptr<databaseTools::Database> m_db; ///< Database to use
     std::shared_ptr<config::Context> m_context;
     config::Config m_generalConfig;
 

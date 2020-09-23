@@ -21,7 +21,7 @@ class Vendor : public NPC
     /// @brief Default constructor
     ~Vendor() override = default;
 
-    bool loadFromDatabase(std::shared_ptr<database::Database> db) override;
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
     const std::weak_ptr<object::Inventory> seeInventory() const;
     bool sell(const std::string& objectName, Character& buyer);

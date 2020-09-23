@@ -13,7 +13,7 @@ set(RPG_VERBOSE 10 CACHE STRING "Default level of verbosity")
 
 set(SOURCES "")
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 set(SOURCE_DIR "${CMAKE_SOURCE_DIR}/src")
 
@@ -84,6 +84,8 @@ add_doc_target()
 #	set_target_properties(ImGui PROPERTIES
 #		"INTERFACE_INCLUDE_DIRECTORIES" "${RPG_THIRDPARTY_DIR}/imgui/")
 #endif()
+
+find_package(DatabaseTools REQUIRED)
 
 add_subdirectory(${RPG_CONFIG_FILE_DIR})
 add_subdirectory(${SOURCE_DIR} bin)

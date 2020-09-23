@@ -23,14 +23,14 @@ NPC::NPC(const std::string& name, std::shared_ptr<config::Context> context):
  * @param db Database to use
  * @return Return true if the loading was successfull
  */
-bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
+bool NPC::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::NPC;
-    using namespace database;
+    using namespace databaseTools;
     if (!verifyDatabaseModel(db))
         throw CharacterException("The database model is not correct",
-                                 DatabaseException::BAD_MODEL);
+                                 BaseException::BAD_MODEL);
     // Verify if the name match a NPC
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .where(Model::NAME, Query::EQUAL, name()));
@@ -51,13 +51,13 @@ bool NPC::loadFromDatabase(std::shared_ptr<database::Database> db)
  * @param db Database to verify
  * @return Return true if the model is correct
  */
-bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
+bool NPC::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw CharacterException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
     return  verifyNPCModel(db) &&
             verifyNPCPathModel(db);
 }
@@ -67,14 +67,14 @@ bool NPC::verifyDatabaseModel(std::shared_ptr<database::Database> db)
  * @param db Database to populate
  * @return Return true if all went well
  */
-bool NPC::createDatabaseModel(std::shared_ptr<database::Database> db)
+bool NPC::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
 
-    using namespace database;
+    using namespace databaseTools;
     if (!db)
         throw CharacterException("No database given.",
-                                 DatabaseException::MISSING_DATABASE);
+                                 BaseException::MISSING_DATABASE);
     namespace ModelNPC = database::Model::NPC;
     db->query(Query::createQuery<Query::CREATE>(ModelNPC::TABLE, db).ifNotExists()
               .column(ModelNPC::NAME).constraint(ModelNPC::NAME, Query::PRIMARY_KEY)
@@ -106,7 +106,7 @@ void NPC::updatePosition()
  * @param db Databasse to check
  * @return Return true if the model is correct
  */
-bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
+bool NPC::verifyNPCModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::NPC;
@@ -134,7 +134,7 @@ bool NPC::verifyNPCModel(std::shared_ptr<database::Database> db)
  * @param db Database to check
  * @return Return true if the model is correct
  */
-bool NPC::verifyNPCPathModel(std::shared_ptr<database::Database> db)
+bool NPC::verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::NPCPath;

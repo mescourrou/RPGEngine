@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -20,7 +20,7 @@ class VendorTest : public ::testing::Test
   public:
     VendorTest();
 
-    std::shared_ptr<database::Database> db;
+    std::shared_ptr<databaseTools::Database> db;
     std::shared_ptr<config::Context> context;
 };
 

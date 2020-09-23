@@ -4,7 +4,8 @@ include(GoogleTest)
 add_executable(Character_test
     CharacterTest.cpp CharacterTest.hpp
     VendorTest.cpp VendorTest.hpp)
-target_link_libraries(Character_test gtest gmock Character ${FILESYSTEM_LIB})
+target_link_libraries(Character_test gtest gmock Character
+    DatabaseTools ${FILESYSTEM_LIB})
 gtest_discover_tests(Character_test)
 
 if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/data" AND IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/data")

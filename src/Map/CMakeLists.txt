@@ -8,7 +8,7 @@ add_library(Map
     Area.cpp Area.hpp)
 target_link_libraries(Map
     BaseObject
-    Database
+    DatabaseTools
     glog
     json
     Config)

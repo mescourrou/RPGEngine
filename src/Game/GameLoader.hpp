@@ -17,7 +17,7 @@ class Config;
 class Context;
 }
 
-namespace database
+namespace databaseTools
 {
 class Database;
 }
@@ -49,7 +49,7 @@ class GameLoader : public BaseObject
   private:
     std::shared_ptr<config::Context> m_context; ///< Context
     std::shared_ptr<config::Config> m_config;   ///< Game configuration
-    std::shared_ptr<database::Database> m_db;   ///< Game database
+    std::shared_ptr<databaseTools::Database> m_db;   ///< Game database
     std::shared_ptr<Game> m_game;               ///< Game to prepare
 };
 

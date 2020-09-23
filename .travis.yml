@@ -60,7 +60,6 @@ script:
 
 after_script:
   - cd ${REPO}
-  - ls -la build/bin/Database
   - sonar-scanner -X -Dsonar.cfamily.build-wrapper-output=bw-output
 
 before_deploy:
