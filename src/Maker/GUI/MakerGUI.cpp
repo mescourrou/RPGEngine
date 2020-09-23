@@ -75,7 +75,7 @@ bool MakerGUI::initialize()
 
     m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, []()
     {
-
+        // future work
     });
     m_maker->stateMachine.addEntryStateAction(Maker::WORKBENCH, [this]()
     {
@@ -127,9 +127,9 @@ void MakerGUI::eventManager()
         {
             events::ActionHandler::execute("Quit");
         }
-        if (event.type == sf::Event::Resized)
+        if (event.type == sf::Event::Resized && m_mapGUI)
         {
-            if (m_mapGUI) m_mapGUI->forcePrepare(m_window.getView().getSize());
+            m_mapGUI->forcePrepare(m_window.getView().getSize());
         }
         if (event.type == sf::Event::KeyPressed)
         {

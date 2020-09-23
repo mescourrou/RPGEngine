@@ -22,13 +22,20 @@ class CharacterWindow : public ImGui::Window
     void doNewCharacter();
     void doDeleteCharacter();
   private:
-    Maker* m_maker;                             ///< Pointer on the maker backend
-    stringlist m_list;                          ///< Character list
-    int m_currentCharacter = -1;                ///< Current character
-    Maker::CharacterInformations m_current;     ///< Saved charater informations
-    Maker::CharacterInformations m_edit;        ///< Edited character informations
-    char m_title[16] = "";                      ///< Title of the window
-    bool m_newOne = true;                       ///< Is there a new character showed
+    /// Pointer on the maker backend
+    Maker* m_maker;
+    /// Character list
+    stringlist m_list;
+    /// Current character
+    int m_currentCharacter = -1;
+    /// Saved charater informations
+    Maker::CharacterInformations m_current;
+    /// Edited character informations
+    Maker::CharacterInformations m_edit;
+    /// Title of the window
+    char m_title[16] = "";
+    /// Is there a new character showed
+    bool m_newOne = true;
 };
 
 } // namespace maker::gui

@@ -39,7 +39,7 @@ bool CharacterWindow::doPrepare()
         else
         {
             m_edit = m_current;
-            strcpy(m_title, m_edit.name.c_str());
+            snprintf(m_title, strlen(m_title), "%s", m_edit.name.c_str());
             m_newOne = false;
         }
     }
