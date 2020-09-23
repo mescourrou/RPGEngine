@@ -65,7 +65,8 @@ class Vector : public BaseObject
      */
     Vector(const Vector<m_kSize>& copy)
     {
-        m_vector = copy.m_vector;
+        if (this != &copy)
+            m_vector = copy.m_vector;
     }
 
     /**
@@ -74,7 +75,8 @@ class Vector : public BaseObject
      */
     Vector(Vector<m_kSize>&& move)
     {
-        m_vector = std::move(move.m_vector);
+        if (this != &move)
+            m_vector = std::move(move.m_vector);
     }
 
     /// @brief Destructor

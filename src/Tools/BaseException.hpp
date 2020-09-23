@@ -129,16 +129,18 @@ class BaseException : public std::exception
  *
  * @param NAME Name of the class attached to the Exception class
  */
-#define CREATE_EXCEPTION_CLASS(NAME, ...)                                                               \
-    class NAME##Exception : public BaseException                                                        \
-    {                                                                                                   \
-      public:                                                                                             \
+#define __CREATE_EXCEPTION_CLASS(NAME, ...)                                                                 \
+    class NAME : public BaseException                                                                       \
+    {                                                                                                       \
+      public:                                                                                               \
         __VA_ARGS__                                                                                         \
-        NAME##Exception(const std::string& w, const Errors& code = BaseException::UNKNOWN):                 \
+        NAME(const std::string& w, const Errors& code = BaseException::UNKNOWN):                            \
             BaseException(w, code) {}                                                                       \
-        ~NAME##Exception() override = default;                                                              \
+        ~NAME() override = default;                                                                         \
         const char* what() const noexcept override                                                          \
         {                                                                                                   \
             return m_what.c_str();                                                                          \
         }                                                                                                   \
     };
+
+#define CREATE_EXCEPTION_CLASS(NAME, ...) __CREATE_EXCEPTION_CLASS(NAME##Exception, __VA_ARGS__)

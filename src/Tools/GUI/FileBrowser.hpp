@@ -32,6 +32,7 @@ class FileBrowser
 
     // pwd is set to current working directory by default
     explicit FileBrowser(ImGuiFileBrowserFlags flags = 0);
+    virtual ~FileBrowser() = default;
 
     FileBrowser(const FileBrowser& copyFrom);
 
@@ -78,6 +79,12 @@ class FileBrowser
         {
             func_();
         }
+
+        ScopeGuard(const ScopeGuard&) = delete;
+        ScopeGuard(ScopeGuard&&) = delete;
+
+        ScopeGuard& operator=(const ScopeGuard&) = delete;
+        ScopeGuard& operator=(ScopeGuard&&) = delete;
     };
 
     void SetPwdUncatched(const std::filesystem::path& pwd);
