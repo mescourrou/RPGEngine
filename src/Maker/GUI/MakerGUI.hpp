@@ -66,7 +66,7 @@ class MakerGUI : public BaseObject
     void draw();
 
     /// Signal on closing the app
-    events::Event<void> signalClose;
+    ADD_EVENT(SignalClose, void);
 
   protected:
     void makeUI();

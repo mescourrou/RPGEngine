@@ -245,3 +245,27 @@ class Event<void>
 
 } // namespace events
 
+#define ADD_EVENT(NAME, ...)                                            \
+    public:                                                             \
+        template<typename T, typename M>                                \
+        void subscribeSyncTo##NAME(T* instance, M func) {               \
+            m_##NAME.subscribeSync(instance, func);                     \
+        }                                                               \
+        template<typename T, typename M>                                \
+        void subscribeASyncTo##NAME(T* instance, M func) {              \
+            m_##NAME.subscribeASync(instance, func);                    \
+        }                                                               \
+        template<typename M>                                            \
+        void subscribeSyncTo##NAME(M func) {                            \
+        m_##NAME.subscribeSync(func);                                   \
+        }                                                               \
+        template<typename M>                                            \
+        void subscribeASyncTo##NAME(M func) {                           \
+        m_##NAME.subscribeASync(func);                                  \
+        }                                                               \
+    protected:                                                          \
+        events::Event<__VA_ARGS__>& get##NAME() {                       \
+            return NAME;                                                \
+        }                                                               \
+    private:                                                            \
+        events::Event<__VA_ARGS__> m_##NAME
