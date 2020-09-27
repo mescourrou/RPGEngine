@@ -6,6 +6,5 @@
 
 class StringlistTest : public ::testing::Test
 {
-  public:
 };
 

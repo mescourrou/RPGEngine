@@ -23,11 +23,9 @@ class stringlist_batch
     ~stringlist_batch();
 
     stringlist_batch(const stringlist_batch<BATCH>& copy) noexcept;
-    stringlist_batch(stringlist_batch<BATCH>&& move) noexcept
+    stringlist_batch(stringlist_batch<BATCH>&& move) noexcept :
+        m_data(move.m_data), m_size(move.m_size), m_allocated(move.m_allocated)
     {
-        m_data = move.m_data;
-        m_size = move.m_size;
-        m_allocated = move.m_allocated;
         move.m_data = nullptr;
         move.m_size = 0;
         move.m_allocated = 0;
@@ -173,10 +171,9 @@ stringlist_batch<BATCH>::~stringlist_batch()
 
 template<short BATCH>
 stringlist_batch<BATCH>::stringlist_batch(const stringlist_batch<BATCH>& copy)
-noexcept
+noexcept :
+    m_allocated(copy.m_allocated), m_size(copy.m_size)
 {
-    m_allocated = copy.m_allocated;
-    m_size = copy.m_size;
     m_data = new char* [m_allocated];
     for (size_t i = 0; i < m_size; i++)
     {
@@ -334,7 +331,7 @@ void stringlist_batch<BATCH>::clear()
     {
         for (size_t i = 0; i < m_size; i++)
         {
-            delete m_data[i];
+            delete[] m_data[i];
         }
         delete[] m_data;
     }
