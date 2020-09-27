@@ -27,7 +27,8 @@ class Database;
 namespace object
 {
 
-CREATE_EXCEPTION_CLASS(Money)
+CREATE_EXCEPTION_CLASS(Money,
+                       ADD_EXCEPTION_CODE(INITIALIZATION))
 
 #ifdef RPG_BUILD_TEST
 class MoneyTest;
@@ -44,7 +45,7 @@ class Money : public BaseObject
 #endif
   public:
     Money();
-    Money(std::initializer_list<unsigned int> values);
+    explicit Money(std::initializer_list<unsigned int> values);
     /// @brief Destructor
     ~Money() override = default;
     Money(const Money& copy) = default;
@@ -113,8 +114,9 @@ class Money : public BaseObject
 
     void spread();
 
-    std::shared_ptr<std::vector<unsigned int>>
-                                            m_values; ///< Values of the instanced money
+  private:
+    /// Values of the instanced money
+    std::shared_ptr<std::vector<unsigned int>> m_values;
 
 
 };
@@ -133,8 +135,8 @@ void Money::initialize(const std::string& baseValueName, Args... values)
     initializeAdditionnalValues(values...);
 
     std::sort(m_moneyNames.begin(),
-              m_moneyNames.end(), [](std::pair<std::string, unsigned int> a,
-                                     std::pair<std::string, unsigned int> b)
+              m_moneyNames.end(), [](const std::pair<std::string, unsigned int>& a,
+                                     const std::pair<std::string, unsigned int>& b)
     {
         return a.second < b.second;
     });

@@ -109,7 +109,7 @@ bool Game::initialize(std::shared_ptr<databaseTools::Database> db)
 #ifdef RPG_BUILD_GUI
     // Initialize the gui
     LOG(INFO) << "Initialize GUI";
-    if (!m_gui->initialize(m_db))
+    if (!m_gui->initialize())
     {
         LOG(ERROR) << "Fail to initialize GUI";
         throw game::gui::GameGUIException("Fail to initialize GUI",

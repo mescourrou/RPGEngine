@@ -48,25 +48,31 @@ class GameGUI : public BaseObject
     GameGUI(std::shared_ptr<config::Context> context, Game* game);
     ~GameGUI() override;
 
-    bool initialize(std::shared_ptr<databaseTools::Database> db);
+    GameGUI(const GameGUI&) = delete;
+    GameGUI(GameGUI&&) = delete;
+    GameGUI& operator=(const GameGUI&) = delete;
+    GameGUI& operator=(GameGUI&&) = delete;
+
+    bool initialize();
     void eventManager();
 
     void draw();
 
-    /// Signal when a key is pressed
-    events::Event<sf::Event::KeyEvent> signalKeyPressed;
-    /// Signal when a key is released
-    events::Event<sf::Event::KeyEvent> signalKeyReleased;
-    /// Signal when a arrow is pressed (no security to get only one event)
-    events::Event<sf::Keyboard::Key> signalArroyIsPressed;
-    /// Signal when the pause is activated or not
-    events::Event<bool> signalPause;
+    ADD_EVENT(SignalKeyPressed,
+              sf::Event::KeyEvent); ///< Signal when a key is pressed
+    ADD_EVENT(SignalKeyReleased,
+              sf::Event::KeyEvent); ///< Signal when a key is released
+    ADD_EVENT(SignalArrowIsPressed,
+              sf::Keyboard::Key); ///< Signal when a arrow is pressed (no security to get only one event)
+    ADD_EVENT(SignalPause, bool); ///< Signal when the pause is activated or not
+    ADD_EVENT(SignalOnClose, void); ///< Event when the user close the game
+  public:
     /**
      * @brief Get the event triggered when the user close the game
      */
     void subscribeOnClose(const std::function<void(void)>& func)
     {
-        m_signalOnClose.subscribeAsync(func);
+        subscribeASyncToSignalOnClose(func);
     }
 
     /**
@@ -106,8 +112,6 @@ class GameGUI : public BaseObject
     /// SFML render window
     std::shared_ptr<sf::RenderWindow> m_window;
 
-    /// Event when the user close the game
-    events::Event<void> m_signalOnClose;
 
     /// Window manager
     ImGui::WindowsManager m_windowsManager;

@@ -32,6 +32,7 @@ class FileBrowser
 
     // pwd is set to current working directory by default
     explicit FileBrowser(ImGuiFileBrowserFlags flags = 0);
+    virtual ~FileBrowser() = default;
 
     FileBrowser(const FileBrowser& copyFrom);
 
@@ -78,6 +79,12 @@ class FileBrowser
         {
             func_();
         }
+
+        ScopeGuard(const ScopeGuard&) = delete;
+        ScopeGuard(ScopeGuard&&) = delete;
+
+        ScopeGuard& operator=(const ScopeGuard&) = delete;
+        ScopeGuard& operator=(ScopeGuard&&) = delete;
     };
 
     void SetPwdUncatched(const std::filesystem::path& pwd);
@@ -221,7 +228,8 @@ inline void ImGui::FileBrowser::Display()
 
     // display elements in pwd
 
-    int secIdx = 0, newPwdLastSecIdx = -1;
+    int secIdx = 0;
+    int newPwdLastSecIdx = -1;
     for (auto& sec : pwd_)
     {
 #ifdef _WIN32
@@ -313,15 +321,14 @@ inline void ImGui::FileBrowser::Display()
                     selectedFilename_ = std::string();
                     (*inputNameBuf_)[0] = '\0';
                 }
-                else if (rsc.name != "..")
+                else if (rsc.name != ".." && ((rsc.isDir
+                                               && (flags_ & ImGuiFileBrowserFlags_SelectDirectory)) ||
+                                              (!rsc.isDir && !(flags_ & ImGuiFileBrowserFlags_SelectDirectory))))
                 {
-                    if ((rsc.isDir && (flags_ & ImGuiFileBrowserFlags_SelectDirectory)) ||
-                            (!rsc.isDir && !(flags_ & ImGuiFileBrowserFlags_SelectDirectory)))
-                    {
-                        selectedFilename_ = rsc.name;
-                        if (!(flags_ & ImGuiFileBrowserFlags_SelectDirectory))
-                            strcpy(inputNameBuf_->data(), selectedFilename_.c_str());
-                    }
+                    selectedFilename_ = rsc.name;
+                    if (!(flags_ & ImGuiFileBrowserFlags_SelectDirectory))
+                        snprintf(inputNameBuf_->data(), inputNameBuf_->size(), "%s",
+                                 selectedFilename_.c_str());
                 }
             }
 

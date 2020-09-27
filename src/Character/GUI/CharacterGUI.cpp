@@ -35,10 +35,10 @@ void CharacterGUI::connectSignals(game::gui::GameGUI* game,
     PROFILE_FUNCTION();
     if (player)
     {
-        game->signalArroyIsPressed.subscribeAsync(character,
+        game->subscribeASyncToSignalArrowIsPressed(character,
                 &CharacterGUI::slotArrowPressed);
-        game->signalKeyReleased.subscribeAsync(character,
-                                               &CharacterGUI::slotKeyReleased);
+        game->subscribeASyncToSignalKeyReleased(character,
+                                                &CharacterGUI::slotKeyReleased);
     }
 }
 

@@ -47,10 +47,14 @@ class GameLoader : public BaseObject
     bool load(const std::string& name);
     bool run();
   private:
-    std::shared_ptr<config::Context> m_context; ///< Context
-    std::shared_ptr<config::Config> m_config;   ///< Game configuration
-    std::shared_ptr<databaseTools::Database> m_db;   ///< Game database
-    std::shared_ptr<Game> m_game;               ///< Game to prepare
+    /// Context
+    std::shared_ptr<config::Context> m_context;
+    /// Game configuration
+    std::shared_ptr<config::Config> m_config;
+    /// Game database
+    std::shared_ptr<databaseTools::Database> m_db;
+    /// Game to prepare
+    std::shared_ptr<Game> m_game;
 };
 
 } // namespace game

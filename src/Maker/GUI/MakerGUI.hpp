@@ -55,20 +55,37 @@ class MakerGUI : public BaseObject
     MakerGUI(std::shared_ptr<config::Context> context, Maker* maker);
     ~MakerGUI() override;
 
+    MakerGUI(const MakerGUI&) = delete;
+    MakerGUI(MakerGUI&&) = delete;
+    MakerGUI& operator=(const MakerGUI&) = delete;
+    MakerGUI& operator=(MakerGUI&&) = delete;
+
     bool initialize();
     void eventManager();
 
     void draw();
 
-    events::Event<void> signalClose;    ///< Signal on closing the app
+    /// Signal on closing the app
+    ADD_EVENT(SignalClose, void);
 
   protected:
     void makeUI();
   private:
-    sf::RenderWindow m_window;     ///< SFML render window
+    void processKeyPressedEvent(const sf::Event& event) const;
+    void processKeyReleasedEvent(const sf::Event& event) const;
+    void resetUI();
 
-    std::shared_ptr<config::Context> m_context;     ///< Used context
-    std::shared_ptr<map::gui::MapGUI> m_mapGUI;     ///< Pointer on the GUI map
+    void makeMainMenuBarUI();
+    void makeNewGameUI();
+    void makeOpenGameUI();
+
+    /// SFML render window
+    sf::RenderWindow m_window;
+
+    /// Used context
+    std::shared_ptr<config::Context> m_context;
+    /// Pointer on the GUI map
+    std::shared_ptr<map::gui::MapGUI> m_mapGUI;
 
     /**
      * @brief UI informations
@@ -89,42 +106,48 @@ class MakerGUI : public BaseObject
                 DIRECTORY,      ///< Selection of the directory
                 INFORMATIONS    ///< Getting informations
             };
-            State state;                            ///< Current state
+            /// Current state
+            State state;
 
-            std::string directory = "";             ///< Directory used for the new game
-            char gameName[100];                     ///< New game name
-        } newGame;                                  ///< UI informations for new game
+            std::string directory = "";     ///< Directory used for the new game
+            char gameName[100];             ///< New game name
+        };
+        /// UI informations for new game
+        struct NewGame newGame;
 
         /**
          * @brief UI Informations for the openning of the game
          */
         struct OpenGame
         {
-            bool window = false;                    ///< Window openned
-            stringlist gameList;                    ///< Game list
-            int selectedItem = 0;                   ///< Current game selected
-        } openGame;                                 ///< UI informations for openning game window
+            bool window = false;    ///< Window openned
+            stringlist gameList;    ///< Game list
+            int selectedItem = 0;   ///< Current game selected
+        };
+        /// UI informations for openning game window
+        struct OpenGame openGame;
 
 
-    } m_ui;                                         ///< UI structure containing the ui linked variable
+    };
+    /// UI structure containing the ui linked variable
+    struct UI m_ui;
 
-    void resetUI();
+    /// Window manager
+    ImGui::WindowsManager m_windowManager;
+    /// Pointer on the character window
+    std::unique_ptr<maker::gui::CharacterWindow> m_characterWindow;
+    /// Pointer on the console window
+    std::unique_ptr<maker::gui::ConsoleWindow> m_consoleWindow;
+    /// Pointer on the money window
+    std::unique_ptr<maker::gui::MoneyWindow> m_moneyWindow;
+    /// Pointer on the map windows
+    std::unique_ptr<maker::gui::MapWindow> m_mapWindow;
 
-    ImGui::WindowsManager
-    m_windowManager;                              ///< Window manager
-    std::unique_ptr<maker::gui::CharacterWindow>
-    m_characterWindow;     ///< Pointer on the character window
-    std::unique_ptr<maker::gui::ConsoleWindow>
-    m_consoleWindow;         ///< Pointer on the console window
-    std::unique_ptr<maker::gui::MoneyWindow>
-    m_moneyWindow;             ///< Pointer on the money window
-    std::unique_ptr<maker::gui::MapWindow>
-    m_mapWindow;                 ///< Pointer on the map windows
+    /// File browser
+    std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;
 
-    std::unique_ptr<ImGui::FileBrowser>
-    m_fileBrowser;                  ///< File browser
-
-    Maker* m_maker;                                                     ///< Pointer on the maker backend
+    /// Pointer on the maker backend
+    Maker* m_maker;
 
 };
 

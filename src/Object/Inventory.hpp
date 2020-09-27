@@ -51,7 +51,7 @@ class Inventory : public BaseObject
     void push(const std::shared_ptr<Object>& newObject);
 
     bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
-                          const std::string characterName);
+                          const std::string& characterName);
 
     /// @brief Get the money contained in the inventory
     const Money& money() const

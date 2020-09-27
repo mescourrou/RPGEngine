@@ -44,7 +44,7 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
                                           this;
 
     loadFromConfig();
-    m_context->config()->signalConfigUpdated.subscribeAsync(this,
+    m_context->config()->subscribeASyncToSignalConfigUpdated(this,
             &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
@@ -62,7 +62,7 @@ GameGUI::~GameGUI()
  * @param db Database to use
  * @return Return true if the initialization went well
  */
-bool GameGUI::initialize(std::shared_ptr<databaseTools::Database> db)
+bool GameGUI::initialize()
 {
     PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
@@ -75,7 +75,7 @@ bool GameGUI::initialize(std::shared_ptr<databaseTools::Database> db)
     m_mapGUI->setCenterOfView({m_game->m_playerCharacter->position().x(),
                                m_game->m_playerCharacter->position().y()});
 
-    m_game->m_playerCharacter->signalPositionChanged.subscribeSync([this](
+    m_game->m_playerCharacter->subscribeSyncToSignalPositionChanged([this](
                 const map::Position & pos)
     {
         m_mapGUI->setCenterOfView({pos.x(), pos.y()});
@@ -89,7 +89,7 @@ bool GameGUI::initialize(std::shared_ptr<databaseTools::Database> db)
     character::gui::CharacterGUI::connectSignals(m_game->m_playerCharacter.get(),
             m_player.lock().get(), true);
 
-    signalPause.subscribeAsync([this](bool pause)
+    subscribeASyncToSignalPause([this](bool pause)
     {
         m_ui.onPause = pause;
     });
@@ -130,7 +130,7 @@ void GameGUI::eventManager()
         // Close window: exit
         if (m_event.type == sf::Event::Closed)
         {
-            m_signalOnClose.trigger();
+            getSignalOnClose().trigger();
         }
         if (m_event.type == sf::Event::KeyPressed)
             managePressingKeyEvent(m_event.key);
@@ -270,7 +270,7 @@ void GameGUI::uiPauseMenu()
     PROFILE_FUNCTION();
     // Main pause menu
     if (ImGui::Button("Return to the game"))
-        signalPause.trigger(false);
+        getSignalPause().trigger(false);
 
     if (ImGui::Button("Settings"))
     {
@@ -283,7 +283,7 @@ void GameGUI::uiPauseMenu()
 
     if (ImGui::Button("Exit"))
     {
-        m_signalOnClose.trigger();
+        getSignalOnClose().trigger();
         exit(EXIT_SUCCESS);
     }
 
@@ -411,7 +411,7 @@ void GameGUI::managePressingKeyEvent(const sf::Event::KeyEvent& key)
     PROFILE_FUNCTION();
     if (m_actionWaitingForKeybinding.empty())
     {
-        signalKeyPressed.trigger(key);
+        getSignalKeyPressed().trigger(key);
         events::ActionHandler::processSFMLEvent(key);
     }
 }
@@ -424,7 +424,7 @@ void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
         switch (key.code)
         {
         case sf::Keyboard::Escape:
-            signalPause.trigger(!m_ui.onPause);
+            getSignalPause().trigger(!m_ui.onPause);
             break;
         case sf::Keyboard::U:
             m_ui.uiActivated = !m_ui.uiActivated;
@@ -432,7 +432,7 @@ void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
         default:
             break;
         }
-        signalKeyReleased.trigger(key);
+        getSignalKeyReleased().trigger(key);
     }
     else
     {
@@ -449,13 +449,13 @@ void GameGUI::checkKeyPressed()
 {
     PROFILE_FUNCTION();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        signalArroyIsPressed.trigger(sf::Keyboard::Left);
+        getSignalArrowIsPressed().trigger(sf::Keyboard::Left);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        signalArroyIsPressed.trigger(sf::Keyboard::Right);
+        getSignalArrowIsPressed().trigger(sf::Keyboard::Right);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        signalArroyIsPressed.trigger(sf::Keyboard::Down);
+        getSignalArrowIsPressed().trigger(sf::Keyboard::Down);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        signalArroyIsPressed.trigger(sf::Keyboard::Up);
+        getSignalArrowIsPressed().trigger(sf::Keyboard::Up);
 }
 
 } // namespace gui

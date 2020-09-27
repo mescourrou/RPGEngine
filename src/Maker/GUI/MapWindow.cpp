@@ -20,7 +20,7 @@ MapWindow::MapWindow(Maker* maker) :
  */
 bool MapWindow::doPrepare()
 {
-    if (m_maker->stateMachine.state() != Maker::States::WORKBENCH)
+    if (m_maker->getStateMachine().state() != Maker::States::WORKBENCH)
     {
         setActive(false);
         return false;

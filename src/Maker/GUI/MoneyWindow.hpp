@@ -20,12 +20,15 @@ class MoneyWindow : public ImGui::Window
 
     void doSaveMoney();
   private:
-    Maker* m_maker;                     ///< Pointer on the maker backend
+    /// Pointer on the maker backend
+    Maker* m_maker;
 
-    Maker::MoneyInformations
-    m_infos;   ///< Money informations needed for the backend
-    stringlist m_nameList;              ///< List of the money names
-    bool m_moneyLoaded = false;         ///< Is money loaded?
+    /// Money informations needed for the backend
+    Maker::MoneyInformations m_infos;
+    /// List of the money names
+    stringlist m_nameList;
+    /// Is money loaded?
+    bool m_moneyLoaded = false;
 };
 
 } // namespace maker::gui

@@ -62,7 +62,7 @@ class Position : public BaseObject
      * @brief Create a Position at origin of the map given
      * @param map Map to create the position with
      */
-    Position(std::shared_ptr<Map> map) : m_map(map) {}
+    explicit Position(std::shared_ptr<Map> map) : m_map(map) {}
     Position(std::shared_ptr<Map> map, double x, double y, double z = 0);
     /// @brief Destructor
     ~Position() override = default;

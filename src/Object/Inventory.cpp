@@ -58,7 +58,12 @@ std::shared_ptr<Object> Inventory::get(const std::string& objectName) const
 {
     PROFILE_FUNCTION();
     auto objectIt = std::find_if(m_inventory.begin(), m_inventory.end(),
-                                 [objectName](std::shared_ptr<Object> object) -> bool { if (object) return object->name() == objectName; return false; });
+                                 [objectName](std::shared_ptr<Object> object)
+    {
+        if (object)
+            return object->name() == objectName;
+        return false;
+    });
     if (objectIt != m_inventory.end())
         return *objectIt;
     return {};
@@ -73,7 +78,7 @@ unsigned int Inventory::getNumberOf(const std::string& objectName) const
 {
     PROFILE_FUNCTION();
     auto count = std::count_if(m_inventory.begin(), m_inventory.end(),
-                               [objectName](std::shared_ptr<Object> object) -> bool
+                               [objectName](std::shared_ptr<Object> object)
     {
         if (object)
             return object->name() == objectName;
@@ -135,7 +140,7 @@ void Inventory::push(const std::shared_ptr<Object>& newObject)
  * @return Return true if the loading was successfull
  */
 bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
-                                 const std::string characterName)
+                                 const std::string& characterName)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
@@ -148,13 +153,13 @@ bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
                                  BaseException::BAD_MODEL);
 
     // Load information from Model::TABLE => Main inventory table
-    {
-        auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                                .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
-        if (result.size() <= 1)
-            return false;
-        m_money = Money{static_cast<unsigned int>(std::atoi(result.at(1).at(Model::MONEY).c_str()))};
-    }
+
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
+                            .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
+    if (result.size() <= 1)
+        return false;
+    m_money = Money{static_cast<unsigned int>(std::atoi(result.at(1).at(Model::MONEY).c_str()))};
+
 
     // Load the objects
     auto objectsToLoad = db->query(Query::createQuery<Query::SELECT>

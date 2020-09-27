@@ -12,7 +12,7 @@ TEST_F(WorkerThreadTest, NewWork)
     auto cb = [&cbCalls]()
     {
         cbCalls++;
-        usleep(500);
+        std::this_thread::sleep_for(std::chrono::microseconds(500));
     };
 
     WorkerThread::newWork(cb); // 1
@@ -31,7 +31,7 @@ TEST_F(WorkerThreadTest, NewWork)
     WorkerThread::newWork(cb); // 14
     WorkerThread::newWork(cb); // 15
 
-    usleep(100000);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     EXPECT_EQ(cbCalls, 15);
     mutex.unlock();
@@ -47,12 +47,12 @@ TEST_F(WorkerThreadTest, WaitForJoin)
     auto cb = [&]()
     {
         active = true;
-        usleep(10000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         active = false;
     };
 
     WorkerThread::newWork(cb);
-    usleep(50);
+    std::this_thread::sleep_for(std::chrono::microseconds(50));
     EXPECT_TRUE(active);
     WorkerThread::waitForJoin();
     EXPECT_FALSE(active);

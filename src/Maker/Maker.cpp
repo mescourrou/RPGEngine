@@ -68,7 +68,7 @@ bool Maker::initialize()
         LOG(ERROR) << "Failed to initialize Maker GUI";
         return false;
     }
-    m_gui->signalClose.subscribeAsync([this]()
+    m_gui->subscribeSyncToSignalClose([this]()
     {
         m_running = false;
     });
@@ -128,7 +128,7 @@ bool Maker::doNewGame(const std::string& gameName, const std::string& directory)
 
 
     LOG(INFO) << "Game created";
-    stateMachine.changeState(WORKBENCH);
+    getStateMachine().changeState(WORKBENCH);
 
 
     return true;
@@ -177,7 +177,7 @@ bool Maker::doOpenGame(const std::string& gameName)
     }
 
     updateCharacterList();
-    stateMachine.changeState(WORKBENCH);
+    getStateMachine().changeState(WORKBENCH);
 
 
     return true;
@@ -231,7 +231,7 @@ void Maker::updateCharacterList()
     {
         m_characterList.push_back(result.at(i).at(Model::Character::NAME));
     }
-    signalCharacterListUpdated.trigger(m_characterList);
+    getSignalCharacterListUpdated().trigger(m_characterList);
 }
 
 bool Maker::populateDirectory()
@@ -543,13 +543,13 @@ void Maker::setCurrentMap(const std::string& mapName)
 {
     m_currentMap = std::make_shared<map::Map>(m_context, mapName);
     if (m_currentMap->load())
-        signalMapUdated.trigger(m_currentMap);
+        getSignalMapUpdated().trigger(m_currentMap);
     updateCharacterList();
 }
 
 void Maker::saveMap(const Maker::MapInformations& current)
 {
-
+    // TODO
 }
 
 void Maker::saveMap(const Maker::MapInformations& current,

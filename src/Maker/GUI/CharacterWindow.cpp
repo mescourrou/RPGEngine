@@ -11,7 +11,7 @@ namespace maker::gui
 CharacterWindow::CharacterWindow(Maker* maker) :
     Window("Character"), m_maker(maker)
 {
-    m_maker->signalCharacterListUpdated.subscribeAsync([this](
+    m_maker->subscribeASyncToSignalCharacterListUpdated([this](
                 std::vector<std::string> list)
     {
         m_list = list;
@@ -39,7 +39,7 @@ bool CharacterWindow::doPrepare()
         else
         {
             m_edit = m_current;
-            strcpy(m_title, m_edit.name.c_str());
+            snprintf(m_title, strlen(m_title), "%s", m_edit.name.c_str());
             m_newOne = false;
         }
     }

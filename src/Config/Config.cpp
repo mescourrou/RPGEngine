@@ -80,7 +80,7 @@ bool Config::saveToFile(std::string filename)
         LOG(ERROR) << "Impossible to save to " << filename << " conf file";
         return false;
     }
-    signalConfigUpdated.trigger();
+    getSignalConfigUpdated().trigger();
     LOG(INFO) << "Saving to " << filename << " successfull";
     return true;
 }

@@ -39,14 +39,14 @@ class Object : public BaseObject
   public:
     /// @brief Default constructor
     Object() = default;
-    Object(std::string name);
+    explicit Object(std::string name);
     /// @brief Default destructor
     ~Object() override = default;
 
     Object(const Object& copy) = default;
     Object(Object&& moved) = default;
-    virtual Object& operator=(const Object& copy) = default;
-    virtual Object& operator=(Object&& moved) = default;
+    Object& operator=(const Object& copy) = default;
+    Object& operator=(Object&& moved) = default;
 
     virtual bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db);
     static std::shared_ptr<Object> createFromDatabase(const std::string& name,
@@ -99,11 +99,14 @@ class Object : public BaseObject
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
-  protected:
 
-    std::string m_name = "Unkown object";   ///< Name of the object
-    std::string m_description;              ///< Description of the object
-    Money m_value;                          ///< Value of the object
+  private:
+    /// Name of the object
+    std::string m_name = "Unkown object";
+    /// Description of the object
+    std::string m_description;
+    /// Value of the object
+    Money m_value;
 
 };
 

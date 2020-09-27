@@ -16,14 +16,34 @@ class stringlist_batch
 {
   public:
     stringlist_batch();
-    stringlist_batch(const char* const* list, size_t len);
-    stringlist_batch(const char** list, size_t len);
-    stringlist_batch(std::vector<std::string> list);
-    stringlist_batch(std::vector<const char*> list);
+    explicit stringlist_batch(const char* const* list, size_t len);
+    explicit stringlist_batch(const char** list, size_t len);
+    explicit stringlist_batch(std::vector<std::string> list);
+    explicit stringlist_batch(std::vector<const char*> list);
     ~stringlist_batch();
+
+    stringlist_batch(const stringlist_batch<BATCH>& copy) noexcept;
+    stringlist_batch(stringlist_batch<BATCH>&& move) noexcept :
+        m_data(move.m_data), m_size(move.m_size), m_allocated(move.m_allocated)
+    {
+        move.m_data = nullptr;
+        move.m_size = 0;
+        move.m_allocated = 0;
+    }
 
     stringlist_batch& operator=(const std::vector<std::string>& copy);
     stringlist_batch& operator=(const std::set<std::string>& copy);
+    stringlist_batch& operator=(const stringlist_batch<BATCH>& copy) noexcept;
+    stringlist_batch& operator=(stringlist_batch<BATCH>&& move) noexcept
+    {
+        m_data = move.m_data;
+        m_size = move.m_size;
+        m_allocated = move.m_allocated;
+        move.m_data = nullptr;
+        move.m_size = 0;
+        move.m_allocated = 0;
+        return *this;
+    }
 
     size_t size() const;
     const char* const* data() const;
@@ -149,6 +169,20 @@ stringlist_batch<BATCH>::~stringlist_batch()
     clear();
 }
 
+template<short BATCH>
+stringlist_batch<BATCH>::stringlist_batch(const stringlist_batch<BATCH>& copy)
+noexcept :
+    m_allocated(copy.m_allocated), m_size(copy.m_size)
+{
+    m_data = new char* [m_allocated];
+    for (size_t i = 0; i < m_size; i++)
+    {
+        size_t slen = strlen(copy.m_data[i]);
+        m_data[i] = new char[slen];
+        strcpy(m_data[i], copy.m_data[i]);
+    }
+}
+
 /**
  * @brief Clear the list and copy the data
  * @brief copy List to copy
@@ -191,6 +225,23 @@ stringlist_batch<BATCH>& stringlist_batch<BATCH>::operator=
         i++;
     }
     m_size = copy.size();
+    return *this;
+}
+
+template<short BATCH>
+stringlist_batch<BATCH>& stringlist_batch<BATCH>::operator=(const
+        stringlist_batch<BATCH>& copy) noexcept
+{
+    clear();
+    m_allocated = copy.m_allocated;
+    m_size = copy.m_size;
+    m_data = new char* [m_allocated];
+    for (size_t i = 0; i < m_size; i++)
+    {
+        size_t slen = strlen(copy.m_data[i]);
+        m_data[i] = new char[slen];
+        strcpy(m_data[i], copy.m_data[i]);
+    }
     return *this;
 }
 
@@ -276,11 +327,14 @@ char* stringlist_batch<BATCH>::get(size_t i)
 template <short BATCH>
 void stringlist_batch<BATCH>::clear()
 {
-    for (size_t i = 0; i < m_size; i++)
+    if (m_data)
     {
-        delete m_data[i];
+        for (size_t i = 0; i < m_size; i++)
+        {
+            delete[] m_data[i];
+        }
+        delete[] m_data;
     }
-    delete[] m_data;
     m_allocated = 0;
     m_size = 0;
 }

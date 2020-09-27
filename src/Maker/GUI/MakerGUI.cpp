@@ -46,7 +46,7 @@ bool MakerGUI::initialize()
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_maker->signalMapUdated.subscribeAsync([this](std::weak_ptr<map::Map> mapPtr)
+    m_maker->subscribeASyncToSignalMapUpdated([this](std::weak_ptr<map::Map> mapPtr)
     {
         m_mapGUI.reset();
         m_mapGUI = std::make_shared<map::gui::MapGUI>(mapPtr);
@@ -73,16 +73,16 @@ bool MakerGUI::initialize()
     m_mapWindow->setActive(false);
     m_windowManager.addWindow(m_mapWindow.get());
 
-    m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, []()
+    m_maker->getStateMachine().addExitStateAction(Maker::PROJECT_LOADING, []()
     {
-
+        // future work
     });
-    m_maker->stateMachine.addEntryStateAction(Maker::WORKBENCH, [this]()
+    m_maker->getStateMachine().addEntryStateAction(Maker::WORKBENCH, [this]()
     {
         m_moneyWindow->setActive(true);
         m_mapWindow->setActive(true);
     });
-    m_maker->stateMachine.addExitStateAction(Maker::WORKBENCH, [this]()
+    m_maker->getStateMachine().addExitStateAction(Maker::WORKBENCH, [this]()
     {
         m_moneyWindow->setActive(false);
         m_mapWindow->setActive(false);
@@ -104,7 +104,7 @@ bool MakerGUI::initialize()
 
     events::ActionHandler::addAction("Quit", [this]()
     {
-        signalClose.trigger();
+        getSignalClose().trigger();
     }, events::KeyBinding(events::KeyBinding::Q, events::KeyBinding::CTRL));
 
     return true;
@@ -123,48 +123,74 @@ void MakerGUI::eventManager()
     {
         ImGui::SFML::ProcessEvent(event);
         // Close window: exit
-        if (event.type == sf::Event::Closed)
+        switch (event.type)
         {
+        case sf::Event::Closed:
             events::ActionHandler::execute("Quit");
-        }
-        if (event.type == sf::Event::Resized)
-        {
-            if (m_mapGUI) m_mapGUI->forcePrepare(m_window.getView().getSize());
-        }
-        if (event.type == sf::Event::KeyPressed)
-        {
-            events::ActionHandler::processSFMLEvent(event.key);
-            switch (event.key.code)
-            {
-            case sf::Keyboard::Left:
-                if (m_mapGUI) m_mapGUI->move(-5, 0);
-                break;
-            case sf::Keyboard::Right:
-                if (m_mapGUI) m_mapGUI->move(5, 0);
-                break;
-            case sf::Keyboard::Up:
-                if (m_mapGUI) m_mapGUI->move(0, -5);
-                break;
-            case sf::Keyboard::Down:
-                if (m_mapGUI) m_mapGUI->move(0, 5);
-                break;
-            default:
-                break;
-            }
-        }
-        if (event.type == sf::Event::KeyReleased)
-        {
-            switch (event.key.code)
-            {
-            case sf::Keyboard::Escape:
-                break;
-            default:
-                break;
-            }
+            break;
+        case sf::Event::Resized:
+            if (m_mapGUI)
+                m_mapGUI->forcePrepare(m_window.getView().getSize());
+            break;
+        case sf::Event::KeyPressed:
+            processKeyPressedEvent(event);
+            break;
+        case sf::Event::KeyReleased:
+            processKeyReleasedEvent(event);
+            break;
+        default:
+            break;
         }
     }
 
     makeUI();
+}
+
+/**
+ * @brief Process the event resulting a key pressed
+ * @param event Event to process
+ */
+void MakerGUI::processKeyPressedEvent(const sf::Event& event) const
+{
+    if (event.type != sf::Event::KeyPressed)
+        return;
+
+    events::ActionHandler::processSFMLEvent(event.key);
+    switch (event.key.code)
+    {
+    case sf::Keyboard::Left:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(-5, 0);
+        break;
+    case sf::Keyboard::Right:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(5, 0);
+        break;
+    case sf::Keyboard::Up:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(0, -5);
+        break;
+    case sf::Keyboard::Down:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(0, 5);
+        break;
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief Process the event resulting a key released
+ * @param event Event to process
+ */
+void MakerGUI::processKeyReleasedEvent(const sf::Event& event) const
+{
+    if (event.type != sf::Event::KeyReleased)
+        return;
+
+    switch (event.key.code)
+    {
+    case sf::Keyboard::Escape:
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -196,6 +222,15 @@ void MakerGUI::resetUI()
  * @brief Prepare the UI elements
  */
 void MakerGUI::makeUI()
+{
+    makeMainMenuBarUI();
+    makeNewGameUI();
+    makeOpenGameUI();
+
+    m_windowManager.prepareWindows();
+}
+
+void MakerGUI::makeMainMenuBarUI()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -233,13 +268,15 @@ void MakerGUI::makeUI()
             {
                 ImGui::Checkbox(w->title().c_str(), &w->active());
             }
-            //            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
-            //            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
 
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
+}
+
+void MakerGUI::makeNewGameUI()
+{
     if (m_ui.newGame.state == UI::NewGame::DIRECTORY)
     {
         if (!m_fileBrowser)
@@ -268,7 +305,6 @@ void MakerGUI::makeUI()
             delete m_fileBrowser.release();
         }
     }
-
     if (ImGui::BeginPopupModal("New game", nullptr,
                                ImGuiWindowFlags_AlwaysAutoResize))
     {
@@ -299,7 +335,10 @@ void MakerGUI::makeUI()
             ImGui::SetKeyboardFocusHere(0);
         ImGui::EndPopup();
     }
+}
 
+void MakerGUI::makeOpenGameUI()
+{
     if (m_ui.openGame.window)
     {
         if (ImGui::Begin("Open Game", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
@@ -340,10 +379,6 @@ void MakerGUI::makeUI()
         }
         ImGui::End();
     }
-
-    m_windowManager.prepareWindows();
 }
-
-
 
 } // namespace maker::gui

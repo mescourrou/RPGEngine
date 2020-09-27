@@ -57,8 +57,8 @@ class Config : public BaseObject
     virtual bool setValue(const std::string& section, const std::string& key,
                           const std::string& value, bool forceRemplace = true) final;
 
-    events::Event<void>
-    signalConfigUpdated;        ///< Signal emitted when the config is saved
+    ADD_EVENT(SignalConfigUpdated,
+              void); ///< Signal emitted when the config is saved
 
   private:
     CSimpleIniCaseA m_iniFile; ///< INI file load in memory

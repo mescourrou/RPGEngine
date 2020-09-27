@@ -181,7 +181,7 @@ void Character::move(const map::Vector<2>& move)
         m_position.y() += move.y();
     }
 
-    signalPositionChanged.trigger(m_position);
+    getSignalPositionChanged().trigger(m_position);
 }
 
 }

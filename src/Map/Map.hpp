@@ -13,12 +13,12 @@
 #include <Context.hpp>
 
 // External libs
-#include <json.hpp>
-using json = nlohmann::json;
-
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
 #endif
+#include <json.hpp>
+using json = nlohmann::json;
+
 
 /**
  * @namespace map
@@ -82,15 +82,18 @@ class Map : public BaseObject
   protected:
     bool loadCollisionLayer(const json& layer);
 
-    std::string m_name; ///< Name of the map
 
-    std::shared_ptr<config::Context> m_context; ///< Context used
 
   private:
+    /// Name of the map
+    std::string m_name;
+    /// Context used
+    std::shared_ptr<config::Context> m_context;
 
-    std::vector<Area> m_collisionLayer; ///< List of the collisions areas
-    // std::vector<NPC> m_npcLayer; ///< TODO: Add this when NPC created
-    std::map<Area, Position> m_teleportArea; ///< List of the teleports areas
+    /// List of the collisions areas
+    std::vector<Area> m_collisionLayer;
+    /// List of the teleports areas
+    std::map<Area, Position> m_teleportArea;
 };
 
 } // namespace map

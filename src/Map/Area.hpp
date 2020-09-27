@@ -62,8 +62,10 @@ class Area
     static bool intersectXHalfLine(const Vector<2>& pt1, const Vector<2>& pt2,
                                    const Vector<2>& origin, Direction dir = DOWN);
 
-    std::vector<Vector<2>> m_points; ///< List of the area points
   private:
+    /// List of the area points
+    std::vector<Vector<2>> m_points;
+
     static bool onSegment(const Vector<2>& p, const Vector<2>& q,
                           const Vector<2>& r);
     static int orientation(const Vector<2>& p, const Vector<2>& q,

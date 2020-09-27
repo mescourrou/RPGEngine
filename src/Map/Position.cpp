@@ -102,33 +102,27 @@ void Position::move(const Vector<3>& move)
 double Position::distanceTo(const Position& other) const
 {
     PROFILE_FUNCTION();
-    if (m_map && other.m_map)
-    {
-        if (m_map->name() != other.m_map->name())
-            throw PositionException("Position not in the same map");
-    }
+    if (m_map && other.m_map && m_map->name() != other.m_map->name())
+        throw PositionException("Position not in the same map");
+
     return Vector<3>(other.m_position - m_position).norm();
 }
 
 bool Position::operator==(const Position& other)
 {
     bool same = true;
-    if (m_map && other.m_map)
-    {
-        if (*m_map != *other.m_map)
-            same = false;
-    }
+    if (m_map && other.m_map && *m_map != *other.m_map)
+        same = false;
+
     return m_position == other.m_position && same;
 }
 
 bool Position::operator!=(const Position& other)
 {
     bool diff = false;
-    if (m_map && other.m_map)
-    {
-        if (*m_map != *other.m_map)
-            diff = true;
-    }
+    if (m_map && other.m_map && *m_map != *other.m_map)
+        diff = true;
+
     return m_position != other.m_position || diff;
 }
 

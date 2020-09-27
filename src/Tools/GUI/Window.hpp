@@ -12,7 +12,7 @@ namespace ImGui
 class Window
 {
   public:
-    Window(const std::string& title);
+    explicit Window(const std::string& title);
     /// @brief Destructor
     virtual ~Window() = default;
 
