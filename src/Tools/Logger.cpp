@@ -23,7 +23,7 @@ void Logger::send(google::LogSeverity, const char*,
                   const char*, int, const tm*, const char* message,
                   size_t message_len)
 {
-    m_logs.sputn(const_cast<std::stringbuf::char_type*>(message), message_len);
+    m_logs.sputn(message, message_len);
     m_logs.sputc('\n');
     m_newLogs = true;
 }

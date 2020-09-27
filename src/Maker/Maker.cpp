@@ -128,7 +128,7 @@ bool Maker::doNewGame(const std::string& gameName, const std::string& directory)
 
 
     LOG(INFO) << "Game created";
-    stateMachine.changeState(WORKBENCH);
+    getStateMachine().changeState(WORKBENCH);
 
 
     return true;
@@ -177,7 +177,7 @@ bool Maker::doOpenGame(const std::string& gameName)
     }
 
     updateCharacterList();
-    stateMachine.changeState(WORKBENCH);
+    getStateMachine().changeState(WORKBENCH);
 
 
     return true;

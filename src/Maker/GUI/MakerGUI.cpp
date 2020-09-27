@@ -73,16 +73,16 @@ bool MakerGUI::initialize()
     m_mapWindow->setActive(false);
     m_windowManager.addWindow(m_mapWindow.get());
 
-    m_maker->stateMachine.addExitStateAction(Maker::PROJECT_LOADING, []()
+    m_maker->getStateMachine().addExitStateAction(Maker::PROJECT_LOADING, []()
     {
         // future work
     });
-    m_maker->stateMachine.addEntryStateAction(Maker::WORKBENCH, [this]()
+    m_maker->getStateMachine().addEntryStateAction(Maker::WORKBENCH, [this]()
     {
         m_moneyWindow->setActive(true);
         m_mapWindow->setActive(true);
     });
-    m_maker->stateMachine.addExitStateAction(Maker::WORKBENCH, [this]()
+    m_maker->getStateMachine().addExitStateAction(Maker::WORKBENCH, [this]()
     {
         m_moneyWindow->setActive(false);
         m_mapWindow->setActive(false);
@@ -138,13 +138,19 @@ void MakerGUI::eventManager()
         case sf::Event::KeyReleased:
             processKeyReleasedEvent(event);
             break;
+        default:
+            break;
         }
     }
 
     makeUI();
 }
 
-void MakerGUI::processKeyPressedEvent(const sf::Event& event)
+/**
+ * @brief Process the event resulting a key pressed
+ * @param event Event to process
+ */
+void MakerGUI::processKeyPressedEvent(const sf::Event& event) const
 {
     if (event.type != sf::Event::KeyPressed)
         return;
@@ -169,7 +175,11 @@ void MakerGUI::processKeyPressedEvent(const sf::Event& event)
     }
 }
 
-void MakerGUI::processKeyReleasedEvent(const sf::Event& event)
+/**
+ * @brief Process the event resulting a key released
+ * @param event Event to process
+ */
+void MakerGUI::processKeyReleasedEvent(const sf::Event& event) const
 {
     if (event.type != sf::Event::KeyReleased)
         return;

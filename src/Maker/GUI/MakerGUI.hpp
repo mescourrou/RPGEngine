@@ -71,8 +71,8 @@ class MakerGUI : public BaseObject
   protected:
     void makeUI();
   private:
-    void processKeyPressedEvent(const sf::Event& event);
-    void processKeyReleasedEvent(const sf::Event& event);
+    void processKeyPressedEvent(const sf::Event& event) const;
+    void processKeyReleasedEvent(const sf::Event& event) const;
     void resetUI();
 
     void makeMainMenuBarUI();

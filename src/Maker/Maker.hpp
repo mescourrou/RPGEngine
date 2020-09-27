@@ -126,8 +126,15 @@ class Maker : public BaseObject
     void saveMap(const MapInformations& current);
     void saveMap(const MapInformations& current, const MapInformations& previous);
 
+    StateMachine<States>& getStateMachine()
+    {
+        return m_stateMachine;
+    }
+    const StateMachine<States>& getStateMachine() const
+    {
+        return m_stateMachine;
+    }
 
-    StateMachine<States> stateMachine{PROJECT_LOADING, WORKBENCH};
 
 
     ADD_EVENT(SignalCharacterListUpdated, std::vector<std::string>);
@@ -137,6 +144,8 @@ class Maker : public BaseObject
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     void updateCharacterList();
     bool populateDirectory();
+
+    StateMachine<States> m_stateMachine{PROJECT_LOADING, WORKBENCH};
 
     std::shared_ptr<databaseTools::Database> m_db; ///< Database to use
     std::shared_ptr<config::Context> m_context;

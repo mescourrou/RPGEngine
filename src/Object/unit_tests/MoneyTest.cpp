@@ -59,7 +59,7 @@ TEST_F(MoneyTest, InitializeFromDatabase)
  */
 TEST_F(MoneyTest, NotInitialized)
 {
-    EXPECT_THROW(new Money(), std::string);
+    EXPECT_THROW(new Money(), MoneyException);
 }
 
 /*

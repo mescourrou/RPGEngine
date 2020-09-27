@@ -34,11 +34,11 @@ class BaseException : public std::exception
       public:
         explicit constexpr Errors(unsigned int id) noexcept : m_id(id) {}
         virtual ~Errors() = default;
-        bool operator==(const Errors& error) noexcept
+        bool operator==(const Errors& error) const noexcept
         {
             return error.m_id == m_id;
         }
-        bool operator!=(const Errors& error) noexcept
+        bool operator!=(const Errors& error) const noexcept
         {
             return error.m_id != m_id;
         }

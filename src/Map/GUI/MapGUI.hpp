@@ -92,8 +92,8 @@ class MapGUI : public BaseGUIObject
     unsigned int m_nbChunksWidth;
     unsigned int m_nbChunksHeight;
 
-    unsigned int m_chunksWidthPixels;
-    unsigned int m_chunksHeightPixels;
+    unsigned short m_chunksWidthPixels;
+    unsigned short m_chunksHeightPixels;
 
     /// Height of a tile (in pixel)
     unsigned int m_tileHeight;

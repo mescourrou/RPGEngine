@@ -4,7 +4,8 @@ include(GoogleTest)
 find_package(json REQUIRED)
 
 add_executable(Tools_test
-        ToolsTest.cpp ToolsTest.hpp)
+        ToolsTest.cpp ToolsTest.hpp
+        StringlistTest.cpp StringlistTest.hpp)
 target_link_libraries(Tools_test gtest json Tools)
 gtest_discover_tests(Tools_test)
 
