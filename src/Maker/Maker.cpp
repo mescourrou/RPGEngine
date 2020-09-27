@@ -549,7 +549,7 @@ void Maker::setCurrentMap(const std::string& mapName)
 
 void Maker::saveMap(const Maker::MapInformations& current)
 {
-
+    // TODO
 }
 
 void Maker::saveMap(const Maker::MapInformations& current,

@@ -11,7 +11,7 @@ template <typename T>
 class StateMachine
 {
   public:
-    StateMachine(std::initializer_list<T> list);
+    explicit StateMachine(std::initializer_list<T> list);
 
     void addEntryStateAction(const T& state, const std::function<void(void)>& func);
     void addExitStateAction(const T& state, const std::function<void(void)>& func);

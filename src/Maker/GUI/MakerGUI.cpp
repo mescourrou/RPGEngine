@@ -123,48 +123,64 @@ void MakerGUI::eventManager()
     {
         ImGui::SFML::ProcessEvent(event);
         // Close window: exit
-        if (event.type == sf::Event::Closed)
+        switch (event.type)
         {
+        case sf::Event::Closed:
             events::ActionHandler::execute("Quit");
-        }
-        if (event.type == sf::Event::Resized && m_mapGUI)
-        {
-            m_mapGUI->forcePrepare(m_window.getView().getSize());
-        }
-        if (event.type == sf::Event::KeyPressed)
-        {
-            events::ActionHandler::processSFMLEvent(event.key);
-            switch (event.key.code)
-            {
-            case sf::Keyboard::Left:
-                if (m_mapGUI) m_mapGUI->move(-5, 0);
-                break;
-            case sf::Keyboard::Right:
-                if (m_mapGUI) m_mapGUI->move(5, 0);
-                break;
-            case sf::Keyboard::Up:
-                if (m_mapGUI) m_mapGUI->move(0, -5);
-                break;
-            case sf::Keyboard::Down:
-                if (m_mapGUI) m_mapGUI->move(0, 5);
-                break;
-            default:
-                break;
-            }
-        }
-        if (event.type == sf::Event::KeyReleased)
-        {
-            switch (event.key.code)
-            {
-            case sf::Keyboard::Escape:
-                break;
-            default:
-                break;
-            }
+            break;
+        case sf::Event::Resized:
+            if (m_mapGUI)
+                m_mapGUI->forcePrepare(m_window.getView().getSize());
+            break;
+        case sf::Event::KeyPressed:
+            processKeyPressedEvent(event);
+            break;
+        case sf::Event::KeyReleased:
+            processKeyReleasedEvent(event);
+            break;
         }
     }
 
     makeUI();
+}
+
+void MakerGUI::processKeyPressedEvent(const sf::Event& event)
+{
+    if (event.type != sf::Event::KeyPressed)
+        return;
+
+    events::ActionHandler::processSFMLEvent(event.key);
+    switch (event.key.code)
+    {
+    case sf::Keyboard::Left:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(-5, 0);
+        break;
+    case sf::Keyboard::Right:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(5, 0);
+        break;
+    case sf::Keyboard::Up:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(0, -5);
+        break;
+    case sf::Keyboard::Down:
+        if (m_mapGUI) m_mapGUI->moveCenterOfView(0, 5);
+        break;
+    default:
+        break;
+    }
+}
+
+void MakerGUI::processKeyReleasedEvent(const sf::Event& event)
+{
+    if (event.type != sf::Event::KeyReleased)
+        return;
+
+    switch (event.key.code)
+    {
+    case sf::Keyboard::Escape:
+        break;
+    default:
+        break;
+    }
 }
 
 /**
@@ -196,6 +212,15 @@ void MakerGUI::resetUI()
  * @brief Prepare the UI elements
  */
 void MakerGUI::makeUI()
+{
+    makeMainMenuBarUI();
+    makeNewGameUI();
+    makeOpenGameUI();
+
+    m_windowManager.prepareWindows();
+}
+
+void MakerGUI::makeMainMenuBarUI()
 {
     if (ImGui::BeginMainMenuBar())
     {
@@ -233,13 +258,15 @@ void MakerGUI::makeUI()
             {
                 ImGui::Checkbox(w->title().c_str(), &w->active());
             }
-            //            ImGui::Checkbox("Map selector", &m_ui.windows.maps);
-            //            ImGui::Checkbox("Current map", &m_ui.windows.currentMap);
 
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
     }
+}
+
+void MakerGUI::makeNewGameUI()
+{
     if (m_ui.newGame.state == UI::NewGame::DIRECTORY)
     {
         if (!m_fileBrowser)
@@ -268,7 +295,6 @@ void MakerGUI::makeUI()
             delete m_fileBrowser.release();
         }
     }
-
     if (ImGui::BeginPopupModal("New game", nullptr,
                                ImGuiWindowFlags_AlwaysAutoResize))
     {
@@ -299,7 +325,10 @@ void MakerGUI::makeUI()
             ImGui::SetKeyboardFocusHere(0);
         ImGui::EndPopup();
     }
+}
 
+void MakerGUI::makeOpenGameUI()
+{
     if (m_ui.openGame.window)
     {
         if (ImGui::Begin("Open Game", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
@@ -340,10 +369,6 @@ void MakerGUI::makeUI()
         }
         ImGui::End();
     }
-
-    m_windowManager.prepareWindows();
 }
-
-
 
 } // namespace maker::gui

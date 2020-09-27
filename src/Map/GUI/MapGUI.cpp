@@ -41,7 +41,7 @@ MapGUI::MapGUI(std::weak_ptr<Map> map) :
  * @param offsetX X move
  * @param offsetY Y move
  */
-void MapGUI::move(double offsetX, double offsetY)
+void MapGUI::moveCenterOfView(double offsetX, double offsetY)
 {
     PROFILE_FUNCTION();
     m_centerOfView.x() += offsetX;
@@ -83,11 +83,9 @@ bool MapGUI::load(const std::string& mapDirPath)
             return false;
         for (auto layer : json[mapFile::KEY_LAYERS])
         {
-            if (layer[mapFile::KEY_LAYER_TYPE] == mapFile::TYPE_DATA_LAYER)
-            {
-                if (!loadTiles(layer))
-                    return false;
-            }
+            if (layer[mapFile::KEY_LAYER_TYPE] == mapFile::TYPE_DATA_LAYER
+                    && !loadTiles(layer))
+                return false;
         }
         return true;
     }
@@ -114,15 +112,8 @@ void MapGUI::prepare(const sf::Vector2f& targetSize)
                                               m_chunksHeightPixels);
 
         // Position on the screen of the top left displayed tile
-        // It's negative to cover all the screen
-        int sign = -1;
-        if (m_topLeftPosition.x > 0)
-            sign = 1;
         m_origin.x = - Tools::linearModulo(m_topLeftPosition.x,
                                            static_cast<float>(m_chunksWidthPixels));
-        sign = -1;
-        if (m_topLeftPosition.y > 0)
-            sign = 1;
         m_origin.y = - Tools::linearModulo(m_topLeftPosition.y,
                                            static_cast<float>(m_chunksHeightPixels));
 
@@ -177,7 +168,7 @@ void map::gui::MapGUI::draw(sf::RenderTarget& target,
                 target.draw(tile, states);
             }
 
-            tilePosition.x += m_chunksWidthPixels;;
+            tilePosition.x += m_chunksWidthPixels;
             i++;
         }
         tilePosition.x = m_origin.x;

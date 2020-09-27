@@ -77,6 +77,9 @@ class Game : public BaseObject
     void loadMapContents(const std::string& mapName);
     void unloadCurrentMap();
 
+    /**
+     * @brief Get game name
+     */
     const std::string& name() const
     {
         return m_name;
@@ -84,24 +87,29 @@ class Game : public BaseObject
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+
   private:
+    /// Context of the Game
+    std::shared_ptr<config::Context> m_context;
+    /// Database of the Game
+    std::shared_ptr<databaseTools::Database> m_db;
+    /// The character played by the player
+    std::shared_ptr<character::Character> m_playerCharacter;
+    /// Pointer on the current map (shortcut to the player character map)
+    std::weak_ptr<map::Map> m_currentMap;
 
-    std::shared_ptr<config::Context> m_context;             ///< Context of the Game
-    std::shared_ptr<databaseTools::Database>
-    m_db;               ///< Database of the Game
-    std::shared_ptr<character::Character>
-    m_playerCharacter;  ///< The character played by the player
-    std::weak_ptr<map::Map>
-    m_currentMap;                   ///< Pointer on the current map (shortcut to the player character map)
+    /// Name of the game
+    std::string m_name;
 
-    std::string m_name;                                     ///< Name of the game
+    /// List of characters, excepted the character of the player
+    std::list<std::shared_ptr<character::Character>> m_characterList;
 
-    std::list<std::shared_ptr<character::Character>>
-            m_characterList;        ///< List of characters, excepted the character of the player
 #ifdef RPG_BUILD_GUI
-    std::shared_ptr<game::gui::GameGUI> m_gui;              ///< GUI pointer
+    /// GUI pointer
+    std::shared_ptr<game::gui::GameGUI> m_gui;
 #endif
-    bool m_running = true;                                  ///< Main loop condition
+    /// Main loop condition
+    bool m_running = true;
 
 };
 

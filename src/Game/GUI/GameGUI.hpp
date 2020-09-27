@@ -48,7 +48,12 @@ class GameGUI : public BaseObject
     GameGUI(std::shared_ptr<config::Context> context, Game* game);
     ~GameGUI() override;
 
-    bool initialize(std::shared_ptr<databaseTools::Database> db);
+    GameGUI(const GameGUI&) = delete;
+    GameGUI(GameGUI&&) = delete;
+    GameGUI& operator=(const GameGUI&) = delete;
+    GameGUI& operator=(GameGUI&&) = delete;
+
+    bool initialize();
     void eventManager();
 
     void draw();

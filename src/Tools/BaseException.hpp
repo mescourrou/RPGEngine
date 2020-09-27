@@ -32,13 +32,13 @@ class BaseException : public std::exception
       private:
         unsigned int m_id; ///< Id of the error
       public:
-        constexpr Errors(unsigned int id) noexcept : m_id(id) {}
+        explicit constexpr Errors(unsigned int id) noexcept : m_id(id) {}
         virtual ~Errors() = default;
-        virtual bool operator==(const Errors& error) noexcept final
+        bool operator==(const Errors& error) noexcept
         {
             return error.m_id == m_id;
         }
-        virtual bool operator!=(const Errors& error) noexcept final
+        bool operator!=(const Errors& error) noexcept
         {
             return error.m_id != m_id;
         }
@@ -73,10 +73,12 @@ class BaseException : public std::exception
     {
         return m_code;
     }
-  protected:
 
-    std::string m_what; ///< Description of the error
-    Errors m_code; ///< Error code
+  private:
+    /// Description of the error
+    std::string m_what;
+    /// Error code
+    Errors m_code;
 };
 
 /**
@@ -137,10 +139,6 @@ class BaseException : public std::exception
         NAME(const std::string& w, const Errors& code = BaseException::UNKNOWN):                            \
             BaseException(w, code) {}                                                                       \
         ~NAME() override = default;                                                                         \
-        const char* what() const noexcept override                                                          \
-        {                                                                                                   \
-            return m_what.c_str();                                                                          \
-        }                                                                                                   \
     };
 
 #define CREATE_EXCEPTION_CLASS(NAME, ...) __CREATE_EXCEPTION_CLASS(NAME##Exception, __VA_ARGS__)

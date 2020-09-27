@@ -16,14 +16,19 @@ class stringlist_batch
 {
   public:
     stringlist_batch();
-    stringlist_batch(const char* const* list, size_t len);
-    stringlist_batch(const char** list, size_t len);
-    stringlist_batch(std::vector<std::string> list);
-    stringlist_batch(std::vector<const char*> list);
+    explicit stringlist_batch(const char* const* list, size_t len);
+    explicit stringlist_batch(const char** list, size_t len);
+    explicit stringlist_batch(std::vector<std::string> list);
+    explicit stringlist_batch(std::vector<const char*> list);
     ~stringlist_batch();
+
+    stringlist_batch(const stringlist_batch&) = default;
+    stringlist_batch(stringlist_batch&&) = default;
 
     stringlist_batch& operator=(const std::vector<std::string>& copy);
     stringlist_batch& operator=(const std::set<std::string>& copy);
+    stringlist_batch& operator=(const stringlist_batch&) = default;
+    stringlist_batch& operator=(stringlist_batch&&) = default;
 
     size_t size() const;
     const char* const* data() const;

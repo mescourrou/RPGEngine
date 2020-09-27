@@ -67,8 +67,9 @@ int GameLauncher::start()
     PROFILE_FUNCTION();
     if (!initialize())
         return -2;
-    int choice = -1;
 
+#ifndef GAME_AUTO_CHOOSE
+    int choice = -1;
     do
     {
         std::cout << "Available games : " << std::endl;
@@ -79,12 +80,9 @@ int GameLauncher::start()
         }
         std::cout << "Which game do you choose ? : ";
         std::string in;
-#ifndef GAME_AUTO_CHOOSE
         getline(std::cin, in);
         choice = std::atoi(in.c_str());
-#else
         choice = 1;
-#endif
         if (choice > 0 && choice - 1 < static_cast<int>(m_gameList.size()))
         {
             startGame(m_gameList.at(static_cast<size_t>(choice - 1)));
@@ -93,6 +91,9 @@ int GameLauncher::start()
         else if (choice != 0)
             std::cout << "Choose an available option (0 to quit)" << std::endl;
     } while (choice != 0);
+#else
+    startGame(m_gameList.front());
+#endif
 
     return 0;
 }

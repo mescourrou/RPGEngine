@@ -53,8 +53,11 @@ class GameLauncher : public BaseObject
     bool initialize();
   private:
     void startGame(const std::string& gameName) const;
-    std::shared_ptr<config::Context> m_context;     ///< Context
-    std::vector<std::string> m_gameList;            ///< List of the founded games
+
+    /// Context
+    std::shared_ptr<config::Context> m_context;
+    /// List of the founded games
+    std::vector<std::string> m_gameList;
 };
 
 } // namespace game

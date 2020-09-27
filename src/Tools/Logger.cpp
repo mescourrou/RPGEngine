@@ -19,11 +19,11 @@ Logger& Logger::getInstance()
  * @param message
  * @param message_len
  */
-void Logger::send(google::LogSeverity severity, const char* full_filename,
-                  const char* base_filename, int line, const tm* tm_time, const char* message,
+void Logger::send(google::LogSeverity, const char*,
+                  const char*, int, const tm*, const char* message,
                   size_t message_len)
 {
-    m_logs.sputn((std::stringbuf::char_type*)message, message_len);
+    m_logs.sputn(const_cast<std::stringbuf::char_type*>(message), message_len);
     m_logs.sputc('\n');
     m_newLogs = true;
 }
@@ -33,7 +33,7 @@ void Logger::send(google::LogSeverity severity, const char* full_filename,
  * @param size
  * @return
  */
-const std::string Logger::getLog(size_t size)
+const std::string Logger::getLog(size_t)
 {
     getInstance().m_newLogs = false;
     std::string ret = getInstance().m_logs.str();

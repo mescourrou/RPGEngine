@@ -183,7 +183,6 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2>& vector,
 
     for (unsigned int i = 0; i < m_points.size(); i++)
     {
-        //const auto& pt0 = (i == 0) ? m_points.at(m_points.size()-1) : m_points.at(i-1);
         const auto& pt1 = m_points.at(i);
         const auto& pt2 = (i == m_points.size() - 1) ? m_points.at(0) : m_points.at(
                               i + 1);
@@ -302,7 +301,6 @@ bool Area::intersect(const Vector<2>& origin, const Vector<2>& vector,
                         isCandidate = true;
                     }
                 }
-                solved = true;
             }
         }
         if (isCandidate)

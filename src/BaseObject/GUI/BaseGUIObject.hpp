@@ -40,7 +40,7 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
      */
     virtual void setCurrentMap(std::weak_ptr<map::gui::MapGUI> map) final
     {
-        m_map = map;
+        m_mapGUI = map;
     }
 
     /**
@@ -48,7 +48,7 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
      */
     virtual std::weak_ptr<map::gui::MapGUI> currentMap() const final
     {
-        return m_map;
+        return m_mapGUI;
     }
 
     /**
@@ -65,6 +65,6 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
      */
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override = 0;
   private:
-    std::weak_ptr<map::gui::MapGUI> m_map;      ///< Current map
+    std::weak_ptr<map::gui::MapGUI> m_mapGUI;      ///< Current map
 };
 

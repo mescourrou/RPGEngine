@@ -71,6 +71,14 @@ class MakerGUI : public BaseObject
   protected:
     void makeUI();
   private:
+    void processKeyPressedEvent(const sf::Event& event);
+    void processKeyReleasedEvent(const sf::Event& event);
+    void resetUI();
+
+    void makeMainMenuBarUI();
+    void makeNewGameUI();
+    void makeOpenGameUI();
+
     /// SFML render window
     sf::RenderWindow m_window;
 
@@ -123,8 +131,6 @@ class MakerGUI : public BaseObject
     };
     /// UI structure containing the ui linked variable
     struct UI m_ui;
-
-    void resetUI();
 
     /// Window manager
     ImGui::WindowsManager m_windowManager;

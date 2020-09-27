@@ -24,7 +24,8 @@ Money::Money()
     if (!m_initialized)
     {
         LOG(ERROR) << "Money system must be initialized before using";
-        throw std::string("Money system must be initialized before using");
+        throw MoneyException("Money system must be initialized before using",
+                             MoneyException::INITIALIZATION);
     }
     m_values = std::make_shared<std::vector<unsigned int>>(m_moneyNames.size(), 0);
 }
@@ -168,7 +169,7 @@ Money Money::operator-(const Money& other) const
 {
     long sub = convertToBaseMoney() - other.convertToBaseMoney();
     if (sub < 0)
-        throw std::string("Not enough money");
+        throw MoneyException("Not enough money");
     return Money{static_cast<unsigned int>(sub)};
 }
 
@@ -188,7 +189,7 @@ Money Money::operator-(unsigned int toAdd) const
 {
     long sub = convertToBaseMoney() - toAdd;
     if (sub < 0)
-        throw std::string("Not enough money");
+        throw MoneyException("Not enough money");
     return Money{static_cast<unsigned int>(sub)};
 }
 
@@ -344,7 +345,8 @@ void Money::add(const std::string& moneyName, unsigned int quantity)
         i++;
     }
     LOG(ERROR) << "Money " << moneyName << " not found";
-    throw std::string("Money ") + moneyName + std::string(" not found");
+    throw MoneyException(std::string("Money ") + moneyName +
+                         std::string(" not found"));
 }
 
 /**
@@ -389,7 +391,8 @@ bool Money::sub(const std::string& moneyName, unsigned int quantity)
         i++;
     }
     LOG(ERROR) << "Money " << moneyName << " not found";
-    throw std::string("Money ") + moneyName + std::string(" not found");
+    throw MoneyException(std::string("Money ") + moneyName +
+                         std::string(" not found"));
 }
 
 } // namespace object

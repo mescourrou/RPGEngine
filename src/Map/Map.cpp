@@ -65,7 +65,7 @@ bool Map::load()
             }
             else if (layer[mapFile::KEY_LAYER_NAME] == mapFile::NAME_TELEPORTS_LAYER)
             {
-                std::cout << "Found teleports" << std::endl;
+                LOG(INFO) << "Found teleports";
             }
         }
 
@@ -132,7 +132,7 @@ bool Map::collision(const Vector<2>& origin, const Vector<2>& moveVector,
 void Map::addTeleportArea(const Area& area, const Position& destination)
 {
     PROFILE_FUNCTION();
-
+    /// @todo : add teleport function
 }
 
 /**

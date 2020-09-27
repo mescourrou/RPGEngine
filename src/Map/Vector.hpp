@@ -221,7 +221,7 @@ class Vector : public BaseObject
         return false;
     }
 
-  protected:
+  private:
     std::array<double, m_kSize> m_vector; ///< Vector
 };
 
