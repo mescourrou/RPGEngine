@@ -11,7 +11,7 @@ namespace maker::gui
 CharacterWindow::CharacterWindow(Maker* maker) :
     Window("Character"), m_maker(maker)
 {
-    m_maker->signalCharacterListUpdated.subscribeAsync([this](
+    m_maker->subscribeASyncToSignalCharacterListUpdated([this](
                 std::vector<std::string> list)
     {
         m_list = list;

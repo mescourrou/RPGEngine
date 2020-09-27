@@ -97,8 +97,8 @@ class Character : public BaseObject
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
 
-    events::Event<map::Position>
-    signalPositionChanged;      ///< Signal when the player position changed
+    ADD_EVENT(SignalPositionChanged,
+              map::Position); ///< Signal when the player position changed
 
   protected:
     std::shared_ptr<object::Inventory> privateInventory()

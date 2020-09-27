@@ -68,7 +68,7 @@ bool Maker::initialize()
         LOG(ERROR) << "Failed to initialize Maker GUI";
         return false;
     }
-    m_gui->signalClose.subscribeAsync([this]()
+    m_gui->subscribeSyncToSignalClose([this]()
     {
         m_running = false;
     });
@@ -231,7 +231,7 @@ void Maker::updateCharacterList()
     {
         m_characterList.push_back(result.at(i).at(Model::Character::NAME));
     }
-    signalCharacterListUpdated.trigger(m_characterList);
+    getSignalCharacterListUpdated().trigger(m_characterList);
 }
 
 bool Maker::populateDirectory()
@@ -543,7 +543,7 @@ void Maker::setCurrentMap(const std::string& mapName)
 {
     m_currentMap = std::make_shared<map::Map>(m_context, mapName);
     if (m_currentMap->load())
-        signalMapUdated.trigger(m_currentMap);
+        getSignalMapUpdated().trigger(m_currentMap);
     updateCharacterList();
 }
 

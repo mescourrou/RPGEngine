@@ -104,7 +104,7 @@ class Maker : public BaseObject
     bool getCharacterInformations(const std::string& name,
                                   CharacterInformations& out);
     bool deleteCharacter(const std::string& name);
-    events::Event<std::vector<std::string>> signalCharacterListUpdated;
+
 
     struct MoneyInformations
     {
@@ -125,10 +125,13 @@ class Maker : public BaseObject
     void setCurrentMap(const std::string& mapName);
     void saveMap(const MapInformations& current);
     void saveMap(const MapInformations& current, const MapInformations& previous);
-    events::Event<std::weak_ptr<map::Map>> signalMapUdated;
 
 
     StateMachine<States> stateMachine{PROJECT_LOADING, WORKBENCH};
+
+
+    ADD_EVENT(SignalCharacterListUpdated, std::vector<std::string>);
+    ADD_EVENT(SignalMapUpdated, std::weak_ptr<map::Map>);
 
   private:
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);

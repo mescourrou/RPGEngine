@@ -46,7 +46,7 @@ bool MakerGUI::initialize()
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Initialize";
 
-    m_maker->signalMapUdated.subscribeAsync([this](std::weak_ptr<map::Map> mapPtr)
+    m_maker->subscribeASyncToSignalMapUpdated([this](std::weak_ptr<map::Map> mapPtr)
     {
         m_mapGUI.reset();
         m_mapGUI = std::make_shared<map::gui::MapGUI>(mapPtr);
@@ -104,7 +104,7 @@ bool MakerGUI::initialize()
 
     events::ActionHandler::addAction("Quit", [this]()
     {
-        signalClose.trigger();
+        getSignalClose().trigger();
     }, events::KeyBinding(events::KeyBinding::Q, events::KeyBinding::CTRL));
 
     return true;
