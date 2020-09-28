@@ -1,9 +1,143 @@
 #include "Dialogue.hpp"
+#include <Database.hpp>
+#include <Model.hpp>
+#include <InstrumentationTimer.hpp>
+#include <Query.hpp>
+#include <glog/logging.h>
+
 namespace quest
 {
 
-Dialogue::Dialogue()
+Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
+                                     std::shared_ptr<databaseTools::Database> db)
 {
+    PROFILE_FUNCTION();
+
+    loadDialogueLineRecursive(firstLineID, db);
+    m_firstLine = &m_dialogueLineStorage[firstLineID];
+    return *this;
+}
+
+std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
+        std::shared_ptr<databaseTools::Database> db)
+{
+    PROFILE_FUNCTION();
+    namespace Model = database::Model::Quest::Dialog;
+    using namespace databaseTools;
+
+    if (!db)
+        throw DialogueException("No database given.",
+                                BaseException::MISSING_DATABASE);
+
+    if (!verifyDatabaseModel(db))
+        throw DialogueException("Wrong database model.", BaseException::BAD_MODEL);
+
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
+                            .column(Model::FK_DIALOG_LINE_ID)
+                            .where(Model::FK_NPC_NAME, Query::EQUAL, NPCName)
+                            .sort(Model::FK_DIALOG_LINE_ID)
+                           );
+
+    if (result.size() <= 1)
+        return {};
+
+    std::vector<Dialogue> dialogueList;
+    for (size_t i = 1; i < result.size(); i++)
+    {
+        Dialogue d;
+        d.loadFromDatabase(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()),
+                           db);
+        dialogueList.emplace_back(d);
+    }
+
+    return dialogueList;
+}
+
+bool Dialogue::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
+{
+    PROFILE_FUNCTION();
+    namespace Model = database::Model::Quest::Dialog;
+    using namespace databaseTools;
+
+    if (!db)
+        throw DialogueException("No database given.",
+                                BaseException::MISSING_DATABASE);
+    if (!db->isTable(Model::TABLE))
+        return false;
+    auto columnList = db->columnList(Model::TABLE);
+
+    unsigned short goodColumns = 0;
+    for (auto& column : columnList)
+    {
+        if (column == Model::FK_NPC_NAME)
+            goodColumns++;
+        else if (column == Model::FK_DIALOG_LINE_ID)
+            goodColumns++;
+        else
+            return false;
+    }
+
+    if (goodColumns != 2)
+        return false;
+    return DialogueLine::verifyDatabaseModel(db);
+}
+
+bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
+{
+    PROFILE_FUNCTION();
+    namespace Model = database::Model::Quest::Dialog;
+    using namespace databaseTools;
+    if (!db)
+        throw DialogueException("No database given.",
+                                BaseException::MISSING_DATABASE);
+
+    db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db)
+              .ifNotExists()
+              .column(Model::FK_NPC_NAME, DataType::BLOB,
+                      database::Model::NPC::TABLE,
+                      database::Model::NPC::NAME)
+              .column(Model::FK_DIALOG_LINE_ID, DataType::INTEGER,
+                      database::Model::Quest::DialogLine::TABLE,
+                      database::Model::Quest::DialogLine::ID)
+              .constraint(Model::FK_NPC_NAME, Query::PRIMARY_KEY)
+              .constraint(Model::FK_DIALOG_LINE_ID, Query::PRIMARY_KEY)
+             );
+    return DialogueLine::createDatabaseModel(db) && verifyDatabaseModel(db);
+}
+
+void Dialogue::loadDialogueLineRecursive(unsigned int id,
+        std::shared_ptr<databaseTools::Database> db)
+{
+    DialogueLine line;
+    line.loadFromDatabase(id, db);
+
+    namespace ModelGraph = database::Model::Quest::DialogGraph;
+    using namespace databaseTools;
+
+    auto result = db->query(Query::createQuery<Query::SELECT>(ModelGraph::TABLE, db)
+                            .column(ModelGraph::FK_AFTER_ID).column(ModelGraph::CHARACTER_LINE)
+                            .where(Query::Column(ModelGraph::TABLE, ModelGraph::FK_BEFORE_ID), Query::EQUAL,
+                                   std::to_string(id)));
+
+    if (result.size() > 1) // If there are lines after
+    {
+        for (size_t i = 1; i < result.size(); i++)
+        {
+            unsigned int nextId = std::atoi(result.at(i).at(
+                                                ModelGraph::FK_AFTER_ID).c_str());
+            if (m_dialogueLineStorage.count(nextId) == 0)
+                loadDialogueLineRecursive(nextId, db);
+            /*
+             * @todo load action
+             */
+            std::string characterLine = result.at(i).at(ModelGraph::CHARACTER_LINE);
+            if (characterLine == "NULL")
+                characterLine = "";
+            line.addChoice(characterLine, &(m_dialogueLineStorage[nextId]), nullptr);
+        }
+    }
+
+    m_dialogueLineStorage[id] = std::move(line);
 
 }
 

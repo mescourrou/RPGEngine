@@ -104,6 +104,39 @@ constexpr char NAME[] = "name";
 constexpr char VALUE[] = "value";
 } // namespace Money
 
+namespace Quest
+{
+namespace DialogLine
+{
+constexpr char TABLE[] = "DialogLine";
+constexpr char ID[] = "id";
+constexpr char LINE[] = "line";
+constexpr char FK_ACTION_ID[] = "fkActionId";
+} // namespace Dialog
+
+namespace DialogGraph
+{
+constexpr char TABLE[] = "DialogGraph";
+constexpr char FK_BEFORE_ID[] = "fkBeforeId";
+constexpr char FK_AFTER_ID[] = "fkAfterId";
+constexpr char CHARACTER_LINE[] = "line";
+} // namespace DialogGraph
+
+namespace DialogAction
+{
+constexpr char TABLE[] = "DialogAction";
+constexpr char ID[] = "id";
+} // namespace DialogAction
+
+namespace Dialog
+{
+constexpr char TABLE[] = "Dialog";
+constexpr char FK_DIALOG_LINE_ID[] = "fkDialogLineId";
+constexpr char FK_NPC_NAME[] = "fkNPCName";
+} // namespace Dialog
+
+} // namespace Quest
+
 } // namespace Model
 
 } // namespace database

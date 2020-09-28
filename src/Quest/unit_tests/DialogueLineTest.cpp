@@ -29,4 +29,20 @@ TEST_F(DialogueLineTest, ChoiceSelection)
     EXPECT_TRUE(action->done);
 }
 
+TEST_F(DialogueLineTest, ChoiceSelectionWhenOnlyOne)
+{
+    DialogueLine line1("Hello World");
+    DialogueLine line2("Do you wanna a quest ?");
+
+    TestAction* action = new TestAction;
+    line1.addChoice("", &line2, action);
+
+    EXPECT_EQ(line1.getChoices().size(), 1);
+    EXPECT_TRUE(line1.getChoices().at(0).empty());
+
+    const DialogueLine* selectedLine = line1.selectChoice(0);
+    EXPECT_EQ(&line2, selectedLine);
+    EXPECT_TRUE(action->done);
+}
+
 }
