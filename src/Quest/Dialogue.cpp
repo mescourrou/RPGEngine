@@ -4,20 +4,37 @@
 #include <InstrumentationTimer.hpp>
 #include <Query.hpp>
 #include <glog/logging.h>
+#include <VerbosityLevels.hpp>
 
 namespace quest
 {
 
+/**
+ * @brief Load the Dialogue starting by the id @a firstLineID .
+ *
+ * @warning You can give any firstLineID, even in the middle of a Dialogue .
+ * @param firstLineID First DialogueLine ID to start with.
+ * @param db Database to load from.
+ * @return Return a reference on the current object.
+ */
 Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
                                      std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
+    VLOG(verbosityLevel::FUNCTION_CALL) << "Dialogue loadFromDatabase " <<
+                                        firstLineID;
 
     loadDialogueLineRecursive(firstLineID, db);
     m_firstLine = &m_dialogueLineStorage[firstLineID];
     return *this;
 }
 
+/**
+ * @brief Load all the Dialogue s of a NPC, defined by its name.
+ * @param NPCName Name of the NPC.
+ * @param db Database to load from.
+ * @return List of Dialogue , currently ordored by first DialogueLine ID.
+ */
 std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
         std::shared_ptr<databaseTools::Database> db)
 {
@@ -53,6 +70,15 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
     return dialogueList;
 }
 
+/**
+ * @brief Verify that the given database has the necessary tables.
+ *
+ * We check if the table database::Model::Quest::Dialog::TABLE exists and has the good fields.
+ * Then, we check DialogueLine::verifyDatabaseModel .
+ *
+ * @param db Database to verify.
+ * @return True if the database contains the needed tables.
+ */
 bool Dialogue::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
@@ -82,6 +108,11 @@ bool Dialogue::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
     return DialogueLine::verifyDatabaseModel(db);
 }
 
+/**
+ * @brief Create the needed tables on the database.
+ * @param db Database to populate.
+ * @return Return true if the populate process was successfull.
+ */
 bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
@@ -105,9 +136,16 @@ bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
     return DialogueLine::createDatabaseModel(db) && verifyDatabaseModel(db);
 }
 
+/**
+ * @brief Load a DialogueLine and the successor of it, recursively.
+ * @param id Id of the DialogueLine to start with.
+ * @param db Database to load from.
+ */
 void Dialogue::loadDialogueLineRecursive(unsigned int id,
         std::shared_ptr<databaseTools::Database> db)
 {
+    VLOG(verbosityLevel::FUNCTION_CALL) << "Dialogue loadDialogueLineRecursive" <<
+                                        id;
     DialogueLine line;
     line.loadFromDatabase(id, db);
 
@@ -127,7 +165,7 @@ void Dialogue::loadDialogueLineRecursive(unsigned int id,
                                                 ModelGraph::FK_AFTER_ID).c_str());
             if (m_dialogueLineStorage.count(nextId) == 0)
                 loadDialogueLineRecursive(nextId, db);
-            /*
+            /**
              * @todo load action
              */
             std::string characterLine = result.at(i).at(ModelGraph::CHARACTER_LINE);

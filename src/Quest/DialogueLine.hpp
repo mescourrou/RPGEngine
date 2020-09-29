@@ -23,21 +23,34 @@ class DialogueLineTest;
 #endif
 
 CREATE_EXCEPTION_CLASS(DialogueLine)
-
+/**
+ * @brief Dialogue NPC line with player choice.
+ *
+ * About the choices, you can put an empty player line to chain multiple NPC lines.
+ */
 class DialogueLine : public BaseObject
 {
     DECLARE_BASEOBJECT(DialogueLine)
 #ifdef RPG_BUILD_TEST
     friend class quest::DialogueLineTest;
 #endif
+    /**
+     * @brief Player choice structure.
+     */
     struct Choice
     {
+        /// Line of the player
         std::string playerLine;
+        /// Pointer on the next NPC line
         const DialogueLine* m_nextLine = nullptr;
+        /// Pointer on the associated action
         DialogueAction* m_action = nullptr;
     };
 
   public:
+    /**
+     * @brief Default constructor.
+     */
     DialogueLine() = default;
     DialogueLine(std::string line);
     ~DialogueLine() override;
@@ -56,7 +69,9 @@ class DialogueLine : public BaseObject
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
 
   private:
+    /// NPC line
     std::string m_line;
+    /// List of choices for the player
     std::vector<Choice> m_choices;
 
 };

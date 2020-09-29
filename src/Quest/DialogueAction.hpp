@@ -15,6 +15,9 @@ namespace quest
 class DialogueActionTest;
 #endif
 
+/**
+ * @brief Base action class for the DialogueLine choices.
+ */
 class DialogueAction : public BaseObject
 {
     DECLARE_BASEOBJECT(DialogueAction)

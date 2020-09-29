@@ -8,11 +8,17 @@
 namespace quest
 {
 
+/**
+ * @brief Construct with only the line.
+ */
 DialogueLine::DialogueLine(std::string line) : m_line(std::move(line))
 {
 
 }
 
+/**
+ * @brief Delete the actions stored.
+ */
 DialogueLine::~DialogueLine()
 {
     for (auto& choice : m_choices)
@@ -22,6 +28,11 @@ DialogueLine::~DialogueLine()
     }
 }
 
+/**
+ * @brief Load the DialogueLine of the given id from the database.
+ * @param id Id of the DialogueLine.
+ * @param db Database to load from.
+ */
 void DialogueLine::loadFromDatabase(unsigned int id,
                                     std::shared_ptr<databaseTools::Database> db)
 {
@@ -48,22 +59,37 @@ void DialogueLine::loadFromDatabase(unsigned int id,
 
 }
 
+/**
+ * @brief Add a player choice.
+ * @param playerLine Line of the player. Can be empty.
+ * @param nextLine Pointer on the next NPC line. Can be null.
+ * @param action Owned pointer on the DialogueAction associated to the choice.
+ */
 void DialogueLine::addChoice(std::string playerLine,
                              const DialogueLine* nextLine, DialogueAction* action)
 {
     m_choices.push_back(Choice{std::move(playerLine), nextLine, action});
 }
 
+/**
+ * @brief Set the line.
+ */
 void DialogueLine::setLine(std::string line)
 {
     m_line = std::move(line);
 }
 
+/**
+ * @brief Get the line.
+ */
 const std::string& DialogueLine::getLine() const
 {
     return m_line;
 }
 
+/**
+ * @brief Get the player lines of the choices.
+ */
 std::vector<std::string> DialogueLine::getChoices() const
 {
     std::vector<std::string> choices;
@@ -74,6 +100,10 @@ std::vector<std::string> DialogueLine::getChoices() const
     return choices;
 }
 
+/**
+ * @brief Select the wanted choice, execute the action associated and return the next line pointer.
+ * @param index Index of the choice to select. The index is the same than in the choice list given by getChoices() .
+ */
 const DialogueLine* DialogueLine::selectChoice(size_t index) const
 {
     const Choice& c = m_choices.at(index);
@@ -82,6 +112,16 @@ const DialogueLine* DialogueLine::selectChoice(size_t index) const
     return c.m_nextLine;
 }
 
+/**
+ * @brief Verify that the database contains the needed tables.
+ *
+ * The tables checked are :
+ * - DialogLine
+ * - DialogGraph
+ * - DialogAction
+ * @param db Database to verify.
+ * @return True if the database contains all the needed tables.
+ */
 bool DialogueLine::verifyDatabaseModel(std::shared_ptr<databaseTools::Database>
                                        db)
 {
@@ -153,6 +193,11 @@ bool DialogueLine::verifyDatabaseModel(std::shared_ptr<databaseTools::Database>
     return true;
 }
 
+/**
+ * @brief Create the needed tables in the database.
+ * @param db Database to populate.
+ * @return True if the populate process was successfull.
+ */
 bool DialogueLine::createDatabaseModel(std::shared_ptr<databaseTools::Database>
                                        db)
 {
