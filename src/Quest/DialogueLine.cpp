@@ -16,6 +16,12 @@ DialogueLine::DialogueLine(std::string line) : m_line(std::move(line))
 
 }
 
+DialogueLine::DialogueLine(DialogueLine&& move) noexcept :
+    m_line(move.m_line), m_choices(move.m_choices)
+{
+
+}
+
 /**
  * @brief Delete the actions stored.
  */
@@ -23,9 +29,16 @@ DialogueLine::~DialogueLine()
 {
     for (auto& choice : m_choices)
     {
-        if (choice.m_action)
-            delete choice.m_action;
+        if (choice.action)
+            delete choice.action;
     }
+}
+
+DialogueLine& DialogueLine::operator=(DialogueLine&& move) noexcept
+{
+    m_line = move.m_line;
+    m_choices = move.m_choices;
+    return *this;
 }
 
 /**
@@ -107,9 +120,9 @@ std::vector<std::string> DialogueLine::getChoices() const
 const DialogueLine* DialogueLine::selectChoice(size_t index) const
 {
     const Choice& c = m_choices.at(index);
-    if (c.m_action)
-        (*c.m_action)();
-    return c.m_nextLine;
+    if (c.action)
+        (*c.action)();
+    return c.nextLine;
 }
 
 /**

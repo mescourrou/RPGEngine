@@ -25,7 +25,7 @@ Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
                                         firstLineID;
 
     loadDialogueLineRecursive(firstLineID, db);
-    m_firstLine = &m_dialogueLineStorage[firstLineID];
+    m_firstLine = &(m_dialogueLineStorage[firstLineID]);
     return *this;
 }
 
@@ -52,7 +52,7 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
                             .column(Model::FK_DIALOG_LINE_ID)
                             .where(Model::FK_NPC_NAME, Query::EQUAL, NPCName)
-                            .sort(Model::FK_DIALOG_LINE_ID)
+                            .sort(Model::FK_DIALOG_LINE_ID, true)
                            );
 
     if (result.size() <= 1)
@@ -64,6 +64,9 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
         Dialogue d;
         d.loadFromDatabase(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()),
                            db);
+        VLOG(verbosityLevel::VERIFICATION_LOG) << "Dialogue starting by '" <<
+                                               d.getFirstLine()->getLine() << "', id '" << std::atoi(result.at(i).at(
+                                                       Model::FK_DIALOG_LINE_ID).c_str()) << "', loaded";
         dialogueList.emplace_back(d);
     }
 

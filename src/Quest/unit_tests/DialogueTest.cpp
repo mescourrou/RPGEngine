@@ -53,7 +53,7 @@ TEST_F(DialogueTest, LoadFromDatabaseMultiple)
     ASSERT_TRUE(list.at(0).getFirstLine());
     EXPECT_EQ(list.at(0).getFirstLine()->getLine(), "Hello young knight !");
 
-    EXPECT_TRUE(list.at(1).getFirstLine());
+    ASSERT_TRUE(list.at(1).getFirstLine());
     EXPECT_EQ(list.at(1).getFirstLine()->getLine(), "Hi !");
 }
 

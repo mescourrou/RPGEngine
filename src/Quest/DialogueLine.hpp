@@ -42,9 +42,35 @@ class DialogueLine : public BaseObject
         /// Line of the player
         std::string playerLine;
         /// Pointer on the next NPC line
-        const DialogueLine* m_nextLine = nullptr;
+        const DialogueLine* nextLine = nullptr;
         /// Pointer on the associated action
-        DialogueAction* m_action = nullptr;
+        DialogueAction* action = nullptr;
+
+        Choice() = default;
+        Choice(std::string playerLine_, const DialogueLine* nextLine_,
+               DialogueAction* action_) :
+            playerLine(std::move(playerLine_)), nextLine(nextLine_), action(action_)
+        {}
+
+        Choice(const Choice& copy) = default;
+
+        Choice(Choice&& move) :
+            playerLine(std::move(move.playerLine)), nextLine(move.nextLine),
+            action(move.action)
+        {
+            move.nextLine = nullptr;
+            move.action = nullptr;
+        }
+
+        Choice& operator=(const Choice&) = default;
+        Choice& operator=(Choice&& move)
+        {
+            playerLine = std::move(move.playerLine);
+            nextLine = move.nextLine,
+            action = move.action;
+            move.nextLine = nullptr;
+            move.action = nullptr;
+        }
     };
 
   public:
@@ -53,7 +79,12 @@ class DialogueLine : public BaseObject
      */
     DialogueLine() = default;
     DialogueLine(std::string line);
+    DialogueLine(const DialogueLine& copy) noexcept = default;
+    DialogueLine(DialogueLine&& move) noexcept;
     ~DialogueLine() override;
+
+    DialogueLine& operator=(const DialogueLine&) = default;
+    DialogueLine& operator=(DialogueLine&& move) noexcept;
 
     void loadFromDatabase(unsigned int id,
                           std::shared_ptr<databaseTools::Database> db);
