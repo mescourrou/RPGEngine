@@ -11,6 +11,11 @@ namespace quest
 /**
  * @brief Construct with only the line.
  */
+DialogueLine::DialogueLine(unsigned int id) : m_id(id)
+{
+
+}
+
 DialogueLine::DialogueLine(std::string line) : m_line(std::move(line))
 {
 
@@ -45,13 +50,14 @@ DialogueLine& DialogueLine::operator=(DialogueLine&& move) noexcept
  * @param id Id of the DialogueLine.
  * @param db Database to load from.
  */
-void DialogueLine::loadFromDatabase(unsigned int id,
-                                    std::shared_ptr<databaseTools::Database> db)
+bool DialogueLine::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace ModelLine = database::Model::Quest::DialogLine;
     using namespace databaseTools;
 
+    if (m_id == 0)
+        throw DialogueLineException("Please set the DialogueLine id before loading from the database");
     if (!db)
         throw DialogueLineException("No database given.",
                                     BaseException::MISSING_DATABASE);
@@ -61,14 +67,15 @@ void DialogueLine::loadFromDatabase(unsigned int id,
 
     auto result = db->query(Query::createQuery<Query::SELECT>(ModelLine::TABLE, db)
                             .where(Query::Column(ModelLine::TABLE, ModelLine::ID), Query::EQUAL,
-                                   std::to_string(id))
+                                   std::to_string(m_id))
                            );
 
     if (result.size() <= 1)
-        return;
+        return false;
 
     m_line = result.at(1).at(ModelLine::LINE);
 
+    return true;
 }
 
 /**

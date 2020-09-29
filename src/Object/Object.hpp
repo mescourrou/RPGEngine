@@ -5,6 +5,7 @@
 #include <BaseObject.hpp>
 #include <Money.hpp>
 #include <BaseException.hpp>
+#include <BaseDatabaseObject.hpp>
 
 #ifdef RPG_BUILD_TEST
 #include <gtest/gtest.h>
@@ -30,7 +31,7 @@ class ObjectTest;
 /**
  * @brief Object which can be manipulated by the Caracter
  */
-class Object : public BaseObject
+class Object : public BaseObject, public BaseDatabaseObject
 {
     DECLARE_BASEOBJECT(Object)
 #ifdef RPG_BUILD_TEST
@@ -48,7 +49,7 @@ class Object : public BaseObject
     Object& operator=(const Object& copy) = default;
     Object& operator=(Object&& moved) = default;
 
-    virtual bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db);
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
     static std::shared_ptr<Object> createFromDatabase(const std::string& name,
             std::shared_ptr<databaseTools::Database> db);
 

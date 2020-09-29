@@ -20,7 +20,8 @@ namespace object
 /**
  * @brief Constructor
  */
-Inventory::Inventory()
+Inventory::Inventory(const std::string& characterName) :
+    m_characterName(characterName)
 {
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
                                           this;
@@ -139,8 +140,7 @@ void Inventory::push(const std::shared_ptr<Object>& newObject)
  * @param [in] characterName Name of the Character owning the inventory
  * @return Return true if the loading was successfull
  */
-bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
-                                 const std::string& characterName)
+bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Inventory;
@@ -155,7 +155,8 @@ bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
     // Load information from Model::TABLE => Main inventory table
 
     auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
-                            .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL, characterName));
+                            .column(Model::MONEY).where(Model::FK_CHARACTER, Query::EQUAL,
+                                    m_characterName));
     if (result.size() <= 1)
         return false;
     m_money = Money{static_cast<unsigned int>(std::atoi(result.at(1).at(Model::MONEY).c_str()))};
@@ -166,7 +167,7 @@ bool Inventory::loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
                                    (Model::InventoryObjects::TABLE, db)
                                    .column(Model::InventoryObjects::QUANTITY)
                                    .column(Model::InventoryObjects::FK_OBJECT)
-                                   .where(Model::InventoryObjects::FK_CHARACTER, Query::EQUAL, characterName));
+                                   .where(Model::InventoryObjects::FK_CHARACTER, Query::EQUAL, m_characterName));
 
     if (objectsToLoad.size() <= 1)
         return true;

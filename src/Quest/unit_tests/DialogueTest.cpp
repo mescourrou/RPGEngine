@@ -19,8 +19,8 @@ TEST_F(DialogueTest, VerifyDatabaseModel)
 
 TEST_F(DialogueTest, LoadFromDatabase)
 {
-    Dialogue d;
-    d.loadFromDatabase(1, database);
+    Dialogue d(1);
+    d.loadFromDatabase(database);
 
     ASSERT_TRUE(d.getFirstLine());
     const DialogueLine* currentLine = d.getFirstLine();

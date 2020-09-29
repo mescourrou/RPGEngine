@@ -60,7 +60,7 @@ bool GameLoader::load(const std::string& name)
 
     m_game = std::make_shared<Game>(name, m_context);
 
-    return m_game->initialize(m_db);
+    return m_game->loadFromDatabase(m_db);
 }
 
 /**

@@ -16,7 +16,7 @@ namespace object
  */
 TEST_F(InventoryTest, Empty)
 {
-    Inventory iv;
+    Inventory iv("John");
 
     EXPECT_EQ(iv.size(), 0);
     EXPECT_FALSE(iv.get(0));
@@ -88,9 +88,9 @@ TEST_F(InventoryTest, LoadFromDatabase)
     std::shared_ptr<databaseTools::Database> db(new databaseTools::Database(
                 useFile));
 
-    Inventory myInventory;
+    Inventory myInventory("Brian");
 
-    ASSERT_TRUE(myInventory.loadFromDatabase(db, "Brian"));
+    ASSERT_TRUE(myInventory.loadFromDatabase(db));
 
     ASSERT_EQ(myInventory.size(), 4);
     EXPECT_EQ(myInventory.get(0)->name(), "object1");
@@ -133,7 +133,7 @@ void InventoryTest::SetUp()
 
     if (testName != "Empty")
     {
-        inventory.reset(new Inventory);
+        inventory.reset(new Inventory(""));
         inventory->m_inventory.push_back(std::make_shared<Object>(Object("Something")));
         inventory->m_inventory.push_back(std::make_shared<Object>
                                          (Object("Something very cool")));

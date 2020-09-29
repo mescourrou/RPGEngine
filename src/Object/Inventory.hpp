@@ -4,6 +4,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseDatabaseObject.hpp>
 #include <BaseException.hpp>
 #include <Money.hpp>
 
@@ -30,7 +31,7 @@ class InventoryTest;
 /**
  * @brief Inventory class : container for Object
  */
-class Inventory : public BaseObject
+class Inventory : public BaseObject, public BaseDatabaseObject
 {
     DECLARE_BASEOBJECT(Inventory)
 #ifdef RPG_BUILD_TEST
@@ -39,7 +40,7 @@ class Inventory : public BaseObject
 #endif
   public:
     /// @brief Constructor
-    Inventory();
+    Inventory(const std::string& characterName);
     /// @brief Destructor
     ~Inventory() override = default;
 
@@ -50,8 +51,7 @@ class Inventory : public BaseObject
     std::shared_ptr<Object> pop(const std::string& objectName);
     void push(const std::shared_ptr<Object>& newObject);
 
-    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db,
-                          const std::string& characterName);
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
     /// @brief Get the money contained in the inventory
     const Money& money() const
@@ -75,6 +75,7 @@ class Inventory : public BaseObject
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
   private:
 
+    std::string m_characterName;
     std::list<std::shared_ptr<Object>> m_inventory; ///< List of the objects
 
     Money m_money;  ///< Money contained in the inventory

@@ -3,6 +3,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseDatabaseObject.hpp>
 #include <BaseException.hpp>
 #include <Position.hpp>
 #include <Event.hpp>
@@ -39,7 +40,7 @@ class CharacterTest;
 /**
  * @brief Root character class
  */
-class Character : public BaseObject
+class Character : public BaseObject, public BaseDatabaseObject
 {
     DECLARE_BASEOBJECT(Character)
 
@@ -66,7 +67,7 @@ class Character : public BaseObject
     /// @brief Default move operator
     Character& operator=(Character&&) = default;
 
-    virtual bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db);
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
     // Getters
     const std::string& name() const noexcept;

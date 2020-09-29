@@ -9,6 +9,12 @@
 namespace quest
 {
 
+Dialogue::Dialogue(unsigned int firstLineID) : m_firstLineId(firstLineID)
+{
+
+}
+
+
 /**
  * @brief Load the Dialogue starting by the id @a firstLineID .
  *
@@ -17,16 +23,15 @@ namespace quest
  * @param db Database to load from.
  * @return Return a reference on the current object.
  */
-Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
-                                     std::shared_ptr<databaseTools::Database> db)
+bool Dialogue::loadFromDatabase(std::shared_ptr<databaseTools::Database>
+                                db)
 {
     PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Dialogue loadFromDatabase " <<
-                                        firstLineID;
+                                        m_firstLineId;
 
-    loadDialogueLineRecursive(firstLineID, db);
-    m_firstLineId = firstLineID;
-    return *this;
+    loadDialogueLineRecursive(m_firstLineId, db);
+    return true;
 }
 
 /**
@@ -35,6 +40,7 @@ Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
  * @param db Database to load from.
  * @return List of Dialogue , currently ordored by first DialogueLine ID.
  */
+
 std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
         std::shared_ptr<databaseTools::Database> db)
 {
@@ -61,9 +67,8 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
     std::vector<Dialogue> dialogueList;
     for (size_t i = 1; i < result.size(); i++)
     {
-        Dialogue d;
-        d.loadFromDatabase(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()),
-                           db);
+        Dialogue d(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()));
+        d.loadFromDatabase(db);
         VLOG(verbosityLevel::VERIFICATION_LOG) << "Dialogue starting by '" <<
                                                d.getFirstLine()->getLine() << "', id '" << std::atoi(result.at(i).at(
                                                        Model::FK_DIALOG_LINE_ID).c_str()) << "', loaded";
@@ -149,8 +154,8 @@ void Dialogue::loadDialogueLineRecursive(unsigned int id,
 {
     VLOG(verbosityLevel::FUNCTION_CALL) << "Dialogue loadDialogueLineRecursive" <<
                                         id;
-    DialogueLine line;
-    line.loadFromDatabase(id, db);
+    DialogueLine line(id);
+    line.loadFromDatabase(db);
 
     namespace ModelGraph = database::Model::Quest::DialogGraph;
     using namespace databaseTools;
@@ -174,7 +179,7 @@ void Dialogue::loadDialogueLineRecursive(unsigned int id,
             std::string characterLine = result.at(i).at(ModelGraph::CHARACTER_LINE);
             if (characterLine == "NULL")
                 characterLine = "";
-            line.addChoice(characterLine, &(m_dialogueLineStorage[nextId]), nullptr);
+            line.addChoice(characterLine, &m_dialogueLineStorage[nextId], nullptr);
         }
     }
 

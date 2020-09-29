@@ -6,6 +6,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseDatabaseObject.hpp>
 #include <BaseException.hpp>
 #include <Map.hpp>
 
@@ -55,7 +56,7 @@ class GameTest;
 /**
  * @brief Manage the game during its execution
  */
-class Game : public BaseObject
+class Game : public BaseObject, public BaseDatabaseObject
 {
     DECLARE_BASEOBJECT(Game)
 #ifdef RPG_BUILD_TEST
@@ -70,7 +71,7 @@ class Game : public BaseObject
     /// @brief Destructor
     ~Game() override = default;
 
-    bool initialize(std::shared_ptr<databaseTools::Database> db);
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
     bool run();
 

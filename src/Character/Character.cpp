@@ -27,7 +27,7 @@ Character::Character(const std::string& name,
                      std::shared_ptr<config::Context> context) :
     BaseObject(),
     m_context(context), m_name(name),
-    m_inventory(std::make_unique<object::Inventory>())
+    m_inventory(std::make_unique<object::Inventory>(m_name))
 {
     PROFILE_FUNCTION();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Creating " << className() << " => " <<
@@ -62,7 +62,7 @@ bool Character::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
     if (!m_position.loadFromDatabase(db, m_context, m_name))
         return false;
 
-    m_inventory->loadFromDatabase(db, m_name);
+    m_inventory->loadFromDatabase(db);
 
     return true;
 }

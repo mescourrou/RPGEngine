@@ -1,6 +1,8 @@
 find_package(glog REQUIRED)
 
-add_library(BaseObject BaseObject.cpp BaseObject.hpp)
+add_library(BaseObject
+    BaseObject.cpp BaseObject.hpp
+    BaseDatabaseObject.hpp)
 target_link_libraries(BaseObject glog
     Config)
 

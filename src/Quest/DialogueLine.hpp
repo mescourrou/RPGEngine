@@ -3,6 +3,7 @@
 // Project
 #include "general_config.hpp"
 #include <BaseObject.hpp>
+#include <BaseDatabaseObject.hpp>
 #include "DialogueAction.hpp"
 #include <BaseException.hpp>
 
@@ -28,7 +29,7 @@ CREATE_EXCEPTION_CLASS(DialogueLine)
  *
  * About the choices, you can put an empty player line to chain multiple NPC lines.
  */
-class DialogueLine : public BaseObject
+class DialogueLine : public BaseObject, public BaseDatabaseObject
 {
     DECLARE_BASEOBJECT(DialogueLine)
 #ifdef RPG_BUILD_TEST
@@ -81,6 +82,7 @@ class DialogueLine : public BaseObject
      * @brief Default constructor.
      */
     DialogueLine() = default;
+    DialogueLine(unsigned int id);
     explicit DialogueLine(std::string line);
     DialogueLine(const DialogueLine& copy) = default;
     DialogueLine(DialogueLine&& move) noexcept;
@@ -89,8 +91,7 @@ class DialogueLine : public BaseObject
     DialogueLine& operator=(const DialogueLine&) = default;
     DialogueLine& operator=(DialogueLine&& move) noexcept;
 
-    void loadFromDatabase(unsigned int id,
-                          std::shared_ptr<databaseTools::Database> db);
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
     void addChoice(std::string playerLine, const DialogueLine* nextLine,
                    DialogueAction* action = nullptr);
@@ -99,10 +100,27 @@ class DialogueLine : public BaseObject
     std::vector<std::string> getChoices() const;
     const DialogueLine* selectChoice(size_t index) const;
 
+    void setId(unsigned int id)
+    {
+        m_id = id;
+    }
+
+    unsigned int getId() const
+    {
+        return m_id;
+    }
+
+    bool operator<(const DialogueLine& l2) const
+    {
+        return getId() < l2.getId();
+    }
+
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
 
   private:
+    /// Line id
+    unsigned int m_id = 0;
     /// NPC line
     std::string m_line;
     /// List of choices for the player

@@ -4,6 +4,7 @@
 #include "general_config.hpp"
 #include <BaseObject.hpp>
 #include <BaseException.hpp>
+#include <BaseDatabaseObject.hpp>
 #include <DialogueLine.hpp>
 #include <map>
 
@@ -44,7 +45,7 @@ CREATE_EXCEPTION_CLASS(Dialogue)
  * DialogueLine* line = list.at(0).getFirstLine();
  * @endcode
  */
-class Dialogue : public BaseObject
+class Dialogue : public BaseObject, public BaseDatabaseObject
 {
     DECLARE_BASEOBJECT(Dialogue)
 #ifdef RPG_BUILD_TEST
@@ -54,7 +55,7 @@ class Dialogue : public BaseObject
     /**
      * @brief Default constructor.
      */
-    Dialogue() = default;
+    Dialogue(unsigned int firstLineID);
     /**
      * @brief Default destructor.
      */
@@ -65,8 +66,7 @@ class Dialogue : public BaseObject
     Dialogue& operator=(const Dialogue& copy) = default;
     Dialogue& operator=(Dialogue&& move) noexcept = default;
 
-    Dialogue& loadFromDatabase(unsigned int firstLineID,
-                               std::shared_ptr<databaseTools::Database> db);
+    bool loadFromDatabase(std::shared_ptr<databaseTools::Database> db) override;
 
     /**
      * @brief Get the first DialogueLine of the Dialogue.

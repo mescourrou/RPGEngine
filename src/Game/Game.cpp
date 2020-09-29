@@ -48,7 +48,7 @@ Game::Game(const std::string& name,
  * @param[in] db Database to use for initialization
  * @return Return true if the initialization went well
  */
-bool Game::initialize(std::shared_ptr<databaseTools::Database> db)
+bool Game::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     // Database verification
