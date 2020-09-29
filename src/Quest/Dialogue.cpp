@@ -9,50 +9,6 @@
 namespace quest
 {
 
-//Dialogue::Dialogue(const Dialogue& copy) :
-//    m_dialogueLineStorage(copy.m_dialogueLineStorage)
-//{
-//    auto it = std::find_if(copy.m_dialogueLineStorage.begin(),
-//                           copy.m_dialogueLineStorage.end(), [&copy](const
-//                                   std::pair<unsigned int, DialogueLine>& p)
-//    {
-//        if (&p.second == copy.m_firstLine)
-//            return true;
-//        return false;
-//    });
-//    m_firstLine = &(m_dialogueLineStorage[it->first]);
-//}
-
-//Dialogue::Dialogue(Dialogue&& move) noexcept :
-//    m_dialogueLineStorage(std::move(move.m_dialogueLineStorage)),
-//    m_firstLine(move.m_firstLine)
-//{
-//    move.m_firstLine = nullptr;
-//}
-
-//Dialogue& Dialogue::operator=(const Dialogue& copy)
-//{
-//    m_dialogueLineStorage = copy.m_dialogueLineStorage;
-//    auto it = std::find_if(copy.m_dialogueLineStorage.begin(),
-//                           copy.m_dialogueLineStorage.end(), [&copy](const
-//                                   std::pair<unsigned int, DialogueLine>& p)
-//    {
-//        if (&p.second == copy.m_firstLine)
-//            return true;
-//        return false;
-//    });
-//    m_firstLine = &(m_dialogueLineStorage[it->first]);
-//    return *this;
-//}
-
-//Dialogue& Dialogue::operator=(Dialogue&& move) noexcept
-//{
-//    m_dialogueLineStorage = std::move(move.m_dialogueLineStorage);
-//    m_firstLine = move.m_firstLine;
-//    move.m_firstLine = nullptr;
-//    return *this;
-//}
-
 /**
  * @brief Load the Dialogue starting by the id @a firstLineID .
  *

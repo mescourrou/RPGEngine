@@ -54,7 +54,7 @@ class DialogueLine : public BaseObject
 
         Choice(const Choice& copy) = default;
 
-        Choice(Choice&& move) :
+        Choice(Choice&& move) noexcept :
             playerLine(std::move(move.playerLine)), nextLine(move.nextLine),
             action(move.action)
         {
@@ -63,7 +63,7 @@ class DialogueLine : public BaseObject
         }
 
         Choice& operator=(const Choice&) = default;
-        Choice& operator=(Choice&& move)
+        Choice& operator=(Choice&& move) noexcept
         {
             playerLine = std::move(move.playerLine);
             nextLine = move.nextLine;
