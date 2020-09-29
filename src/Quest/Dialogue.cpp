@@ -96,7 +96,7 @@ bool Dialogue::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
     auto columnList = db->columnList(Model::TABLE);
 
     unsigned short goodColumns = 0;
-    for (auto& column : columnList)
+    for (const std::string& column : columnList)
     {
         if (column == Model::FK_NPC_NAME)
             goodColumns++;

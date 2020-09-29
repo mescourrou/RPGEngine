@@ -70,6 +70,7 @@ class DialogueLine : public BaseObject
             action = move.action;
             move.nextLine = nullptr;
             move.action = nullptr;
+            return *this;
         }
     };
 
@@ -78,8 +79,8 @@ class DialogueLine : public BaseObject
      * @brief Default constructor.
      */
     DialogueLine() = default;
-    DialogueLine(std::string line);
-    DialogueLine(const DialogueLine& copy) noexcept = default;
+    explicit DialogueLine(std::string line);
+    DialogueLine(const DialogueLine& copy) = default;
     DialogueLine(DialogueLine&& move) noexcept;
     ~DialogueLine() override;
 

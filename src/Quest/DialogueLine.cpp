@@ -27,7 +27,7 @@ DialogueLine::DialogueLine(DialogueLine&& move) noexcept :
  */
 DialogueLine::~DialogueLine()
 {
-    for (auto& choice : m_choices)
+    for (const Choice& choice : m_choices)
     {
         if (choice.action)
             delete choice.action;
@@ -106,7 +106,7 @@ const std::string& DialogueLine::getLine() const
 std::vector<std::string> DialogueLine::getChoices() const
 {
     std::vector<std::string> choices;
-    for (auto& choice : m_choices)
+    for (const Choice& choice : m_choices)
     {
         choices.push_back(choice.playerLine);
     }
@@ -149,7 +149,7 @@ bool DialogueLine::verifyDatabaseModel(std::shared_ptr<databaseTools::Database>
     auto columnList = db->columnList(ModelDialogLine::TABLE);
 
     unsigned short goodColumns = 0;
-    for (auto& column : columnList)
+    for (const std::string& column : columnList)
     {
         if (column == ModelDialogLine::ID)
             goodColumns++;
@@ -171,7 +171,7 @@ bool DialogueLine::verifyDatabaseModel(std::shared_ptr<databaseTools::Database>
     columnList = db->columnList(ModelDialogGraph::TABLE);
 
     goodColumns = 0;
-    for (auto& column : columnList)
+    for (const std::string& column : columnList)
     {
         if (column == ModelDialogGraph::FK_AFTER_ID)
             goodColumns++;
@@ -193,7 +193,7 @@ bool DialogueLine::verifyDatabaseModel(std::shared_ptr<databaseTools::Database>
     columnList = db->columnList(ModelDialogAction::TABLE);
 
     goodColumns = 0;
-    for (auto& column : columnList)
+    for (const std::string& column : columnList)
     {
         if (column == ModelDialogAction::ID)
             goodColumns++;
