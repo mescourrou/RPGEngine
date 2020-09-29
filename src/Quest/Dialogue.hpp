@@ -59,6 +59,11 @@ class Dialogue : public BaseObject
      * @brief Default destructor.
      */
     ~Dialogue() override = default;
+    Dialogue(const Dialogue& copy) = default;
+    Dialogue(Dialogue&& move) noexcept = default;
+
+    Dialogue& operator=(const Dialogue& copy) = default;
+    Dialogue& operator=(Dialogue&& move) noexcept = default;
 
     Dialogue& loadFromDatabase(unsigned int firstLineID,
                                std::shared_ptr<databaseTools::Database> db);
@@ -67,9 +72,11 @@ class Dialogue : public BaseObject
      * @brief Get the first DialogueLine of the Dialogue.
      * @return
      */
-    DialogueLine* getFirstLine() const
+    const DialogueLine* getFirstLine() const
     {
-        return m_firstLine;
+        if (m_firstLineId == -1)
+            return nullptr;
+        return &m_dialogueLineStorage.at(m_firstLineId);
     }
 
     static std::vector<Dialogue> loadFromDatabase(std::string NPCName,
@@ -83,7 +90,7 @@ class Dialogue : public BaseObject
                                    std::shared_ptr<databaseTools::Database> db);
 
     /// Pointer on the first dialogue line, for a direct access.
-    DialogueLine* m_firstLine = nullptr;
+    int m_firstLineId = -1;
     /// Owns all the DialogueLine of the Dialogue.
     std::map<unsigned int, DialogueLine> m_dialogueLineStorage;
 };

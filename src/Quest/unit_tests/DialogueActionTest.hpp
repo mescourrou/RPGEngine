@@ -3,11 +3,12 @@
 #include <gtest/gtest.h>
 #include <DialogueAction.hpp>
 
-namespace quest {
+namespace quest
+{
 
 class DialogueActionTest : public testing::Test
 {
-public:
+
 };
 
 }

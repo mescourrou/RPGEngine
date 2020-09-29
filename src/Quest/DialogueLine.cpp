@@ -19,7 +19,6 @@ DialogueLine::DialogueLine(std::string line) : m_line(std::move(line))
 DialogueLine::DialogueLine(DialogueLine&& move) noexcept :
     m_line(move.m_line), m_choices(move.m_choices)
 {
-
 }
 
 /**

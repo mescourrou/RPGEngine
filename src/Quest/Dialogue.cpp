@@ -9,6 +9,50 @@
 namespace quest
 {
 
+//Dialogue::Dialogue(const Dialogue& copy) :
+//    m_dialogueLineStorage(copy.m_dialogueLineStorage)
+//{
+//    auto it = std::find_if(copy.m_dialogueLineStorage.begin(),
+//                           copy.m_dialogueLineStorage.end(), [&copy](const
+//                                   std::pair<unsigned int, DialogueLine>& p)
+//    {
+//        if (&p.second == copy.m_firstLine)
+//            return true;
+//        return false;
+//    });
+//    m_firstLine = &(m_dialogueLineStorage[it->first]);
+//}
+
+//Dialogue::Dialogue(Dialogue&& move) noexcept :
+//    m_dialogueLineStorage(std::move(move.m_dialogueLineStorage)),
+//    m_firstLine(move.m_firstLine)
+//{
+//    move.m_firstLine = nullptr;
+//}
+
+//Dialogue& Dialogue::operator=(const Dialogue& copy)
+//{
+//    m_dialogueLineStorage = copy.m_dialogueLineStorage;
+//    auto it = std::find_if(copy.m_dialogueLineStorage.begin(),
+//                           copy.m_dialogueLineStorage.end(), [&copy](const
+//                                   std::pair<unsigned int, DialogueLine>& p)
+//    {
+//        if (&p.second == copy.m_firstLine)
+//            return true;
+//        return false;
+//    });
+//    m_firstLine = &(m_dialogueLineStorage[it->first]);
+//    return *this;
+//}
+
+//Dialogue& Dialogue::operator=(Dialogue&& move) noexcept
+//{
+//    m_dialogueLineStorage = std::move(move.m_dialogueLineStorage);
+//    m_firstLine = move.m_firstLine;
+//    move.m_firstLine = nullptr;
+//    return *this;
+//}
+
 /**
  * @brief Load the Dialogue starting by the id @a firstLineID .
  *
@@ -25,7 +69,7 @@ Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
                                         firstLineID;
 
     loadDialogueLineRecursive(firstLineID, db);
-    m_firstLine = &(m_dialogueLineStorage[firstLineID]);
+    m_firstLineId = firstLineID;
     return *this;
 }
 
@@ -67,7 +111,7 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
         VLOG(verbosityLevel::VERIFICATION_LOG) << "Dialogue starting by '" <<
                                                d.getFirstLine()->getLine() << "', id '" << std::atoi(result.at(i).at(
                                                        Model::FK_DIALOG_LINE_ID).c_str()) << "', loaded";
-        dialogueList.emplace_back(d);
+        dialogueList.push_back(d);
     }
 
     return dialogueList;

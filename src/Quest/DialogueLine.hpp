@@ -66,12 +66,14 @@ class DialogueLine : public BaseObject
         Choice& operator=(Choice&& move)
         {
             playerLine = std::move(move.playerLine);
-            nextLine = move.nextLine,
+            nextLine = move.nextLine;
             action = move.action;
             move.nextLine = nullptr;
             move.action = nullptr;
             return *this;
         }
+
+        ~Choice() = default;
     };
 
   public:

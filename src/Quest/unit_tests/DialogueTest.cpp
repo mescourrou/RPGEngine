@@ -52,9 +52,11 @@ TEST_F(DialogueTest, LoadFromDatabaseMultiple)
     EXPECT_EQ(list.size(), 2);
     ASSERT_TRUE(list.at(0).getFirstLine());
     EXPECT_EQ(list.at(0).getFirstLine()->getLine(), "Hello young knight !");
+    std::cout << "0 : " << list.at(0).getFirstLine()->getLine() << std::endl;
 
     ASSERT_TRUE(list.at(1).getFirstLine());
     EXPECT_EQ(list.at(1).getFirstLine()->getLine(), "Hi !");
+    std::cout << "1 : " << list.at(1).getFirstLine()->getLine() << std::endl;
 }
 
 /**
@@ -67,8 +69,7 @@ void DialogueTest::SetUp()
     std::filesystem::copy(modelFile, usedFile,
                           std::filesystem::copy_options::overwrite_existing);
 
-    database = std::shared_ptr<databaseTools::Database>(new databaseTools::Database(
-                   usedFile));
+    database = std::make_shared<databaseTools::Database>(usedFile);
 }
 
 #endif
