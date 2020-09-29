@@ -38,11 +38,11 @@ std::shared_ptr<config::Context> GameLauncher::initializeEnvironment(int argc,
                                  VERSION_MINOR) + "."
                              + std::to_string(VERSION_BUILD));
     gflags::ParseCommandLineFlags(&argc, &argv, true);
-    if (FLAGS_verbose > 0)
-        LOG(INFO) << "Flag verbose : " << FLAGS_verbose;
 
     google::SetVLOGLevel("*", FLAGS_verbose);
     google::LogToStderr();
+    if (FLAGS_verbose > 0)
+        LOG(INFO) << "Flag verbose : " << FLAGS_verbose;
     LOG(INFO) << "Starting " << instanceName << " v" << static_cast<short>
               (VERSION_MAJOR) << "." <<
               static_cast<short>(VERSION_MINOR) << "." << static_cast<short>(VERSION_BUILD);
