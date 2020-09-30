@@ -42,6 +42,7 @@ bool NPC::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
     if (!Character::loadFromDatabase(db))
         return false;
 
+    m_dialogues = quest::Dialogue::loadFromDatabase(name(), db);
 
     return true;
 }

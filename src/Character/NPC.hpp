@@ -3,6 +3,7 @@
 // Project
 #include <Character.hpp>
 #include <BaseObject.hpp>
+#include <Dialogue.hpp>
 
 namespace character
 {
@@ -32,6 +33,7 @@ class NPC : public Character
     std::list<map::Position> m_path; ///< List of points to follow
     map::Position* m_targettedPosition = nullptr; ///< Current point targetted
 
+    std::vector<quest::Dialogue> m_dialogues;
 };
 
 } // namespace character
