@@ -178,6 +178,9 @@ void GameGUI::draw()
 
     ImGui::SFML::Render(*m_window);
     m_window->display();
+    m_context->framePeriod = std::chrono::duration_cast
+                             < decltype (m_context->framePeriod) >
+                             (std::chrono::high_resolution_clock::now() - m_drawingTimer);
     m_drawingTimer = std::chrono::high_resolution_clock::now();
 }
 

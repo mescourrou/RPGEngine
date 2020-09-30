@@ -38,8 +38,8 @@ class CharacterGUI : public BaseGUIObject
   public:
     static void connectSignals(game::gui::GameGUI* game, CharacterGUI* character,
                                bool player = false);
-    static void connectSignals(Character*, CharacterGUI*,
-                               bool = false);
+    static void connectSignals(Character* character, CharacterGUI* gui,
+                               bool player = false);
 
     CharacterGUI(std::weak_ptr<Character> character,
                  std::shared_ptr<config::Context> context);

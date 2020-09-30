@@ -190,3 +190,11 @@ bool Position::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 }
 
 } // namespace map
+
+std::ostream& operator<<(std::ostream& flux, const map::Position& pos)
+{
+    flux << pos.x() << "," << pos.y();
+    if (pos.map())
+        flux << " - " << pos.map()->name();
+    return flux;
+}

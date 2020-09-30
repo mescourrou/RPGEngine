@@ -72,7 +72,7 @@ class Dialogue : public BaseObject
      * @brief Get the first DialogueLine of the Dialogue.
      * @return
      */
-    const DialogueLine* getFirstLine() const
+    const DialogueLine* firstLine() const
     {
         if (m_firstLineId == -1)
             return nullptr;

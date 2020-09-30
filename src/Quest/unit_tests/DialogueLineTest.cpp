@@ -37,8 +37,8 @@ TEST_F(DialogueLineTest, ChoiceSelectionWhenOnlyOne)
     TestAction* action = new TestAction;
     line1.addChoice("", &line2, action);
 
-    EXPECT_EQ(line1.getChoices().size(), 1);
-    EXPECT_TRUE(line1.getChoices().at(0).empty());
+    EXPECT_EQ(line1.choices().size(), 1);
+    EXPECT_TRUE(line1.choices().at(0).empty());
 
     const DialogueLine* selectedLine = line1.selectChoice(0);
     EXPECT_EQ(&line2, selectedLine);

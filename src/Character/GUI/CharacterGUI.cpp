@@ -49,8 +49,7 @@ void CharacterGUI::connectSignals(game::gui::GameGUI* game,
  * @param characterGUI Frontend
  * @param player If the character is the player
  */
-void CharacterGUI::connectSignals(Character*,
-                                  CharacterGUI*, bool)
+void CharacterGUI::connectSignals(Character*, CharacterGUI*, bool)
 {
     // Nothing to do yet
 }
@@ -353,7 +352,7 @@ bool CharacterGUI::load(const std::string& characterRessourcesDir)
 void CharacterGUI::slotArrowPressed(sf::Keyboard::Key arrow)
 {
     PROFILE_FUNCTION();
-    double speed = 50 * m_context->framePeriod * 0.00000001;
+    double speed = 100. * m_context->framePeriod.count() * 0.001;
     if (arrow == sf::Keyboard::Left && (!m_moving || m_currentDirection == Left))
     {
         m_moving = true;

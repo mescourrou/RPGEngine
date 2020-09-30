@@ -65,7 +65,7 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
         d.loadFromDatabase(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()),
                            db);
         VLOG(verbosityLevel::VERIFICATION_LOG) << "Dialogue starting by '" <<
-                                               d.getFirstLine()->getLine() << "', id '" << std::atoi(result.at(i).at(
+                                               d.firstLine()->line() << "', id '" << std::atoi(result.at(i).at(
                                                        Model::FK_DIALOG_LINE_ID).c_str()) << "', loaded";
         dialogueList.push_back(d);
     }
