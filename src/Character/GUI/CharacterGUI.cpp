@@ -78,7 +78,8 @@ void CharacterGUI::prepare(const sf::Vector2f&)
                            (std::chrono::high_resolution_clock::now() - m_spriteTimer).count();
     if (sinceLastSprite >= m_spritePeriod)
     {
-        unsigned int missedSprites = std::floor(sinceLastSprite / (m_spritePeriod + 1));
+        unsigned int missedSprites = std::floor((sinceLastSprite - m_spritePeriod) /
+                                                (double)(m_spritePeriod));
         auto actualiseCurrentSprite = [this,
                                        &missedSprites](const std::vector<unsigned int>& action)
         {
