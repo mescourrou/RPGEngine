@@ -79,7 +79,7 @@ void CharacterGUI::prepare(const sf::Vector2f&)
     if (sinceLastSprite >= m_spritePeriod)
     {
         unsigned int missedSprites = std::floor((sinceLastSprite - m_spritePeriod) /
-                                                (double)(m_spritePeriod));
+                                                m_spritePeriod);
         auto actualiseCurrentSprite = [this,
                                        &missedSprites](const std::vector<unsigned int>& action)
         {
