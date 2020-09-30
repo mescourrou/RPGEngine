@@ -84,14 +84,26 @@ class Context : public BaseObject
         return m_gameLocation;
     }
 
-    /// Period since the last frame
-    std::chrono::milliseconds framePeriod;
+    /// @brief Get the period since the last frame
+    const std::chrono::milliseconds& framePeriod() const
+    {
+        return m_framePeriod;
+    }
+
+    void setFramePeriod(const std::chrono::milliseconds& period)
+    {
+        m_framePeriod = period;
+    }
+
 
   protected:
     Context() = default; // For mocking
   private:
     /// List of program arguments (from argv)
     std::vector<std::string> m_programArguments;
+
+    /// Period since the last frame
+    std::chrono::milliseconds m_framePeriod;
 
     // Constants
     /// Directory where are the config files

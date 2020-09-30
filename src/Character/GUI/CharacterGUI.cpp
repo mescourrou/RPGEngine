@@ -352,7 +352,7 @@ bool CharacterGUI::load(const std::string& characterRessourcesDir)
 void CharacterGUI::slotArrowPressed(sf::Keyboard::Key arrow)
 {
     PROFILE_FUNCTION();
-    double speed = 100. * m_context->framePeriod.count() * 0.001;
+    double speed = 100. * m_context->framePeriod().count() * 0.001;
     if (arrow == sf::Keyboard::Left && (!m_moving || m_currentDirection == Left))
     {
         m_moving = true;
