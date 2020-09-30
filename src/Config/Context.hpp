@@ -84,34 +84,47 @@ class Context : public BaseObject
         return m_gameLocation;
     }
 
-    std::time_t
-    framePeriod;                                    ///< Period since the last frame
+    /// @brief Get the period since the last frame
+    const std::chrono::milliseconds& framePeriod() const
+    {
+        return m_framePeriod;
+    }
+
+    void setFramePeriod(const std::chrono::milliseconds& period)
+    {
+        m_framePeriod = period;
+    }
+
 
   protected:
     Context() = default; // For mocking
   private:
-    std::vector<std::string>
-    m_programArguments;                ///< List of program arguments (from argv)
+    /// List of program arguments (from argv)
+    std::vector<std::string> m_programArguments;
+
+    /// Period since the last frame
+    std::chrono::milliseconds m_framePeriod;
 
     // Constants
-    const std::string m_kConfigPath =
-        "config";                 ///< Directory where are the config files
-    const std::string m_kGlobalConfigFilename =
-        "global.ini";   ///< Main config filename
+    /// Directory where are the config files
+    const std::string m_kConfigPath = "config";
+    /// Main config filename
+    const std::string m_kGlobalConfigFilename = "global.ini";
 
-    const std::string m_kRessourcesDirPath =
-        "ressources";      ///< Path of the ressource directory
-    const std::string m_kMapDirPath =
-        "map";                    ///< Name of the map directory
-    const std::string m_kCharacterDirPath =
-        "character";        ///< Name of the character directory
+    /// Path of the ressource directory
+    const std::string m_kRessourcesDirPath = "ressources";
+    /// Name of the map directory
+    const std::string m_kMapDirPath = "map";
+    /// Name of the character directory
+    const std::string m_kCharacterDirPath = "character";
 
     // Global variables
-    std::string m_runtimeDirectory =
-        "";                        ///< Path to the runtime directory
-    std::shared_ptr<Config> m_config;                           ///< Configuration
-    std::string m_gameLocation =
-        "";                            ///< Path the directory containing the game
+    /// Path to the runtime directory
+    std::string m_runtimeDirectory = "";
+    /// Configuration
+    std::shared_ptr<Config> m_config;
+    /// Path the directory containing the game
+    std::string m_gameLocation = "";
 };
 
 } // namespace config

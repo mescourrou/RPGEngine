@@ -95,8 +95,8 @@ class DialogueLine : public BaseObject
     void addChoice(std::string playerLine, const DialogueLine* nextLine,
                    DialogueAction* action = nullptr);
     void setLine(std::string line);
-    const std::string& getLine() const;
-    std::vector<std::string> getChoices() const;
+    const std::string& line() const;
+    std::vector<std::string> choices() const;
     const DialogueLine* selectChoice(size_t index) const;
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);

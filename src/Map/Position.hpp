@@ -2,6 +2,7 @@
 
 // Stl
 #include <memory>
+#include <iostream>
 
 // Project
 #include "general_config.hpp"
@@ -139,4 +140,6 @@ class Position : public BaseObject
 };
 
 } // namespace map
+
+std::ostream& operator<<(std::ostream& flux, const map::Position& pos);
 
