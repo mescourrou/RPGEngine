@@ -94,7 +94,7 @@ void DialogueLine::setLine(std::string line)
 /**
  * @brief Get the line.
  */
-const std::string& DialogueLine::getLine() const
+const std::string& DialogueLine::line() const
 {
     return m_line;
 }
@@ -102,7 +102,7 @@ const std::string& DialogueLine::getLine() const
 /**
  * @brief Get the player lines of the choices.
  */
-std::vector<std::string> DialogueLine::getChoices() const
+std::vector<std::string> DialogueLine::choices() const
 {
     std::vector<std::string> choices;
     for (const Choice& choice : m_choices)
