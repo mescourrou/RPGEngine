@@ -1,5 +1,7 @@
 #include "NPCGUI.hpp"
 #include <NPC.hpp>
+#include <Game.hpp>
+#include <GameGUI.hpp>
 
 namespace character::gui
 {
@@ -24,6 +26,8 @@ void NPCGUI::onRightClick()
                            (&dialogues.front());
         m_dialogueWindow->setTitle(characterPtr().lock()->name());
         m_dialogueWindow->setActive();
+        m_context->currentGame()->getGUI().lock()->addImguiWindow(
+            m_dialogueWindow.get());
     }
 }
 

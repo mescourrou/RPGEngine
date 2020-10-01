@@ -185,6 +185,11 @@ void GameGUI::draw()
     m_drawingTimer = std::chrono::high_resolution_clock::now();
 }
 
+void GameGUI::addImguiWindow(ImGui::Window* w)
+{
+    m_windowsManager.addWindow(w);
+}
+
 /**
  * @brief Load the elements from the config file. Called everytime the config is saved
  */

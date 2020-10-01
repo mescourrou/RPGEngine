@@ -58,6 +58,8 @@ class GameGUI : public BaseObject
 
     void draw();
 
+    void addImguiWindow(ImGui::Window* w);
+
     ADD_EVENT(SignalKeyPressed,
               sf::Event::KeyEvent); ///< Signal when a key is pressed
     ADD_EVENT(SignalKeyReleased,

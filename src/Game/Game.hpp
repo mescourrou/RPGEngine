@@ -88,6 +88,11 @@ class Game : public BaseObject
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
 
+    std::weak_ptr<game::gui::GameGUI> getGUI()
+    {
+        return m_gui;
+    }
+
   private:
     /// Context of the Game
     std::shared_ptr<config::Context> m_context;

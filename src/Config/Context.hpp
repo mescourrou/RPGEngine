@@ -16,6 +16,11 @@
 #include <gtest/gtest.h>
 #endif
 
+namespace game
+{
+class Game;
+}
+
 namespace config
 {
 class Config;
@@ -95,10 +100,21 @@ class Context : public BaseObject
         m_framePeriod = period;
     }
 
+    void setCurrentGame(game::Game* game)
+    {
+        m_currentGame = game;
+    }
+
+    game::Game* currentGame()
+    {
+        return m_currentGame;
+    }
+
 
   protected:
     Context() = default; // For mocking
   private:
+    game::Game* m_currentGame = nullptr;
     /// List of program arguments (from argv)
     std::vector<std::string> m_programArguments;
 

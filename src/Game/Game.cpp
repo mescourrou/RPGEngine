@@ -82,6 +82,8 @@ bool Game::initialize(std::shared_ptr<databaseTools::Database> db)
     LOG(INFO) << "Game version : " << std::atoi(gameInfo.at(
                   Model::ENGINE_VERSION).c_str());
 
+    m_context->setCurrentGame(this);
+
     // Money initialization
     LOG(INFO) << "Initialize Money system";
     object::Money::initializeFromDatabase(db);

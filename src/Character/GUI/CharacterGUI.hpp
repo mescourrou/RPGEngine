@@ -77,6 +77,8 @@ class CharacterGUI : public BaseGUIObject
     };
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    std::shared_ptr<config::Context> m_context;
   private:
     static bool verifyJSONTopStructure(const json& json);
     static bool verifyJSONSpriteSetsStructure(const json& set);
@@ -84,7 +86,6 @@ class CharacterGUI : public BaseGUIObject
     bool loadActions(const json& json);
 
     std::weak_ptr<Character> m_character; ///< Pointer on the backend character
-    std::shared_ptr<config::Context> m_context;
 
     std::map<unsigned int, sf::Sprite>
     m_sprites; ///< Sprites of the Character, assigned by id
