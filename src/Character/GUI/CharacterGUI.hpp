@@ -54,12 +54,19 @@ class CharacterGUI : public BaseGUIObject
 
     void slotArrowPressed(sf::Keyboard::Key arrow);
     void slotKeyReleased(sf::Event::KeyEvent key);
+    void slotRightClickedReleased();
 
     void uiRealtimeInformations();
     void uiFullInformations();
     void uiInventoryWindow();
-  protected:
 
+    bool isMouseInside(float x, float y) const override;
+  protected:
+    virtual void onRightClick();
+    virtual std::weak_ptr<Character>& characterPtr() final
+    {
+        return m_character;
+    }
 
     /**
      * @brief Direction of the character

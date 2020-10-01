@@ -27,6 +27,11 @@ class NPC : public Character
 
     virtual void updatePosition();
 
+    const std::vector<quest::Dialogue>& dialogues() const
+    {
+        return m_dialogues;
+    }
+
   private:
     static bool verifyNPCModel(std::shared_ptr<databaseTools::Database> db);
     static bool verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db);

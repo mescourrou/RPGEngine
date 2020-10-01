@@ -399,6 +399,12 @@ void CharacterGUI::slotKeyReleased(sf::Event::KeyEvent key)
     }
 }
 
+void CharacterGUI::slotRightClickedReleased()
+{
+    LOG(INFO) << "slotRightClickedReleased";
+    onRightClick();
+}
+
 /**
  * @brief Draw character basic informations for being presented to the player every time
  */
@@ -425,6 +431,18 @@ void CharacterGUI::uiFullInformations()
 void CharacterGUI::uiInventoryWindow()
 {
     ImGui::Text("Soon");
+}
+
+bool CharacterGUI::isMouseInside(float x, float y) const
+{
+    if (!m_currentSprite)
+        return false;
+    return m_currentSprite->getGlobalBounds().contains(x, y);
+}
+
+void CharacterGUI::onRightClick()
+{
+    LOG(INFO) << "CharacterGUI::onRightClick";
 }
 
 /**

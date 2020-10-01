@@ -137,6 +137,8 @@ void GameGUI::eventManager()
 
         if (m_event.type == sf::Event::KeyReleased)
             manageReleasingKeyEven(m_event.key);
+        if (m_event.type == sf::Event::MouseButtonReleased)
+            manageMouseEvent(m_event);
     }
     checkKeyPressed();
 
@@ -443,6 +445,28 @@ void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
         {
             events::ActionHandler::setKeyBinding(m_actionWaitingForKeybinding, keyBinding);
             m_actionWaitingForKeybinding = "";
+        }
+    }
+}
+
+void GameGUI::manageMouseEvent(const sf::Event& event)
+{
+    if (event.type == sf::Event::MouseButtonReleased)
+    {
+        if (event.mouseButton.button == sf::Mouse::Right)
+        {
+            LOG(INFO) << "Right mouse button released";
+            for (auto& guiObj : m_guiObjects)
+            {
+                auto* characterPtr = dynamic_cast<character::gui::CharacterGUI*>
+                                     (guiObj.get());
+                if (characterPtr)
+                {
+                    LOG(INFO) << "Found a CharacterGUI";
+                    if (characterPtr->isMouseInside(event.mouseButton.x, event.mouseButton.y))
+                        characterPtr->slotRightClickedReleased();
+                }
+            }
         }
     }
 }

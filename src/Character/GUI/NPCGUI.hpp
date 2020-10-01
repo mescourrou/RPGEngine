@@ -16,10 +16,11 @@ namespace gui
 class NPCGUI : public CharacterGUI
 {
   public:
-    NPCGUI(std::weak_ptr<NPC> character,
-           std::shared_ptr<config::Context> context);
+    NPCGUI(std::weak_ptr<NPC> character, std::shared_ptr<config::Context> context);
     ~NPCGUI() override = default;
 
+  protected:
+    void onRightClick() override;
   private:
     std::unique_ptr<quest::gui::DialogueGUI> m_dialogueWindow;
 };

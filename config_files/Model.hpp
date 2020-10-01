@@ -51,6 +51,7 @@ enum Type
 namespace NPCPath
 {
 constexpr char TABLE[] = "NPCPath";
+constexpr char ID[] = "id";
 constexpr char FK_NPC_NAME[] = "fkNPCName";
 constexpr char X[] = "x";
 constexpr char Y[] = "y";

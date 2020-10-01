@@ -51,6 +51,11 @@ class BaseGUIObject : public BaseObject, public sf::Transformable,
         return m_mapGUI;
     }
 
+    virtual bool isMouseInside(float x, float y) const
+    {
+        return false;
+    }
+
     /**
      * @brief Load the GUI Object
      * @param path Directory path where are stored the needed elements

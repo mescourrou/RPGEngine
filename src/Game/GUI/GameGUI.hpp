@@ -97,6 +97,7 @@ class GameGUI : public BaseObject
     void uiSettingsPopup();
     void managePressingKeyEvent(const sf::Event::KeyEvent& key);
     void manageReleasingKeyEven(const sf::Event::KeyEvent& key);
+    void manageMouseEvent(const sf::Event& event);
     void checkKeyPressed();
   private:
     /// List of BaseGUIObjects to manage and draw
