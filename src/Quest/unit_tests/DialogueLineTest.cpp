@@ -13,7 +13,9 @@ class TestAction : public DialogueAction
     }
     bool done = false;
 };
-
+/*
+ * Test the good selection of the player line
+ */
 TEST_F(DialogueLineTest, ChoiceSelection)
 {
     auto line1 = std::make_shared<DialogueLine>("Hello World");
@@ -30,6 +32,9 @@ TEST_F(DialogueLineTest, ChoiceSelection)
     EXPECT_TRUE(action->done);
 }
 
+/*
+ * Test the transition between two NPC line when the player has nothing to say.
+ */
 TEST_F(DialogueLineTest, ChoiceSelectionWhenOnlyOne)
 {
     auto line1 = std::make_shared<DialogueLine>("Hello World");

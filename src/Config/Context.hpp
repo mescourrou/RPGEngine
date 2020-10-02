@@ -95,16 +95,19 @@ class Context : public BaseObject
         return m_framePeriod;
     }
 
+    /// @brief Set the last frame period.
     void setFramePeriod(const std::chrono::milliseconds& period)
     {
         m_framePeriod = period;
     }
 
+    /// @brief Set a pointer of the current game.
     void setCurrentGame(game::Game* game)
     {
         m_currentGame = game;
     }
 
+    /// @brief Get the pointer on the current game.
     game::Game* currentGame()
     {
         return m_currentGame;

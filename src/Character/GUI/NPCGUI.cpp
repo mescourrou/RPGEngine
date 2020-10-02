@@ -6,6 +6,11 @@
 namespace character::gui
 {
 
+/**
+ * @brief Create a NPC GUI.
+ * @param character Pointer on the NPC object attached.
+ * @param context Global context.
+ */
 NPCGUI::NPCGUI(std::weak_ptr<NPC> character,
                std::shared_ptr<config::Context> context) :
     CharacterGUI(character, context)
@@ -13,6 +18,11 @@ NPCGUI::NPCGUI(std::weak_ptr<NPC> character,
 
 }
 
+/**
+ * @brief Load the NPC and the Character from the file (snakeCase form of the name)
+ * @param characterRessourcesDir Directory where are stored the characters files and sprites
+ * @return Return true if the load was successfull
+ */
 bool NPCGUI::load(const std::string& characterRessourcesDir)
 {
     const auto& dialogues = std::static_pointer_cast<NPC>
@@ -30,6 +40,9 @@ bool NPCGUI::load(const std::string& characterRessourcesDir)
     return CharacterGUI::load(characterRessourcesDir);
 }
 
+/**
+ * @brief Action on right click on the NPC.
+ */
 void NPCGUI::onRightClick()
 {
     LOG(INFO) << "NPCGUI::onRightClick";

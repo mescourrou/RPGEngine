@@ -12,11 +12,17 @@ namespace quest
 {
 
 #ifdef BUILD_USE_FILESYSTEM
+/*
+ * Test the database model
+ */
 TEST_F(DialogueTest, VerifyDatabaseModel)
 {
     EXPECT_TRUE(Dialogue::verifyDatabaseModel(database));
 }
 
+/*
+ * Test the good loading of the dialogue from the database.
+ */
 TEST_F(DialogueTest, LoadFromDatabase)
 {
     Dialogue d;
@@ -49,6 +55,9 @@ TEST_F(DialogueTest, LoadFromDatabase)
 
 }
 
+/*
+ * Test the good loading of all the dialogues of a given NPC from the database.
+ */
 TEST_F(DialogueTest, LoadFromDatabaseMultiple)
 {
     auto list = Dialogue::loadFromDatabase("John", database);

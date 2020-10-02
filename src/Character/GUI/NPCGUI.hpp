@@ -12,7 +12,9 @@ class NPC;
 namespace gui
 {
 
-
+/**
+ * @brief GUI class related to the NPC
+ */
 class NPCGUI : public CharacterGUI
 {
   public:
@@ -23,6 +25,7 @@ class NPCGUI : public CharacterGUI
   protected:
     void onRightClick() override;
   private:
+    /// Pointer on the dialogue window.
     std::unique_ptr<quest::gui::DialogueGUI> m_dialogueWindow;
 };
 

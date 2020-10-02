@@ -79,6 +79,9 @@ class Dialogue : public BaseObject
         return m_dialogueLineStorage.at(m_firstLineId);
     }
 
+    /**
+     * @brief Get the name of the character (NPC) to which the dialogue is attached.
+     */
     const std::string& characterName() const
     {
         return m_characterName;
@@ -99,7 +102,7 @@ class Dialogue : public BaseObject
     int m_firstLineId = -1;
     /// Owns all the DialogueLine of the Dialogue.
     std::map<unsigned int, std::shared_ptr<DialogueLine>> m_dialogueLineStorage;
-    /// Name of the NPC
+    /// Name of the NPC.
     std::string m_characterName;
 };
 

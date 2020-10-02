@@ -61,8 +61,10 @@ class Config : public BaseObject
               void); ///< Signal emitted when the config is saved
 
   private:
-    CSimpleIniCaseA m_iniFile; ///< INI file load in memory
-    std::string m_filename;    ///< Filename used to load the config
+    /// INI file load in memory
+    CSimpleIniCaseA m_iniFile;
+    /// Filename used to load the config
+    std::string m_filename;
 };
 
 

@@ -6,12 +6,19 @@
 namespace quest::gui
 {
 
+/**
+ * @brief Create an empty DialogueGUI
+ */
 DialogueGUI::DialogueGUI() : ImGui::Window("Dialogue"),
     m_colorCurrentLine(255, 255, 0, 255), m_colorPlayer(0, 255, 0, 255)
 {
 
 }
 
+/**
+ * @brief Create a DialogueGUI with a Dialogue attached.
+ * @param dialogue Dialogue to play.
+ */
 DialogueGUI::DialogueGUI(std::weak_ptr<const Dialogue> dialogue) :
     ImGui::Window("Dialogue"),
     m_colorCurrentLine(255, 255, 0, 255), m_colorPlayer(0, 255, 0, 255),
@@ -20,6 +27,9 @@ DialogueGUI::DialogueGUI(std::weak_ptr<const Dialogue> dialogue) :
     m_currentLine = m_dialogue.lock()->firstLine();
 }
 
+/**
+ * @brief ImGui preparation of the window.
+ */
 bool DialogueGUI::doPrepare()
 {
     if (!m_dialogue.lock())
@@ -87,6 +97,9 @@ bool DialogueGUI::doPrepare()
     return true;
 }
 
+/**
+ * @brief Action to realize when the window is collapsed. Here, we close the window.
+ */
 bool DialogueGUI::doCollapsedState()
 {
     ImGui::SetWindowCollapsed(false);
