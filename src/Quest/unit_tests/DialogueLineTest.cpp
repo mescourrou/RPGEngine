@@ -16,36 +16,39 @@ class TestAction : public DialogueAction
 
 TEST_F(DialogueLineTest, ChoiceSelection)
 {
-    DialogueLine line1("Hello World");
-    DialogueLine line2("Do you wanna a quest ?");
-    DialogueLine line3("OK, I won't bother you");
+    std::shared_ptr<DialogueLine> line1 =
+        std::make_shared<DialogueLine>("Hello World");
+    std::shared_ptr<DialogueLine> line2 =
+        std::make_shared<DialogueLine>("Do you wanna a quest ?");
+    std::shared_ptr<DialogueLine> line3 =
+        std::make_shared<DialogueLine>("OK, I won't bother you");
 
-    TestAction action;
-    line1.addChoice("Greetings", std::make_shared<DialogueLine>(line2));
-    line1.addChoice("Ciao", std::make_shared<DialogueLine>(line3),
-                    std::make_shared<TestAction>(action));
+    std::shared_ptr<TestAction> action = std::make_shared<TestAction>();
+    line1->addChoice("Greetings", line2);
+    line1->addChoice("Ciao", line3, action);
 
     // Select "Ciao"
-    std::weak_ptr<const DialogueLine> selectedLine = line1.selectChoice(1);
-    EXPECT_EQ(line3.line(), selectedLine.lock()->line());
-    EXPECT_TRUE(action.done);
+    std::weak_ptr<const DialogueLine> selectedLine = line1->selectChoice(1);
+    EXPECT_EQ(line3->line(), selectedLine.lock()->line());
+    EXPECT_TRUE(action->done);
 }
 
 TEST_F(DialogueLineTest, ChoiceSelectionWhenOnlyOne)
 {
-    DialogueLine line1("Hello World");
-    DialogueLine line2("Do you wanna a quest ?");
+    std::shared_ptr<DialogueLine> line1 =
+        std::make_shared<DialogueLine>("Hello World");
+    std::shared_ptr<DialogueLine> line2 =
+        std::make_shared<DialogueLine>("Do you wanna a quest ?");
 
-    TestAction action;
-    line1.addChoice("", std::make_shared<DialogueLine>(line2),
-                    std::make_shared<TestAction>(action));
+    std::shared_ptr<TestAction> action = std::make_shared<TestAction>();
+    line1->addChoice("", line2, action);
 
-    EXPECT_EQ(line1.choices().size(), 1);
-    EXPECT_TRUE(line1.choices().at(0).empty());
+    EXPECT_EQ(line1->choices().size(), 1);
+    EXPECT_TRUE(line1->choices().at(0).empty());
 
-    std::weak_ptr<const DialogueLine> selectedLine = line1.selectChoice(0);
-    EXPECT_EQ(line2.line(), selectedLine.lock()->line());
-    EXPECT_TRUE(action.done);
+    std::weak_ptr<const DialogueLine> selectedLine = line1->selectChoice(0);
+    EXPECT_EQ(line2->line(), selectedLine.lock()->line());
+    EXPECT_TRUE(action->done);
 }
 
 }
