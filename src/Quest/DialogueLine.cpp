@@ -4,6 +4,7 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <InstrumentationTimer.hpp>
+#include <glog/logging.h>
 
 namespace quest
 {
@@ -16,29 +17,29 @@ DialogueLine::DialogueLine(std::string line) : m_line(std::move(line))
 
 }
 
-DialogueLine::DialogueLine(DialogueLine&& move) noexcept :
-    m_line(move.m_line), m_choices(move.m_choices)
-{
-}
+//DialogueLine::DialogueLine(DialogueLine&& move) noexcept :
+//    m_line(move.m_line), m_choices(move.m_choices)
+//{
+//}
 
-/**
- * @brief Delete the actions stored.
- */
-DialogueLine::~DialogueLine()
-{
-    for (const Choice& choice : m_choices)
-    {
-        if (choice.action)
-            delete choice.action;
-    }
-}
+///**
+// * @brief Delete the actions stored.
+// */
+//DialogueLine::~DialogueLine()
+//{
+//    for (const Choice& choice : m_choices)
+//    {
+//        if (choice.action.lock())
+//            delete choice.action;
+//    }
+//}
 
-DialogueLine& DialogueLine::operator=(DialogueLine&& move) noexcept
-{
-    m_line = move.m_line;
-    m_choices = move.m_choices;
-    return *this;
-}
+//DialogueLine& DialogueLine::operator=(DialogueLine&& move) noexcept
+//{
+//    m_line = move.m_line;
+//    m_choices = move.m_choices;
+//    return *this;
+//}
 
 /**
  * @brief Load the DialogueLine of the given id from the database.
@@ -68,7 +69,6 @@ void DialogueLine::loadFromDatabase(unsigned int id,
         return;
 
     m_line = result.at(1).at(ModelLine::LINE);
-
 }
 
 /**
@@ -78,9 +78,10 @@ void DialogueLine::loadFromDatabase(unsigned int id,
  * @param action Owned pointer on the DialogueAction associated to the choice.
  */
 void DialogueLine::addChoice(std::string playerLine,
-                             const DialogueLine* nextLine, DialogueAction* action)
+                             std::weak_ptr<const DialogueLine> nextLine,
+                             std::weak_ptr<DialogueAction> action)
 {
-    m_choices.push_back(Choice{std::move(playerLine), nextLine, action});
+    m_choices.push_back({std::move(playerLine), nextLine, action});
 }
 
 /**
@@ -116,11 +117,11 @@ std::vector<std::string> DialogueLine::choices() const
  * @brief Select the wanted choice, execute the action associated and return the next line pointer.
  * @param index Index of the choice to select. The index is the same than in the choice list given by getChoices() .
  */
-const DialogueLine* DialogueLine::selectChoice(size_t index) const
+std::weak_ptr<const DialogueLine> DialogueLine::selectChoice(size_t index) const
 {
     const Choice& c = m_choices.at(index);
-    if (c.action)
-        (*c.action)();
+    if (c.action.lock())
+        (*c.action.lock())();
     return c.nextLine;
 }
 

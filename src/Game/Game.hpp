@@ -93,6 +93,11 @@ class Game : public BaseObject
         return m_gui;
     }
 
+    std::weak_ptr<character::Character> playerCharacter() const
+    {
+        return m_playerCharacter;
+    }
+
   private:
     /// Context of the Game
     std::shared_ptr<config::Context> m_context;

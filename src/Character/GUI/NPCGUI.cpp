@@ -13,22 +13,33 @@ NPCGUI::NPCGUI(std::weak_ptr<NPC> character,
 
 }
 
-void NPCGUI::onRightClick()
+bool NPCGUI::load(const std::string& characterRessourcesDir)
 {
-    LOG(INFO) << "NPCGUI::onRightClick";
     const auto& dialogues = std::static_pointer_cast<NPC>
                             (characterPtr().lock())->dialogues();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Look for NPC " <<
                                           characterPtr().lock()->name() << " dialogues";
     if (dialogues.size() > 0)
     {
-        m_dialogueWindow = std::make_unique<quest::gui::DialogueGUI>
-                           (&dialogues.front());
+        m_dialogueWindow = std::make_unique<quest::gui::DialogueGUI>(dialogues.front());
         m_dialogueWindow->setTitle(characterPtr().lock()->name());
-        m_dialogueWindow->setActive();
+        m_dialogueWindow->setActive(false);
         m_context->currentGame()->getGUI().lock()->addImguiWindow(
             m_dialogueWindow.get());
     }
+    return CharacterGUI::load(characterRessourcesDir);
+}
+
+void NPCGUI::onRightClick()
+{
+    LOG(INFO) << "NPCGUI::onRightClick";
+    if (m_dialogueWindow)
+    {
+        m_dialogueWindow->setPlayerName(
+            m_context->currentGame()->playerCharacter().lock()->name());
+        m_dialogueWindow->setActive();
+    }
+    CharacterGUI::onRightClick();
 }
 
 

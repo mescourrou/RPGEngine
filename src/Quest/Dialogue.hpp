@@ -72,15 +72,21 @@ class Dialogue : public BaseObject
      * @brief Get the first DialogueLine of the Dialogue.
      * @return
      */
-    const DialogueLine* firstLine() const
+    std::weak_ptr<const DialogueLine> firstLine() const
     {
         if (m_firstLineId == -1)
-            return nullptr;
-        return &m_dialogueLineStorage.at(m_firstLineId);
+            return {};
+        return m_dialogueLineStorage.at(m_firstLineId);
     }
 
-    static std::vector<Dialogue> loadFromDatabase(std::string NPCName,
-            std::shared_ptr<databaseTools::Database> db);
+    const std::string& characterName() const
+    {
+        return m_characterName;
+    }
+
+    static std::vector<std::shared_ptr<Dialogue>> loadFromDatabase(
+                std::string NPCName,
+                std::shared_ptr<databaseTools::Database> db);
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
@@ -92,7 +98,9 @@ class Dialogue : public BaseObject
     /// Pointer on the first dialogue line, for a direct access.
     int m_firstLineId = -1;
     /// Owns all the DialogueLine of the Dialogue.
-    std::map<unsigned int, DialogueLine> m_dialogueLineStorage;
+    std::map<unsigned int, std::shared_ptr<DialogueLine>> m_dialogueLineStorage;
+    /// Name of the NPC
+    std::string m_characterName;
 };
 
 } // namespace quest

@@ -19,6 +19,7 @@ class NPCGUI : public CharacterGUI
     NPCGUI(std::weak_ptr<NPC> character, std::shared_ptr<config::Context> context);
     ~NPCGUI() override = default;
 
+    bool load(const std::string& characterRessourcesDir) override;
   protected:
     void onRightClick() override;
   private:

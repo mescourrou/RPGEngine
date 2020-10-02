@@ -27,7 +27,7 @@ class NPC : public Character
 
     virtual void updatePosition();
 
-    const std::vector<quest::Dialogue>& dialogues() const
+    const std::vector<std::shared_ptr<quest::Dialogue>>& dialogues() const
     {
         return m_dialogues;
     }
@@ -38,7 +38,7 @@ class NPC : public Character
     std::list<map::Position> m_path; ///< List of points to follow
     map::Position* m_targettedPosition = nullptr; ///< Current point targetted
 
-    std::vector<quest::Dialogue> m_dialogues;
+    std::vector<std::shared_ptr<quest::Dialogue>> m_dialogues;
 };
 
 } // namespace character
