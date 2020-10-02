@@ -45,35 +45,6 @@ class DialogueLine : public BaseObject
         std::weak_ptr<const DialogueLine> nextLine;
         /// Pointer on the associated action
         std::weak_ptr<DialogueAction> action;
-
-        //        Choice() = default;
-        //        Choice(std::string playerLine_, std::weak_ptr<const DialogueLine> nextLine_,
-        //               std::weak_ptr<DialogueAction> action_) :
-        //            playerLine(std::move(playerLine_)), nextLine(nextLine_), action(action_)
-        //        {}
-
-        //        Choice(const Choice& copy) = default;
-
-        //    Choice(Choice&& move) noexcept = default:
-        //        playerLine(std::move(move.playerLine)), nextLine(move.nextLine),
-        //                   action(move.action)
-        //        {
-        //            move.nextLine = nullptr;
-        //            move.action = nullptr;
-        //        }
-
-        //        Choice& operator=(const Choice&) = default;
-        //        Choice& operator=(Choice&& move) noexcept
-        //        {
-        //            playerLine = std::move(move.playerLine);
-        //            nextLine = move.nextLine;
-        //            action = move.action;
-        //            move.nextLine = nullptr;
-        //            move.action = nullptr;
-        //            return *this;
-        //        }
-
-        //        ~Choice() = default;
     };
 
   public:

@@ -19,12 +19,12 @@ bool NPCGUI::load(const std::string& characterRessourcesDir)
                             (characterPtr().lock())->dialogues();
     VLOG(verbosityLevel::OBJECT_CREATION) << "Look for NPC " <<
                                           characterPtr().lock()->name() << " dialogues";
-    if (dialogues.size() > 0)
+    if (!dialogues.empty())
     {
         m_dialogueWindow = std::make_unique<quest::gui::DialogueGUI>(dialogues.front());
         m_dialogueWindow->setTitle(characterPtr().lock()->name());
         m_dialogueWindow->setActive(false);
-        m_context->currentGame()->getGUI().lock()->addImguiWindow(
+        m_context->currentGame()->GUI().lock()->addImguiWindow(
             m_dialogueWindow.get());
     }
     return CharacterGUI::load(characterRessourcesDir);

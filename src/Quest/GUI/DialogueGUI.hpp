@@ -26,7 +26,7 @@ class DialogueGUI : public ImGui::Window
 {
   public:
     DialogueGUI();
-    DialogueGUI(std::weak_ptr<const Dialogue> dialogue);
+    explicit DialogueGUI(std::weak_ptr<const Dialogue> dialogue);
     ~DialogueGUI() override = default;
 
     void setPlayerName(const std::string& playerName)

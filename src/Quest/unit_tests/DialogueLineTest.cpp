@@ -16,14 +16,11 @@ class TestAction : public DialogueAction
 
 TEST_F(DialogueLineTest, ChoiceSelection)
 {
-    std::shared_ptr<DialogueLine> line1 =
-        std::make_shared<DialogueLine>("Hello World");
-    std::shared_ptr<DialogueLine> line2 =
-        std::make_shared<DialogueLine>("Do you wanna a quest ?");
-    std::shared_ptr<DialogueLine> line3 =
-        std::make_shared<DialogueLine>("OK, I won't bother you");
+    auto line1 = std::make_shared<DialogueLine>("Hello World");
+    auto line2 = std::make_shared<DialogueLine>("Do you wanna a quest ?");
+    auto line3 = std::make_shared<DialogueLine>("OK, I won't bother you");
 
-    std::shared_ptr<TestAction> action = std::make_shared<TestAction>();
+    auto action = std::make_shared<TestAction>();
     line1->addChoice("Greetings", line2);
     line1->addChoice("Ciao", line3, action);
 
@@ -35,12 +32,10 @@ TEST_F(DialogueLineTest, ChoiceSelection)
 
 TEST_F(DialogueLineTest, ChoiceSelectionWhenOnlyOne)
 {
-    std::shared_ptr<DialogueLine> line1 =
-        std::make_shared<DialogueLine>("Hello World");
-    std::shared_ptr<DialogueLine> line2 =
-        std::make_shared<DialogueLine>("Do you wanna a quest ?");
+    auto line1 = std::make_shared<DialogueLine>("Hello World");
+    auto line2 = std::make_shared<DialogueLine>("Do you wanna a quest ?");
 
-    std::shared_ptr<TestAction> action = std::make_shared<TestAction>();
+    auto action = std::make_shared<TestAction>();
     line1->addChoice("", line2, action);
 
     EXPECT_EQ(line1->choices().size(), 1);

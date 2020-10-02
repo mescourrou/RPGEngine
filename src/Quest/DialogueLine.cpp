@@ -17,30 +17,6 @@ DialogueLine::DialogueLine(std::string line) : m_line(std::move(line))
 
 }
 
-//DialogueLine::DialogueLine(DialogueLine&& move) noexcept :
-//    m_line(move.m_line), m_choices(move.m_choices)
-//{
-//}
-
-///**
-// * @brief Delete the actions stored.
-// */
-//DialogueLine::~DialogueLine()
-//{
-//    for (const Choice& choice : m_choices)
-//    {
-//        if (choice.action.lock())
-//            delete choice.action;
-//    }
-//}
-
-//DialogueLine& DialogueLine::operator=(DialogueLine&& move) noexcept
-//{
-//    m_line = move.m_line;
-//    m_choices = move.m_choices;
-//    return *this;
-//}
-
 /**
  * @brief Load the DialogueLine of the given id from the database.
  * @param id Id of the DialogueLine.

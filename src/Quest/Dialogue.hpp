@@ -85,7 +85,7 @@ class Dialogue : public BaseObject
     }
 
     static std::vector<std::shared_ptr<Dialogue>> loadFromDatabase(
-                std::string NPCName,
+                const std::string& NPCName,
                 std::shared_ptr<databaseTools::Database> db);
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);

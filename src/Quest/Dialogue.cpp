@@ -54,7 +54,7 @@ Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
  * @return List of Dialogue , currently ordored by first DialogueLine ID.
  */
 std::vector<std::shared_ptr<Dialogue>> Dialogue::loadFromDatabase(
-                                        std::string NPCName,
+                                        const std::string& NPCName,
                                         std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();

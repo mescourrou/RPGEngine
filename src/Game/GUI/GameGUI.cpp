@@ -460,17 +460,14 @@ void GameGUI::manageMouseEvent(const sf::Event& event)
     {
         if (event.mouseButton.button == sf::Mouse::Right)
         {
-            LOG(INFO) << "Right mouse button released";
-            for (auto& guiObj : m_guiObjects)
+            for (const auto& guiObj : m_guiObjects)
             {
                 auto* characterPtr = dynamic_cast<character::gui::CharacterGUI*>
                                      (guiObj.get());
-                if (characterPtr)
-                {
-                    LOG(INFO) << "Found a CharacterGUI";
-                    if (characterPtr->isMouseInside(event.mouseButton.x, event.mouseButton.y))
-                        characterPtr->slotRightClickedReleased();
-                }
+                if (!characterPtr)
+                    continue;
+                if (characterPtr->isMouseInside(event.mouseButton.x, event.mouseButton.y))
+                    characterPtr->slotRightClickedReleased();
             }
         }
     }
