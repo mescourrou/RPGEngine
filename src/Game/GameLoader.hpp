@@ -35,7 +35,7 @@ class GameLoaderTest;
  */
 class GameLoader : public BaseObject
 {
-    DECLARE_BASEOBJECT(GameLoader)
+    DECLARE_BASEOBJECT(GameLoader);
 #ifdef RPG_BUILD_TEST
     friend class game::GameLoaderTest;
 #endif

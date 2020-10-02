@@ -145,6 +145,6 @@ class BaseException : public std::exception
             BaseException(w, code) {}                                                                       \
         ~NAME() override = default;                                                                         \
         const char* exceptionTypeStr() const noexcept override { return #NAME;}                             \
-    };
+    }
 
 #define CREATE_EXCEPTION_CLASS(NAME, ...) __CREATE_EXCEPTION_CLASS(NAME##Exception, __VA_ARGS__)

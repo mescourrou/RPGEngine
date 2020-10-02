@@ -36,14 +36,14 @@ class Game;
 namespace gui
 {
 
-CREATE_EXCEPTION_CLASS(GameGUI)
+CREATE_EXCEPTION_CLASS(GameGUI);
 
 /**
  * @brief Game GUI manager
  */
 class GameGUI : public BaseObject
 {
-    DECLARE_BASEOBJECT(GameGUI)
+    DECLARE_BASEOBJECT(GameGUI);
   public:
     GameGUI(std::shared_ptr<config::Context> context, Game* game);
     ~GameGUI() override;

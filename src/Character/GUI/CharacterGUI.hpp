@@ -27,14 +27,14 @@ class Character;
 namespace gui
 {
 
-CREATE_EXCEPTION_CLASS(CharacterGUI)
+CREATE_EXCEPTION_CLASS(CharacterGUI);
 
 /**
  * @brief GUI class related to the Character
  */
 class CharacterGUI : public BaseGUIObject
 {
-    DECLARE_BASEOBJECT(CharacterGUI)
+    DECLARE_BASEOBJECT(CharacterGUI);
   public:
     static void connectSignals(game::gui::GameGUI* game, CharacterGUI* character,
                                bool player = false);

@@ -13,7 +13,7 @@ namespace character
  */
 class NPC : public Character
 {
-    DECLARE_BASEOBJECT(NPC)
+    DECLARE_BASEOBJECT(NPC);
   public:
     NPC() = delete;
     NPC(const std::string& name, std::shared_ptr<config::Context> context);

@@ -17,7 +17,7 @@ class DialogueLine;
 namespace gui
 {
 
-CREATE_EXCEPTION_CLASS(DialogueGUI)
+CREATE_EXCEPTION_CLASS(DialogueGUI);
 
 /**
  * @brief GUI class related to the Character

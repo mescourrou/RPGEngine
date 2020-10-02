@@ -22,7 +22,7 @@ namespace quest
 class DialogueLineTest;
 #endif
 
-CREATE_EXCEPTION_CLASS(DialogueLine)
+CREATE_EXCEPTION_CLASS(DialogueLine);
 /**
  * @brief Dialogue NPC line with player choice.
  *
@@ -30,7 +30,7 @@ CREATE_EXCEPTION_CLASS(DialogueLine)
  */
 class DialogueLine : public BaseObject
 {
-    DECLARE_BASEOBJECT(DialogueLine)
+    DECLARE_BASEOBJECT(DialogueLine);
 #ifdef RPG_BUILD_TEST
     friend class quest::DialogueLineTest;
 #endif

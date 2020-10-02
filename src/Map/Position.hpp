@@ -28,7 +28,7 @@ namespace map
 /**
  * @brief Manage position exception
  */
-CREATE_EXCEPTION_CLASS(Position)
+CREATE_EXCEPTION_CLASS(Position);
 
 
 class Map;
@@ -42,7 +42,7 @@ class PositionTest;
  */
 class Position : public BaseObject
 {
-    DECLARE_BASEOBJECT(Position)
+    DECLARE_BASEOBJECT(Position);
 #ifdef RPG_BUILD_TEST
     friend class map::PositionTest;
 #endif

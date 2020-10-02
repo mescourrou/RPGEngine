@@ -28,7 +28,7 @@ namespace object
 {
 
 CREATE_EXCEPTION_CLASS(Money,
-                       ADD_EXCEPTION_CODE(INITIALIZATION))
+                       ADD_EXCEPTION_CODE(INITIALIZATION));
 
 #ifdef RPG_BUILD_TEST
 class MoneyTest;
@@ -39,7 +39,7 @@ class MoneyTest;
  */
 class Money : public BaseObject
 {
-    DECLARE_BASEOBJECT(Money)
+    DECLARE_BASEOBJECT(Money);
 #ifdef RPG_BUILD_TEST
     friend class object::MoneyTest;
 #endif

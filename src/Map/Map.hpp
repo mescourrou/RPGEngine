@@ -31,14 +31,14 @@ namespace map
 class MapTest;
 #endif
 
-CREATE_EXCEPTION_CLASS(Map)
+CREATE_EXCEPTION_CLASS(Map);
 
 /**
  * @brief Manage the core map
  */
 class Map : public BaseObject
 {
-    DECLARE_BASEOBJECT(Map)
+    DECLARE_BASEOBJECT(Map);
 #ifdef RPG_BUILD_TEST
     friend class map::MapTest;
 #endif

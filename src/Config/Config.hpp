@@ -22,7 +22,7 @@
 namespace config
 {
 
-CREATE_EXCEPTION_CLASS(Config)
+CREATE_EXCEPTION_CLASS(Config);
 
 #ifdef RPG_BUILD_TEST
 class ConfigTest;
@@ -33,7 +33,7 @@ class ConfigTest;
  */
 class Config : public BaseObject
 {
-    DECLARE_BASEOBJECT(Config)
+    DECLARE_BASEOBJECT(Config);
 #ifdef RPG_BUILD_TEST
     friend class config::ConfigTest;
 #endif

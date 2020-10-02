@@ -25,7 +25,7 @@ class VectorTest;
 template <const unsigned int m_kSize>
 class Vector : public BaseObject
 {
-    DECLARE_BASEOBJECT(Vector)
+    DECLARE_BASEOBJECT(Vector);
 #ifdef RPG_BUILD_TEST
     friend class map::VectorTest;
 #endif

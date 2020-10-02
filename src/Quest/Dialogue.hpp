@@ -23,7 +23,7 @@ namespace quest
 class DialogueTest;
 #endif
 
-CREATE_EXCEPTION_CLASS(Dialogue)
+CREATE_EXCEPTION_CLASS(Dialogue);
 
 /**
  * @brief Manage a complete dialog between the player and an NPC.
@@ -46,7 +46,7 @@ CREATE_EXCEPTION_CLASS(Dialogue)
  */
 class Dialogue : public BaseObject
 {
-    DECLARE_BASEOBJECT(Dialogue)
+    DECLARE_BASEOBJECT(Dialogue);
 #ifdef RPG_BUILD_TEST
     friend class quest::DialogueTest;
 #endif

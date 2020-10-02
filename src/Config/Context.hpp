@@ -34,7 +34,7 @@ class ContextTest;
  */
 class Context : public BaseObject
 {
-    DECLARE_BASEOBJECT(Context)
+    DECLARE_BASEOBJECT(Context);
 #ifdef RPG_BUILD_TEST
     friend class config::ContextTest;
     FRIEND_TEST(ContextTest, Initialization);

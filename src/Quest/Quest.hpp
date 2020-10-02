@@ -16,11 +16,11 @@ namespace quest
 class QuestTest;
 #endif
 
-CREATE_EXCEPTION_CLASS(Quest)
+CREATE_EXCEPTION_CLASS(Quest);
 
 class Quest : public BaseObject
 {
-    DECLARE_BASEOBJECT(Quest)
+    DECLARE_BASEOBJECT(Quest);
 #ifdef RPG_BUILD_TEST
     friend class quest::QuestTest;
 #endif
