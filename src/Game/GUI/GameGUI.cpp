@@ -44,7 +44,7 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
                                           this;
 
     loadFromConfig();
-    m_context->config()->subscribeASyncToSignalConfigUpdated(this,
+    m_context->config()->subscribeSyncToSignalConfigUpdated(this,
             &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
