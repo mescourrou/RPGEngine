@@ -10,6 +10,7 @@
 #include "ConsoleWindow.hpp"
 #include "MoneyWindow.hpp"
 #include "MapWindow.hpp"
+#include "DialogueWindow.hpp"
 
 #include <SFML/Window/Event.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -140,8 +141,10 @@ class MakerGUI : public BaseObject
     std::unique_ptr<maker::gui::ConsoleWindow> m_consoleWindow;
     /// Pointer on the money window
     std::unique_ptr<maker::gui::MoneyWindow> m_moneyWindow;
-    /// Pointer on the map windows
+    /// Pointer on the map window
     std::unique_ptr<maker::gui::MapWindow> m_mapWindow;
+    /// Pointer on the dialogue window
+    std::unique_ptr<maker::gui::DialogueWindow> m_dialogueWindow;
 
     /// File browser
     std::unique_ptr<ImGui::FileBrowser> m_fileBrowser;

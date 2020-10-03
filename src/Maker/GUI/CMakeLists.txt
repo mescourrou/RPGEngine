@@ -6,7 +6,8 @@ add_library(MakerGUI
     CharacterWindow.cpp CharacterWindow.hpp
     ConsoleWindow.cpp ConsoleWindow.hpp
     MoneyWindow.cpp MoneyWindow.hpp
-    MapWindow.cpp MapWindow.hpp)
+    MapWindow.cpp MapWindow.hpp
+    DialogueWindow.cpp DialogueWindow.hpp)
 target_link_libraries(MakerGUI Maker ToolsGUI
     ${SFML_TARGETS} ImGui-SFML)
 
