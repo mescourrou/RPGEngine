@@ -44,7 +44,7 @@ GameGUI::GameGUI(std::shared_ptr<config::Context> context, Game* game):
                                           this;
 
     loadFromConfig();
-    m_context->config()->subscribeASyncToSignalConfigUpdated(this,
+    m_context->config()->subscribeSyncToSignalConfigUpdated(this,
             &GameGUI::loadFromConfig);
     ImGui::SFML::Init(*m_window);
 
@@ -375,6 +375,17 @@ void GameGUI::uiSettingsPopup()
                            static_cast<const char**>(&m_ui.settings.availableResolutions[0]),
                            m_ui.settings.availableResolutions.size());
 
+            if (ImGui::Button("Reload window"))
+            {
+                namespace preferences = config::structure::globalFile::preferences;
+                auto config = m_context->config();
+                config->setValue(preferences::SECTION, preferences::FULLSCREEN,
+                                 (m_ui.settings.fullscreen ? "true" : "false"));
+
+                config->setValue(preferences::SECTION, preferences::RESOLUTION,
+                                 (m_ui.settings.availableResolutions.at(m_ui.settings.resolutionItemSelected)));
+                config->saveToFile();
+            }
             ImGui::EndTabItem();
         }
         if (ImGui::BeginTabItem("Key binding"))
@@ -398,17 +409,6 @@ void GameGUI::uiSettingsPopup()
         }
         ImGui::EndTabBar();
 
-    }
-    if (ImGui::Button("Save"))
-    {
-        namespace preferences = config::structure::globalFile::preferences;
-        auto config = m_context->config();
-        config->setValue(preferences::SECTION, preferences::FULLSCREEN,
-                         (m_ui.settings.fullscreen ? "true" : "false"));
-
-        config->setValue(preferences::SECTION, preferences::RESOLUTION,
-                         (m_ui.settings.availableResolutions.at(m_ui.settings.resolutionItemSelected)));
-        config->saveToFile();
     }
 
 

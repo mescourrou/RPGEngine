@@ -166,8 +166,6 @@ bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 void Dialogue::loadDialogueLineRecursive(unsigned int id,
         std::shared_ptr<databaseTools::Database> db)
 {
-    VLOG(verbosityLevel::FUNCTION_CALL) << "Dialogue loadDialogueLineRecursive" <<
-                                        id;
     DialogueLine line;
     line.loadFromDatabase(id, db);
 
@@ -196,7 +194,6 @@ void Dialogue::loadDialogueLineRecursive(unsigned int id,
             line.addChoice(characterLine, m_dialogueLineStorage[nextId], {});
         }
     }
-    LOG(INFO) << "Load DialogueLine from database : " << line.line();
 
     m_dialogueLineStorage[id] = std::make_shared<DialogueLine>(line);
 

@@ -45,7 +45,6 @@ bool NPCGUI::load(const std::string& characterRessourcesDir)
  */
 void NPCGUI::onRightClick()
 {
-    LOG(INFO) << "NPCGUI::onRightClick";
     if (m_dialogueWindow)
     {
         m_dialogueWindow->setPlayerName(
