@@ -25,7 +25,7 @@ namespace game
  * @brief Manage the exceptions for the GameLaucher
  */
 CREATE_EXCEPTION_CLASS(GameLauncher,
-                       ADD_EXCEPTION_CODE(NO_DIRECTORY))
+                       ADD_EXCEPTION_CODE(NO_DIRECTORY));
 
 #ifdef RPG_BUILD_TEST
 class GameLauncherTest;
@@ -36,7 +36,7 @@ class GameLauncherTest;
  */
 class GameLauncher : public BaseObject
 {
-    DECLARE_BASEOBJECT(GameLauncher)
+    DECLARE_BASEOBJECT(GameLauncher);
 #ifdef RPG_BUILD_TEST
     friend class game::GameLauncherTest;
 #endif

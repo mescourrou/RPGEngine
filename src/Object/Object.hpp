@@ -22,7 +22,7 @@ namespace object
 {
 
 CREATE_EXCEPTION_CLASS(Object,
-                       ADD_EXCEPTION_CODE(UNKNOWN_OBJECT_TYPE))
+                       ADD_EXCEPTION_CODE(UNKNOWN_OBJECT_TYPE));
 
 #ifdef RPG_BUILD_TEST
 class ObjectTest;
@@ -32,7 +32,7 @@ class ObjectTest;
  */
 class Object : public BaseObject
 {
-    DECLARE_BASEOBJECT(Object)
+    DECLARE_BASEOBJECT(Object);
 #ifdef RPG_BUILD_TEST
     friend class object::ObjectTest;
 #endif

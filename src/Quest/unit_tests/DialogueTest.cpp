@@ -12,49 +12,61 @@ namespace quest
 {
 
 #ifdef BUILD_USE_FILESYSTEM
+/*
+ * Test the database model
+ */
 TEST_F(DialogueTest, VerifyDatabaseModel)
 {
     EXPECT_TRUE(Dialogue::verifyDatabaseModel(database));
 }
 
+/*
+ * Test the good loading of the dialogue from the database.
+ */
 TEST_F(DialogueTest, LoadFromDatabase)
 {
     Dialogue d;
     d.loadFromDatabase(1, database);
 
-    ASSERT_TRUE(d.firstLine());
-    const DialogueLine* currentLine = d.firstLine();
-    EXPECT_EQ(currentLine->line(), "Hello young knight !");
+    ASSERT_TRUE(d.firstLine().lock());
+    std::weak_ptr<const DialogueLine> currentLine = d.firstLine();
+    EXPECT_EQ(currentLine.lock()->line(), "Hello young knight !");
 
-    EXPECT_EQ(currentLine->choices().size(), 1);
-    EXPECT_TRUE(currentLine->choices().at(0).empty());
+    EXPECT_EQ(currentLine.lock()->choices().size(), 1);
+    EXPECT_TRUE(currentLine.lock()->choices().at(0).empty());
 
-    ASSERT_TRUE(currentLine = currentLine->selectChoice(0));
-    EXPECT_EQ(currentLine->line(), "Are you interested in a quest ?");
+    currentLine = currentLine.lock()->selectChoice(0);
+    ASSERT_TRUE(currentLine.lock());
+    EXPECT_EQ(currentLine.lock()->line(), "Are you interested in a quest ?");
 
-    EXPECT_EQ(currentLine->choices().size(), 2);
-    EXPECT_EQ(currentLine->choices().at(0), "Yes, I would !");
-    EXPECT_EQ(currentLine->choices().at(1), "Go away !");
+    EXPECT_EQ(currentLine.lock()->choices().size(), 2);
+    EXPECT_EQ(currentLine.lock()->choices().at(0), "Yes, I would !");
+    EXPECT_EQ(currentLine.lock()->choices().at(1), "Go away !");
 
-    const DialogueLine* selectLine0 = currentLine->selectChoice(0);
-    ASSERT_TRUE(selectLine0);
-    EXPECT_EQ(selectLine0->line(), "Here we go.");
+    std::weak_ptr<const DialogueLine> selectLine0 =
+        currentLine.lock()->selectChoice(0);
+    ASSERT_TRUE(selectLine0.lock());
+    EXPECT_EQ(selectLine0.lock()->line(), "Here we go.");
 
-    const DialogueLine* selectLine1 = currentLine->selectChoice(1);
-    ASSERT_TRUE(selectLine0);
-    EXPECT_EQ(selectLine1->line(), "Alright, have a good day !");
+    std::weak_ptr<const DialogueLine> selectLine1 =
+        currentLine.lock()->selectChoice(1);
+    ASSERT_TRUE(selectLine0.lock());
+    EXPECT_EQ(selectLine1.lock()->line(), "Alright, have a good day !");
 
 }
 
+/*
+ * Test the good loading of all the dialogues of a given NPC from the database.
+ */
 TEST_F(DialogueTest, LoadFromDatabaseMultiple)
 {
-    std::vector<Dialogue> list = Dialogue::loadFromDatabase("John", database);
+    auto list = Dialogue::loadFromDatabase("John", database);
     EXPECT_EQ(list.size(), 2);
-    ASSERT_TRUE(list.at(0).firstLine());
-    EXPECT_EQ(list.at(0).firstLine()->line(), "Hello young knight !");
+    ASSERT_TRUE(list.at(0)->firstLine().lock());
+    EXPECT_EQ(list.at(0)->firstLine().lock()->line(), "Hello young knight !");
 
-    ASSERT_TRUE(list.at(1).firstLine());
-    EXPECT_EQ(list.at(1).firstLine()->line(), "Hi !");
+    ASSERT_TRUE(list.at(1)->firstLine().lock());
+    EXPECT_EQ(list.at(1)->firstLine().lock()->line(), "Hi !");
 }
 
 /**

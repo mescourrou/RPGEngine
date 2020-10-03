@@ -26,14 +26,14 @@ namespace map
 namespace gui
 {
 
-CREATE_EXCEPTION_CLASS(MapGUI)
+CREATE_EXCEPTION_CLASS(MapGUI);
 
 /**
  * @brief GUI class related to Map
  */
 class MapGUI : public BaseGUIObject
 {
-    DECLARE_BASEOBJECT(MapGUI)
+    DECLARE_BASEOBJECT(MapGUI);
   public:
     explicit MapGUI(std::weak_ptr<map::Map> map);
     /// @brief Default destructor

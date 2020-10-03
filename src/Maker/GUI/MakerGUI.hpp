@@ -43,14 +43,14 @@ class MapGUI;
 namespace maker::gui
 {
 
-CREATE_EXCEPTION_CLASS(MakerGUI)
+CREATE_EXCEPTION_CLASS(MakerGUI);
 
 /**
  * @brief Game GUI manager
  */
 class MakerGUI : public BaseObject
 {
-    DECLARE_BASEOBJECT(MakerGUI)
+    DECLARE_BASEOBJECT(MakerGUI);
   public:
     MakerGUI(std::shared_ptr<config::Context> context, Maker* maker);
     ~MakerGUI() override;

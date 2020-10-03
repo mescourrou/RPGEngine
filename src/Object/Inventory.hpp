@@ -19,7 +19,7 @@ class Database;
 namespace object
 {
 
-CREATE_EXCEPTION_CLASS(Inventory)
+CREATE_EXCEPTION_CLASS(Inventory);
 
 class Object;
 
@@ -32,7 +32,7 @@ class InventoryTest;
  */
 class Inventory : public BaseObject
 {
-    DECLARE_BASEOBJECT(Inventory)
+    DECLARE_BASEOBJECT(Inventory);
 #ifdef RPG_BUILD_TEST
     friend class object::InventoryTest;
     FRIEND_TEST(InventoryTest, Push);

@@ -144,7 +144,8 @@ void GameLauncher::startGame(const std::string& gameName) const
     }
     catch (const BaseException& e)
     {
-        LOG(ERROR) << "Impossible to start '" << gameName << "' : " << e.what();
+        LOG(ERROR) << "Impossible to start '" << gameName << "'. Receive " <<
+                   e.exceptionTypeStr() << " : " << e.what();
     }
     END_SESSION();
     LOG(INFO) << "Exit " << gameName;

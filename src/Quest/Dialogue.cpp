@@ -12,7 +12,7 @@ namespace quest
 /**
  * @brief Load the Dialogue starting by the id @a firstLineID .
  *
- * @warning You can give any firstLineID, even in the middle of a Dialogue .
+ * @warning You need to give the first line id of the Dialogue, the one stored in the 'Dialog' table
  * @param firstLineID First DialogueLine ID to start with.
  * @param db Database to load from.
  * @return Return a reference on the current object.
@@ -23,7 +23,25 @@ Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
     PROFILE_FUNCTION();
     VLOG(verbosityLevel::FUNCTION_CALL) << "Dialogue loadFromDatabase " <<
                                         firstLineID;
+    namespace Model = database::Model::Quest::Dialog;
+    using namespace databaseTools;
 
+    if (!db)
+        throw DialogueException("No database given.",
+                                BaseException::MISSING_DATABASE);
+
+    if (!verifyDatabaseModel(db))
+        throw DialogueException("Wrong database model.", BaseException::BAD_MODEL);
+
+    auto result = db->query(Query::createQuery<Query::SELECT>(Model::TABLE, db)
+                            .column(Model::FK_NPC_NAME)
+                            .where(Query::Column(Model::TABLE, Model::FK_DIALOG_LINE_ID), Query::EQUAL,
+                                   std::to_string(firstLineID))
+                           );
+    if (Database::isQuerySuccessfull(result) && result.size() > 1)
+    {
+        m_characterName = result.at(1).at(Model::FK_NPC_NAME);
+    }
     loadDialogueLineRecursive(firstLineID, db);
     m_firstLineId = firstLineID;
     return *this;
@@ -35,8 +53,9 @@ Dialogue& Dialogue::loadFromDatabase(unsigned int firstLineID,
  * @param db Database to load from.
  * @return List of Dialogue , currently ordored by first DialogueLine ID.
  */
-std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
-        std::shared_ptr<databaseTools::Database> db)
+std::vector<std::shared_ptr<Dialogue>> Dialogue::loadFromDatabase(
+                                        const std::string& NPCName,
+                                        std::shared_ptr<databaseTools::Database> db)
 {
     PROFILE_FUNCTION();
     namespace Model = database::Model::Quest::Dialog;
@@ -58,16 +77,16 @@ std::vector<Dialogue> Dialogue::loadFromDatabase(std::string NPCName,
     if (result.size() <= 1)
         return {};
 
-    std::vector<Dialogue> dialogueList;
+    std::vector<std::shared_ptr<Dialogue>> dialogueList;
     for (size_t i = 1; i < result.size(); i++)
     {
         Dialogue d;
         d.loadFromDatabase(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()),
                            db);
         VLOG(verbosityLevel::VERIFICATION_LOG) << "Dialogue starting by '" <<
-                                               d.firstLine()->line() << "', id '" << std::atoi(result.at(i).at(
+                                               d.firstLine().lock()->line() << "', id '" << std::atoi(result.at(i).at(
                                                        Model::FK_DIALOG_LINE_ID).c_str()) << "', loaded";
-        dialogueList.push_back(d);
+        dialogueList.push_back(std::make_shared<Dialogue>(d));
     }
 
     return dialogueList;
@@ -174,11 +193,12 @@ void Dialogue::loadDialogueLineRecursive(unsigned int id,
             std::string characterLine = result.at(i).at(ModelGraph::CHARACTER_LINE);
             if (characterLine == "NULL")
                 characterLine = "";
-            line.addChoice(characterLine, &(m_dialogueLineStorage[nextId]), nullptr);
+            line.addChoice(characterLine, m_dialogueLineStorage[nextId], {});
         }
     }
+    LOG(INFO) << "Load DialogueLine from database : " << line.line();
 
-    m_dialogueLineStorage[id] = std::move(line);
+    m_dialogueLineStorage[id] = std::make_shared<DialogueLine>(line);
 
 }
 

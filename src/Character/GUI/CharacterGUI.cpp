@@ -400,6 +400,14 @@ void CharacterGUI::slotKeyReleased(sf::Event::KeyEvent key)
 }
 
 /**
+ * @brief Slot to be activated when we right click on the Character.
+ */
+void CharacterGUI::slotRightClickedReleased()
+{
+    onRightClick();
+}
+
+/**
  * @brief Draw character basic informations for being presented to the player every time
  */
 void CharacterGUI::uiRealtimeInformations()
@@ -425,6 +433,26 @@ void CharacterGUI::uiFullInformations()
 void CharacterGUI::uiInventoryWindow()
 {
     ImGui::Text("Soon");
+}
+
+/**
+ * @brief Tells if the mouse is inside the character sprite.
+ * @param x X position of the mouse.
+ * @param y Y position of the mouse.
+ */
+bool CharacterGUI::isMouseInside(float x, float y) const
+{
+    if (!m_currentSprite)
+        return false;
+    return m_currentSprite->getGlobalBounds().contains(x, y);
+}
+
+/**
+ * @brief Action on right click on the Character.
+ */
+void CharacterGUI::onRightClick()
+{
+
 }
 
 /**

@@ -20,7 +20,7 @@ class DialogueActionTest;
  */
 class DialogueAction : public BaseObject
 {
-    DECLARE_BASEOBJECT(DialogueAction)
+    DECLARE_BASEOBJECT(DialogueAction);
 #ifdef RPG_BUILD_TEST
     friend class quest::DialogueActionTest;
 #endif

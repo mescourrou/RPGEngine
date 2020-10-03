@@ -27,14 +27,14 @@ class Character;
 namespace gui
 {
 
-CREATE_EXCEPTION_CLASS(CharacterGUI)
+CREATE_EXCEPTION_CLASS(CharacterGUI);
 
 /**
  * @brief GUI class related to the Character
  */
 class CharacterGUI : public BaseGUIObject
 {
-    DECLARE_BASEOBJECT(CharacterGUI)
+    DECLARE_BASEOBJECT(CharacterGUI);
   public:
     static void connectSignals(game::gui::GameGUI* game, CharacterGUI* character,
                                bool player = false);
@@ -54,12 +54,19 @@ class CharacterGUI : public BaseGUIObject
 
     void slotArrowPressed(sf::Keyboard::Key arrow);
     void slotKeyReleased(sf::Event::KeyEvent key);
+    void slotRightClickedReleased();
 
     void uiRealtimeInformations();
     void uiFullInformations();
     void uiInventoryWindow();
-  protected:
 
+    bool isMouseInside(float x, float y) const override;
+  protected:
+    virtual void onRightClick();
+    virtual std::weak_ptr<Character>& characterPtr() final
+    {
+        return m_character;
+    }
 
     /**
      * @brief Direction of the character
@@ -70,6 +77,8 @@ class CharacterGUI : public BaseGUIObject
     };
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+    std::shared_ptr<config::Context> m_context;
   private:
     static bool verifyJSONTopStructure(const json& json);
     static bool verifyJSONSpriteSetsStructure(const json& set);
@@ -77,7 +86,6 @@ class CharacterGUI : public BaseGUIObject
     bool loadActions(const json& json);
 
     std::weak_ptr<Character> m_character; ///< Pointer on the backend character
-    std::shared_ptr<config::Context> m_context;
 
     std::map<unsigned int, sf::Sprite>
     m_sprites; ///< Sprites of the Character, assigned by id

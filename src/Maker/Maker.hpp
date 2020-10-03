@@ -43,7 +43,7 @@ namespace maker
  * @brief Manage the exceptions of Game
  */
 CREATE_EXCEPTION_CLASS(Maker,
-                       ADD_EXCEPTION_CODE(VERSION))
+                       ADD_EXCEPTION_CODE(VERSION));
 
 #ifdef RPG_BUILD_TEST
 class MakerTest;
@@ -54,7 +54,7 @@ class MakerTest;
  */
 class Maker : public BaseObject
 {
-    DECLARE_BASEOBJECT(Maker)
+    DECLARE_BASEOBJECT(Maker);
 #ifdef RPG_BUILD_TEST
     friend class maker::MakerTest;
 #endif

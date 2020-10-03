@@ -36,14 +36,14 @@ class Game;
 namespace gui
 {
 
-CREATE_EXCEPTION_CLASS(GameGUI)
+CREATE_EXCEPTION_CLASS(GameGUI);
 
 /**
  * @brief Game GUI manager
  */
 class GameGUI : public BaseObject
 {
-    DECLARE_BASEOBJECT(GameGUI)
+    DECLARE_BASEOBJECT(GameGUI);
   public:
     GameGUI(std::shared_ptr<config::Context> context, Game* game);
     ~GameGUI() override;
@@ -57,6 +57,8 @@ class GameGUI : public BaseObject
     void eventManager();
 
     void draw();
+
+    void addImguiWindow(ImGui::Window* w);
 
     ADD_EVENT(SignalKeyPressed,
               sf::Event::KeyEvent); ///< Signal when a key is pressed
@@ -97,6 +99,7 @@ class GameGUI : public BaseObject
     void uiSettingsPopup();
     void managePressingKeyEvent(const sf::Event::KeyEvent& key);
     void manageReleasingKeyEven(const sf::Event::KeyEvent& key);
+    void manageMouseEvent(const sf::Event& event);
     void checkKeyPressed();
   private:
     /// List of BaseGUIObjects to manage and draw

@@ -13,35 +13,41 @@ class TestAction : public DialogueAction
     }
     bool done = false;
 };
-
+/*
+ * Test the good selection of the player line
+ */
 TEST_F(DialogueLineTest, ChoiceSelection)
 {
-    DialogueLine line1("Hello World");
-    DialogueLine line2("Do you wanna a quest ?");
-    DialogueLine line3("OK, I won't bother you");
+    auto line1 = std::make_shared<DialogueLine>("Hello World");
+    auto line2 = std::make_shared<DialogueLine>("Do you wanna a quest ?");
+    auto line3 = std::make_shared<DialogueLine>("OK, I won't bother you");
 
-    TestAction* action = new TestAction;
-    line1.addChoice("Greetings", &line2);
-    line1.addChoice("Ciao", &line3, action);
+    auto action = std::make_shared<TestAction>();
+    line1->addChoice("Greetings", line2);
+    line1->addChoice("Ciao", line3, action);
 
-    const DialogueLine* selectedLine = line1.selectChoice(1); // Select "Ciao"
-    EXPECT_EQ(&line3, selectedLine);
+    // Select "Ciao"
+    std::weak_ptr<const DialogueLine> selectedLine = line1->selectChoice(1);
+    EXPECT_EQ(line3->line(), selectedLine.lock()->line());
     EXPECT_TRUE(action->done);
 }
 
+/*
+ * Test the transition between two NPC line when the player has nothing to say.
+ */
 TEST_F(DialogueLineTest, ChoiceSelectionWhenOnlyOne)
 {
-    DialogueLine line1("Hello World");
-    DialogueLine line2("Do you wanna a quest ?");
+    auto line1 = std::make_shared<DialogueLine>("Hello World");
+    auto line2 = std::make_shared<DialogueLine>("Do you wanna a quest ?");
 
-    TestAction* action = new TestAction;
-    line1.addChoice("", &line2, action);
+    auto action = std::make_shared<TestAction>();
+    line1->addChoice("", line2, action);
 
-    EXPECT_EQ(line1.choices().size(), 1);
-    EXPECT_TRUE(line1.choices().at(0).empty());
+    EXPECT_EQ(line1->choices().size(), 1);
+    EXPECT_TRUE(line1->choices().at(0).empty());
 
-    const DialogueLine* selectedLine = line1.selectChoice(0);
-    EXPECT_EQ(&line2, selectedLine);
+    std::weak_ptr<const DialogueLine> selectedLine = line1->selectChoice(0);
+    EXPECT_EQ(line2->line(), selectedLine.lock()->line());
     EXPECT_TRUE(action->done);
 }
 

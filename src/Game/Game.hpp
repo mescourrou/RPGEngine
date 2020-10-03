@@ -46,7 +46,7 @@ class GameGUI;
  * @brief Manage the exceptions of Game
  */
 CREATE_EXCEPTION_CLASS(Game,
-                       ADD_EXCEPTION_CODE(VERSION))
+                       ADD_EXCEPTION_CODE(VERSION));
 
 #ifdef RPG_BUILD_TEST
 class GameTest;
@@ -57,7 +57,7 @@ class GameTest;
  */
 class Game : public BaseObject
 {
-    DECLARE_BASEOBJECT(Game)
+    DECLARE_BASEOBJECT(Game);
 #ifdef RPG_BUILD_TEST
     friend class game::GameTest;
 #endif
@@ -87,6 +87,16 @@ class Game : public BaseObject
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
+
+    std::weak_ptr<game::gui::GameGUI> GUI() const
+    {
+        return m_gui;
+    }
+
+    std::weak_ptr<character::Character> playerCharacter() const
+    {
+        return m_playerCharacter;
+    }
 
   private:
     /// Context of the Game

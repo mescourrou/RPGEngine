@@ -137,6 +137,8 @@ void GameGUI::eventManager()
 
         if (m_event.type == sf::Event::KeyReleased)
             manageReleasingKeyEven(m_event.key);
+        if (m_event.type == sf::Event::MouseButtonReleased)
+            manageMouseEvent(m_event);
     }
     checkKeyPressed();
 
@@ -181,6 +183,11 @@ void GameGUI::draw()
     m_context->setFramePeriod(std::chrono::duration_cast<std::chrono::milliseconds>
                               (std::chrono::high_resolution_clock::now() - m_drawingTimer));
     m_drawingTimer = std::chrono::high_resolution_clock::now();
+}
+
+void GameGUI::addImguiWindow(ImGui::Window* w)
+{
+    m_windowsManager.addWindow(w);
 }
 
 /**
@@ -443,6 +450,25 @@ void GameGUI::manageReleasingKeyEven(const sf::Event::KeyEvent& key)
         {
             events::ActionHandler::setKeyBinding(m_actionWaitingForKeybinding, keyBinding);
             m_actionWaitingForKeybinding = "";
+        }
+    }
+}
+
+void GameGUI::manageMouseEvent(const sf::Event& event)
+{
+    if (event.type == sf::Event::MouseButtonReleased)
+    {
+        if (event.mouseButton.button == sf::Mouse::Right)
+        {
+            for (const auto& guiObj : m_guiObjects)
+            {
+                auto* characterPtr = dynamic_cast<character::gui::CharacterGUI*>
+                                     (guiObj.get());
+                if (!characterPtr)
+                    continue;
+                if (characterPtr->isMouseInside(event.mouseButton.x, event.mouseButton.y))
+                    characterPtr->slotRightClickedReleased();
+            }
         }
     }
 }

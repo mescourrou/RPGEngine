@@ -11,6 +11,8 @@
 #include <Query.hpp>
 #include <Model.hpp>
 #include <Character.hpp>
+#include <NPC.hpp>
+#include <Vendor.hpp>
 #include <VerbosityLevels.hpp>
 #include <Money.hpp>
 #include <PerformanceTimer.hpp>
@@ -20,6 +22,7 @@
 #include <GUI/GameGUI.hpp>
 #include <GUI/MapGUI.hpp>
 #include <GUI/CharacterGUI.hpp>
+#include <GUI/NPCGUI.hpp>
 #endif
 
 // External libs
@@ -78,6 +81,8 @@ bool Game::initialize(std::shared_ptr<databaseTools::Database> db)
                             GameException::VERSION);
     LOG(INFO) << "Game version : " << std::atoi(gameInfo.at(
                   Model::ENGINE_VERSION).c_str());
+
+    m_context->setCurrentGame(this);
 
     // Money initialization
     LOG(INFO) << "Initialize Money system";
@@ -172,12 +177,12 @@ void Game::loadMapContents(const std::string& mapName)
         auto& characterName = result.at(i).at(database::Model::Position::FK_CHARACTER);
         if (characterName != m_playerCharacter->name())
         {
-            auto& newOne = m_characterList.emplace_back(
-                               std::make_shared<character::Character>(characterName, m_context));
+            auto newOne = std::static_pointer_cast<character::NPC>
+                          (m_characterList.emplace_back(std::make_shared<character::NPC>(characterName,
+                                  m_context)));
             newOne->loadFromDatabase(m_db);
 #ifdef RPG_BUILD_GUI
-            auto guiChar = m_gui->addGUIObject<character::gui::CharacterGUI>(newOne,
-                           m_context);
+            auto guiChar = m_gui->addGUIObject<character::gui::NPCGUI>(newOne, m_context);
             guiChar.lock()->load(m_context->kCharacterPath());
             character::gui::CharacterGUI::connectSignals(m_gui.get(), guiChar.lock().get());
             character::gui::CharacterGUI::connectSignals(newOne.get(),

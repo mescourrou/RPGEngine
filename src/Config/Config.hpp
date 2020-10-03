@@ -22,7 +22,7 @@
 namespace config
 {
 
-CREATE_EXCEPTION_CLASS(Config)
+CREATE_EXCEPTION_CLASS(Config);
 
 #ifdef RPG_BUILD_TEST
 class ConfigTest;
@@ -33,7 +33,7 @@ class ConfigTest;
  */
 class Config : public BaseObject
 {
-    DECLARE_BASEOBJECT(Config)
+    DECLARE_BASEOBJECT(Config);
 #ifdef RPG_BUILD_TEST
     friend class config::ConfigTest;
 #endif
@@ -61,8 +61,10 @@ class Config : public BaseObject
               void); ///< Signal emitted when the config is saved
 
   private:
-    CSimpleIniCaseA m_iniFile; ///< INI file load in memory
-    std::string m_filename;    ///< Filename used to load the config
+    /// INI file load in memory
+    CSimpleIniCaseA m_iniFile;
+    /// Filename used to load the config
+    std::string m_filename;
 };
 
 

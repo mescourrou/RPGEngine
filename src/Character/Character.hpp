@@ -30,7 +30,7 @@ namespace character
 /**
  * @brief The CharacterException class group exceptions linked to the Character
  */
-CREATE_EXCEPTION_CLASS(Character)
+CREATE_EXCEPTION_CLASS(Character);
 
 #ifdef RPG_BUILD_TEST
 class CharacterTest;
@@ -41,7 +41,7 @@ class CharacterTest;
  */
 class Character : public BaseObject
 {
-    DECLARE_BASEOBJECT(Character)
+    DECLARE_BASEOBJECT(Character);
 
 #ifdef RPG_BUILD_TEST
     friend class character::CharacterTest;

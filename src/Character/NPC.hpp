@@ -3,6 +3,7 @@
 // Project
 #include <Character.hpp>
 #include <BaseObject.hpp>
+#include <Dialogue.hpp>
 
 namespace character
 {
@@ -12,7 +13,7 @@ namespace character
  */
 class NPC : public Character
 {
-    DECLARE_BASEOBJECT(NPC)
+    DECLARE_BASEOBJECT(NPC);
   public:
     NPC() = delete;
     NPC(const std::string& name, std::shared_ptr<config::Context> context);
@@ -26,12 +27,18 @@ class NPC : public Character
 
     virtual void updatePosition();
 
+    const std::vector<std::shared_ptr<quest::Dialogue>>& dialogues() const
+    {
+        return m_dialogues;
+    }
+
   private:
     static bool verifyNPCModel(std::shared_ptr<databaseTools::Database> db);
     static bool verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db);
     std::list<map::Position> m_path; ///< List of points to follow
     map::Position* m_targettedPosition = nullptr; ///< Current point targetted
 
+    std::vector<std::shared_ptr<quest::Dialogue>> m_dialogues;
 };
 
 } // namespace character

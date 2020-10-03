@@ -16,6 +16,11 @@
 #include <gtest/gtest.h>
 #endif
 
+namespace game
+{
+class Game;
+}
+
 namespace config
 {
 class Config;
@@ -29,7 +34,7 @@ class ContextTest;
  */
 class Context : public BaseObject
 {
-    DECLARE_BASEOBJECT(Context)
+    DECLARE_BASEOBJECT(Context);
 #ifdef RPG_BUILD_TEST
     friend class config::ContextTest;
     FRIEND_TEST(ContextTest, Initialization);
@@ -90,15 +95,29 @@ class Context : public BaseObject
         return m_framePeriod;
     }
 
+    /// @brief Set the last frame period.
     void setFramePeriod(const std::chrono::milliseconds& period)
     {
         m_framePeriod = period;
+    }
+
+    /// @brief Set a pointer of the current game.
+    void setCurrentGame(game::Game* game)
+    {
+        m_currentGame = game;
+    }
+
+    /// @brief Get the pointer on the current game.
+    game::Game* currentGame()
+    {
+        return m_currentGame;
     }
 
 
   protected:
     Context() = default; // For mocking
   private:
+    game::Game* m_currentGame = nullptr;
     /// List of program arguments (from argv)
     std::vector<std::string> m_programArguments;
 

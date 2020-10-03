@@ -42,6 +42,7 @@ bool NPC::loadFromDatabase(std::shared_ptr<databaseTools::Database> db)
     if (!Character::loadFromDatabase(db))
         return false;
 
+    m_dialogues = quest::Dialogue::loadFromDatabase(name(), db);
 
     return true;
 }
@@ -131,7 +132,8 @@ bool NPC::verifyNPCModel(std::shared_ptr<databaseTools::Database> db)
 
 /**
  * @brief Verify the NPCPath table model
- * @param db Database to check
+ * @param db Database to check$
+ *
  * @return Return true if the model is correct
  */
 bool NPC::verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db)
@@ -146,7 +148,9 @@ bool NPC::verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db)
     unsigned short goodColumns = 0;
     for (auto& column : columnList)
     {
-        if (column == Model::FK_NPC_NAME)
+        if (column == Model::ID)
+            goodColumns++;
+        else if (column == Model::FK_NPC_NAME)
             goodColumns++;
         else if (column == Model::X)
             goodColumns++;
@@ -156,7 +160,7 @@ bool NPC::verifyNPCPathModel(std::shared_ptr<databaseTools::Database> db)
             goodColumns++;
     }
 
-    if (goodColumns != 4)
+    if (goodColumns != 5)
         return false;
 
     return true;

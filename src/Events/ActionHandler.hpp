@@ -18,7 +18,7 @@ namespace events
 {
 
 CREATE_EXCEPTION_CLASS(ActionHandler,
-                       ADD_EXCEPTION_CODE(UNKNOWN_ACTION))
+                       ADD_EXCEPTION_CODE(UNKNOWN_ACTION));
 
 /**
  * @brief Manage the actions of the engine
