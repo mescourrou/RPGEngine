@@ -1,5 +1,6 @@
 find_package(SFML REQUIRED)
 find_package(ImGUI-SFML REQUIRED)
+find_package(ImNodes REQUIRED)
 
 add_library(MakerGUI
     MakerGUI.cpp MakerGUI.hpp
@@ -9,7 +10,7 @@ add_library(MakerGUI
     MapWindow.cpp MapWindow.hpp
     DialogueWindow.cpp DialogueWindow.hpp)
 target_link_libraries(MakerGUI Maker ToolsGUI
-    ${SFML_TARGETS} ImGui-SFML)
+    ${SFML_TARGETS} ImGui-SFML ImNodes)
 
 
 target_include_directories(MakerGUI PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -45,6 +45,7 @@ void DialogueLine::loadFromDatabase(unsigned int id,
         return;
 
     m_line = result.at(1).at(ModelLine::LINE);
+    m_id = id;
 }
 
 /**
@@ -87,6 +88,11 @@ std::vector<std::string> DialogueLine::choices() const
         choices.push_back(choice.playerLine);
     }
     return choices;
+}
+
+std::weak_ptr<const DialogueLine> DialogueLine::getChoice(size_t index) const
+{
+    return m_choices.at(index).nextLine;
 }
 
 /**
@@ -196,35 +202,44 @@ bool DialogueLine::createDatabaseModel(std::shared_ptr<databaseTools::Database>
     if (!db)
         throw DialogueLineException("No database given.",
                                     BaseException::MISSING_DATABASE);
+    namespace ModelDialogAction = database::Model::Quest::DialogAction;
+    auto result = db->query(Query::createQuery<Query::CREATE>
+                            (ModelDialogAction::TABLE, db)
+                            .ifNotExists()
+                            .column(ModelDialogAction::ID, DataType::INTEGER)
+                            .constraint(ModelDialogAction::ID, Query::PRIMARY_KEY)
+                            .constraint(ModelDialogAction::ID, Query::AUTOINCREMENT)
+                           );
+    if (!Database::isQuerySuccessfull(result))
+        return false;
 
-    db->query(Query::createQuery<Query::CREATE>(ModelDialogLine::TABLE, db)
-              .ifNotExists()
-              .column(ModelDialogLine::ID, DataType::INTEGER).constraint(ModelDialogLine::ID,
-                      Query::PRIMARY_KEY).constraint(ModelDialogLine::ID, Query::AUTOINCREMENT)
-              .column(ModelDialogLine::LINE, DataType::TEXT)
-              .column(ModelDialogLine::FK_ACTION_ID, DataType::INTEGER,
-                      database::Model::Quest::DialogAction::TABLE,
-                      database::Model::Quest::DialogAction::ID)
-             );
+    result = db->query(Query::createQuery<Query::CREATE>
+                       (ModelDialogLine::TABLE, db)
+                       .ifNotExists()
+                       .column(ModelDialogLine::ID, DataType::INTEGER).constraint(ModelDialogLine::ID,
+                               Query::PRIMARY_KEY).constraint(ModelDialogLine::ID, Query::AUTOINCREMENT)
+                       .column(ModelDialogLine::LINE, DataType::TEXT)
+                       .column(ModelDialogLine::FK_ACTION_ID, DataType::INTEGER,
+                               database::Model::Quest::DialogAction::TABLE,
+                               database::Model::Quest::DialogAction::ID)
+                      );
+    if (!Database::isQuerySuccessfull(result))
+        return false;
 
     namespace ModelDialogGraph = database::Model::Quest::DialogGraph;
-    db->query(Query::createQuery<Query::CREATE>(ModelDialogGraph::TABLE, db)
-              .ifNotExists()
-              .column(ModelDialogGraph::FK_BEFORE_ID, DataType::INTEGER,
-                      ModelDialogLine::TABLE, ModelDialogLine::ID)
-              .column(ModelDialogGraph::FK_AFTER_ID, DataType::INTEGER,
-                      ModelDialogLine::TABLE, ModelDialogLine::ID)
-              .constraint(ModelDialogGraph::FK_BEFORE_ID, Query::PRIMARY_KEY)
-              .constraint(ModelDialogGraph::FK_AFTER_ID, Query::PRIMARY_KEY)
-             );
-
-    namespace ModelDialogAction = database::Model::Quest::DialogAction;
-    db->query(Query::createQuery<Query::CREATE>(ModelDialogAction::TABLE, db)
-              .ifNotExists()
-              .column(ModelDialogAction::ID, DataType::INTEGER)
-              .constraint(ModelDialogAction::ID, Query::PRIMARY_KEY)
-              .constraint(ModelDialogAction::ID, Query::AUTOINCREMENT)
-             );
+    result = db->query(Query::createQuery<Query::CREATE>
+                       (ModelDialogGraph::TABLE, db)
+                       .ifNotExists()
+                       .column(ModelDialogGraph::FK_BEFORE_ID, DataType::INTEGER,
+                               ModelDialogLine::TABLE, ModelDialogLine::ID)
+                       .column(ModelDialogGraph::FK_AFTER_ID, DataType::INTEGER,
+                               ModelDialogLine::TABLE, ModelDialogLine::ID)
+                       .column(ModelDialogGraph::CHARACTER_LINE, DataType::TEXT)
+                       .constraint(ModelDialogGraph::FK_BEFORE_ID, Query::PRIMARY_KEY)
+                       .constraint(ModelDialogGraph::FK_AFTER_ID, Query::PRIMARY_KEY)
+                      );
+    if (!Database::isQuerySuccessfull(result))
+        return false;
     return verifyDatabaseModel(db);
 }
 

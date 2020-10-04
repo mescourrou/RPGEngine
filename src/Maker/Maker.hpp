@@ -12,6 +12,7 @@
 #include <Config.hpp>
 #include <Position.hpp>
 #include <StateMachine.hpp>
+#include <Dialogue.hpp>
 
 
 #ifdef RPG_BUILD_TEST
@@ -95,6 +96,7 @@ class Maker : public BaseObject
         {
             return type >= NPC && type < NPC_END;
         }
+        std::vector<std::shared_ptr<quest::Dialogue>> dialogueList;
 
     };
     bool saveCharacter(const CharacterInformations& infos);

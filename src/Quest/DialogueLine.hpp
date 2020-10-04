@@ -69,7 +69,13 @@ class DialogueLine : public BaseObject
     void setLine(std::string line);
     const std::string& line() const;
     std::vector<std::string> choices() const;
+    std::weak_ptr<const DialogueLine> getChoice(size_t index) const;
     std::weak_ptr<const DialogueLine> selectChoice(size_t index) const;
+
+    unsigned int id() const
+    {
+        return m_id;
+    }
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
@@ -79,6 +85,8 @@ class DialogueLine : public BaseObject
     std::string m_line;
     /// List of choices for the player
     std::vector<Choice> m_choices;
+    /// Id in the database.
+    unsigned int m_id = 0;
 
 };
 

@@ -84,8 +84,10 @@ bool NPC::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
     namespace ModelNPCPath = database::Model::NPCPath;
     db->query(Query::createQuery<Query::CREATE>(ModelNPCPath::TABLE,
               db).ifNotExists()
+              .column(ModelNPCPath::ID, DataType::INTEGER)
               .column(ModelNPCPath::FK_NPC_NAME, DataType::BLOB, database::Model::NPC::TABLE,
                       database::Model::NPC::NAME)
+              .constraint(ModelNPCPath::ID, Query::PRIMARY_KEY)
               .constraint(ModelNPCPath::FK_NPC_NAME, Query::PRIMARY_KEY)
               .column(ModelNPCPath::X, DataType::INTEGER)
               .column(ModelNPCPath::Y, DataType::INTEGER)

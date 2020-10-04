@@ -336,7 +336,8 @@ void MakerGUI::makeNewGameUI()
             m_ui.newGame.state = UI::NewGame::NONE;
             ImGui::CloseCurrentPopup();
         }
-        if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive()
+        if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)
+                && !ImGui::IsAnyItemActive()
                 && !ImGui::IsMouseClicked(0))
             ImGui::SetKeyboardFocusHere(0);
         ImGui::EndPopup();

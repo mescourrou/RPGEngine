@@ -298,12 +298,12 @@ inline void ImGui::FileBrowser::Display()
 
     // browse files in a child window
 
-    float reserveHeight = GetItemsLineHeightWithSpacing();
+    float reserveHeight = GetFrameHeightWithSpacing();
     std::filesystem::path newPwd;
     bool setNewPwd = false;
     if (!(flags_ & ImGuiFileBrowserFlags_SelectDirectory)
             && (flags_ & ImGuiFileBrowserFlags_EnterNewFilename))
-        reserveHeight += GetItemsLineHeightWithSpacing();
+        reserveHeight += GetFrameHeightWithSpacing();
     {
         BeginChild("ch", ImVec2(0, -reserveHeight), true,
                    (flags_ & ImGuiFileBrowserFlags_NoModal) ?

@@ -144,6 +144,8 @@ bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
         throw DialogueException("No database given.",
                                 BaseException::MISSING_DATABASE);
 
+    if (!DialogueLine::createDatabaseModel(db))
+        return false;
     db->query(Query::createQuery<Query::CREATE>(Model::TABLE, db)
               .ifNotExists()
               .column(Model::FK_NPC_NAME, DataType::BLOB,
@@ -155,7 +157,8 @@ bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
               .constraint(Model::FK_NPC_NAME, Query::PRIMARY_KEY)
               .constraint(Model::FK_DIALOG_LINE_ID, Query::PRIMARY_KEY)
              );
-    return DialogueLine::createDatabaseModel(db) && verifyDatabaseModel(db);
+
+    return verifyDatabaseModel(db);
 }
 
 /**
@@ -166,8 +169,11 @@ bool Dialogue::createDatabaseModel(std::shared_ptr<databaseTools::Database> db)
 void Dialogue::loadDialogueLineRecursive(unsigned int id,
         std::shared_ptr<databaseTools::Database> db)
 {
-    DialogueLine line;
-    line.loadFromDatabase(id, db);
+    if (m_dialogueLineStorage.count(id))
+        return;
+    auto line = std::make_shared<DialogueLine>();
+    line->loadFromDatabase(id, db);
+    m_dialogueLineStorage[id] = line;
 
     namespace ModelGraph = database::Model::Quest::DialogGraph;
     using namespace databaseTools;
@@ -191,11 +197,11 @@ void Dialogue::loadDialogueLineRecursive(unsigned int id,
             std::string characterLine = result.at(i).at(ModelGraph::CHARACTER_LINE);
             if (characterLine == "NULL")
                 characterLine = "";
-            line.addChoice(characterLine, m_dialogueLineStorage[nextId], {});
+            line->addChoice(characterLine, m_dialogueLineStorage[nextId], {});
         }
     }
 
-    m_dialogueLineStorage[id] = std::make_shared<DialogueLine>(line);
+
 
 }
 
