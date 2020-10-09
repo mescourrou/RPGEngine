@@ -14,6 +14,13 @@ DialogueWindow::DialogueWindow(Maker* maker) :
 
 bool DialogueWindow::doPrepare()
 {
+    if (ImGui::Button("New dialogue line"))
+    {
+        m_nodes.emplace_back(std::make_shared<DialogueNode>());
+        auto node = std::static_pointer_cast<DialogueNode>(m_nodes.back());
+        node->inputs.push_back({"Trigger", 1});
+        node->dialogueLine = std::make_shared<quest::DialogueLine>();
+    }
     ImNodes::BeginCanvas(&m_canvas);
 
     updateCharacterNodes();
@@ -69,18 +76,18 @@ void DialogueWindow::updateCharacterNodes()
 
 void DialogueWindow::displayNode(std::weak_ptr<DialogueWindow::Node> node) const
 {
-    std::weak_ptr<CharacterNode> nodeAsCharacter =
+    std::shared_ptr<CharacterNode> nodeAsCharacter =
         std::dynamic_pointer_cast<CharacterNode>(node.lock());
     std::string nodeTitle = "";
-    if (nodeAsCharacter.lock())
+    if (nodeAsCharacter.get())
     {
-        nodeTitle = nodeAsCharacter.lock()->characterInformation.name;
+        nodeTitle = nodeAsCharacter->characterInformation.name;
     }
-    std::weak_ptr<DialogueNode> nodeAsDialogue =
+    std::shared_ptr<DialogueNode> nodeAsDialogue =
         std::dynamic_pointer_cast<DialogueNode>(node.lock());
-    if (nodeAsDialogue.lock())
+    if (nodeAsDialogue.get())
     {
-        nodeTitle = nodeAsDialogue.lock()->dialogueLine.lock()->line();
+        nodeTitle = nodeAsDialogue->dialogueLine->line();
     }
     if (ImNodes::Ez::BeginNode(node.lock().get(), nodeTitle.c_str(),
                                &node.lock()->pos, &node.lock()->selected))
@@ -96,22 +103,20 @@ void DialogueWindow::loadNPCDialogue(CharacterNode& node)
 {
     for (const auto& dialogue : node.characterInformation.dialogueList)
     {
-        std::weak_ptr<const quest::DialogueLine> firstLine = dialogue->firstLine();
+        std::shared_ptr<quest::DialogueLine> firstLine = dialogue->firstLine();
         auto newNode = loadDialogueLineRecursive(firstLine);
-        m_connections.emplace_back(newNode.lock().get(), "Trigger", &node, "Dialogue");
+        m_connections.emplace_back(newNode.get(), "Trigger", &node, "Dialogue");
     }
 }
 
-std::weak_ptr<DialogueWindow::DialogueNode>
-DialogueWindow::loadDialogueLineRecursive(
-    std::weak_ptr<const quest::DialogueLine> line)
+std::shared_ptr<DialogueWindow::DialogueNode> DialogueWindow::loadDialogueLineRecursive(std::shared_ptr<quest::DialogueLine> line)
 {
     auto foundIt = std::find_if(begin(m_nodes),
-                                end(m_nodes), [&line](std::weak_ptr<Node> node)
+                                end(m_nodes), [&line](std::shared_ptr<Node> node)
     {
-        auto nodeAsDialogue = std::dynamic_pointer_cast<DialogueNode>(node.lock());
+        auto nodeAsDialogue = std::dynamic_pointer_cast<DialogueNode>(node);
         if (nodeAsDialogue.get())
-            return line.lock()->id() == nodeAsDialogue->dialogueLine.lock()->id();
+            return line->id() == nodeAsDialogue->dialogueLine->id();
         return false;
     });
     if (foundIt != end(m_nodes))
@@ -121,18 +126,18 @@ DialogueWindow::loadDialogueLineRecursive(
     auto node = std::static_pointer_cast<DialogueNode>(m_nodes.back());
     node->dialogueLine = line;
 
-    for (size_t i = 0; i < line.lock()->choices().size(); i++)
+    for (size_t i = 0; i < line->choices().size(); i++)
     {
-        std::string l = line.lock()->choices().at(i);
+        std::string l = line->choices().at(i);
         if (l.empty())
             l = "[auto]";
         node->outputs.push_back({l, 1});
-        auto nextLine = line.lock()->getChoice(i);
-        if (nextLine.lock())
+        auto nextLine = line->getChoice(i);
+        if (nextLine.get())
         {
             auto nextLineNode = loadDialogueLineRecursive(nextLine);
 
-            m_connections.emplace_back(nextLineNode.lock().get(), "Trigger",
+            m_connections.emplace_back(nextLineNode.get(), "Trigger",
                                        node.get(), node->outputs.back().title);
         }
 

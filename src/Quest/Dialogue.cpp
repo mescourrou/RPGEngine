@@ -84,7 +84,7 @@ std::vector<std::shared_ptr<Dialogue>> Dialogue::loadFromDatabase(
         d.loadFromDatabase(std::atoi(result.at(i).at(Model::FK_DIALOG_LINE_ID).c_str()),
                            db);
         VLOG(verbosityLevel::VERIFICATION_LOG) << "Dialogue starting by '" <<
-                                               d.firstLine().lock()->line() << "', id '" << std::atoi(result.at(i).at(
+                                               d.firstLine()->line() << "', id '" << std::atoi(result.at(i).at(
                                                        Model::FK_DIALOG_LINE_ID).c_str()) << "', loaded";
         dialogueList.push_back(std::make_shared<Dialogue>(d));
     }

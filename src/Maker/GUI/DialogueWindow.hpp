@@ -39,13 +39,13 @@ class DialogueWindow : public ImGui::Window
     {
         DialogueNode() = default;
         ~DialogueNode() override = default;
-        std::weak_ptr<const quest::DialogueLine> dialogueLine;
+        std::shared_ptr<quest::DialogueLine> dialogueLine;
     };
 
     void displayNode(std::weak_ptr<Node> node) const;
     void loadNPCDialogue(CharacterNode& node);
-    std::weak_ptr<DialogueNode> loadDialogueLineRecursive(
-        std::weak_ptr<const quest::DialogueLine> line);
+    std::shared_ptr<DialogueNode> loadDialogueLineRecursive(
+        std::shared_ptr<quest::DialogueLine> line);
 
     Maker* m_maker = nullptr;
     ImNodes::CanvasState m_canvas;

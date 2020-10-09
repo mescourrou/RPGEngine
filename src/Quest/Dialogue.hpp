@@ -72,7 +72,18 @@ class Dialogue : public BaseObject
      * @brief Get the first DialogueLine of the Dialogue.
      * @return
      */
-    std::weak_ptr<const DialogueLine> firstLine() const
+    std::shared_ptr<const DialogueLine> firstLine() const
+    {
+        if (m_firstLineId == -1)
+            return {};
+        return m_dialogueLineStorage.at(m_firstLineId);
+    }
+
+    /**
+     * @brief Get the first DialogueLine of the Dialogue.
+     * @return
+     */
+    std::shared_ptr<DialogueLine> firstLine()
     {
         if (m_firstLineId == -1)
             return {};
