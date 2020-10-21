@@ -17,6 +17,13 @@ bool DialogueWindow::doPrepare()
     if (m_dialogueLineEditWindow)
         m_dialogueLineEditWindow->setActive(false);
     m_dialogueLineEditWindow.reset();
+    if (ImGui::Button("New dialogue line"))
+    {
+        m_nodes.emplace_back(std::make_shared<DialogueNode>());
+        auto node = std::static_pointer_cast<DialogueNode>(m_nodes.back());
+        node->inputs.push_back({"Trigger", 1});
+        node->dialogueLine = std::make_shared<quest::DialogueLine>();
+    }
     ImNodes::BeginCanvas(&m_canvas);
 
     updateCharacterNodes();
@@ -157,7 +164,7 @@ void DialogueWindow::displayNodeInfo(std::shared_ptr<DialogueWindow::Node> node)
         m_dialogueLineEditWindow->subscribeSyncToSignalLineEdited([nodeAsDialogueLine](
                     const std::string & line)
         {
-            nodeAsDialogueLine->dialogueLine->setLine(line);
+            nodeAsDialogueLine->title = line;
         });
         m_dialogueLineEditWindow->setActive(true);
     }
@@ -177,8 +184,8 @@ void DialogueWindow::loadNPCDialogue(CharacterNode& node)
 }
 
 std::shared_ptr<DialogueWindow::DialogueNode>
-DialogueWindow::loadDialogueLineRecursive(
-    std::shared_ptr<quest::DialogueLine> line)
+DialogueWindow::loadDialogueLineRecursive(std::shared_ptr<quest::DialogueLine>
+        line)
 {
     auto foundIt = std::find_if(begin(m_nodes),
                                 end(m_nodes), [&line](std::shared_ptr<Node> node)
