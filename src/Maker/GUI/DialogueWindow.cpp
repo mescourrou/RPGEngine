@@ -14,6 +14,9 @@ DialogueWindow::DialogueWindow(Maker* maker) :
 
 bool DialogueWindow::doPrepare()
 {
+    if (m_dialogueLineEditWindow)
+        m_dialogueLineEditWindow->setActive(false);
+    m_dialogueLineEditWindow.reset();
     ImNodes::BeginCanvas(&m_canvas);
 
     updateCharacterNodes();
@@ -25,11 +28,48 @@ bool DialogueWindow::doPrepare()
 
     for (auto& connection : m_connections)
     {
-        ImNodes::Connection(std::get<0>(connection), std::get<1>(connection).c_str(),
+        ImNodes::Connection(std::get<0>(connection),
+                            std::get<1>(connection).c_str(),
                             std::get<2>(connection), std::get<3>(connection).c_str());
+    }
+    Node* newConnectionInput = nullptr;
+    Node* newConnectionOutput = nullptr;
+    const char* newConnectionInputTitle = nullptr;
+    const char* newConnectionOutputTitle = nullptr;
+    int slotKind = 1;
+
+    if (ImNodes::GetNewConnection((void**)&newConnectionInput,
+                                  &newConnectionInputTitle,
+                                  (void**)&newConnectionOutput, &newConnectionOutputTitle))
+    {
+        m_connections.push_back({newConnectionInput, newConnectionInputTitle, newConnectionOutput, newConnectionOutputTitle});
+    }
+    else if (ImNodes::GetPendingConnection((void**)&newConnectionInput,
+                                           &newConnectionInputTitle, &slotKind))
+    {
+        auto findPredicate = [&newConnectionInput,
+                              &newConnectionInputTitle](const ConnectionTuple & t)
+        {
+            if (newConnectionInput->title == std::get<0>(t)->title
+                    && !strcmp(newConnectionInputTitle, std::get<1>(t).c_str()))
+            {
+                return true;
+            }
+            else if (newConnectionInput->title == std::get<2>(t)->title
+                     && !strcmp(newConnectionInputTitle, std::get<3>(t).c_str()))
+            {
+                return true;
+            }
+            return false;
+        };
+        m_connections.remove_if(findPredicate);
     }
 
     ImNodes::EndCanvas();
+
+    if (m_dialogueLineEditWindow)
+        m_dialogueLineEditWindow->prepare();
+
     return true;
 }
 
@@ -61,57 +101,91 @@ void DialogueWindow::updateCharacterNodes()
             newNode->selected = false;
             newNode->outputs.push_back({"Dialogue", 1});
             loadNPCDialogue(*newNode);
+            newNode->title = newNode->characterInformation.name;
         }
 
 
     }
 }
 
-void DialogueWindow::displayNode(std::weak_ptr<DialogueWindow::Node> node) const
+void DialogueWindow::displayNode(std::shared_ptr<DialogueWindow::Node> node)
 {
-    std::weak_ptr<CharacterNode> nodeAsCharacter =
-        std::dynamic_pointer_cast<CharacterNode>(node.lock());
-    std::string nodeTitle = "";
-    if (nodeAsCharacter.lock())
+    if (ImNodes::Ez::BeginNode(node.get(), node->title.c_str(),
+                               &node->pos, &node->selected))
     {
-        nodeTitle = nodeAsCharacter.lock()->characterInformation.name;
-    }
-    std::weak_ptr<DialogueNode> nodeAsDialogue =
-        std::dynamic_pointer_cast<DialogueNode>(node.lock());
-    if (nodeAsDialogue.lock())
-    {
-        nodeTitle = nodeAsDialogue.lock()->dialogueLine.lock()->line();
-    }
-    if (ImNodes::Ez::BeginNode(node.lock().get(), nodeTitle.c_str(),
-                               &node.lock()->pos, &node.lock()->selected))
-    {
-        ImNodes::Ez::InputSlots(node.lock()->inputs.data(), node.lock()->inputs.size());
-        ImNodes::Ez::OutputSlots(node.lock()->outputs.data(),
-                                 node.lock()->outputs.size());
+        ImNodes::Ez::InputSlots(node->inputs.data(), node->inputs.size());
+        ImNodes::Ez::OutputSlots(node->outputs.data(),
+                                 node->outputs.size());
+        if (node->selected)
+        {
+            displayNodeInfo(node);
+        }
         ImNodes::Ez::EndNode();
     }
+}
+
+void DialogueWindow::displayNodeInfo(std::shared_ptr<DialogueWindow::Node> node)
+{
+    auto nodeAsDialogueLine = std::dynamic_pointer_cast<DialogueNode>(node);
+    if (nodeAsDialogueLine)
+    {
+        if (!m_dialogueLineEditWindow)
+            m_dialogueLineEditWindow = std::make_unique<DialogueLineEditWindow>();
+        m_dialogueLineEditWindow->setLine(
+            nodeAsDialogueLine->dialogueLine->line());
+
+        m_dialogueLineEditWindow->setInputs(nodeAsDialogueLine->inputs);
+        m_dialogueLineEditWindow->subscribeSyncToSignalInputEdited([nodeAsDialogueLine](
+                    const std::string & input, size_t i)
+        {
+            if (i < nodeAsDialogueLine->inputs.size())
+                nodeAsDialogueLine->inputs.at(i).title = input;
+            else
+                nodeAsDialogueLine->inputs.push_back({input, 1});
+        });
+
+        m_dialogueLineEditWindow->setOutputs(nodeAsDialogueLine->outputs);
+        m_dialogueLineEditWindow->subscribeSyncToSignalOutputEdited([nodeAsDialogueLine](
+                    const std::string & output, size_t i)
+        {
+            if (i < nodeAsDialogueLine->outputs.size())
+                nodeAsDialogueLine->outputs.at(i).title = output;
+            else
+                nodeAsDialogueLine->outputs.push_back({output, 1});
+        });
+
+        m_dialogueLineEditWindow->subscribeSyncToSignalLineEdited([nodeAsDialogueLine](
+                    const std::string & line)
+        {
+            nodeAsDialogueLine->dialogueLine->setLine(line);
+        });
+        m_dialogueLineEditWindow->setActive(true);
+    }
+
+    m_lastNode = node;
+
 }
 
 void DialogueWindow::loadNPCDialogue(CharacterNode& node)
 {
     for (const auto& dialogue : node.characterInformation.dialogueList)
     {
-        std::weak_ptr<const quest::DialogueLine> firstLine = dialogue->firstLine();
+        auto firstLine = dialogue->firstLine();
         auto newNode = loadDialogueLineRecursive(firstLine);
-        m_connections.emplace_back(newNode.lock().get(), "Trigger", &node, "Dialogue");
+        m_connections.emplace_back(newNode.get(), "Trigger", &node, "Dialogue");
     }
 }
 
-std::weak_ptr<DialogueWindow::DialogueNode>
+std::shared_ptr<DialogueWindow::DialogueNode>
 DialogueWindow::loadDialogueLineRecursive(
-    std::weak_ptr<const quest::DialogueLine> line)
+    std::shared_ptr<quest::DialogueLine> line)
 {
     auto foundIt = std::find_if(begin(m_nodes),
-                                end(m_nodes), [&line](std::weak_ptr<Node> node)
+                                end(m_nodes), [&line](std::shared_ptr<Node> node)
     {
-        auto nodeAsDialogue = std::dynamic_pointer_cast<DialogueNode>(node.lock());
+        auto nodeAsDialogue = std::dynamic_pointer_cast<DialogueNode>(node);
         if (nodeAsDialogue.get())
-            return line.lock()->id() == nodeAsDialogue->dialogueLine.lock()->id();
+            return line->id() == nodeAsDialogue->dialogueLine->id();
         return false;
     });
     if (foundIt != end(m_nodes))
@@ -121,24 +195,25 @@ DialogueWindow::loadDialogueLineRecursive(
     auto node = std::static_pointer_cast<DialogueNode>(m_nodes.back());
     node->dialogueLine = line;
 
-    for (size_t i = 0; i < line.lock()->choices().size(); i++)
+    for (size_t i = 0; i < line->choices().size(); i++)
     {
-        std::string l = line.lock()->choices().at(i);
+        std::string l = line->choices().at(i);
         if (l.empty())
             l = "[auto]";
         node->outputs.push_back({l, 1});
-        auto nextLine = line.lock()->getChoice(i);
-        if (nextLine.lock())
+        auto nextLine = line->getChoice(i);
+        if (nextLine)
         {
             auto nextLineNode = loadDialogueLineRecursive(nextLine);
 
-            m_connections.emplace_back(nextLineNode.lock().get(), "Trigger",
+            m_connections.emplace_back(nextLineNode.get(), "Trigger",
                                        node.get(), node->outputs.back().title);
         }
 
 
     }
     node->inputs.push_back({"Trigger", 1});
+    node->title = node->dialogueLine->line();
 
     return node;
 

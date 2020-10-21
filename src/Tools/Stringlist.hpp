@@ -55,8 +55,8 @@ class stringlist_batch
     void clear();
     bool remove(const std::string& str);
     bool remove(size_t i);
-    void push_back(const std::string& str);
-    void push_back(const char* str);
+    void push_back(const std::string& str, size_t bufferSize = 0);
+    void push_back(const char* str, size_t bufferSize = 0);
   private:
     static void copy(char** dest, size_t lenDest, char** origin, size_t lenOrigin);
     char** m_data = nullptr;    ///< String array
@@ -399,24 +399,10 @@ bool stringlist_batch<BATCH>::remove(size_t i)
  * @param str String to add
  */
 template <short BATCH>
-void stringlist_batch<BATCH>::push_back(const std::string& str)
+void stringlist_batch<BATCH>::push_back(const std::string& str,
+                                        size_t bufferSize)
 {
-    if (m_size >= m_allocated)
-    {
-        do
-        {
-            m_allocated += BATCH;
-        } while (m_size >= m_allocated);
-
-        char** newOne = new char* [m_allocated];
-        copy(newOne, m_size + 1, m_data, m_size);
-        clear();
-
-        m_data = newOne;
-    }
-    m_data[m_size] = new char[str.size()];
-    strcpy(m_data[m_size], str.c_str());
-    m_size++;
+    push_back(str.c_str(), bufferSize);
 }
 
 /**
@@ -426,7 +412,7 @@ void stringlist_batch<BATCH>::push_back(const std::string& str)
  * @param str String to add
  */
 template <short BATCH>
-void stringlist_batch<BATCH>::push_back(const char* str)
+void stringlist_batch<BATCH>::push_back(const char* str, size_t bufferSize)
 {
     if (m_size >= m_allocated)
     {
@@ -437,11 +423,20 @@ void stringlist_batch<BATCH>::push_back(const char* str)
 
         char** newOne = new char* [m_allocated];
         copy(newOne, m_size + 1, m_data, m_size);
-        clear();
+        if (m_data)
+        {
+            for (size_t i = 0; i < m_size; i++)
+            {
+                delete[] m_data[i];
+            }
+            delete[] m_data;
+        }
 
         m_data = newOne;
     }
-    m_data[m_size] = new char[strlen(str)];
+    if (bufferSize == 0)
+        bufferSize = strlen(str);
+    m_data[m_size] = new char[bufferSize];
     strcpy(m_data[m_size], str);
     m_size++;
 }

@@ -7,6 +7,7 @@
 #include <ImNodes.h>
 #include <ImNodesEz.h>
 #include <Dialogue.hpp>
+#include <DialogueLineEditWindow.hpp>
 
 namespace maker::gui
 {
@@ -28,6 +29,7 @@ class DialogueWindow : public ImGui::Window
         bool selected = false;
         std::vector<ImNodes::Ez::SlotInfo> inputs;
         std::vector<ImNodes::Ez::SlotInfo> outputs;
+        std::string title;
     };
     struct CharacterNode : public Node
     {
@@ -39,13 +41,14 @@ class DialogueWindow : public ImGui::Window
     {
         DialogueNode() = default;
         ~DialogueNode() override = default;
-        std::weak_ptr<const quest::DialogueLine> dialogueLine;
+        std::shared_ptr<quest::DialogueLine> dialogueLine;
     };
 
-    void displayNode(std::weak_ptr<Node> node) const;
+    void displayNode(std::shared_ptr<Node> node);
+    void displayNodeInfo(std::shared_ptr<Node> node);
     void loadNPCDialogue(CharacterNode& node);
-    std::weak_ptr<DialogueNode> loadDialogueLineRecursive(
-        std::weak_ptr<const quest::DialogueLine> line);
+    std::shared_ptr<DialogueNode> loadDialogueLineRecursive(
+        std::shared_ptr<quest::DialogueLine> line);
 
     Maker* m_maker = nullptr;
     ImNodes::CanvasState m_canvas;
@@ -53,6 +56,8 @@ class DialogueWindow : public ImGui::Window
     using ConnectionTuple = std::tuple<Node*, std::string, Node*, std::string>;
     std::list<ConnectionTuple> m_connections;
     std::multimap<std::string, quest::Dialogue> m_dialogues;
+    std::unique_ptr<DialogueLineEditWindow> m_dialogueLineEditWindow;
+    std::weak_ptr<Node> m_lastNode;
 };
 
 

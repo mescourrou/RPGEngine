@@ -55,8 +55,8 @@ void DialogueLine::loadFromDatabase(unsigned int id,
  * @param action Owned pointer on the DialogueAction associated to the choice.
  */
 void DialogueLine::addChoice(std::string playerLine,
-                             std::weak_ptr<const DialogueLine> nextLine,
-                             std::weak_ptr<DialogueAction> action)
+                             std::shared_ptr<DialogueLine> nextLine,
+                             std::shared_ptr<DialogueAction> action)
 {
     m_choices.push_back({std::move(playerLine), nextLine, action});
 }
@@ -90,7 +90,7 @@ std::vector<std::string> DialogueLine::choices() const
     return choices;
 }
 
-std::weak_ptr<const DialogueLine> DialogueLine::getChoice(size_t index) const
+std::shared_ptr<DialogueLine> DialogueLine::getChoice(size_t index) const
 {
     return m_choices.at(index).nextLine;
 }
@@ -99,11 +99,11 @@ std::weak_ptr<const DialogueLine> DialogueLine::getChoice(size_t index) const
  * @brief Select the wanted choice, execute the action associated and return the next line pointer.
  * @param index Index of the choice to select. The index is the same than in the choice list given by getChoices() .
  */
-std::weak_ptr<const DialogueLine> DialogueLine::selectChoice(size_t index) const
+std::shared_ptr<DialogueLine> DialogueLine::selectChoice(size_t index) const
 {
     const Choice& c = m_choices.at(index);
-    if (c.action.lock())
-        (*c.action.lock())();
+    if (c.action)
+        (*c.action)();
     return c.nextLine;
 }
 
