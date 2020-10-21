@@ -206,7 +206,8 @@ bool Maker::verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db)
         object::Money::verifyDatabaseModel(db) &&
         object::Inventory::verifyDatabaseModel(db) &&
         map::Position::verifyDatabaseModel(db) &&
-        game::Game::verifyDatabaseModel(db);
+        game::Game::verifyDatabaseModel(db) &&
+        quest::Dialogue::verifyDatabaseModel(db);
 }
 
 void Maker::updateCharacterList()
@@ -278,7 +279,8 @@ bool Maker::createDatabaseModel()
         object::Object::createDatabaseModel(m_db) &&
         object::Money::createDatabaseModel(m_db) &&
         object::Inventory::createDatabaseModel(m_db) &&
-        game::Game::createDatabaseModel(m_db);
+        game::Game::createDatabaseModel(m_db) &&
+        quest::Dialogue::createDatabaseModel(m_db);
 }
 
 bool Maker::saveCharacter(const Maker::CharacterInformations& infos)
@@ -440,6 +442,11 @@ bool Maker::getCharacterInformations(const std::string& name,
             Model::Position::X).c_str()),
                                  std::atof(result.at(1).at(Model::Position::Y).c_str()),
                                  std::atof(result.at(1).at(Model::Position::Z).c_str()));
+
+    if (out.isNPC())
+    {
+        out.dialogueList = quest::Dialogue::loadFromDatabase(out.name, m_db);
+    }
     LOG(INFO) << "Get information about " << name << " : OK";
 
     return true;

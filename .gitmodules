@@ -37,3 +37,6 @@
 [submodule "thirdparty/InstrumentationTools"]
 	path = thirdparty/InstrumentationTools
 	url = https://github.com/mescourrou/InstrumentationTools.git
+[submodule "thirdparty/ImNodes"]
+	path = thirdparty/ImNodes
+	url = https://github.com/mescourrou/ImNodes.git

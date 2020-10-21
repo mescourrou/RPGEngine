@@ -26,7 +26,7 @@ class DialogueGUI : public ImGui::Window
 {
   public:
     DialogueGUI();
-    explicit DialogueGUI(std::weak_ptr<const Dialogue> dialogue);
+    explicit DialogueGUI(std::shared_ptr<Dialogue> dialogue);
     ~DialogueGUI() override = default;
 
     /**
@@ -51,9 +51,9 @@ class DialogueGUI : public ImGui::Window
     /// Dialogue history.
     std::vector<std::pair<std::string, std::string>> m_previousLines;
     /// Pointer on the dialogue.
-    std::weak_ptr<const Dialogue> m_dialogue;
+    std::shared_ptr<Dialogue> m_dialogue;
     /// Pointer on the current NPC line.
-    std::weak_ptr<const DialogueLine> m_currentLine;
+    std::shared_ptr<DialogueLine> m_currentLine;
 };
 
 } // namespace gui

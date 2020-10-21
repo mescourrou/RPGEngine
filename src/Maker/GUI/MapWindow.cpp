@@ -62,19 +62,21 @@ bool MapWindow::doPrepare()
 
     }
     ImGui::NextColumn();
-    ImGui::InputText("Name", m_list.get(m_selected), 16);
-    ImGui::Text("Create a file named '%s.json'\nwith Tiled in the map directory",
-                Tools::snakeCase(m_list.getStr(m_selected)).c_str());
-    if (ImGui::Button("Save"))
+    if (m_list.size())
     {
-        m_maker->setCurrentMap(m_list.getStr(m_selected));
-        m_edit.name = m_list.getStr(m_selected);
-        if (m_newOne)
-            m_maker->saveMap(m_edit);
-        else
-            m_maker->saveMap(m_edit, m_current);
+        ImGui::InputText("Name", m_list.get(m_selected), 16);
+        ImGui::Text("Create a file named '%s.json'\nwith Tiled in the map directory",
+                    Tools::snakeCase(m_list.getStr(m_selected)).c_str());
+        if (ImGui::Button("Save"))
+        {
+            m_maker->setCurrentMap(m_list.getStr(m_selected));
+            m_edit.name = m_list.getStr(m_selected);
+            if (m_newOne)
+                m_maker->saveMap(m_edit);
+            else
+                m_maker->saveMap(m_edit, m_current);
+        }
     }
-
     return true;
 }
 

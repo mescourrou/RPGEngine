@@ -73,6 +73,10 @@ bool MakerGUI::initialize()
     m_mapWindow->setActive(false);
     m_windowManager.addWindow(m_mapWindow.get());
 
+    m_dialogueWindow = std::make_unique<DialogueWindow>(m_maker);
+    m_dialogueWindow->setActive(false);
+    m_windowManager.addWindow(m_dialogueWindow.get());
+
     m_maker->getStateMachine().addExitStateAction(Maker::PROJECT_LOADING, []()
     {
         // future work
@@ -81,12 +85,14 @@ bool MakerGUI::initialize()
     {
         m_moneyWindow->setActive(true);
         m_mapWindow->setActive(true);
+        m_dialogueWindow->setActive(true);
     });
     m_maker->getStateMachine().addExitStateAction(Maker::WORKBENCH, [this]()
     {
         m_moneyWindow->setActive(false);
         m_mapWindow->setActive(false);
         m_characterWindow->setActive(false);
+        m_dialogueWindow->setActive(false);
     });
 
     events::ActionHandler::addAction("Open", [this]()
@@ -330,7 +336,8 @@ void MakerGUI::makeNewGameUI()
             m_ui.newGame.state = UI::NewGame::NONE;
             ImGui::CloseCurrentPopup();
         }
-        if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive()
+        if (ImGui::IsWindowFocused(ImGuiFocusedFlags_RootAndChildWindows)
+                && !ImGui::IsAnyItemActive()
                 && !ImGui::IsMouseClicked(0))
             ImGui::SetKeyboardFocusHere(0);
         ImGui::EndPopup();

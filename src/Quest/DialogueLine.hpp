@@ -42,9 +42,9 @@ class DialogueLine : public BaseObject
         /// Line of the player
         std::string playerLine;
         /// Pointer on the next NPC line
-        std::weak_ptr<const DialogueLine> nextLine;
+        std::shared_ptr<DialogueLine> nextLine;
         /// Pointer on the associated action
-        std::weak_ptr<DialogueAction> action;
+        std::shared_ptr<DialogueAction> action;
     };
 
   public:
@@ -64,12 +64,18 @@ class DialogueLine : public BaseObject
                           std::shared_ptr<databaseTools::Database> db);
 
     void addChoice(std::string playerLine,
-                   std::weak_ptr<const DialogueLine> nextLine,
-                   std::weak_ptr<DialogueAction> action = std::weak_ptr<DialogueAction>());
+                   std::shared_ptr<DialogueLine> nextLine,
+                   std::shared_ptr<DialogueAction> action = {});
     void setLine(std::string line);
     const std::string& line() const;
     std::vector<std::string> choices() const;
-    std::weak_ptr<const DialogueLine> selectChoice(size_t index) const;
+    std::shared_ptr<DialogueLine> getChoice(size_t index) const;
+    std::shared_ptr<DialogueLine> selectChoice(size_t index) const;
+
+    unsigned int id() const
+    {
+        return m_id;
+    }
 
     static bool verifyDatabaseModel(std::shared_ptr<databaseTools::Database> db);
     static bool createDatabaseModel(std::shared_ptr<databaseTools::Database> db);
@@ -79,6 +85,8 @@ class DialogueLine : public BaseObject
     std::string m_line;
     /// List of choices for the player
     std::vector<Choice> m_choices;
+    /// Id in the database.
+    unsigned int m_id = 0;
 
 };
 
